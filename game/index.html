@@ -355,6 +355,14 @@
     box-shadow:inset 0 0 40px rgba(0,0,0,.9)}
   .sky-map{display:block;width:100%;height:auto}
   .sky-grid{stroke:rgba(120,150,210,.16);stroke-width:.35}
+  .sky-sector{fill:rgba(120,170,255,.10);stroke:rgba(140,190,255,.34);stroke-width:.5;stroke-dasharray:3 2}
+  .sky-vignette{pointer-events:none}
+  .sky-map{touch-action:none;cursor:grab}
+  .sky-map.dragging{cursor:grabbing}
+  .skynode .halo{fill:#8fc4ff;opacity:.16}
+  .skynode .qlbl{fill:#7f95b5;font-size:2.8px;text-anchor:middle;opacity:.9}
+  .skynode .dot{fill:#33455f}
+  .skynode:hover .dot{fill:#9fd0ff}
   .sky-grid-eq{stroke:rgba(140,190,255,.3);stroke-width:.5;stroke-dasharray:2 2}
   .sky-lbl{fill:#5f7495;font-size:2.6px}
   .skynode{cursor:pointer}
@@ -412,7 +420,7 @@
     </div>
     <div class="sky-filters" id="skyFilters" role="group" aria-label="按季节筛选"></div>
     <div class="sky-wrap"><svg class="sky-map" id="skyMap" viewBox="0 0 200 120" role="img" aria-label="天球投影星图"></svg></div>
-    <div class="sky-hint">横轴 = 赤经（0–24 时）· 纵轴 = 赤纬（+90° 到 −90°）· 亮 = 已观测，暗 = 未观测</div>
+    <div class="sky-hint" id="skyHint">横轴 = 赤经（0–24 时）· 纵轴 = 赤纬（+90° 到 −90°）· 亮 = 已观测　·　按住拖动可平移，双击复位</div>
     <div class="sky-detail" id="skyDetail"></div>
   </section>
 
@@ -1673,44 +1681,108 @@ function skyEsc(t){
     .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
+function skyX(ra){ return 8 + (1 - ra / 24) * 184; }
+function skyY(dec){ return 8 + (90 - dec) / 180 * 104; }
+// 季节 -> 赤经板块（1 时 = 15°，一晚中天的范围约 6 小时）
+const SKY_BANDS = {
+  '春季': [[9, 15]],
+  '夏季': [[15, 21]],
+  '秋季': [[21, 24], [0, 3]],
+  '冬季': [[3, 9]]
+};
+let skyPan = { x: 0, y: 0 };
+let skyDrag = null, skyMoved = false;
+
+function skyApplyPan(){
+  const root = skyEls.map && skyEls.map.querySelector('.sky-root');
+  if (root) root.setAttribute('transform', 'translate(' + skyPan.x.toFixed(1) + ',' + skyPan.y.toFixed(1) + ')');
+}
+
 function renderSkyMap(){
   if (!skyEls.map) return;
-  let g = '';
-  // 网格：赤纬线
+  const defs = '<defs>' +
+    '<radialGradient id="skyMw" cx="50%" cy="50%" r="62%">' +
+      '<stop offset="0%" stop-color="#41609c" stop-opacity=".26"></stop>' +
+      '<stop offset="70%" stop-color="#2a3f70" stop-opacity=".12"></stop>' +
+      '<stop offset="100%" stop-color="#0a1024" stop-opacity="0"></stop>' +
+    '</radialGradient>' +
+    '<radialGradient id="skyVig" cx="50%" cy="45%" r="70%">' +
+      '<stop offset="60%" stop-color="#000" stop-opacity="0"></stop>' +
+      '<stop offset="100%" stop-color="#000" stop-opacity=".55"></stop>' +
+    '</radialGradient>' +
+  '</defs>';
+
+  // 确定性星尘（同一张图每次一致）
+  let dust = '', seed = 20261022;
+  function rnd(){ seed = (seed * 1103515245 + 12345) % 2147483648; return seed / 2147483648; }
+  for (let i = 0; i < 80; i++){
+    dust += '<circle cx="' + (rnd() * 200).toFixed(1) + '" cy="' + (rnd() * 120).toFixed(1) +
+      '" r="' + (0.25 + rnd() * 0.7).toFixed(2) + '" fill="#cfe0ff" opacity="' +
+      (0.12 + rnd() * 0.45).toFixed(2) + '"></circle>';
+  }
+  // 银河带
+  const mw = '<ellipse cx="100" cy="60" rx="160" ry="26" fill="url(#skyMw)" transform="rotate(-16 100 60)"></ellipse>';
+
+  // 季节板块
+  let sector = '';
+  const bands = (skyFilter !== '全部') ? (SKY_BANDS[skyFilter] || []) : [];
+  for (let i = 0; i < bands.length; i++){
+    const b = bands[i];
+    const xa = skyX(b[1]), xb = skyX(b[0]);
+    sector += '<rect class="sky-sector" x="' + Math.min(xa, xb).toFixed(1) + '" y="6" width="' +
+      Math.abs(xa - xb).toFixed(1) + '" height="104" rx="4"></rect>';
+  }
+
+  // 网格：赤纬
+  let grid = '';
   for (let dec = -60; dec <= 60; dec += 30){
-    const y = (8 + (90 - dec) / 180 * 104).toFixed(1);
-    g += '<line class="sky-grid' + (dec === 0 ? ' sky-grid-eq' : '') + '" x1="8" y1="' + y +
-         '" x2="192" y2="' + y + '"></line>';
-    g += '<text class="sky-lbl" x="4" y="' + y + '" text-anchor="middle">' + (dec > 0 ? '+' : '') + dec + '°</text>';
+    const y = skyY(dec).toFixed(1);
+    grid += '<line class="sky-grid' + (dec === 0 ? ' sky-grid-eq' : '') + '" x1="8" y1="' + y +
+      '" x2="192" y2="' + y + '"></line>';
+    grid += '<text class="sky-lbl" x="4" y="' + (+y + 1) + '" text-anchor="middle">' +
+      (dec > 0 ? '+' : '') + dec + '°</text>';
   }
-  // 网格：赤经线（每 6 时）
-  for (let ra = 0; ra <= 24; ra += 6){
-    const x = (8 + (1 - ra / 24) * 184).toFixed(1);
-    g += '<line class="sky-grid" x1="' + x + '" y1="8" x2="' + x + '" y2="112"></line>';
-    g += '<text class="sky-lbl" x="' + x + '" y="117" text-anchor="middle">' + ra + 'h</text>';
+  // 网格：赤经
+  for (let ra = 0; ra <= 24; ra += 3){
+    const x = skyX(ra).toFixed(1);
+    grid += '<line class="sky-grid" x1="' + x + '" y1="8" x2="' + x + '" y2="112"></line>';
+    if (ra % 6 === 0){
+      grid += '<text class="sky-lbl" x="' + x + '" y="117" text-anchor="middle">' + ra + 'h</text>';
+    }
   }
+
   // 星座节点
+  let nodes = '';
   for (let i = 0; i < SKY.length; i++){
     const s = SKY[i];
-    const p = skyProj(s.ra, s.dec);
     const on = skyIsOn(s);
-    const dim = (skyFilter !== '全部' && s.season !== skyFilter) ? ' dim' : '';
+    const inSeason = (skyFilter === '全部') || (s.season === skyFilter);
+    if (!inSeason) continue;                    // 非当季：直接不显示（“只在全部和夏季出现”）
+    const p = [skyX(s.ra), skyY(s.dec)];
     const sel = (skySelected === s.id) ? ' sel' : '';
-    const cls = 'skynode' + (on ? ' on' : '') + dim + sel;
-    const r = on ? 1.9 : 1.2;
-    const label = on ? s.zh.replace('座', '') : '';
-    let node = '<g class="' + cls + '" data-sky="' + skyEsc(s.id) + '" role="button" tabindex="0" ' +
+    const cls = 'skynode' + (on ? ' on' : '') + sel;
+    const r = on ? 1.9 : 1.1;
+    nodes += '<g class="' + cls + '" data-sky="' + skyEsc(s.id) + '" role="button" tabindex="0" ' +
       'aria-label="' + skyEsc(s.zh) + (on ? '，已观测' : '，未观测') + '">' +
-      '<circle class="hit" cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="5"></circle>' +
-      '<circle class="dot" cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="' + r + '"></circle>';
-    if (label){
-      const ly = (p[1] + (s.dec >= 20 ? -4.2 : 5.4)).toFixed(1);
-      node += '<text class="lbl" x="' + p[0].toFixed(1) + '" y="' + ly + '">' + skyEsc(label) + '</text>';
+      '<circle class="hit" cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="5"></circle>';
+    if (on){
+      nodes += '<circle class="halo" cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="' + (r * 2.6).toFixed(1) + '"></circle>';
     }
-    node += '</g>';
-    g += node;
+    nodes += '<circle class="dot" cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="' + r + '"></circle>';
+    if (on){
+      const ly = (p[1] + (s.dec >= 20 ? -4.2 : 5.6)).toFixed(1);
+      nodes += '<text class="lbl" x="' + p[0].toFixed(1) + '" y="' + ly + '">' + skyEsc(s.zh.replace('座', '')) + '</text>';
+    } else {
+      nodes += '<text class="qlbl" x="' + p[0].toFixed(1) + '" y="' + (p[1] + 4.6).toFixed(1) + '">?</text>';
+    }
+    nodes += '</g>';
   }
-  skyEls.map.innerHTML = g;
+
+  skyEls.map.innerHTML = defs +
+    '<g class="sky-root" transform="translate(' + skyPan.x.toFixed(1) + ',' + skyPan.y.toFixed(1) + ')">' +
+      mw + dust + sector + grid + nodes +
+    '</g>' +
+    '<rect class="sky-vignette" x="0" y="0" width="200" height="120" fill="url(#skyVig)" pointer-events="none"></rect>';
 }
 
 function renderSkyFilters(){
@@ -1767,8 +1839,19 @@ function renderSkyDetail(){
     '</div>';
 }
 
+function skyHintText(){
+  if (skyFilter === '全部'){
+    return '全天总览 · 亮 = 已观测，? = 未观测 · 按住拖动可平移，双击复位';
+  }
+  const bands = SKY_BANDS[skyFilter] || [];
+  const range = bands.map(function(b){ return b[0] + '–' + b[1] + ' 时'; }).join(' 与 ');
+  return skyFilter + '星空 = 赤经 ' + range + ' · 其它季节的星座已隐藏 · 按住拖动可平移，双击复位';
+}
+
 function renderSky(){
   renderSkyFilters();
+  const hintEl = document.getElementById('skyHint');
+  if (hintEl) hintEl.textContent = skyHintText();
   renderSkyMap();
   renderSkyDetail();
   const on = skyOnCount();
@@ -1784,6 +1867,7 @@ function refreshSkyBadge(){
 function openSky(){
   if (!skyEls.panel) return;
   skyOpen = true;
+  skyPan.x = 0; skyPan.y = 0;
   skyEls.panel.hidden = false;
   skyEls.panel.className = 'panel sky-panel open';
   if (skyEls.btn) skyEls.btn.setAttribute('aria-expanded', 'true');
@@ -1803,14 +1887,54 @@ if (skyEls.filters) skyEls.filters.addEventListener('click', function(e){
   const b = e.target.closest('[data-season]');
   if (!b) return;
   skyFilter = b.getAttribute('data-season');
+  if (skySelected){
+    const cur = SKY.find(function(x){ return x.id === skySelected; });
+    if (cur && skyFilter !== '全部' && cur.season !== skyFilter) skySelected = null;
+  }
+  // 选中季节：把该季节的赤经板块移到视野中间（“选中板块”）
+  const bands = SKY_BANDS[skyFilter];
+  if (!bands){ skyPan.x = 0; skyPan.y = 0; }
+  else if (bands.length === 1){
+    const raMid = (bands[0][0] + bands[0][1]) / 2;
+    skyPan.x = Math.max(-100, Math.min(100, 100 - skyX(raMid)));
+    skyPan.y = 0;
+  } else { skyPan.x = 0; skyPan.y = 0; }
   renderSky();
 });
 if (skyEls.map) skyEls.map.addEventListener('click', function(e){
+  if (skyMoved){ skyMoved = false; return; }   // 拖动结束不算点击
   const node = e.target.closest('[data-sky]');
   if (!node) return;
   skySelected = node.getAttribute('data-sky');
   renderSky();
 });
+
+// 按住拖动 = 平移视角（鼠标/触摸通用）
+if (skyEls.map){
+  skyEls.map.addEventListener('pointerdown', function(e){
+    skyDrag = { cx: e.clientX, cy: e.clientY, px: skyPan.x, py: skyPan.y };
+    skyMoved = false;
+    try { skyEls.map.setPointerCapture(e.pointerId); } catch (_) {}
+    skyEls.map.classList.add('dragging');
+  });
+  skyEls.map.addEventListener('pointermove', function(e){
+    if (!skyDrag) return;
+    const rect = skyEls.map.getBoundingClientRect();
+    const scale = 200 / Math.max(1, rect.width);
+    const dx = (e.clientX - skyDrag.cx) * scale;
+    const dy = (e.clientY - skyDrag.cy) * scale;
+    if (Math.abs(dx) + Math.abs(dy) > 1.2) skyMoved = true;
+    skyPan.x = Math.max(-100, Math.min(100, skyDrag.px + dx));
+    skyPan.y = Math.max(-34, Math.min(34, skyDrag.py + dy));
+    skyApplyPan();
+    if (skyMoved) e.preventDefault();
+  });
+  function skyEndDrag(){ if (!skyDrag) return; skyDrag = null; skyEls.map.classList.remove('dragging'); }
+  skyEls.map.addEventListener('pointerup', skyEndDrag);
+  skyEls.map.addEventListener('pointercancel', skyEndDrag);
+  skyEls.map.addEventListener('pointerleave', function(e){ if (skyDrag && e.buttons === 0) skyEndDrag(); });
+  skyEls.map.addEventListener('dblclick', function(){ skyPan.x = 0; skyPan.y = 0; skyApplyPan(); });
+}
 if (skyEls.detail) skyEls.detail.addEventListener('click', function(e){
   const b = e.target.closest('[data-jump]');
   if (!b) return;
