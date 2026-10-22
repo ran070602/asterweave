@@ -59,13 +59,14 @@
   }
   /* 关卡 = 右侧抽屉（不再把页面顶下去） */
   .panel.lvdrawer{
-    position:fixed;top:0;right:0;bottom:0;left:auto;z-index:45;
-    width:min(360px,88vw);margin:0;border-radius:0;border:0;border-left:1px solid #263042;
-    background:linear-gradient(180deg,#151c27,#0e131b);
-    padding:14px 12px calc(14px + env(safe-area-inset-bottom));
+    position:fixed;top:0;right:0;bottom:auto;left:0;z-index:45;
+    width:auto;max-height:min(74vh,600px);margin:0;
+    border:0;border-bottom:1px solid #263042;border-radius:0 0 16px 16px;
+    background:linear-gradient(180deg,#171e2a,#0d121a);
+    padding:14px 12px 16px;
     box-sizing:border-box;overflow-y:auto;overscroll-behavior:contain;
-    transform:translateX(100%);transition:transform .24s cubic-bezier(.22,.8,.3,1);
-    box-shadow:-18px 0 40px rgba(0,0,0,.45);
+    transform:translateY(-102%);transition:transform .26s cubic-bezier(.22,.8,.3,1);
+    box-shadow:0 20px 44px rgba(0,0,0,.5);
   }
   .panel.lvdrawer.open{display:block;transform:none}
   .panel.lvdrawer[hidden]{display:none}
@@ -74,7 +75,7 @@
   .drawer-mask.open{opacity:1;pointer-events:auto}
   body.drawer-open{overflow:hidden}
   .lvdrawer .lvgrid{gap:8px}
-  .lvdrawer .panel-head{position:sticky;top:-14px;background:linear-gradient(180deg,#151c27 70%,rgba(21,28,39,0));padding:6px 0 10px;margin-bottom:4px}
+  .lvdrawer .panel-head{position:sticky;top:-14px;z-index:2;background:linear-gradient(180deg,#171e2a 72%,rgba(23,30,42,0));padding:4px 0 10px;margin-bottom:2px}
   @media (prefers-reduced-motion: reduce){
     .panel.lvdrawer,.drawer-mask{transition:none}
   }
@@ -365,8 +366,10 @@
   .panel.sky-panel.open{display:flex}
   .panel.sky-panel{width:100vw;max-width:100vw;overflow-x:hidden}
   .sky-wrap,.sky-map{width:100%;max-width:100%}
-  .sky-wrap{flex:0 0 auto}
-  .sky-head,.sky-filters,.sky-hint,.sky-detail{flex:0 0 auto}
+  .sky-wrap{flex:0 0 auto;height:min(44vh,320px)}
+  .sky-map{height:100%}
+  .sky-head,.sky-filters,.sky-hint{flex:0 0 auto}
+  .sky-detail{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch}
   .sky-hint{padding:0 2px;word-break:break-word}
   .sky-panel *{box-sizing:border-box;max-width:100%}
   .sky-detail:empty{display:none}
@@ -383,6 +386,14 @@
   .sky-map{touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}
   .sky-map.dragging{cursor:grabbing}
   .skynode .halo{fill:#8fc4ff;opacity:.16}
+  .skynode.on .dot{animation:skyTwinkle 3.6s ease-in-out infinite}
+  .skynode.on .halo{animation:skyHalo 3.6s ease-in-out infinite}
+  .skynode:not(.on) .dot{opacity:.55}
+  @keyframes skyTwinkle{0%,100%{opacity:1}45%{opacity:.5}70%{opacity:.85}}
+  @keyframes skyHalo{0%,100%{opacity:.20}50%{opacity:.05}}
+  @media (prefers-reduced-motion: reduce){
+    .skynode.on .dot,.skynode.on .halo{animation:none}
+  }
   .skynode .qlbl{fill:#7f95b5;font-size:2.8px;text-anchor:middle;opacity:.9}
   .skynode .dot{fill:#33455f}
   .skynode:hover .dot{fill:#9fd0ff}
@@ -1587,10 +1598,10 @@ function openPanel(){
   lvBtn.setAttribute('aria-expanded', 'true');
   document.body.classList.add('drawer-open');
   refreshLevelGrid();
-  requestAnimationFrame(function(){
-    levelPanel.className = 'panel lvdrawer open';
-    drawerMask.className = 'drawer-mask open';
-  });
+  // 强制 reflow 让 transition 生效（比 rAF 稳，后台标签/无头环境也能触发）
+  void levelPanel.offsetWidth;
+  levelPanel.className = 'panel lvdrawer open';
+  drawerMask.className = 'drawer-mask open';
   const cur = lvlEls[S ? S.index : 0];
   if (cur && cur.scrollIntoView){
     try { cur.scrollIntoView({ block: 'center' }); }
@@ -1730,7 +1741,7 @@ const SKY_BANDS = {
 let skyView = { s: 1, x: 0, y: 0 };
 const skyPointers = new Map();
 let skyPinch = null;
-let skyDownPt = null, skyMoved = false;
+let skyDownPt = null, skyMoved = false, skyDownNode = null;
 
 function skyTransform(){
   return 'translate(' + skyView.x.toFixed(2) + ',' + skyView.y.toFixed(2) + ') scale(' + skyView.s.toFixed(3) + ')';
@@ -1861,10 +1872,12 @@ function renderSkyMap(){
     nodes += '<g class="' + cls + '" data-sky="' + skyEsc(s.id) + '" role="button" tabindex="0" ' +
       'aria-label="' + skyEsc(s.zh) + (on ? '，已观测' : '，未观测') + '">' +
       '<circle class="hit" cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="5"></circle>';
+    const phase = ' style="animation-delay:-' + ((i % 12) * 0.29).toFixed(2) + 's"';
     if (on){
-      nodes += '<circle class="halo" cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="' + (r * 2.6).toFixed(1) + '"></circle>';
+      nodes += '<circle class="halo" cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="' + (r * 2.6).toFixed(1) + '"' + phase + '></circle>';
     }
-    nodes += '<circle class="dot" cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="' + r + '"></circle>';
+    nodes += '<circle class="dot" cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="' + r + '"' +
+      (on ? phase : '') + '></circle>';
     if (on){
       const ly = (p[1] + (s.dec >= 20 ? -4.2 : 5.6)).toFixed(1);
       nodes += '<text class="lbl" x="' + p[0].toFixed(1) + '" y="' + ly + '">' + skyEsc(s.zh.replace('座', '')) + '</text>';
@@ -1991,6 +2004,16 @@ if (skyEls.filters) skyEls.filters.addEventListener('click', function(e){
   renderSky();
   skyFocusBands(SKY_BANDS[skyFilter]);
 });
+if (skyEls.map) skyEls.map.addEventListener('keydown', function(e){
+  if (e.key !== 'Enter' && e.key !== ' ' && e.key !== 'Spacebar') return;
+  const node = e.target && e.target.closest ? e.target.closest('[data-sky]') : null;
+  if (!node) return;
+  e.preventDefault();
+  skySelected = node.getAttribute('data-sky');
+  renderSky();
+  if (skyEls.detail) skyEls.detail.scrollTop = 0;
+});
+
 if (skyEls.map) skyEls.map.addEventListener('click', function(e){
   if (skyMoved){ skyMoved = false; return; }   // 拖动结束不算点击
   const node = e.target.closest('[data-sky]');
@@ -2017,6 +2040,7 @@ if (skyEls.map){
     if (skyPointers.size === 1){
       skyDownPt = { x: e.clientX, y: e.clientY };
       skyMoved = false;
+      skyDownNode = e.target && e.target.closest ? e.target.closest('[data-sky]') : null;
       skyDragLast = { x: e.clientX, y: e.clientY };
     } else if (skyPointers.size === 2){
       const pts = Array.from(skyPointers.values());
@@ -2065,10 +2089,19 @@ if (skyEls.map){
   });
 
   function skyPointerEnd(e){
+    const wasSingle = skyPointers.size === 1;
     skyPointers.delete(e.pointerId);
     if (skyPointers.size < 2) skyPinch = null;
     if (skyPointers.size === 0){
       skyEls.map.classList.remove('dragging');
+      // 单击（未拖动）直接在 pointerup 里选中，避免 pointer capture 后 click.target 变成 SVG 根节点
+      if (wasSingle && !skyMoved && skyDownNode){
+        skySelected = skyDownNode.getAttribute('data-sky');
+        renderSky();
+        if (skyEls.detail) skyEls.detail.scrollTop = 0;
+      }
+      skyDownNode = null;
+      skyDownPt = null;
     }
   }
   skyEls.map.addEventListener('pointerup', skyPointerEnd);
