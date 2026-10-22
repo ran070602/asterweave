@@ -494,6 +494,17 @@
     display:flex;align-items:center;justify-content:center;cursor:pointer}
   .const-close:active{transform:scale(.94)}
   .const-modal-body .sky-card{border:0;background:none;padding:0}
+  .rules h3{margin:0 0 6px;font-size:16px;font-weight:800;color:#e8f1ff}
+  .rules .lead{margin:0;font-size:13px;line-height:1.65;color:#c8d6ea}
+  .rules .lead b{color:#eaf3ff}
+  .rules .sec{margin:14px 0 6px;font-size:12px;font-weight:800;letter-spacing:.06em;color:#8fc3ff}
+  .rules ol{margin:0;padding-left:19px}
+  .rules li{margin:6px 0;font-size:13px;line-height:1.62;color:#c2d1e6}
+  .rules li b{color:#eaf3ff}
+  .rules .k{display:inline-block;min-width:14px;padding:0 5px;border-radius:4px;border:1px solid #2c4666;
+    background:#16294a;color:#dbeaff;font-size:12px;font-weight:700;text-align:center}
+  .rules .note{margin:12px 0 0;padding:8px 10px;border-radius:8px;border:1px solid #26364f;
+    background:#0f1a2c;font-size:12px;line-height:1.6;color:#9fb4d0}
   .const-modal-body .sky-map-slot{margin-top:10px}
   @media (prefers-reduced-motion: reduce){
     .const-modal-card{transition:none;opacity:1;transform:none}
@@ -525,6 +536,7 @@
     <div class="title">星织<span class="who" id="lvName"></span></div>
     <div class="top-actions">
       <button type="button" class="lvbtn" id="skyBtn" aria-expanded="false" aria-controls="skyPanel">✦ 图鉴</button>
+      <button type="button" class="lvbtn" id="ruleBtn" aria-haspopup="dialog">？规则</button>
       <button type="button" class="lvbtn" id="lvBtn" aria-expanded="false" aria-controls="levelPanel">关卡 <b id="lvBtnNum">1</b>/<b id="lvBtnTotal">1</b> ▾</button>
     </div>
   </div>
@@ -553,6 +565,54 @@
     <div class="sky-hint" id="skyHint">横轴 = 赤经（0–24 时）· 纵轴 = 赤纬（+90° 到 −90°）· 亮 = 已观测　·　按住拖动可平移 · 滚轮/双指缩放 · 双击复位</div>
     <div class="sky-detail" id="skyDetail" hidden></div>
   </section>
+
+  <div class="const-modal" id="ruleModal" hidden>
+    <div class="const-modal-mask" id="ruleModalMask"></div>
+    <div class="const-modal-card" role="dialog" aria-modal="true" aria-labelledby="ruleTitle">
+      <button type="button" class="const-close" id="ruleClose" aria-label="关闭">×</button>
+      <div class="const-modal-body">
+        <div class="rules">
+          <h3 id="ruleTitle">玩法规则</h3>
+          <p class="lead">棋盘是夜空：<b>把安全格全部翻开</b>，并把<b>所有的星都标出来</b>，即通关。</p>
+
+          <div class="sec">两种线索</div>
+          <ol>
+            <li><b>数字（扫雷）</b>：格子上的数字 = 它周围 8 格里的星数。</li>
+            <li><b>行 / 列数字（数织）</b>：棋盘上方与左侧的数字，表示这一列 / 这一行里「连续星块」的长度，按出现顺序排列。例如 <span class="k">2 1</span> = 两颗连着的星、至少空一格、再一颗星。</li>
+            <li><b>两者要一起用</b>：多数关卡只靠数字推不完，只靠行列线索也推不完 —— 交叉推理才能定死一颗星。</li>
+          </ol>
+
+          <div class="sec">怎么操作</div>
+          <ol>
+            <li><b>单击</b>格子 = 观测（翻开）。</li>
+            <li><b>双击 / 右键</b>格子 = 标记 ★ 或取消标记。</li>
+            <li>键盘：<span class="k">Enter</span> 观测，<span class="k">空格</span> 标记。</li>
+          </ol>
+
+          <div class="sec">生命与杂星</div>
+          <ol>
+            <li>共有 <b>3 条命</b>。观测到还没标记的星会掉一条命，同时把那颗星亮出来。</li>
+            <li><b>杂星</b>：有些星并不属于本关星座（用来增加迷惑与密度）。它们<b>同样是星</b>，一样要标记；通关揭晓时不会出现在星座连线里。</li>
+          </ol>
+
+          <div class="sec">通关与图鉴</div>
+          <ol>
+            <li>翻开全部安全格 + 标出全部星 → 揭晓本关对应的<b>真实星座</b>，并在图鉴里点亮它。</li>
+            <li><b>✦ 图鉴</b>：按真实天球位置摆放星座（横轴赤经 0–24 时、纵轴赤纬 ±90°）。可按季节筛选、滚轮或双指缩放、按住拖动；点星座看详情（赤经赤纬、面积排名、最亮星、相邻星座可互相跳转）。</li>
+            <li>未观测的星座只显示暗色名字，观测过的会亮起并闪烁。</li>
+          </ol>
+
+          <div class="sec">难度与公平性</div>
+          <ol>
+            <li><b>不用猜</b>：每一关都由逻辑求解器验证过「不靠运气也能推完」。</li>
+            <li><b>教学节奏</b>：第 1 关只给扫雷数字（纯教学），第 2 关起才引入行列线索。</li>
+          </ol>
+
+          <p class="note">提示：翻开的数字是「周围有几颗星」，不是「周围有几颗杂星」——杂星与星座星在推理上完全等价。</p>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div class="const-modal" id="constModal" hidden>
     <div class="const-modal-mask" id="constModalMask"></div>
@@ -24687,6 +24747,33 @@ if (constModalBody) constModalBody.addEventListener('click', function(e){
   if (!b) return;
   skySelect(b.getAttribute('data-jump'));
 });
+// ===== 玩法规则弹窗 =====
+const ruleModalEl = document.getElementById('ruleModal');
+function openRules(){
+  if (!ruleModalEl) return;
+  ruleModalEl.hidden = false;
+  void ruleModalEl.offsetWidth;                 // 强制 reflow，保证过渡生效
+  ruleModalEl.className = 'const-modal open';
+  document.body.classList.add('drawer-open');
+}
+function closeRules(){
+  if (!ruleModalEl) return;
+  ruleModalEl.className = 'const-modal';
+  document.body.classList.remove('drawer-open');
+  setTimeout(function(){
+    if (ruleModalEl.className.indexOf('open') < 0) ruleModalEl.hidden = true;
+  }, 200);
+}
+const ruleBtnEl = document.getElementById('ruleBtn');
+if (ruleBtnEl) ruleBtnEl.addEventListener('click', openRules);
+const ruleCloseEl = document.getElementById('ruleClose');
+if (ruleCloseEl) ruleCloseEl.addEventListener('click', closeRules);
+const ruleMaskEl = document.getElementById('ruleModalMask');
+if (ruleMaskEl) ruleMaskEl.addEventListener('click', closeRules);
+if (ruleModalEl) ruleModalEl.addEventListener('click', function(e){
+  if (e.target === ruleModalEl) closeRules();   // 点卡片外空白也关
+});
+
 // 右上角 × 关闭
 const constCloseBtn = document.getElementById('constClose');
 if (constCloseBtn) constCloseBtn.addEventListener('click', function(){ skySelected = null; renderSkyDetail(); });
@@ -24702,6 +24789,7 @@ if (constModalEl) constModalEl.addEventListener('click', function(e){
 window.addEventListener('keydown', function(e){
   if (e.key === 'Escape' || e.key === 'Esc'){
     if (modalOpenNow){ dismissModal(); return; }   // Esc 收起结算，结算条保留入口
+    if (ruleModalEl && ruleModalEl.className.indexOf('open') >= 0){ closeRules(); return; }
     const cm = document.getElementById('constModal');
     if (cm && cm.className.indexOf('open') >= 0){ skySelected = null; renderSkyDetail(); return; }
     if (skyOpen){ closeSky(); return; }
