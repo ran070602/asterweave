@@ -164,6 +164,12 @@ def main():
         print("!! ZIP 根目录缺少 index.html"); sys.exit(1)
     print(f"ZIP 根目录条目：{names}")
 
+    # 6.5) 同步仓库根目录的 index.html（GitHub Pages 用的发布副本）
+    root_index = os.path.join(ROOT, "index.html")
+    if os.path.exists(root_index):
+        shutil.copyfile(out_path, root_index)
+        print(f"已同步根目录 index.html（{os.path.getsize(root_index)} 字节，Pages 用）")
+
     manifest = {
         "ui_source": os.path.relpath(UI, ROOT),
         "ui_sha256": sha256_file(UI),
