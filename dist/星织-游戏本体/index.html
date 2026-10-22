@@ -394,7 +394,8 @@
   @media (prefers-reduced-motion: reduce){
     .skynode.on .dot,.skynode.on .halo{animation:none}
   }
-  .skynode .qlbl{fill:#7f95b5;font-size:2.8px;text-anchor:middle;opacity:.9}
+  .skynode .lbl.off{fill:#6d81a3;opacity:.68;font-weight:400}
+  .skynode:not(.on) .dot{opacity:.45}
   .skynode .dot{fill:#33455f}
   .skynode:hover .dot{fill:#9fd0ff}
   .sky-grid-eq{stroke:rgba(140,190,255,.3);stroke-width:.5;stroke-dasharray:2 2}
@@ -11824,13 +11825,14 @@ const SKY = [
       {
         "latin": "Virgo",
         "zh": "室女座",
-        "id": null,
-        "level": null
+        "id": "virgo",
+        "level": 25
       }
     ],
     "inGameNeighbors": [
       "ursa-major",
-      "hydra"
+      "hydra",
+      "virgo"
     ]
   },
   {
@@ -11892,18 +11894,20 @@ const SKY = [
       {
         "latin": "Pisces",
         "zh": "双鱼座",
-        "id": null,
-        "level": null
+        "id": "pisces",
+        "level": 28
       },
       {
         "latin": "Aquarius",
         "zh": "宝瓶座",
-        "id": null,
-        "level": null
+        "id": "aquarius",
+        "level": 27
       }
     ],
     "inGameNeighbors": [
-      "cygnus"
+      "cygnus",
+      "pisces",
+      "aquarius"
     ]
   },
   {
@@ -12369,8 +12373,8 @@ const SKY = [
       {
         "latin": "Virgo",
         "zh": "室女座",
-        "id": null,
-        "level": null
+        "id": "virgo",
+        "level": 25
       },
       {
         "latin": "Serpens",
@@ -12394,6 +12398,7 @@ const SKY = [
     "inGameNeighbors": [
       "draco",
       "ursa-major",
+      "virgo",
       "corona-borealis",
       "hercules"
     ]
@@ -12835,6 +12840,459 @@ const SKY = [
     "inGameNeighbors": []
   },
   {
+    "id": "capricornus",
+    "zh": "摩羯座",
+    "en": "Capricornus",
+    "latin": "Capricornus",
+    "abbr": "Cap",
+    "level": 21,
+    "ra": 21.0,
+    "dec": -20.0,
+    "raText": "21h00m",
+    "decText": "−20°00′",
+    "areaRank": 40,
+    "season": "秋季",
+    "zone": "赤道带",
+    "brightest": {
+      "zh": "垒壁阵四",
+      "en": "Deneb Algedi",
+      "mag": 2.85
+    },
+    "neighbors": [
+      {
+        "latin": "Aquarius",
+        "zh": "宝瓶座",
+        "id": "aquarius",
+        "level": 27
+      },
+      {
+        "latin": "Aquila",
+        "zh": "天鹰座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Sagittarius",
+        "zh": "人马座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Microscopium",
+        "zh": "显微镜座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Piscis Austrinus",
+        "zh": "南鱼座",
+        "id": null,
+        "level": null
+      }
+    ],
+    "inGameNeighbors": [
+      "aquarius"
+    ]
+  },
+  {
+    "id": "grus",
+    "zh": "天鹤座",
+    "en": "Grus",
+    "latin": "Grus",
+    "abbr": "Gru",
+    "level": 22,
+    "ra": 22.4,
+    "dec": -47.0,
+    "raText": "22h24m",
+    "decText": "−47°00′",
+    "areaRank": 45,
+    "season": "秋季",
+    "zone": "南天",
+    "brightest": {
+      "zh": "鹤一",
+      "en": "Alnair",
+      "mag": 1.73
+    },
+    "neighbors": [
+      {
+        "latin": "Piscis Austrinus",
+        "zh": "南鱼座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Microscopium",
+        "zh": "显微镜座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Indus",
+        "zh": "印第安座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Tucana",
+        "zh": "杜鹃座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Phoenix",
+        "zh": "凤凰座",
+        "id": "phoenix",
+        "level": 23
+      },
+      {
+        "latin": "Sculptor",
+        "zh": "玉夫座",
+        "id": null,
+        "level": null
+      }
+    ],
+    "inGameNeighbors": [
+      "phoenix"
+    ]
+  },
+  {
+    "id": "phoenix",
+    "zh": "凤凰座",
+    "en": "Phoenix",
+    "latin": "Phoenix",
+    "abbr": "Phe",
+    "level": 23,
+    "ra": 0.9,
+    "dec": -49.0,
+    "raText": "0h54m",
+    "decText": "−49°00′",
+    "areaRank": 37,
+    "season": "秋季",
+    "zone": "南天",
+    "brightest": {
+      "zh": "火鸟六",
+      "en": "Ankaa",
+      "mag": 2.4
+    },
+    "neighbors": [
+      {
+        "latin": "Sculptor",
+        "zh": "玉夫座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Grus",
+        "zh": "天鹤座",
+        "id": "grus",
+        "level": 22
+      },
+      {
+        "latin": "Tucana",
+        "zh": "杜鹃座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Hydrus",
+        "zh": "水蛇座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Eridanus",
+        "zh": "波江座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Fornax",
+        "zh": "天炉座",
+        "id": null,
+        "level": null
+      }
+    ],
+    "inGameNeighbors": [
+      "grus"
+    ]
+  },
+  {
+    "id": "pavo",
+    "zh": "孔雀座",
+    "en": "Pavo",
+    "latin": "Pavo",
+    "abbr": "Pav",
+    "level": 24,
+    "ra": 19.6,
+    "dec": -66.0,
+    "raText": "19h36m",
+    "decText": "−66°00′",
+    "areaRank": 44,
+    "season": "夏季",
+    "zone": "南天",
+    "brightest": {
+      "zh": "孔雀十一",
+      "en": "Peacock",
+      "mag": 1.94
+    },
+    "neighbors": [
+      {
+        "latin": "Indus",
+        "zh": "印第安座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Telescopium",
+        "zh": "望远镜座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Ara",
+        "zh": "天坛座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Apus",
+        "zh": "天燕座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Octans",
+        "zh": "南极座",
+        "id": null,
+        "level": null
+      }
+    ],
+    "inGameNeighbors": []
+  },
+  {
+    "id": "virgo",
+    "zh": "室女座",
+    "en": "Virgo",
+    "latin": "Virgo",
+    "abbr": "Vir",
+    "level": 25,
+    "ra": 13.4,
+    "dec": -4.0,
+    "raText": "13h24m",
+    "decText": "−4°00′",
+    "areaRank": 2,
+    "season": "春季",
+    "zone": "赤道带",
+    "brightest": {
+      "zh": "角宿一",
+      "en": "Spica",
+      "mag": 0.98
+    },
+    "neighbors": [
+      {
+        "latin": "Bootes",
+        "zh": "牧夫座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Coma Berenices",
+        "zh": "后发座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Leo",
+        "zh": "狮子座",
+        "id": "leo",
+        "level": 7
+      },
+      {
+        "latin": "Crater",
+        "zh": "巨爵座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Corvus",
+        "zh": "乌鸦座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Hydra",
+        "zh": "长蛇座",
+        "id": "hydra",
+        "level": 23
+      },
+      {
+        "latin": "Libra",
+        "zh": "天秤座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Serpens",
+        "zh": "巨蛇座",
+        "id": null,
+        "level": null
+      }
+    ],
+    "inGameNeighbors": [
+      "leo",
+      "hydra"
+    ]
+  },
+  {
+    "id": "aquarius",
+    "zh": "宝瓶座",
+    "en": "Aquarius",
+    "latin": "Aquarius",
+    "abbr": "Aqr",
+    "level": 27,
+    "ra": 22.3,
+    "dec": -11.0,
+    "raText": "22h18m",
+    "decText": "−11°00′",
+    "areaRank": 10,
+    "season": "秋季",
+    "zone": "赤道带",
+    "brightest": {
+      "zh": "虚宿一",
+      "en": "Sadalsuud",
+      "mag": 2.87
+    },
+    "neighbors": [
+      {
+        "latin": "Pegasus",
+        "zh": "飞马座",
+        "id": "pegasus",
+        "level": 8
+      },
+      {
+        "latin": "Equuleus",
+        "zh": "小马座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Delphinus",
+        "zh": "海豚座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Aquila",
+        "zh": "天鹰座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Sagittarius",
+        "zh": "人马座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Capricornus",
+        "zh": "摩羯座",
+        "id": "capricornus",
+        "level": 21
+      },
+      {
+        "latin": "Piscis Austrinus",
+        "zh": "南鱼座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Sculptor",
+        "zh": "玉夫座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Cetus",
+        "zh": "Cetus",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Pisces",
+        "zh": "双鱼座",
+        "id": "pisces",
+        "level": 28
+      }
+    ],
+    "inGameNeighbors": [
+      "pegasus",
+      "capricornus",
+      "pisces"
+    ]
+  },
+  {
+    "id": "pisces",
+    "zh": "双鱼座",
+    "en": "Pisces",
+    "latin": "Pisces",
+    "abbr": "Psc",
+    "level": 28,
+    "ra": 0.9,
+    "dec": 14.0,
+    "raText": "0h54m",
+    "decText": "+14°00′",
+    "areaRank": 14,
+    "season": "秋季",
+    "zone": "赤道带",
+    "brightest": {
+      "zh": "右更二",
+      "en": "Eta Psc",
+      "mag": 3.62
+    },
+    "neighbors": [
+      {
+        "latin": "Triangulum",
+        "zh": "三角座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Andromeda",
+        "zh": "仙女座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Pegasus",
+        "zh": "飞马座",
+        "id": "pegasus",
+        "level": 8
+      },
+      {
+        "latin": "Aquarius",
+        "zh": "宝瓶座",
+        "id": "aquarius",
+        "level": 27
+      },
+      {
+        "latin": "Cetus",
+        "zh": "Cetus",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Aries",
+        "zh": "白羊座",
+        "id": null,
+        "level": null
+      }
+    ],
+    "inGameNeighbors": [
+      "pegasus",
+      "aquarius"
+    ]
+  },
+  {
     "id": "hydra",
     "zh": "长蛇座",
     "en": "Hydra",
@@ -12935,13 +13393,14 @@ const SKY = [
       {
         "latin": "Virgo",
         "zh": "室女座",
-        "id": null,
-        "level": null
+        "id": "virgo",
+        "level": 25
       }
     ],
     "inGameNeighbors": [
       "centaurus",
-      "leo"
+      "leo",
+      "virgo"
     ]
   }
 ];
@@ -13934,6 +14393,15 @@ const skyPointers = new Map();
 let skyPinch = null;
 let skyDownPt = null, skyMoved = false, skyDownNode = null;
 
+// 选中一个星座（多处共用；window.__skySel 供自动化核对）
+function skySelect(id){
+  if (!id) return;
+  skySelected = id;
+  window.__skySel = id;
+  renderSky();
+  if (skyEls.detail) skyEls.detail.scrollTop = 0;
+}
+
 function skyTransform(){
   return 'translate(' + skyView.x.toFixed(2) + ',' + skyView.y.toFixed(2) + ') scale(' + skyView.s.toFixed(3) + ')';
 }
@@ -14069,12 +14537,10 @@ function renderSkyMap(){
     }
     nodes += '<circle class="dot" cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="' + r + '"' +
       (on ? phase : '') + '></circle>';
-    if (on){
-      const ly = (p[1] + (s.dec >= 20 ? -4.2 : 5.6)).toFixed(1);
-      nodes += '<text class="lbl" x="' + p[0].toFixed(1) + '" y="' + ly + '">' + skyEsc(s.zh.replace('座', '')) + '</text>';
-    } else {
-      nodes += '<text class="qlbl" x="' + p[0].toFixed(1) + '" y="' + (p[1] + 4.6).toFixed(1) + '">?</text>';
-    }
+    // 已观测：亮白名字；未观测：同样的名字但暗色（不再用问号）
+    const ly = (p[1] + (s.dec >= 20 ? -4.2 : 5.6)).toFixed(1);
+    nodes += '<text class="lbl' + (on ? '' : ' off') + '" x="' + p[0].toFixed(1) + '" y="' + ly + '">' +
+      skyEsc(s.zh.replace('座', '')) + '</text>';
     nodes += '</g>';
   }
 
@@ -14141,7 +14607,7 @@ function renderSkyDetail(){
 
 function skyHintText(){
   if (skyFilter === '全部'){
-    return '全天总览 · 亮 = 已观测，? = 未观测 · 按住拖动可平移 · 滚轮/双指缩放 · 双击复位';
+    return '全天总览 · 亮字 = 已观测（会闪烁），暗字 = 未观测 · 按住拖动可平移，双击复位';
   }
   const bands = SKY_BANDS[skyFilter] || [];
   const range = bands.map(function(b){ return b[0] + '–' + b[1] + ' 时'; }).join(' 与 ');
@@ -14200,17 +14666,15 @@ if (skyEls.map) skyEls.map.addEventListener('keydown', function(e){
   const node = e.target && e.target.closest ? e.target.closest('[data-sky]') : null;
   if (!node) return;
   e.preventDefault();
-  skySelected = node.getAttribute('data-sky');
-  renderSky();
-  if (skyEls.detail) skyEls.detail.scrollTop = 0;
+  skySelect(node.getAttribute('data-sky'));
 });
 
 if (skyEls.map) skyEls.map.addEventListener('click', function(e){
   if (skyMoved){ skyMoved = false; return; }   // 拖动结束不算点击
-  const node = e.target.closest('[data-sky]');
+  const hit = (e.target && e.target.closest) ? e.target.closest('[data-sky]') : null;
+  const node = hit || skyDownNode;             // 兜底：pointer capture 后 target 可能变成 SVG 根
   if (!node) return;
-  skySelected = node.getAttribute('data-sky');
-  renderSky();
+  skySelect(node.getAttribute('data-sky'));
 });
 
 // 按住拖动 = 平移；滚轮 / 双指 = 缩放；单击（位移 < 8px）= 选中
@@ -14231,7 +14695,7 @@ if (skyEls.map){
     if (skyPointers.size === 1){
       skyDownPt = { x: e.clientX, y: e.clientY };
       skyMoved = false;
-      skyDownNode = e.target && e.target.closest ? e.target.closest('[data-sky]') : null;
+      skyDownNode = (e.target && e.target.closest) ? e.target.closest('[data-sky]') : null;
       skyDragLast = { x: e.clientX, y: e.clientY };
     } else if (skyPointers.size === 2){
       const pts = Array.from(skyPointers.values());
@@ -14285,14 +14749,15 @@ if (skyEls.map){
     if (skyPointers.size < 2) skyPinch = null;
     if (skyPointers.size === 0){
       skyEls.map.classList.remove('dragging');
-      // 单击（未拖动）直接在 pointerup 里选中，避免 pointer capture 后 click.target 变成 SVG 根节点
+      // 单击（本次手势未拖动）→ 选中；pointer capture 会让 click.target 变成 SVG 根节点，
+      // 所以这里用按下时记录的节点判定，不依赖 click。
       if (wasSingle && !skyMoved && skyDownNode){
-        skySelected = skyDownNode.getAttribute('data-sky');
-        renderSky();
-        if (skyEls.detail) skyEls.detail.scrollTop = 0;
+        skySelect(skyDownNode.getAttribute('data-sky'));
       }
+      // 手势结束就复位，避免 skyMoved 粘住害得之后永远点不开
       skyDownNode = null;
       skyDownPt = null;
+      skyMoved = false;
     }
   }
   skyEls.map.addEventListener('pointerup', skyPointerEnd);

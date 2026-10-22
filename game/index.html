@@ -394,7 +394,8 @@
   @media (prefers-reduced-motion: reduce){
     .skynode.on .dot,.skynode.on .halo{animation:none}
   }
-  .skynode .qlbl{fill:#7f95b5;font-size:2.8px;text-anchor:middle;opacity:.9}
+  .skynode .lbl.off{fill:#6d81a3;opacity:.68;font-weight:400}
+  .skynode:not(.on) .dot{opacity:.45}
   .skynode .dot{fill:#33455f}
   .skynode:hover .dot{fill:#9fd0ff}
   .sky-grid-eq{stroke:rgba(140,190,255,.3);stroke-width:.5;stroke-dasharray:2 2}
@@ -1743,6 +1744,15 @@ const skyPointers = new Map();
 let skyPinch = null;
 let skyDownPt = null, skyMoved = false, skyDownNode = null;
 
+// 选中一个星座（多处共用；window.__skySel 供自动化核对）
+function skySelect(id){
+  if (!id) return;
+  skySelected = id;
+  window.__skySel = id;
+  renderSky();
+  if (skyEls.detail) skyEls.detail.scrollTop = 0;
+}
+
 function skyTransform(){
   return 'translate(' + skyView.x.toFixed(2) + ',' + skyView.y.toFixed(2) + ') scale(' + skyView.s.toFixed(3) + ')';
 }
@@ -1878,12 +1888,10 @@ function renderSkyMap(){
     }
     nodes += '<circle class="dot" cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="' + r + '"' +
       (on ? phase : '') + '></circle>';
-    if (on){
-      const ly = (p[1] + (s.dec >= 20 ? -4.2 : 5.6)).toFixed(1);
-      nodes += '<text class="lbl" x="' + p[0].toFixed(1) + '" y="' + ly + '">' + skyEsc(s.zh.replace('座', '')) + '</text>';
-    } else {
-      nodes += '<text class="qlbl" x="' + p[0].toFixed(1) + '" y="' + (p[1] + 4.6).toFixed(1) + '">?</text>';
-    }
+    // 已观测：亮白名字；未观测：同样的名字但暗色（不再用问号）
+    const ly = (p[1] + (s.dec >= 20 ? -4.2 : 5.6)).toFixed(1);
+    nodes += '<text class="lbl' + (on ? '' : ' off') + '" x="' + p[0].toFixed(1) + '" y="' + ly + '">' +
+      skyEsc(s.zh.replace('座', '')) + '</text>';
     nodes += '</g>';
   }
 
@@ -1950,7 +1958,7 @@ function renderSkyDetail(){
 
 function skyHintText(){
   if (skyFilter === '全部'){
-    return '全天总览 · 亮 = 已观测，? = 未观测 · 按住拖动可平移 · 滚轮/双指缩放 · 双击复位';
+    return '全天总览 · 亮字 = 已观测（会闪烁），暗字 = 未观测 · 按住拖动可平移，双击复位';
   }
   const bands = SKY_BANDS[skyFilter] || [];
   const range = bands.map(function(b){ return b[0] + '–' + b[1] + ' 时'; }).join(' 与 ');
@@ -2009,17 +2017,15 @@ if (skyEls.map) skyEls.map.addEventListener('keydown', function(e){
   const node = e.target && e.target.closest ? e.target.closest('[data-sky]') : null;
   if (!node) return;
   e.preventDefault();
-  skySelected = node.getAttribute('data-sky');
-  renderSky();
-  if (skyEls.detail) skyEls.detail.scrollTop = 0;
+  skySelect(node.getAttribute('data-sky'));
 });
 
 if (skyEls.map) skyEls.map.addEventListener('click', function(e){
   if (skyMoved){ skyMoved = false; return; }   // 拖动结束不算点击
-  const node = e.target.closest('[data-sky]');
+  const hit = (e.target && e.target.closest) ? e.target.closest('[data-sky]') : null;
+  const node = hit || skyDownNode;             // 兜底：pointer capture 后 target 可能变成 SVG 根
   if (!node) return;
-  skySelected = node.getAttribute('data-sky');
-  renderSky();
+  skySelect(node.getAttribute('data-sky'));
 });
 
 // 按住拖动 = 平移；滚轮 / 双指 = 缩放；单击（位移 < 8px）= 选中
@@ -2040,7 +2046,7 @@ if (skyEls.map){
     if (skyPointers.size === 1){
       skyDownPt = { x: e.clientX, y: e.clientY };
       skyMoved = false;
-      skyDownNode = e.target && e.target.closest ? e.target.closest('[data-sky]') : null;
+      skyDownNode = (e.target && e.target.closest) ? e.target.closest('[data-sky]') : null;
       skyDragLast = { x: e.clientX, y: e.clientY };
     } else if (skyPointers.size === 2){
       const pts = Array.from(skyPointers.values());
@@ -2094,14 +2100,15 @@ if (skyEls.map){
     if (skyPointers.size < 2) skyPinch = null;
     if (skyPointers.size === 0){
       skyEls.map.classList.remove('dragging');
-      // 单击（未拖动）直接在 pointerup 里选中，避免 pointer capture 后 click.target 变成 SVG 根节点
+      // 单击（本次手势未拖动）→ 选中；pointer capture 会让 click.target 变成 SVG 根节点，
+      // 所以这里用按下时记录的节点判定，不依赖 click。
       if (wasSingle && !skyMoved && skyDownNode){
-        skySelected = skyDownNode.getAttribute('data-sky');
-        renderSky();
-        if (skyEls.detail) skyEls.detail.scrollTop = 0;
+        skySelect(skyDownNode.getAttribute('data-sky'));
       }
+      // 手势结束就复位，避免 skyMoved 粘住害得之后永远点不开
       skyDownNode = null;
       skyDownPt = null;
+      skyMoved = false;
     }
   }
   skyEls.map.addEventListener('pointerup', skyPointerEnd);
