@@ -4,7 +4,7 @@
   "dist_index.html": {
    "rel": "dist\\星织-游戏本体\\index.html",
    "exists": true,
-   "sha256": "b56232f98ac245346fc859b1f8eba1b77b915a24ecbcc9e231551299da51929f",
+   "sha256": "b70363c50143439599af689b57c94e76ec133c8f1ec1f95c8cfef42ba865f828",
    "bytes": 416953,
    "frozen": "verification\\frozen_v13\\dist_index.html"
   },
@@ -46,15 +46,15 @@
   "build_manifest.json": {
    "rel": "dist\\build_manifest.json",
    "exists": true,
-   "sha256": "546c6209ac9743ef72c1df80e12de77dc2525162adbcfeaabf7e93fa827a025d",
+   "sha256": "ddfab955192108268bb298b42e70291f61ef7f62409725f4481ac3cf220bc353",
    "bytes": 836,
    "frozen": "verification\\frozen_v13\\build_manifest.json"
   },
   "release.zip": {
    "rel": "星织-游戏本体.zip",
    "exists": true,
-   "sha256": "8094edebcdb93ef85fe5bfb63493a376da0b259052a703026d2f6513e2248504",
-   "bytes": 55390,
+   "sha256": "9a77786223486e3ce5e7e2d31b052d71197dcc5a2e1f36739598576191920a13",
+   "bytes": 55400,
    "frozen": "verification\\frozen_v13\\release.zip"
   },
   "README.md": {

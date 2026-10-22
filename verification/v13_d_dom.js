@@ -481,35 +481,33 @@ const g21 = sessionPlay(sess, 21);                                              
 const clearedSet = new Set([0, 20]);
 const expectSky = SKY.filter(s => clearedSet.has(s.level - 1)).length;
 sess.S.skyBtn.dispatchEvent(mkEvent('click', { target: sess.S.skyBtn })); flush(20);
-ok('中间进度 skyCount 是否 == 实际通关数（cleared=2）',
-   sess.S.skyCount.textContent === String(g21.clearedLevels),
-   'skyCount=' + sess.S.skyCount.textContent + ' cleared=' + g21.clearedLevels +
-   ' | 按 SKY.level 计算的期望条目数=' + expectSky + '（SKY 有重复/缺失 level）');
+ok('中间进度 skyCount == 实际通关数（cleared=2）',
+   sess.S.skyCount.textContent === String(g21.clearedLevels) && expectSky === g21.clearedLevels,
+   'skyCount=' + sess.S.skyCount.textContent + ' cleared=' + g21.clearedLevels + ' SKY 命中条目=' + expectSky);
 function sel(sess, id) {
   const node = { className: 'skynode', getAttribute: k => (k === 'data-sky' ? id : null), closest: () => node };
   sess.S.skyMap.dispatchEvent(mkEvent('click', { target: node })); flush(20);
   return sess.S.constModalBody.innerHTML;
 }
-const oph = sel(sess, 'ophiuchus');   // 真实第 29 关，SKY 标成 21
-ok('[缺陷] 未通关星座（蛇夫座 ophiuchus，真实第 29 关）不漏星图',
-   oph.includes('未观测') && !oph.includes('gstar'),
-   '判定=' + (oph.includes('gstar') ? '泄露了星图' : '未泄露') + ' | ' + oph.replace(/\s+/g, ' ').slice(0, 150));
-const ophTitle = (oph.match(/<h3>([^<]*)/) || [, ''])[1];
-const ophFact = (oph.match(/class="sky-fact">([^<]*)/) || [, ''])[1];
+const oph = sel(sess, 'ophiuchus');   // 真实第 29 关，未通关
+ok('未通关星座（蛇夫座 ophiuchus，真实第 29 关）不泄露星图',
+   oph.includes('未观测') && !oph.includes('gstar') && !oph.includes('gline') && !oph.includes('gnoise'),
+   '判定=' + (oph.includes('gstar') ? '泄露了星图' : '未泄露') + ' | ' + oph.replace(/\s+/g, ' ').slice(0, 110));
+const capHtml = sel(sess, 'capricornus');   // 第 21 关，已通关
 const ophReal = LEVELS.find(L => L.theme.id === 'ophiuchus');
 const cap = LEVELS[20];
 function expCoords(theme, n) { return theme.stars.map(s => [(8 + (s.rc[1] + 0.5) / n * 84).toFixed(1), (8 + (s.rc[0] + 0.5) / n * 84).toFixed(1)].join(',')); }
-const drawn = [...oph.matchAll(/class="gstar" cx="([\d.]+)" cy="([\d.]+)"/g)].map(x => x[1] + ',' + x[2]);
-const capC = expCoords(cap.theme, cap.size), ophC = expCoords(ophReal.theme, ophReal.size);
-note('蛇夫座卡片实际渲染的星图坐标来源',
-  '渲染 ' + drawn.length + ' 星；与「摩羯座(第21关)」坐标集合一致=' + (JSON.stringify(drawn.slice().sort()) === JSON.stringify(capC.slice().sort())) +
-  '；与「蛇夫座(真实第29关)」坐标集合一致=' + (JSON.stringify(drawn.slice().sort()) === JSON.stringify(ophC.slice().sort())));
-ok('[缺陷] 蛇夫座卡片的事实文案属于蛇夫座本身',
-   ophFact === ophReal.theme.fact,
-   '卡片 fact(前 20)=' + ophFact.slice(0, 20) + ' / 真实蛇夫座 fact(前 20)=' + ophReal.theme.fact.slice(0, 20));
-ok('[缺陷] 蛇夫座卡片星图坐标属于蛇夫座本身',
-   JSON.stringify(drawn.slice().sort()) === JSON.stringify(ophC.slice().sort()),
-   '渲染坐标数=' + drawn.length + '，命中摩羯座=' + (JSON.stringify(drawn.slice().sort()) === JSON.stringify(capC.slice().sort())));
+const capDrawn = [...capHtml.matchAll(/class="gstar" cx="([\d.]+)" cy="([\d.]+)"/g)].map(x => x[1] + ',' + x[2]).sort();
+const capFact = (capHtml.match(/class="sky-fact">([^<]*)/) || [, ''])[1];
+ok('已通关星座（摩羯座，第 21 关）星图坐标属于自己',
+   JSON.stringify(capDrawn) === JSON.stringify(expCoords(cap.theme, cap.size).sort()),
+   '渲染 ' + capDrawn.length + ' 星，命中本星座=' + (JSON.stringify(capDrawn) === JSON.stringify(expCoords(cap.theme, cap.size).sort())));
+ok('已通关星座（摩羯座）事实文案属于自己',
+   capFact === cap.theme.fact, 'fact(前 18)=' + capFact.slice(0, 18) + ' / 期望(前 18)=' + cap.theme.fact.slice(0, 18));
+note('SKY ↔ 关卡映射', 'SKY 50 条，level 覆盖 ' + (() => { const s = [...new Set(SKY.map(x => x.level))].sort((a, b) => a - b); return s[0] + '–' + s[s.length - 1] + '（唯一 ' + s.length + ' 个）'; })());
+ok('SKY 每条 level 都落在 1–50 且与真实星座关号一致',
+   SKY.every(s => { const real = LEVELS.find(L => L.theme.id === s.id); return real && real.id === s.level; }),
+   SKY.filter(s => { const real = LEVELS.find(L => L.theme.id === s.id); return !real || real.id !== s.level; }).map(s => s.id + ':' + s.level).join(','));
 if (oph.includes('gstar')) {
   const lv21Theme = LEVELS[20].theme;
   note('泄露细节', '仅通关第 21 关后，「蛇夫座」卡片渲染出的星图来自 LEVELS[20]=' + lv21Theme.name +
