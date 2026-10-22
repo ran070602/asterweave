@@ -344,6 +344,8 @@
   .panel.sky-panel.open{display:flex}
   .panel.sky-panel{width:100vw;max-width:100vw;overflow-x:hidden}
   .sky-wrap,.sky-map{width:100%;max-width:100%}
+  .sky-wrap{flex:0 0 auto}
+  .sky-head,.sky-filters,.sky-hint,.sky-detail{flex:0 0 auto}
   .sky-hint{padding:0 2px;word-break:break-word}
   .sky-panel *{box-sizing:border-box;max-width:100%}
   .sky-detail:empty{display:none}
@@ -357,7 +359,7 @@
   .sky-grid{stroke:rgba(120,150,210,.16);stroke-width:.35}
   .sky-sector{fill:rgba(120,170,255,.10);stroke:rgba(140,190,255,.34);stroke-width:.5;stroke-dasharray:3 2}
   .sky-vignette{pointer-events:none}
-  .sky-map{touch-action:none;cursor:grab}
+  .sky-map{touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}
   .sky-map.dragging{cursor:grabbing}
   .skynode .halo{fill:#8fc4ff;opacity:.16}
   .skynode .qlbl{fill:#7f95b5;font-size:2.8px;text-anchor:middle;opacity:.9}
@@ -420,7 +422,7 @@
     </div>
     <div class="sky-filters" id="skyFilters" role="group" aria-label="按季节筛选"></div>
     <div class="sky-wrap"><svg class="sky-map" id="skyMap" viewBox="0 0 200 120" role="img" aria-label="天球投影星图"></svg></div>
-    <div class="sky-hint" id="skyHint">横轴 = 赤经（0–24 时）· 纵轴 = 赤纬（+90° 到 −90°）· 亮 = 已观测　·　按住拖动可平移，双击复位</div>
+    <div class="sky-hint" id="skyHint">横轴 = 赤经（0–24 时）· 纵轴 = 赤纬（+90° 到 −90°）· 亮 = 已观测　·　按住拖动可平移 · 滚轮/双指缩放 · 双击复位</div>
     <div class="sky-detail" id="skyDetail"></div>
   </section>
 
@@ -1690,12 +1692,72 @@ const SKY_BANDS = {
   '秋季': [[21, 24], [0, 3]],
   '冬季': [[3, 9]]
 };
-let skyPan = { x: 0, y: 0 };
-let skyDrag = null, skyMoved = false;
+// 视图：translate(x,y) 之后 scale(s)，单位都是 viewBox 单位
+let skyView = { s: 1, x: 0, y: 0 };
+const skyPointers = new Map();
+let skyPinch = null;
+let skyDownPt = null, skyMoved = false;
 
-function skyApplyPan(){
+function skyTransform(){
+  return 'translate(' + skyView.x.toFixed(2) + ',' + skyView.y.toFixed(2) + ') scale(' + skyView.s.toFixed(3) + ')';
+}
+function skyApplyView(){
   const root = skyEls.map && skyEls.map.querySelector('.sky-root');
-  if (root) root.setAttribute('transform', 'translate(' + skyPan.x.toFixed(1) + ',' + skyPan.y.toFixed(1) + ')');
+  if (root) root.setAttribute('transform', skyTransform());
+}
+function skyClampView(){
+  skyView.s = Math.max(0.7, Math.min(4, skyView.s));
+  const mx = 110 + 200 * (skyView.s - 1) / 2;
+  const my = 50 + 120 * (skyView.s - 1) / 2;
+  skyView.x = Math.max(-mx, Math.min(mx, skyView.x));
+  skyView.y = Math.max(-my, Math.min(my, skyView.y));
+}
+// 以 viewBox 坐标 (cx,cy) 为锚点缩放
+function skyZoomAt(factor, cx, cy){
+  const old = skyView.s;
+  const ns = Math.max(0.7, Math.min(4, old * factor));
+  const k = ns / old;
+  skyView.x = cx - (cx - skyView.x) * k;
+  skyView.y = cy - (cy - skyView.y) * k;
+  skyView.s = ns;
+  skyClampView();
+  skyApplyView();
+}
+function skyAnimateTo(target){
+  const reduce = (typeof window.matchMedia === 'function') &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce || typeof requestAnimationFrame !== 'function'){
+    skyView = { s: target.s, x: target.x, y: target.y };
+    skyApplyView(); return;
+  }
+  const from = { s: skyView.s, x: skyView.x, y: skyView.y };
+  const t0 = (typeof performance !== 'undefined' ? performance.now() : Date.now());
+  const dur = 420;
+  function step(t){
+    const k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 3);
+    skyView.s = from.s + (target.s - from.s) * e;
+    skyView.x = from.x + (target.x - from.x) * e;
+    skyView.y = from.y + (target.y - from.y) * e;
+    skyApplyView();
+    if (k < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+  // 兜底：某些环境（无头/后台标签）rAF 会被节流，到点强制落到终态
+  setTimeout(function(){ skyView = { s: target.s, x: target.x, y: target.y }; skyApplyView(); }, dur + 80);
+}
+// 聚焦到某个季节的赤经板块（放大 + 居中）
+function skyFocusBands(bands){
+  if (!bands || bands.length !== 1){
+    skyAnimateTo({ s: 1, x: 0, y: 0 });
+    return;
+  }
+  const b = bands[0];
+  const xa = skyX(b[0]), xb = skyX(b[1]);
+  const left = Math.min(xa, xb), right = Math.max(xa, xb);
+  // 适度放大：既“聚焦板块”，又保留足够赤纬范围（用户可用滚轮/双指继续放大）
+  const ns = 1.35;
+  const cx = (left + right) / 2;
+  skyAnimateTo({ s: ns, x: 100 - cx * ns, y: 60 - 60 * ns });
 }
 
 function renderSkyMap(){
@@ -1779,7 +1841,7 @@ function renderSkyMap(){
   }
 
   skyEls.map.innerHTML = defs +
-    '<g class="sky-root" transform="translate(' + skyPan.x.toFixed(1) + ',' + skyPan.y.toFixed(1) + ')">' +
+    '<g class="sky-root" transform="' + skyTransform() + '">' +
       mw + dust + sector + grid + nodes +
     '</g>' +
     '<rect class="sky-vignette" x="0" y="0" width="200" height="120" fill="url(#skyVig)" pointer-events="none"></rect>';
@@ -1841,11 +1903,11 @@ function renderSkyDetail(){
 
 function skyHintText(){
   if (skyFilter === '全部'){
-    return '全天总览 · 亮 = 已观测，? = 未观测 · 按住拖动可平移，双击复位';
+    return '全天总览 · 亮 = 已观测，? = 未观测 · 按住拖动可平移 · 滚轮/双指缩放 · 双击复位';
   }
   const bands = SKY_BANDS[skyFilter] || [];
   const range = bands.map(function(b){ return b[0] + '–' + b[1] + ' 时'; }).join(' 与 ');
-  return skyFilter + '星空 = 赤经 ' + range + ' · 其它季节的星座已隐藏 · 按住拖动可平移，双击复位';
+  return skyFilter + '星空 = 赤经 ' + range + ' · 其它季节的星座已隐藏 · 按住拖动可平移 · 滚轮/双指缩放 · 双击复位';
 }
 
 function renderSky(){
@@ -1867,7 +1929,7 @@ function refreshSkyBadge(){
 function openSky(){
   if (!skyEls.panel) return;
   skyOpen = true;
-  skyPan.x = 0; skyPan.y = 0;
+  skyView = { s: 1, x: 0, y: 0 };
   skyEls.panel.hidden = false;
   skyEls.panel.className = 'panel sky-panel open';
   if (skyEls.btn) skyEls.btn.setAttribute('aria-expanded', 'true');
@@ -1891,15 +1953,9 @@ if (skyEls.filters) skyEls.filters.addEventListener('click', function(e){
     const cur = SKY.find(function(x){ return x.id === skySelected; });
     if (cur && skyFilter !== '全部' && cur.season !== skyFilter) skySelected = null;
   }
-  // 选中季节：把该季节的赤经板块移到视野中间（“选中板块”）
-  const bands = SKY_BANDS[skyFilter];
-  if (!bands){ skyPan.x = 0; skyPan.y = 0; }
-  else if (bands.length === 1){
-    const raMid = (bands[0][0] + bands[0][1]) / 2;
-    skyPan.x = Math.max(-100, Math.min(100, 100 - skyX(raMid)));
-    skyPan.y = 0;
-  } else { skyPan.x = 0; skyPan.y = 0; }
+  // 选中季节：放大并聚焦该季节的赤经板块
   renderSky();
+  skyFocusBands(SKY_BANDS[skyFilter]);
 });
 if (skyEls.map) skyEls.map.addEventListener('click', function(e){
   if (skyMoved){ skyMoved = false; return; }   // 拖动结束不算点击
@@ -1909,32 +1965,93 @@ if (skyEls.map) skyEls.map.addEventListener('click', function(e){
   renderSky();
 });
 
-// 按住拖动 = 平移视角（鼠标/触摸通用）
+// 按住拖动 = 平移；滚轮 / 双指 = 缩放；单击（位移 < 8px）= 选中
 if (skyEls.map){
+  function vbox(e){
+    const rect = skyEls.map.getBoundingClientRect();
+    return {
+      x: (e.clientX - rect.left) / Math.max(1, rect.width) * 200,
+      y: (e.clientY - rect.top) / Math.max(1, rect.height) * 120,
+      sx: 200 / Math.max(1, rect.width),
+      sy: 120 / Math.max(1, rect.height),
+      rect: rect
+    };
+  }
   skyEls.map.addEventListener('pointerdown', function(e){
-    skyDrag = { cx: e.clientX, cy: e.clientY, px: skyPan.x, py: skyPan.y };
-    skyMoved = false;
+    skyPointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
     try { skyEls.map.setPointerCapture(e.pointerId); } catch (_) {}
+    if (skyPointers.size === 1){
+      skyDownPt = { x: e.clientX, y: e.clientY };
+      skyMoved = false;
+      skyDragLast = { x: e.clientX, y: e.clientY };
+    } else if (skyPointers.size === 2){
+      const pts = Array.from(skyPointers.values());
+      skyPinch = {
+        d: Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y),
+        mid: { x: (pts[0].x + pts[1].x) / 2, y: (pts[0].y + pts[1].y) / 2 },
+        view: { s: skyView.s, x: skyView.x, y: skyView.y }
+      };
+      skyMoved = true;
+    }
     skyEls.map.classList.add('dragging');
   });
+
   skyEls.map.addEventListener('pointermove', function(e){
-    if (!skyDrag) return;
-    const rect = skyEls.map.getBoundingClientRect();
-    const scale = 200 / Math.max(1, rect.width);
-    const dx = (e.clientX - skyDrag.cx) * scale;
-    const dy = (e.clientY - skyDrag.cy) * scale;
-    if (Math.abs(dx) + Math.abs(dy) > 1.2) skyMoved = true;
-    skyPan.x = Math.max(-100, Math.min(100, skyDrag.px + dx));
-    skyPan.y = Math.max(-34, Math.min(34, skyDrag.py + dy));
-    skyApplyPan();
-    if (skyMoved) e.preventDefault();
+    if (!skyPointers.has(e.pointerId)) return;
+    skyPointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+    if (skyPointers.size >= 2 && skyPinch){
+      const pts = Array.from(skyPointers.values()).slice(0, 2);
+      const d = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
+      const mid = { x: (pts[0].x + pts[1].x) / 2, y: (pts[0].y + pts[1].y) / 2 };
+      const factor = d / Math.max(1, skyPinch.d);
+      // 从捏合起始状态重新计算，避免累计误差
+      skyView = { s: skyPinch.view.s, x: skyPinch.view.x, y: skyPinch.view.y };
+      const v0 = vbox({ clientX: skyPinch.mid.x, clientY: skyPinch.mid.y });
+      const v1 = vbox({ clientX: mid.x, clientY: mid.y });
+      skyZoomAt(factor, v0.x, v0.y);
+      skyView.x += (v1.x - v0.x);
+      skyView.y += (v1.y - v0.y);
+      skyClampView(); skyApplyView();
+      e.preventDefault();
+      return;
+    }
+
+    if (skyPointers.size === 1 && skyDownPt){
+      if (Math.hypot(e.clientX - skyDownPt.x, e.clientY - skyDownPt.y) > 8) skyMoved = true;
+      if (skyMoved){
+        const scale = 200 / Math.max(1, skyEls.map.getBoundingClientRect().width);
+        skyView.x += (e.clientX - skyDragLast.x) * scale;
+        skyView.y += (e.clientY - skyDragLast.y) * (120 / Math.max(1, skyEls.map.getBoundingClientRect().height));
+        skyDragLast = { x: e.clientX, y: e.clientY };
+        skyClampView(); skyApplyView();
+        e.preventDefault();
+      }
+    }
   });
-  function skyEndDrag(){ if (!skyDrag) return; skyDrag = null; skyEls.map.classList.remove('dragging'); }
-  skyEls.map.addEventListener('pointerup', skyEndDrag);
-  skyEls.map.addEventListener('pointercancel', skyEndDrag);
-  skyEls.map.addEventListener('pointerleave', function(e){ if (skyDrag && e.buttons === 0) skyEndDrag(); });
-  skyEls.map.addEventListener('dblclick', function(){ skyPan.x = 0; skyPan.y = 0; skyApplyPan(); });
+
+  function skyPointerEnd(e){
+    skyPointers.delete(e.pointerId);
+    if (skyPointers.size < 2) skyPinch = null;
+    if (skyPointers.size === 0){
+      skyEls.map.classList.remove('dragging');
+    }
+  }
+  skyEls.map.addEventListener('pointerup', skyPointerEnd);
+  skyEls.map.addEventListener('pointercancel', skyPointerEnd);
+
+  skyEls.map.addEventListener('wheel', function(e){
+    e.preventDefault();
+    const v = vbox(e);
+    skyZoomAt(Math.exp(-e.deltaY * 0.0016), v.x, v.y);
+  }, { passive: false });
+
+  skyEls.map.addEventListener('dblclick', function(){
+    skyAnimateTo({ s: 1, x: 0, y: 0 });
+  });
 }
+
+let skyDragLast = { x: 0, y: 0 };
 if (skyEls.detail) skyEls.detail.addEventListener('click', function(e){
   const b = e.target.closest('[data-jump]');
   if (!b) return;
