@@ -1,0 +1,1285 @@
+{
+ "results": [
+  {
+   "name": "title 含 星织 Asterweave",
+   "ok": true,
+   "detail": "星织 Asterweave · 10 关"
+  },
+  {
+   "name": "初始「关卡」总数显示 20",
+   "ok": true,
+   "detail": "got=\"20\" want=\"20\""
+  },
+  {
+   "name": "初始解锁按钮文案",
+   "ok": true,
+   "detail": "got=\"🔓 全部解锁\" want=\"🔓 全部解锁\""
+  },
+  {
+   "name": "全新页面点「全部解锁」生效",
+   "ok": false,
+   "detail": "click 前 devUnlock=false click 后=false 文案=🔓 全部解锁（期望点击后立即 true）"
+  },
+  {
+   "name": "先点一次「重置进度」后「全部解锁」才生效（根因证据）",
+   "ok": true,
+   "detail": "文案=🔒 恢复进度锁"
+  },
+  {
+   "name": "devUnlock 写入 localStorage",
+   "ok": true,
+   "detail": "got=true want=true"
+  },
+  {
+   "name": "解锁后第 19 关按钮可用",
+   "ok": true,
+   "detail": "disabled=false"
+  },
+  {
+   "name": "按钮文案「🔭 观测」",
+   "ok": true,
+   "detail": "got=\"🔭 观测\" want=\"🔭 观测\""
+  },
+  {
+   "name": "按钮文案「★ 标记」",
+   "ok": true,
+   "detail": "got=\"★ 标记\" want=\"★ 标记\""
+  },
+  {
+   "name": "L1 进入关卡",
+   "ok": true,
+   "detail": "levelId=1"
+  },
+  {
+   "name": "L1 无行列线索",
+   "ok": true,
+   "detail": "got=0 want=0"
+  },
+  {
+   "name": "L1 未won时DOM不泄露雷位(含杂星)",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "L1 未won时gameState无坐标",
+   "ok": true,
+   "detail": "{\"level\":1,\"levelId\":1,\"size\":8,\"revealed\":16,\"totalSafe\":54,\"flagged\":0,\"mines\":10,\"lives\":3,\"status\":\"playing\",\"mode\":\"dig\",\"totalLevels\":20,\"clearedLevels\":0,\"noise\":6}"
+  },
+  {
+   "name": "L1 玩到 won",
+   "ok": true,
+   "detail": "status=won lives=3"
+  },
+  {
+   "name": "L1 通关棋盘星/杂星区分",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "L1 闪烁期 modal 未打开",
+   "ok": true,
+   "detail": "overlay=overlay"
+  },
+  {
+   "name": "L1 揭晓图存在",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "L1 揭晓星座星数",
+   "ok": true,
+   "detail": "got=4 want=4"
+  },
+  {
+   "name": "L1 揭晓连线数",
+   "ok": true,
+   "detail": "got=2 want=2"
+  },
+  {
+   "name": "L1 揭晓杂星暗点数",
+   "ok": true,
+   "detail": "got=6 want=6"
+  },
+  {
+   "name": "L1 杂星不与星座星重叠",
+   "ok": true,
+   "detail": "got=0 want=0"
+  },
+  {
+   "name": "L1 通关 modal 打开",
+   "ok": true,
+   "detail": "overlay=overlay open"
+  },
+  {
+   "name": "L2 进入关卡",
+   "ok": true,
+   "detail": "levelId=2"
+  },
+  {
+   "name": "L2 有行列线索",
+   "ok": true,
+   "detail": "got=15 want=15"
+  },
+  {
+   "name": "L2 未won时DOM不泄露雷位(含杂星)",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "L2 未won时gameState无坐标",
+   "ok": true,
+   "detail": "{\"level\":2,\"levelId\":2,\"size\":7,\"revealed\":12,\"totalSafe\":38,\"flagged\":0,\"mines\":11,\"lives\":3,\"status\":\"playing\",\"mode\":\"dig\",\"totalLevels\":20,\"clearedLevels\":1,\"noise\":7}"
+  },
+  {
+   "name": "L2 玩到 won",
+   "ok": true,
+   "detail": "status=won lives=3"
+  },
+  {
+   "name": "L2 通关棋盘星/杂星区分",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "L2 闪烁期 modal 未打开",
+   "ok": true,
+   "detail": "overlay=overlay"
+  },
+  {
+   "name": "L2 揭晓图存在",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "L2 揭晓星座星数",
+   "ok": true,
+   "detail": "got=4 want=4"
+  },
+  {
+   "name": "L2 揭晓连线数",
+   "ok": true,
+   "detail": "got=3 want=3"
+  },
+  {
+   "name": "L2 揭晓杂星暗点数",
+   "ok": true,
+   "detail": "got=7 want=7"
+  },
+  {
+   "name": "L2 杂星不与星座星重叠",
+   "ok": true,
+   "detail": "got=0 want=0"
+  },
+  {
+   "name": "L2 通关 modal 打开",
+   "ok": true,
+   "detail": "overlay=overlay open"
+  },
+  {
+   "name": "L3 进入关卡",
+   "ok": true,
+   "detail": "levelId=3"
+  },
+  {
+   "name": "L3 未won时DOM不泄露雷位(含杂星)",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "L3 未won时gameState无坐标",
+   "ok": true,
+   "detail": "{\"level\":3,\"levelId\":3,\"size\":8,\"revealed\":16,\"totalSafe\":50,\"flagged\":0,\"mines\":14,\"lives\":3,\"status\":\"playing\",\"mode\":\"dig\",\"totalLevels\":20,\"clearedLevels\":2,\"noise\":9}"
+  },
+  {
+   "name": "L3 玩到 won",
+   "ok": true,
+   "detail": "status=won lives=3"
+  },
+  {
+   "name": "L3 通关棋盘星/杂星区分",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "L3 闪烁期 modal 未打开",
+   "ok": true,
+   "detail": "overlay=overlay"
+  },
+  {
+   "name": "L3 揭晓图存在",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "L3 揭晓星座星数",
+   "ok": true,
+   "detail": "got=5 want=5"
+  },
+  {
+   "name": "L3 揭晓连线数",
+   "ok": true,
+   "detail": "got=4 want=4"
+  },
+  {
+   "name": "L3 揭晓杂星暗点数",
+   "ok": true,
+   "detail": "got=9 want=9"
+  },
+  {
+   "name": "L3 杂星不与星座星重叠",
+   "ok": true,
+   "detail": "got=0 want=0"
+  },
+  {
+   "name": "L3 通关 modal 打开",
+   "ok": true,
+   "detail": "overlay=overlay open"
+  },
+  {
+   "name": "L4 进入关卡",
+   "ok": true,
+   "detail": "levelId=4"
+  },
+  {
+   "name": "L4 未won时DOM不泄露雷位(含杂星)",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "L4 未won时gameState无坐标",
+   "ok": true,
+   "detail": "{\"level\":4,\"levelId\":4,\"size\":9,\"revealed\":9,\"totalSafe\":64,\"flagged\":0,\"mines\":17,\"lives\":3,\"status\":\"playing\",\"mode\":\"dig\",\"totalLevels\":20,\"clearedLevels\":3,\"noise\":10}"
+  },
+  {
+   "name": "L4 玩到 won",
+   "ok": true,
+   "detail": "status=won lives=3"
+  },
+  {
+   "name": "L4 通关棋盘星/杂星区分",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "L4 闪烁期 modal 未打开",
+   "ok": true,
+   "detail": "overlay=overlay"
+  },
+  {
+   "name": "L4 揭晓图存在",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "L4 揭晓星座星数",
+   "ok": true,
+   "detail": "got=7 want=7"
+  },
+  {
+   "name": "L4 揭晓连线数",
+   "ok": true,
+   "detail": "got=6 want=6"
+  },
+  {
+   "name": "L4 揭晓杂星暗点数",
+   "ok": true,
+   "detail": "got=10 want=10"
+  },
+  {
+   "name": "L4 杂星不与星座星重叠",
+   "ok": true,
+   "detail": "got=0 want=0"
+  },
+  {
+   "name": "L4 通关 modal 打开",
+   "ok": true,
+   "detail": "overlay=overlay open"
+  },
+  {
+   "name": "L5 进入关卡",
+   "ok": true,
+   "detail": "levelId=5"
+  },
+  {
+   "name": "L5 未won时DOM不泄露雷位(含杂星)",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "L5 未won时gameState无坐标",
+   "ok": true,
+   "detail": "{\"level\":5,\"levelId\":5,\"size\":8,\"revealed\":19,\"totalSafe\":51,\"flagged\":0,\"mines\":13,\"lives\":3,\"status\":\"playing\",\"mode\":\"dig\",\"totalLevels\":20,\"clearedLevels\":4,\"noise\":6}"
+  },
+  {
+   "name": "L5 玩到 won",
+   "ok": true,
+   "detail": "status=won lives=3"
+  },
+  {
+   "name": "L5 通关棋盘星/杂星区分",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "L5 闪烁期 modal 未打开",
+   "ok": true,
+   "detail": "overlay=overlay"
+  },
+  {
+   "name": "L5 揭晓图存在",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "L5 揭晓星座星数",
+   "ok": true,
+   "detail": "got=7 want=7"
+  },
+  {
+   "name": "L5 揭晓连线数",
+   "ok": true,
+   "detail": "got=7 want=7"
+  },
+  {
+   "name": "L5 揭晓杂星暗点数",
+   "ok": true,
+   "detail": "got=6 want=6"
+  },
+  {
+   "name": "L5 杂星不与星座星重叠",
+   "ok": true,
+   "detail": "got=0 want=0"
+  },
+  {
+   "name": "L5 通关 modal 打开",
+   "ok": true,
+   "detail": "overlay=overlay open"
+  },
+  {
+   "name": "L6 进入关卡",
+   "ok": true,
+   "detail": "levelId=6"
+  },
+  {
+   "name": "L6 未won时DOM不泄露雷位(含杂星)",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "L6 未won时gameState无坐标",
+   "ok": true,
+   "detail": "{\"level\":6,\"levelId\":6,\"size\":7,\"revealed\":11,\"totalSafe\":37,\"flagged\":0,\"mines\":12,\"lives\":3,\"status\":\"playing\",\"mode\":\"dig\",\"totalLevels\":20,\"clearedLevels\":5,\"noise\":3}"
+  },
+  {
+   "name": "L6 玩到 won",
+   "ok": true,
+   "detail": "status=won lives=3"
+  },
+  {
+   "name": "L6 通关棋盘星/杂星区分",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "L6 闪烁期 modal 未打开",
+   "ok": true,
+   "detail": "overlay=overlay"
+  },
+  {
+   "name": "L6 揭晓图存在",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "L6 揭晓星座星数",
+   "ok": true,
+   "detail": "got=9 want=9"
+  },
+  {
+   "name": "L6 揭晓连线数",
+   "ok": true,
+   "detail": "got=8 want=8"
+  },
+  {
+   "name": "L6 揭晓杂星暗点数",
+   "ok": true,
+   "detail": "got=3 want=3"
+  },
+  {
+   "name": "L6 杂星不与星座星重叠",
+   "ok": true,
+   "detail": "got=0 want=0"
+  },
+  {
+   "name": "L6 通关 modal 打开",
+   "ok": true,
+   "detail": "overlay=overlay open"
+  },
+  {
+   "name": "L7 进入关卡",
+   "ok": true,
+   "detail": "levelId=7"
+  },
+  {
+   "name": "L7 未won时DOM不泄露雷位(含杂星)",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "L7 未won时gameState无坐标",
+   "ok": true,
+   "detail": "{\"level\":7,\"levelId\":7,\"size\":9,\"revealed\":12,\"totalSafe\":63,\"flagged\":0,\"mines\":18,\"lives\":3,\"status\":\"playing\",\"mode\":\"dig\",\"totalLevels\":20,\"clearedLevels\":6,\"noise\":9}"
+  },
+  {
+   "name": "L7 玩到 won",
+   "ok": true,
+   "detail": "status=won lives=3"
+  },
+  {
+   "name": "L7 通关棋盘星/杂星区分",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "L7 闪烁期 modal 未打开",
+   "ok": true,
+   "detail": "overlay=overlay"
+  },
+  {
+   "name": "L7 揭晓图存在",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "L7 揭晓星座星数",
+   "ok": true,
+   "detail": "got=9 want=9"
+  },
+  {
+   "name": "L7 揭晓连线数",
+   "ok": true,
+   "detail": "got=9 want=9"
+  },
+  {
+   "name": "L7 揭晓杂星暗点数",
+   "ok": true,
+   "detail": "got=9 want=9"
+  },
+  {
+   "name": "L7 杂星不与星座星重叠",
+   "ok": true,
+   "detail": "got=0 want=0"
+  },
+  {
+   "name": "L7 通关 modal 打开",
+   "ok": true,
+   "detail": "overlay=overlay open"
+  },
+  {
+   "name": "L8 进入关卡",
+   "ok": true,
+   "detail": "levelId=8"
+  },
+  {
+   "name": "L8 未won时DOM不泄露雷位(含杂星)",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "L8 未won时gameState无坐标",
+   "ok": true,
+   "detail": "{\"level\":8,\"levelId\":8,\"size\":10,\"revealed\":28,\"totalSafe\":81,\"flagged\":0,\"mines\":19,\"lives\":3,\"status\":\"playing\",\"mode\":\"dig\",\"totalLevels\":20,\"clearedLevels\":7,\"noise\":10}"
+  },
+  {
+   "name": "L8 玩到 won",
+   "ok": true,
+   "detail": "status=won lives=3"
+  },
+  {
+   "name": "L8 通关棋盘星/杂星区分",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "L8 闪烁期 modal 未打开",
+   "ok": true,
+   "detail": "overlay=overlay"
+  },
+  {
+   "name": "L8 揭晓图存在",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "L8 揭晓星座星数",
+   "ok": true,
+   "detail": "got=9 want=9"
+  },
+  {
+   "name": "L8 揭晓连线数",
+   "ok": true,
+   "detail": "got=9 want=9"
+  },
+  {
+   "name": "L8 揭晓杂星暗点数",
+   "ok": true,
+   "detail": "got=10 want=10"
+  },
+  {
+   "name": "L8 杂星不与星座星重叠",
+   "ok": true,
+   "detail": "got=0 want=0"
+  },
+  {
+   "name": "L8 通关 modal 打开",
+   "ok": true,
+   "detail": "overlay=overlay open"
+  },
+  {
+   "name": "L9 进入关卡",
+   "ok": true,
+   "detail": "levelId=9"
+  },
+  {
+   "name": "L9 未won时DOM不泄露雷位(含杂星)",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "L9 未won时gameState无坐标",
+   "ok": true,
+   "detail": "{\"level\":9,\"levelId\":9,\"size\":9,\"revealed\":24,\"totalSafe\":63,\"flagged\":0,\"mines\":18,\"lives\":3,\"status\":\"playing\",\"mode\":\"dig\",\"totalLevels\":20,\"clearedLevels\":8,\"noise\":6}"
+  },
+  {
+   "name": "L9 玩到 won",
+   "ok": true,
+   "detail": "status=won lives=3"
+  },
+  {
+   "name": "L9 通关棋盘星/杂星区分",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "L9 闪烁期 modal 未打开",
+   "ok": true,
+   "detail": "overlay=overlay"
+  },
+  {
+   "name": "L9 揭晓图存在",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "L9 揭晓星座星数",
+   "ok": true,
+   "detail": "got=12 want=12"
+  },
+  {
+   "name": "L9 揭晓连线数",
+   "ok": true,
+   "detail": "got=12 want=12"
+  },
+  {
+   "name": "L9 揭晓杂星暗点数",
+   "ok": true,
+   "detail": "got=6 want=6"
+  },
+  {
+   "name": "L9 杂星不与星座星重叠",
+   "ok": true,
+   "detail": "got=0 want=0"
+  },
+  {
+   "name": "L9 通关 modal 打开",
+   "ok": true,
+   "detail": "overlay=overlay open"
+  },
+  {
+   "name": "L10 进入关卡",
+   "ok": true,
+   "detail": "levelId=10"
+  },
+  {
+   "name": "L10 未won时DOM不泄露雷位(含杂星)",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "L10 未won时gameState无坐标",
+   "ok": true,
+   "detail": "{\"level\":10,\"levelId\":10,\"size\":10,\"revealed\":20,\"totalSafe\":79,\"flagged\":0,\"mines\":21,\"lives\":3,\"status\":\"playing\",\"mode\":\"dig\",\"totalLevels\":20,\"clearedLevels\":9,\"noise\":8}"
+  },
+  {
+   "name": "L10 玩到 won",
+   "ok": true,
+   "detail": "status=won lives=3"
+  },
+  {
+   "name": "L10 通关棋盘星/杂星区分",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "L10 闪烁期 modal 未打开",
+   "ok": true,
+   "detail": "overlay=overlay"
+  },
+  {
+   "name": "L10 揭晓图存在",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "L10 揭晓星座星数",
+   "ok": true,
+   "detail": "got=13 want=13"
+  },
+  {
+   "name": "L10 揭晓连线数",
+   "ok": true,
+   "detail": "got=13 want=13"
+  },
+  {
+   "name": "L10 揭晓杂星暗点数",
+   "ok": true,
+   "detail": "got=8 want=8"
+  },
+  {
+   "name": "L10 杂星不与星座星重叠",
+   "ok": true,
+   "detail": "got=0 want=0"
+  },
+  {
+   "name": "L10 通关 modal 打开",
+   "ok": true,
+   "detail": "overlay=overlay open"
+  },
+  {
+   "name": "L11 进入关卡",
+   "ok": true,
+   "detail": "levelId=11"
+  },
+  {
+   "name": "L11 未won时DOM不泄露雷位(含杂星)",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "L11 未won时gameState无坐标",
+   "ok": true,
+   "detail": "{\"level\":11,\"levelId\":11,\"size\":10,\"revealed\":29,\"totalSafe\":80,\"flagged\":0,\"mines\":20,\"lives\":3,\"status\":\"playing\",\"mode\":\"dig\",\"totalLevels\":20,\"clearedLevels\":10,\"noise\":13}"
+  },
+  {
+   "name": "L11 玩到 won",
+   "ok": true,
+   "detail": "status=won lives=3"
+  },
+  {
+   "name": "L11 通关棋盘星/杂星区分",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "L11 闪烁期 modal 未打开",
+   "ok": true,
+   "detail": "overlay=overlay"
+  },
+  {
+   "name": "L11 揭晓图存在",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "L11 揭晓星座星数",
+   "ok": true,
+   "detail": "got=7 want=7"
+  },
+  {
+   "name": "L11 揭晓连线数",
+   "ok": true,
+   "detail": "got=7 want=7"
+  },
+  {
+   "name": "L11 揭晓杂星暗点数",
+   "ok": true,
+   "detail": "got=13 want=13"
+  },
+  {
+   "name": "L11 杂星不与星座星重叠",
+   "ok": true,
+   "detail": "got=0 want=0"
+  },
+  {
+   "name": "L11 通关 modal 打开",
+   "ok": true,
+   "detail": "overlay=overlay open"
+  },
+  {
+   "name": "L12 进入关卡",
+   "ok": true,
+   "detail": "levelId=12"
+  },
+  {
+   "name": "L12 未won时DOM不泄露雷位(含杂星)",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "L12 未won时gameState无坐标",
+   "ok": true,
+   "detail": "{\"level\":12,\"levelId\":12,\"size\":9,\"revealed\":20,\"totalSafe\":65,\"flagged\":0,\"mines\":16,\"lives\":3,\"status\":\"playing\",\"mode\":\"dig\",\"totalLevels\":20,\"clearedLevels\":11,\"noise\":9}"
+  },
+  {
+   "name": "L12 玩到 won",
+   "ok": true,
+   "detail": "status=won lives=3"
+  },
+  {
+   "name": "L12 通关棋盘星/杂星区分",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "L12 闪烁期 modal 未打开",
+   "ok": true,
+   "detail": "overlay=overlay"
+  },
+  {
+   "name": "L12 揭晓图存在",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "L12 揭晓星座星数",
+   "ok": true,
+   "detail": "got=7 want=7"
+  },
+  {
+   "name": "L12 揭晓连线数",
+   "ok": true,
+   "detail": "got=7 want=7"
+  },
+  {
+   "name": "L12 揭晓杂星暗点数",
+   "ok": true,
+   "detail": "got=9 want=9"
+  },
+  {
+   "name": "L12 杂星不与星座星重叠",
+   "ok": true,
+   "detail": "got=0 want=0"
+  },
+  {
+   "name": "L12 通关 modal 打开",
+   "ok": true,
+   "detail": "overlay=overlay open"
+  },
+  {
+   "name": "L13 进入关卡",
+   "ok": true,
+   "detail": "levelId=13"
+  },
+  {
+   "name": "L13 未won时DOM不泄露雷位(含杂星)",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "L13 未won时gameState无坐标",
+   "ok": true,
+   "detail": "{\"level\":13,\"levelId\":13,\"size\":9,\"revealed\":15,\"totalSafe\":62,\"flagged\":0,\"mines\":19,\"lives\":3,\"status\":\"playing\",\"mode\":\"dig\",\"totalLevels\":20,\"clearedLevels\":12,\"noise\":12}"
+  },
+  {
+   "name": "L13 玩到 won",
+   "ok": true,
+   "detail": "status=won lives=3"
+  },
+  {
+   "name": "L13 通关棋盘星/杂星区分",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "L13 闪烁期 modal 未打开",
+   "ok": true,
+   "detail": "overlay=overlay"
+  },
+  {
+   "name": "L13 揭晓图存在",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "L13 揭晓星座星数",
+   "ok": true,
+   "detail": "got=7 want=7"
+  },
+  {
+   "name": "L13 揭晓连线数",
+   "ok": true,
+   "detail": "got=7 want=7"
+  },
+  {
+   "name": "L13 揭晓杂星暗点数",
+   "ok": true,
+   "detail": "got=12 want=12"
+  },
+  {
+   "name": "L13 杂星不与星座星重叠",
+   "ok": true,
+   "detail": "got=0 want=0"
+  },
+  {
+   "name": "L13 通关 modal 打开",
+   "ok": true,
+   "detail": "overlay=overlay open"
+  },
+  {
+   "name": "L14 进入关卡",
+   "ok": true,
+   "detail": "levelId=14"
+  },
+  {
+   "name": "L14 未won时DOM不泄露雷位(含杂星)",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "L14 未won时gameState无坐标",
+   "ok": true,
+   "detail": "{\"level\":14,\"levelId\":14,\"size\":10,\"revealed\":22,\"totalSafe\":80,\"flagged\":0,\"mines\":20,\"lives\":3,\"status\":\"playing\",\"mode\":\"dig\",\"totalLevels\":20,\"clearedLevels\":13,\"noise\":12}"
+  },
+  {
+   "name": "L14 玩到 won",
+   "ok": true,
+   "detail": "status=won lives=3"
+  },
+  {
+   "name": "L14 通关棋盘星/杂星区分",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "L14 闪烁期 modal 未打开",
+   "ok": true,
+   "detail": "overlay=overlay"
+  },
+  {
+   "name": "L14 揭晓图存在",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "L14 揭晓星座星数",
+   "ok": true,
+   "detail": "got=8 want=8"
+  },
+  {
+   "name": "L14 揭晓连线数",
+   "ok": true,
+   "detail": "got=8 want=8"
+  },
+  {
+   "name": "L14 揭晓杂星暗点数",
+   "ok": true,
+   "detail": "got=12 want=12"
+  },
+  {
+   "name": "L14 杂星不与星座星重叠",
+   "ok": true,
+   "detail": "got=0 want=0"
+  },
+  {
+   "name": "L14 通关 modal 打开",
+   "ok": true,
+   "detail": "overlay=overlay open"
+  },
+  {
+   "name": "L15 进入关卡",
+   "ok": true,
+   "detail": "levelId=15"
+  },
+  {
+   "name": "L15 未won时DOM不泄露雷位(含杂星)",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "L15 未won时gameState无坐标",
+   "ok": true,
+   "detail": "{\"level\":15,\"levelId\":15,\"size\":10,\"revealed\":23,\"totalSafe\":80,\"flagged\":0,\"mines\":20,\"lives\":3,\"status\":\"playing\",\"mode\":\"dig\",\"totalLevels\":20,\"clearedLevels\":14,\"noise\":12}"
+  },
+  {
+   "name": "L15 玩到 won",
+   "ok": true,
+   "detail": "status=won lives=3"
+  },
+  {
+   "name": "L15 通关棋盘星/杂星区分",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "L15 闪烁期 modal 未打开",
+   "ok": true,
+   "detail": "overlay=overlay"
+  },
+  {
+   "name": "L15 揭晓图存在",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "L15 揭晓星座星数",
+   "ok": true,
+   "detail": "got=8 want=8"
+  },
+  {
+   "name": "L15 揭晓连线数",
+   "ok": true,
+   "detail": "got=8 want=8"
+  },
+  {
+   "name": "L15 揭晓杂星暗点数",
+   "ok": true,
+   "detail": "got=12 want=12"
+  },
+  {
+   "name": "L15 杂星不与星座星重叠",
+   "ok": true,
+   "detail": "got=0 want=0"
+  },
+  {
+   "name": "L15 通关 modal 打开",
+   "ok": true,
+   "detail": "overlay=overlay open"
+  },
+  {
+   "name": "L16 进入关卡",
+   "ok": true,
+   "detail": "levelId=16"
+  },
+  {
+   "name": "L16 未won时DOM不泄露雷位(含杂星)",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "L16 未won时gameState无坐标",
+   "ok": true,
+   "detail": "{\"level\":16,\"levelId\":16,\"size\":11,\"revealed\":25,\"totalSafe\":96,\"flagged\":0,\"mines\":25,\"lives\":3,\"status\":\"playing\",\"mode\":\"dig\",\"totalLevels\":20,\"clearedLevels\":15,\"noise\":15}"
+  },
+  {
+   "name": "L16 玩到 won",
+   "ok": true,
+   "detail": "status=won lives=3"
+  },
+  {
+   "name": "L16 通关棋盘星/杂星区分",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "L16 闪烁期 modal 未打开",
+   "ok": true,
+   "detail": "overlay=overlay"
+  },
+  {
+   "name": "L16 揭晓图存在",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "L16 揭晓星座星数",
+   "ok": true,
+   "detail": "got=10 want=10"
+  },
+  {
+   "name": "L16 揭晓连线数",
+   "ok": true,
+   "detail": "got=11 want=11"
+  },
+  {
+   "name": "L16 揭晓杂星暗点数",
+   "ok": true,
+   "detail": "got=15 want=15"
+  },
+  {
+   "name": "L16 杂星不与星座星重叠",
+   "ok": true,
+   "detail": "got=0 want=0"
+  },
+  {
+   "name": "L16 通关 modal 打开",
+   "ok": true,
+   "detail": "overlay=overlay open"
+  },
+  {
+   "name": "L17 进入关卡",
+   "ok": true,
+   "detail": "levelId=17"
+  },
+  {
+   "name": "L17 未won时DOM不泄露雷位(含杂星)",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "L17 未won时gameState无坐标",
+   "ok": true,
+   "detail": "{\"level\":17,\"levelId\":17,\"size\":11,\"revealed\":23,\"totalSafe\":93,\"flagged\":0,\"mines\":28,\"lives\":3,\"status\":\"playing\",\"mode\":\"dig\",\"totalLevels\":20,\"clearedLevels\":16,\"noise\":18}"
+  },
+  {
+   "name": "L17 玩到 won",
+   "ok": true,
+   "detail": "status=won lives=3"
+  },
+  {
+   "name": "L17 通关棋盘星/杂星区分",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "L17 闪烁期 modal 未打开",
+   "ok": true,
+   "detail": "overlay=overlay"
+  },
+  {
+   "name": "L17 揭晓图存在",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "L17 揭晓星座星数",
+   "ok": true,
+   "detail": "got=10 want=10"
+  },
+  {
+   "name": "L17 揭晓连线数",
+   "ok": true,
+   "detail": "got=11 want=11"
+  },
+  {
+   "name": "L17 揭晓杂星暗点数",
+   "ok": true,
+   "detail": "got=18 want=18"
+  },
+  {
+   "name": "L17 杂星不与星座星重叠",
+   "ok": true,
+   "detail": "got=0 want=0"
+  },
+  {
+   "name": "L17 通关 modal 打开",
+   "ok": true,
+   "detail": "overlay=overlay open"
+  },
+  {
+   "name": "L18 进入关卡",
+   "ok": true,
+   "detail": "levelId=18"
+  },
+  {
+   "name": "L18 未won时DOM不泄露雷位(含杂星)",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "L18 未won时gameState无坐标",
+   "ok": true,
+   "detail": "{\"level\":18,\"levelId\":18,\"size\":11,\"revealed\":33,\"totalSafe\":94,\"flagged\":0,\"mines\":27,\"lives\":3,\"status\":\"playing\",\"mode\":\"dig\",\"totalLevels\":20,\"clearedLevels\":17,\"noise\":13}"
+  },
+  {
+   "name": "L18 玩到 won",
+   "ok": true,
+   "detail": "status=won lives=3"
+  },
+  {
+   "name": "L18 通关棋盘星/杂星区分",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "L18 闪烁期 modal 未打开",
+   "ok": true,
+   "detail": "overlay=overlay"
+  },
+  {
+   "name": "L18 揭晓图存在",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "L18 揭晓星座星数",
+   "ok": true,
+   "detail": "got=14 want=14"
+  },
+  {
+   "name": "L18 揭晓连线数",
+   "ok": true,
+   "detail": "got=15 want=15"
+  },
+  {
+   "name": "L18 揭晓杂星暗点数",
+   "ok": true,
+   "detail": "got=13 want=13"
+  },
+  {
+   "name": "L18 杂星不与星座星重叠",
+   "ok": true,
+   "detail": "got=0 want=0"
+  },
+  {
+   "name": "L18 通关 modal 打开",
+   "ok": true,
+   "detail": "overlay=overlay open"
+  },
+  {
+   "name": "L19 进入关卡",
+   "ok": true,
+   "detail": "levelId=19"
+  },
+  {
+   "name": "L19 未won时DOM不泄露雷位(含杂星)",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "L19 未won时gameState无坐标",
+   "ok": true,
+   "detail": "{\"level\":19,\"levelId\":19,\"size\":11,\"revealed\":24,\"totalSafe\":96,\"flagged\":0,\"mines\":25,\"lives\":3,\"status\":\"playing\",\"mode\":\"dig\",\"totalLevels\":20,\"clearedLevels\":18,\"noise\":11}"
+  },
+  {
+   "name": "L19 玩到 won",
+   "ok": true,
+   "detail": "status=won lives=3"
+  },
+  {
+   "name": "L19 通关棋盘星/杂星区分",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "L19 闪烁期 modal 未打开",
+   "ok": true,
+   "detail": "overlay=overlay"
+  },
+  {
+   "name": "L19 揭晓图存在",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "L19 揭晓星座星数",
+   "ok": true,
+   "detail": "got=14 want=14"
+  },
+  {
+   "name": "L19 揭晓连线数",
+   "ok": true,
+   "detail": "got=14 want=14"
+  },
+  {
+   "name": "L19 揭晓杂星暗点数",
+   "ok": true,
+   "detail": "got=11 want=11"
+  },
+  {
+   "name": "L19 杂星不与星座星重叠",
+   "ok": true,
+   "detail": "got=0 want=0"
+  },
+  {
+   "name": "L19 通关 modal 打开",
+   "ok": true,
+   "detail": "overlay=overlay open"
+  },
+  {
+   "name": "L20 进入关卡",
+   "ok": true,
+   "detail": "levelId=20"
+  },
+  {
+   "name": "L20 未won时DOM不泄露雷位(含杂星)",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "L20 未won时gameState无坐标",
+   "ok": true,
+   "detail": "{\"level\":20,\"levelId\":20,\"size\":11,\"revealed\":28,\"totalSafe\":96,\"flagged\":0,\"mines\":25,\"lives\":3,\"status\":\"playing\",\"mode\":\"dig\",\"totalLevels\":20,\"clearedLevels\":19,\"noise\":11}"
+  },
+  {
+   "name": "L20 玩到 won",
+   "ok": true,
+   "detail": "status=won lives=3"
+  },
+  {
+   "name": "L20 通关棋盘星/杂星区分",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "L20 闪烁期 modal 未打开",
+   "ok": true,
+   "detail": "overlay=overlay"
+  },
+  {
+   "name": "L20 揭晓图存在",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "L20 揭晓星座星数",
+   "ok": true,
+   "detail": "got=14 want=14"
+  },
+  {
+   "name": "L20 揭晓连线数",
+   "ok": true,
+   "detail": "got=14 want=14"
+  },
+  {
+   "name": "L20 揭晓杂星暗点数",
+   "ok": true,
+   "detail": "got=11 want=11"
+  },
+  {
+   "name": "L20 杂星不与星座星重叠",
+   "ok": true,
+   "detail": "got=0 want=0"
+  },
+  {
+   "name": "L20 通关 modal 打开",
+   "ok": true,
+   "detail": "overlay=overlay open"
+  },
+  {
+   "name": "20 关全部 won",
+   "ok": true,
+   "detail": "got=20 want=20"
+  },
+  {
+   "name": "踩爆 3 颗后 status=lost",
+   "ok": true,
+   "detail": "got=\"lost\" want=\"lost\""
+  },
+  {
+   "name": "命数归零",
+   "ok": true,
+   "detail": "got=0 want=0"
+  },
+  {
+   "name": "失败 modal 标题",
+   "ok": true,
+   "detail": "got=\"观测失败\" want=\"观测失败\""
+  },
+  {
+   "name": "失败只亮出踩爆的 3 颗雷",
+   "ok": true,
+   "detail": "hitCount=3"
+  }
+ ],
+ "fails": 1
+}

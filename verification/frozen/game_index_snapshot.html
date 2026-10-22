@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>雷线谜图 · 3 关体验</title>
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:#0e1116;color:#e6ebf5;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    -webkit-text-size-adjust:100%;
+    overflow-x:hidden;
+    min-height:100vh;
+    touch-action:manipulation;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .app{max-width:560px;margin:0 auto;padding:10px 8px 28px}
+
+  .top{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:2px 2px 8px;flex-wrap:wrap}
+  .title{font-size:17px;font-weight:800;letter-spacing:.02em;flex:1 1 auto;min-width:0;overflow-wrap:anywhere}
+  .title .who{font-size:13px;font-weight:600;color:#8fa0b8;margin-left:6px}
+  .meta{font-size:12px;color:#7f8ea6;padding:0 2px 8px;font-variant-numeric:tabular-nums}
+
+  .lvbtn{
+    min-height:44px;padding:0 12px;border-radius:10px;border:1px solid #2b3444;
+    background:#161c26;color:#c3d0e2;font:inherit;font-size:13px;font-weight:800;
+    cursor:pointer;touch-action:manipulation;white-space:nowrap;
+  }
+  .lvbtn b{color:#8fc3ff;font-variant-numeric:tabular-nums}
+  .lvbtn[aria-expanded="true"]{background:#1f3a63;border-color:#4b7fbd;color:#e4f0ff}
+
+  .panel{
+    display:none;margin:0 2px 10px;padding:10px;border-radius:12px;
+    background:#141a23;border:1px solid #263042;
+  }
+  .panel.open{display:block}
+  .panel[hidden]{display:none}
+  .panel-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+  .panel-title{font-size:13px;font-weight:800;color:#b9c8dc}
+  .panel-title b{color:#8fc3ff;font-variant-numeric:tabular-nums}
+  .mini{
+    min-height:44px;padding:0 10px;border-radius:9px;border:1px solid #2b3444;
+    background:#121821;color:#9fb0c6;font:inherit;font-size:12px;font-weight:700;
+    cursor:pointer;touch-action:manipulation;
+  }
+  .mini.danger{background:#2a1418;border-color:#7a2333;color:#ff9aab}
+
+  .lvgrid{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(52px,1fr));
+    gap:6px;max-height:44vh;overflow-y:auto;-webkit-overflow-scrolling:touch;
+    padding:2px;
+  }
+  .lvl{
+    position:relative;min-height:52px;border-radius:10px;border:1px solid #2b3444;
+    background:#161c26;color:#a9b8cd;font:inherit;font-size:14px;font-weight:800;
+    cursor:pointer;touch-action:manipulation;
+  }
+  .lvl.cleared{background:#14301f;border-color:#2f6b46;color:#8ff0b4}
+  .lvl.cleared::after{content:"✓";position:absolute;top:2px;right:6px;font-size:10px;color:#5fd08a}
+  .lvl.current{background:#1f3a63;border-color:#4b7fbd;color:#eaf3ff;box-shadow:0 0 0 2px rgba(75,127,189,.3)}
+  .lvl.locked{background:#101419;border-color:#1f2734;color:#59647a;cursor:not-allowed}
+  .lvl.locked::after{content:"🔒";position:absolute;top:2px;right:5px;font-size:10px;opacity:.85}
+  .lvl.playing{outline:2px dashed #ffd166;outline-offset:2px}
+  .panel-hint{margin-top:8px;font-size:11px;color:#6f7f96;line-height:1.5}
+
+  .status{
+    margin:0 2px 8px;padding:9px 10px;border-radius:10px;
+    background:#151b24;border:1px solid #232c3a;
+    font-size:14px;font-weight:700;color:#cbd8ea;
+    font-variant-numeric:tabular-nums;
+  }
+  .status .heart{color:#ff7b93}
+
+  .teach{
+    margin:0 2px 10px;padding:9px 10px;border-radius:10px;
+    background:#182333;border:1px solid #2b3f5c;color:#bcd3ef;
+    font-size:13px;line-height:1.5;
+  }
+  .teach.hidden{display:none}
+
+  .boardwrap{display:flex;justify-content:center}
+  .board{
+    --cols:6;--fs:18px;
+    display:grid;
+    grid-template-columns:repeat(var(--cols),1fr);
+    align-items:start;
+    gap:3px;
+    width:100%;max-width:520px;
+    user-select:none;-webkit-user-select:none;
+  }
+  .cell{
+    appearance:none;-webkit-appearance:none;
+    display:flex;align-items:center;justify-content:center;
+    aspect-ratio:1/1;width:100%;
+    padding:0;margin:0;border-radius:7px;
+    border:1px solid #303b4d;
+    background:linear-gradient(180deg,#252e3d,#1b2230);
+    color:#e6ebf5;font-family:inherit;font-weight:800;line-height:1;
+    font-size:var(--fs);
+    cursor:pointer;touch-action:manipulation;
+  }
+  .cell:active{transform:scale(.96)}
+  .cell.revealed{
+    background:#111720;border-color:#1b2431;cursor:default;
+    transform:none;
+  }
+  .cell.n0{color:#54627a}
+  .cell.n1{color:#74b9ff}
+  .cell.n2{color:#5ddb8f}
+  .cell.n3{color:#ff8a8a}
+  .cell.n4{color:#c79bff}
+  .cell.n5{color:#ffc36b}
+  .cell.n6{color:#5fd8d8}
+  .cell.n7{color:#ff9fd0}
+  .cell.n8{color:#c3ccd9}
+  .cell.flagged{background:#2a2338;border-color:#5b4780;color:#ffd166}
+  .cell.mine{background:#3a1620;border-color:#7a2333;color:#ff97a8;font-size:calc(var(--fs)*.92)}
+  .cell.wonmine{background:#1d2a3a;border-color:#39536f}
+
+  .clue{
+    display:flex;align-items:center;justify-content:center;
+    font-size:calc(var(--fs)*.52);font-weight:800;color:#93a3bb;
+    line-height:1.15;min-width:0;min-height:0;overflow:hidden;
+    font-variant-numeric:tabular-nums;
+  }
+  .clue-col{flex-direction:column;justify-content:flex-end;gap:1px}
+  .clue-row{flex-direction:row;justify-content:flex-end;gap:4px}
+  .clue-corner{visibility:hidden}
+
+  .actions{display:flex;gap:8px;margin:14px 2px 0;flex-wrap:wrap}
+  .actions.split{justify-content:space-between}
+  .btn{
+    flex:1 1 0;min-height:48px;min-width:96px;padding:0 12px;
+    border-radius:12px;border:1px solid #2b3444;background:#161c26;color:#c3d0e2;
+    font:inherit;font-size:14px;font-weight:800;cursor:pointer;
+    touch-action:manipulation;
+  }
+  .btn:active{transform:scale(.98)}
+  .btn.on{background:#1f3a63;border-color:#4b7fbd;color:#e4f0ff;box-shadow:0 0 0 1px #4b7fbd inset}
+  .btn.primary{background:#28623f;border-color:#3f9c66;color:#e6fff0}
+  .btn.ghost{background:#121821;color:#9fb0c6}
+
+  .result{
+    margin:12px 2px 0;padding:12px;border-radius:12px;display:none;
+    border:1px solid #2b3444;background:#141a23;
+  }
+  .result.show{display:block}
+  .result.win{background:#14251c;border-color:#2f6b46}
+  .result.lose{background:#2a1418;border-color:#7a2333}
+  .result .msg{font-size:15px;font-weight:800;margin-bottom:10px}
+  .result.win .msg{color:#8ff0b4}
+  .result.lose .msg{color:#ff9aab}
+
+  .foot{margin:14px 4px 0;font-size:12px;line-height:1.6;color:#6f7f96}
+  .err{color:#ff9aab;font-size:14px;padding:12px}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="top">
+    <div class="title">雷线谜图<span class="who" id="lvName"></span></div>
+    <button type="button" class="lvbtn" id="lvBtn" aria-expanded="false" aria-controls="levelPanel">关卡 <b id="lvBtnNum">1</b>/<b id="lvBtnTotal">1</b> ▾</button>
+  </div>
+
+  <section class="panel" id="levelPanel" hidden aria-label="关卡选择">
+    <div class="panel-head">
+      <span class="panel-title">已通关 <b id="clearedCount">0</b>/<b id="totalCount">1</b></span>
+      <button type="button" class="mini" id="resetBtn">重置进度</button>
+    </div>
+    <div class="lvgrid" id="lvGrid"></div>
+    <div class="panel-hint">✓ 已通关　·　高亮 = 当前关卡　·　🔒 未解锁（通关上一关后解锁）</div>
+  </section>
+
+  <div class="meta" id="lvtag"></div>
+  <div class="status" id="status"></div>
+  <div class="teach hidden" id="teach"></div>
+
+  <div class="boardwrap"><div class="board" id="board"></div></div>
+
+  <div class="actions" id="modeActions">
+    <button type="button" class="btn on" id="modeDig" aria-pressed="true">⛏ 探格</button>
+    <button type="button" class="btn" id="modeFlag" aria-pressed="false">🚩 插旗</button>
+  </div>
+  <div class="actions" id="replayActions">
+    <button type="button" class="btn ghost" id="replay">↻ 重玩本关</button>
+  </div>
+
+  <div class="result" id="result"></div>
+
+  <div class="foot">
+    探格：翻开格子看数字（周围 8 格的雷数）。插旗：标记/取消标记雷。电脑上右键 = 直接插旗。<br>
+    带行列线索的关卡会在左侧与上方显示“连续雷块”的长度；把安全格全部翻开、所有雷插旗即通关。进度会自动保存在本机浏览器里。
+  </div>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+/* LEVELS_INJECT_START */
+const LEVELS = [
+  {
+    "id": 1,
+    "name": "第 1 关 · 学会看数字",
+    "size": 6,
+    "mines": [
+      [
+        0,
+        3
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        4,
+        4
+      ]
+    ],
+    "showRuns": false,
+    "rowRuns": [
+      [
+        1
+      ],
+      [
+        1
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        1
+      ],
+      [
+        1
+      ],
+      []
+    ],
+    "colRuns": [
+      [
+        1
+      ],
+      [],
+      [
+        1
+      ],
+      [
+        1
+      ],
+      [
+        3
+      ],
+      []
+    ],
+    "opening": [
+      4,
+      0
+    ],
+    "lives": 3,
+    "teach": "点开的数字 = 它周围 8 格里有几颗雷。目标：翻开所有安全格，同时把所有雷插旗。",
+    "technique": "single-point"
+  },
+  {
+    "id": 2,
+    "name": "第 2 关 · 左边和上面的数字",
+    "size": 6,
+    "mines": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        4
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        4,
+        5
+      ],
+      [
+        5,
+        1
+      ],
+      [
+        5,
+        4
+      ]
+    ],
+    "showRuns": true,
+    "rowRuns": [
+      [
+        1,
+        1
+      ],
+      [
+        1
+      ],
+      [
+        1
+      ],
+      [],
+      [
+        1
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "colRuns": [
+      [
+        2
+      ],
+      [
+        1
+      ],
+      [
+        1
+      ],
+      [],
+      [
+        1,
+        1
+      ],
+      [
+        1
+      ]
+    ],
+    "opening": [
+      2,
+      4
+    ],
+    "lives": 3,
+    "teach": "点开的数字还是「周围几颗雷」。另外：左边和上面的数字 = 这一行/列里连续雷块的长度（例如 2 1 = 两个连着的雷、隔开、再一个雷）。",
+    "technique": "line-runs"
+  },
+  {
+    "id": 3,
+    "name": "第 3 关 · 只能靠连续块",
+    "size": 7,
+    "mines": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        5
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        5
+      ],
+      [
+        4,
+        3
+      ],
+      [
+        4,
+        5
+      ],
+      [
+        6,
+        1
+      ]
+    ],
+    "showRuns": true,
+    "rowRuns": [
+      [
+        1,
+        1
+      ],
+      [],
+      [
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        1
+      ],
+      [],
+      [
+        1
+      ]
+    ],
+    "colRuns": [
+      [],
+      [
+        1,
+        1,
+        1
+      ],
+      [],
+      [
+        1
+      ],
+      [
+        2
+      ],
+      [
+        1,
+        2
+      ],
+      []
+    ],
+    "opening": [
+      6,
+      4
+    ],
+    "lives": 3,
+    "teach": "",
+    "technique": "runs-critical"
+  }
+];
+/* LEVELS_INJECT_END */
+
+const boardEl = document.getElementById('board');
+const statusEl = document.getElementById('status');
+const teachEl = document.getElementById('teach');
+const resultEl = document.getElementById('result');
+const nameEl = document.getElementById('lvName');
+const lvtagEl = document.getElementById('lvtag');
+const digBtn = document.getElementById('modeDig');
+const flagBtn = document.getElementById('modeFlag');
+const replayBtn = document.getElementById('replay');
+const lvBtn = document.getElementById('lvBtn');
+const lvBtnNum = document.getElementById('lvBtnNum');
+const lvBtnTotal = document.getElementById('lvBtnTotal');
+const levelPanel = document.getElementById('levelPanel');
+const lvGrid = document.getElementById('lvGrid');
+const clearedCountEl = document.getElementById('clearedCount');
+const totalCountEl = document.getElementById('totalCount');
+const resetBtn = document.getElementById('resetBtn');
+
+const MODE_DIG = 'dig';
+const MODE_FLAG = 'flag';
+
+let currentMode = MODE_DIG;
+let S = null;          // 当前关卡的全部状态
+let cellEls = [];      // 索引 -> 格子元素
+let lvlEls = [];       // 关卡面板按钮
+let panelOpen = false;
+let resetArmed = false;
+
+// ---------- 进度记忆：localStorage 不可用时静默降级为内存进度，绝不弹错 ----------
+const STORAGE_KEY = 'leixian.migong.progress.v1';
+let progress = { v: 1, cleared: {}, last: 0 };
+let storageOK = true;
+
+function loadProgress(){
+  try {
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const saved = JSON.parse(raw);
+    if (!saved || typeof saved !== 'object') return;
+    const cleared = {};
+    if (saved.cleared && typeof saved.cleared === 'object'){
+      for (const key in saved.cleared){
+        if (Object.prototype.hasOwnProperty.call(saved.cleared, key) && saved.cleared[key]){
+          cleared[String(key)] = 1;
+        }
+      }
+    }
+    progress = {
+      v: 1,
+      cleared: cleared,
+      last: (typeof saved.last === 'number' && saved.last >= 0) ? Math.floor(saved.last) : 0
+    };
+  } catch (e) {
+    storageOK = false;          // 本地文件或隐私模式下存储被禁用：静默降级
+  }
+}
+
+function saveProgress(){
+  if (!storageOK) return;
+  try {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+  } catch (e) {
+    storageOK = false;          // 写失败也不打断游戏
+  }
+}
+
+function isCleared(i){ return !!progress.cleared[String(i)]; }
+
+// 已通关连续段之后的第一个未通关关卡 = 当前关卡；全部通关则返回 LEVELS.length
+function frontier(){
+  const total = LEVELS.length;
+  for (let i = 0; i < total; i++) if (!isCleared(i)) return i;
+  return total;
+}
+
+function isUnlocked(i){ return i <= frontier(); }
+
+function clearedTotal(){
+  let k = 0;
+  for (let i = 0; i < LEVELS.length; i++) if (isCleared(i)) k++;
+  return k;
+}
+
+function markCleared(i){
+  if (isCleared(i)) return;
+  progress.cleared[String(i)] = 1;
+  progress.last = i;
+  saveProgress();
+  refreshLevelGrid();
+}
+
+function startIndex(){
+  const total = LEVELS.length;
+  if (total === 0) return 0;
+  const f = frontier();
+  if (f >= total) return total - 1;    // 全部通关：停在最后一关，方便重玩
+  return f;
+}
+
+function clampIndex(i){
+  const total = Array.isArray(LEVELS) ? LEVELS.length : 0;
+  if (total === 0) return 0;
+  if (typeof i !== 'number' || isNaN(i) || i < 0) return 0;
+  return i > total - 1 ? total - 1 : i;
+}
+
+function runsFromMines(mineSet, n, byRow, k){
+  const runs = [];
+  let cur = 0;
+  for (let t = 0; t < n; t++){
+    const i = byRow ? (k * n + t) : (t * n + k);
+    if (mineSet.has(i)) cur++;
+    else { if (cur > 0) runs.push(cur); cur = 0; }
+  }
+  if (cur > 0) runs.push(cur);
+  return runs;
+}
+
+function startLevel(rawIndex){
+  if (!Array.isArray(LEVELS) || LEVELS.length === 0){
+    boardEl.innerHTML = '<p class="err">关卡数据缺失。</p>';
+    return;
+  }
+  const index = clampIndex(rawIndex);
+  const level = LEVELS[index];
+  const n = level.size;
+  const mineSet = new Set();
+  const mines = Array.isArray(level.mines) ? level.mines : [];
+  for (let m = 0; m < mines.length; m++){
+    const cell = mines[m];
+    if (!cell || cell.length < 2) continue;
+    const r = cell[0], c = cell[1];
+    if (r >= 0 && c >= 0 && r < n && c < n) mineSet.add(r * n + c);
+  }
+
+  const total = n * n;
+  const nbrs = new Array(total);
+  const counts = new Int16Array(total);
+  for (let i = 0; i < total; i++){
+    const r = Math.floor(i / n), c = i % n, list = [];
+    for (let dr = -1; dr <= 1; dr++){
+      for (let dc = -1; dc <= 1; dc++){
+        if (dr === 0 && dc === 0) continue;
+        const rr = r + dr, cc = c + dc;
+        if (rr < 0 || cc < 0 || rr >= n || cc >= n) continue;
+        list.push(rr * n + cc);
+      }
+    }
+    nbrs[i] = list;
+    let k = 0;
+    for (let j = 0; j < list.length; j++) if (mineSet.has(list[j])) k++;
+    counts[i] = k;
+  }
+
+  // 线索优先用关卡数据；缺字段时按 mines 现算（只展示线索本身，不展示 mines）。
+  const rowRuns = new Array(n), colRuns = new Array(n);
+  for (let r = 0; r < n; r++){
+    rowRuns[r] = (Array.isArray(level.rowRuns) && Array.isArray(level.rowRuns[r]))
+      ? level.rowRuns[r] : runsFromMines(mineSet, n, true, r);
+  }
+  for (let c = 0; c < n; c++){
+    colRuns[c] = (Array.isArray(level.colRuns) && Array.isArray(level.colRuns[c]))
+      ? level.colRuns[c] : runsFromMines(mineSet, n, false, c);
+  }
+
+  const lives = (typeof level.lives === 'number' && level.lives > 0) ? Math.floor(level.lives) : 3;
+
+  S = {
+    index: index,
+    level: level,
+    n: n,
+    mineSet: mineSet,
+    nbrs: nbrs,
+    counts: counts,
+    rowRuns: rowRuns,
+    colRuns: colRuns,
+    lives: lives,
+    totalSafe: total - mineSet.size,
+    revealedSafe: new Uint8Array(total),
+    revealedMine: new Uint8Array(total),
+    flagged: new Uint8Array(total),
+    status: 'playing'
+  };
+
+  progress.last = index;
+  saveProgress();
+
+  buildBoard();
+
+  // 开局赠送：opening 是 0 格，自动 flood fill。
+  const op = Array.isArray(level.opening) ? level.opening : null;
+  if (op && op.length >= 2){
+    const oi = op[0] * n + op[1];
+    if (oi >= 0 && oi < total && !mineSet.has(oi)) floodReveal(oi);
+  }
+  checkWin();
+  render();
+}
+
+function buildBoard(){
+  const n = S.n;
+  const withRuns = !!S.level.showRuns;
+  const cols = n + (withRuns ? 1 : 0);
+  boardEl.style.setProperty('--cols', String(cols));
+  boardEl.innerHTML = '';
+  cellEls = new Array(n * n);
+
+  const frag = document.createDocumentFragment();
+  if (withRuns){
+    frag.appendChild(clueEl('clue clue-corner', null));
+    for (let c = 0; c < n; c++) frag.appendChild(clueEl('clue clue-col', S.colRuns[c]));
+  }
+  for (let r = 0; r < n; r++){
+    if (withRuns) frag.appendChild(clueEl('clue clue-row', S.rowRuns[r]));
+    for (let c = 0; c < n; c++){
+      const i = r * n + c;
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'cell';
+      b.setAttribute('data-i', String(i));
+      b.setAttribute('data-r', String(r));
+      b.setAttribute('data-c', String(c));
+      b.setAttribute('aria-label', '第' + (r + 1) + '行 第' + (c + 1) + '列');
+      cellEls[i] = b;
+      frag.appendChild(b);
+    }
+  }
+  boardEl.appendChild(frag);
+  if (typeof requestAnimationFrame === 'function') requestAnimationFrame(fitBoard);
+  else fitBoard();
+}
+
+function clueEl(cls, runs){
+  const d = document.createElement('div');
+  d.className = cls;
+  if (!runs) return d;
+  const list = runs.length ? runs : [0];   // 无雷的行/列显示 0
+  for (let k = 0; k < list.length; k++){
+    const s = document.createElement('span');
+    s.textContent = String(list[k]);
+    d.appendChild(s);
+  }
+  return d;
+}
+
+// 棋盘随容器宽度自适应：用实测格子宽度推字号，保证不横向溢出。
+function fitBoard(){
+  const first = cellEls[0];
+  if (!first) return;
+  const w = first.getBoundingClientRect().width;
+  if (w > 0) boardEl.style.setProperty('--fs', (w * 0.5).toFixed(2) + 'px');
+}
+window.addEventListener('resize', function(){ if (typeof requestAnimationFrame === 'function') requestAnimationFrame(fitBoard); else fitBoard(); });
+window.addEventListener('orientationchange', function(){ setTimeout(fitBoard, 150); });
+
+function floodReveal(start){
+  const n = S.n;
+  const stack = [start];
+  while (stack.length){
+    const i = stack.pop();
+    if (S.revealedSafe[i] || S.revealedMine[i] || S.flagged[i]) continue;
+    if (S.mineSet.has(i)) continue;
+    S.revealedSafe[i] = 1;
+    if (S.counts[i] === 0){
+      const list = S.nbrs[i];
+      for (let k = 0; k < list.length; k++){
+        const j = list[k];
+        if (S.revealedSafe[j] || S.revealedMine[j] || S.flagged[j]) continue;
+        if (S.mineSet.has(j)) continue;
+        stack.push(j);
+      }
+    }
+  }
+}
+
+function checkWin(){
+  if (!S || S.status !== 'playing') return;
+  const total = S.n * S.n;
+  for (let i = 0; i < total; i++){
+    if (S.mineSet.has(i)){
+      if (!S.flagged[i] && !S.revealedMine[i]) return;  // 所有雷必须已标出
+    } else if (!S.revealedSafe[i]){
+      return;                                          // 所有安全格必须已翻开
+    }
+  }
+  S.status = 'won';
+  markCleared(S.index);
+}
+
+function act(i, mode){
+  if (!S || S.status !== 'playing') return;
+  if (S.revealedSafe[i] || S.revealedMine[i]) return;
+  if (mode === MODE_FLAG){
+    S.flagged[i] = S.flagged[i] ? 0 : 1;   // 插旗可取消
+    checkWin();
+    render();
+    return;
+  }
+  if (S.flagged[i]) return;                // 探格模式下不会误翻开已插旗的格
+  if (S.mineSet.has(i)){
+    S.revealedMine[i] = 1;                 // 踩雷：扣 1 命并标记该雷
+    S.lives -= 1;
+    if (S.lives <= 0){ S.lives = 0; S.status = 'lost'; render(); return; }
+    checkWin();
+    render();
+    return;
+  }
+  floodReveal(i);
+  checkWin();
+  render();
+}
+
+function setMode(m){
+  currentMode = m;
+  render();
+}
+
+function render(){
+  if (!S) return;
+  const total = S.n * S.n;
+  let revealed = 0, flags = 0, blasted = 0;
+  for (let i = 0; i < total; i++){
+    if (S.revealedSafe[i]) revealed++;
+    if (S.flagged[i]) flags++;
+    if (S.revealedMine[i]) blasted++;
+  }
+  const marked = flags + blasted;          // 已炸出的雷也算“已标雷”
+  const minesTotal = S.mineSet.size;
+
+  for (let i = 0; i < total; i++){
+    const el = cellEls[i];
+    if (!el) continue;
+    let cls = 'cell';
+    let text = '';
+    if (S.revealedSafe[i]){
+      const v = S.counts[i];
+      cls += ' revealed n' + v;
+      text = v === 0 ? '' : String(v);
+    } else if (S.revealedMine[i]){
+      cls += ' revealed mine';
+      text = '💣';
+    } else if (S.flagged[i]){
+      cls += ' flagged';
+      text = '🚩';
+    } else if (S.status === 'won' && S.mineSet.has(i)){
+      cls += ' wonmine';
+      text = '🚩';
+    }
+    if (el.className !== cls) el.className = cls;
+    if (el.textContent !== text) el.textContent = text;
+  }
+
+  statusEl.textContent = '已翻开 ' + revealed + '/' + S.totalSafe +
+    ' · 已标雷 ' + marked + '/' + minesTotal +
+    ' · 剩余命数 ❤' + S.lives;
+
+  const teach = (typeof S.level.teach === 'string') ? S.level.teach : '';
+  teachEl.textContent = teach;
+  teachEl.className = teach ? 'teach' : 'teach hidden';
+
+  nameEl.textContent = S.level.name ? (' · ' + S.level.name) : '';
+  lvtagEl.textContent = '第 ' + (S.index + 1) + ' / ' + LEVELS.length + ' 关 · ' +
+    S.n + '×' + S.n + (S.level.showRuns ? ' · 含行列线索' : ' · 仅邻域数字');
+
+  digBtn.className = currentMode === MODE_DIG ? 'btn on' : 'btn';
+  flagBtn.className = currentMode === MODE_FLAG ? 'btn on' : 'btn';
+  digBtn.setAttribute('aria-pressed', currentMode === MODE_DIG ? 'true' : 'false');
+  flagBtn.setAttribute('aria-pressed', currentMode === MODE_FLAG ? 'true' : 'false');
+
+  refreshLevelGrid();
+  renderResult();
+
+  document.body.dataset.gameState = JSON.stringify({
+    level: S.index + 1,
+    levelId: (typeof S.level.id === 'number' ? S.level.id : S.index + 1),
+    size: S.n,
+    revealed: revealed,
+    totalSafe: S.totalSafe,
+    flagged: marked,
+    mines: minesTotal,
+    lives: S.lives,
+    status: S.status,
+    mode: currentMode,
+    totalLevels: LEVELS.length,
+    clearedLevels: clearedTotal()
+  });
+}
+
+function renderResult(){
+  resultEl.className = 'result';
+  resultEl.innerHTML = '';
+  let msg = '', btnText = '', action = null, cls = '';
+
+  if (S.status === 'won'){
+    const isLast = S.index >= LEVELS.length - 1;
+    cls = 'win';
+    msg = isLast ? '🎉 全部通关！' : '✅ 过关！';
+    if (!isLast){ btnText = '下一关 →'; action = function(){ startLevel(S.index + 1); }; }
+  } else if (S.status === 'lost'){
+    cls = 'lose';
+    msg = '❌ 命数耗尽，踩到雷了。';
+    btnText = '↻ 重来';
+    action = function(){ startLevel(S.index); };
+  } else {
+    return;
+  }
+
+  resultEl.className = 'result show ' + cls;
+  const p = document.createElement('div');
+  p.className = 'msg';
+  p.textContent = msg;
+  resultEl.appendChild(p);
+
+  if (btnText){
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'btn primary';
+    b.id = 'resultBtn';
+    b.textContent = btnText;
+    if (action) b.addEventListener('click', action);
+    resultEl.appendChild(b);
+  } else {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'btn ghost';
+    b.id = 'resultBtn';
+    b.textContent = '↻ 再玩一遍';
+    b.addEventListener('click', function(){ startLevel(S.index); });
+    resultEl.appendChild(b);
+  }
+}
+
+function buildLevelGrid(){
+  lvGrid.innerHTML = '';
+  lvlEls = [];
+  for (let i = 0; i < LEVELS.length; i++){
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'lvl';
+    b.textContent = String(i + 1);                 // 关卡号
+    b.setAttribute('data-level', String(i + 1));
+    b.setAttribute('data-index', String(i));
+    b.addEventListener('click', (function(k){
+      return function(){ startLevel(k); closePanel(); };
+    })(i));
+    lvGrid.appendChild(b);
+    lvlEls.push(b);
+  }
+  refreshLevelGrid();
+}
+
+// 三态：已通关 / 当前（解锁但未通关）/ 未解锁；另用 playing 标出正在玩的关卡
+function refreshLevelGrid(){
+  const f = frontier();
+  for (let i = 0; i < lvlEls.length; i++){
+    const b = lvlEls[i];
+    const cleared = isCleared(i);
+    const unlocked = i <= f;
+    const playing = !!S && S.index === i;
+    let cls = 'lvl';
+    let label = '第 ' + (i + 1) + ' 关';
+    if (cleared){ cls += ' cleared'; label += '，已通关'; }
+    else if (!unlocked){ cls += ' locked'; label += '，未解锁'; }
+    else if (i === f){ cls += ' current'; label += '，当前关卡'; }
+    if (playing) cls += ' playing';
+    if (b.className !== cls) b.className = cls;
+    b.disabled = !(unlocked || cleared);
+    b.setAttribute('aria-label', label);
+    b.setAttribute('aria-current', playing ? 'true' : 'false');
+  }
+  lvBtnNum.textContent = String((S ? S.index : 0) + 1);
+  lvBtnTotal.textContent = String(LEVELS.length);
+  totalCountEl.textContent = String(LEVELS.length);
+  clearedCountEl.textContent = String(clearedTotal());
+}
+
+function openPanel(){
+  panelOpen = true;
+  levelPanel.hidden = false;
+  levelPanel.className = 'panel open';
+  lvBtn.setAttribute('aria-expanded', 'true');
+  refreshLevelGrid();
+  const cur = lvlEls[S ? S.index : 0];
+  if (cur && cur.scrollIntoView){
+    try { cur.scrollIntoView({ block: 'nearest' }); }
+    catch (e) { try { cur.scrollIntoView(); } catch (e2) {} }
+  }
+}
+
+function closePanel(){
+  panelOpen = false;
+  levelPanel.hidden = true;
+  levelPanel.className = 'panel';
+  lvBtn.setAttribute('aria-expanded', 'false');
+  resetArmed = false;
+  resetBtn.textContent = '重置进度';
+  resetBtn.className = 'mini';
+}
+
+function togglePanel(){
+  if (panelOpen) closePanel();
+  else openPanel();
+}
+
+// 触摸与鼠标统一用 pointer events；右键直接插旗。
+boardEl.addEventListener('pointerdown', function(e){
+  const el = e.target && e.target.closest ? e.target.closest('.cell') : null;
+  if (!el) return;
+  const i = parseInt(el.getAttribute('data-i'), 10);
+  if (isNaN(i)) return;
+  if (e.cancelable) e.preventDefault();
+  if (e.button === 2){ act(i, MODE_FLAG); return; }
+  act(i, currentMode);
+}, { passive: false });
+
+boardEl.addEventListener('contextmenu', function(e){ e.preventDefault(); });
+
+// 键盘可达性：Enter/空格 = 当前模式的点击。
+boardEl.addEventListener('keydown', function(e){
+  const el = e.target;
+  if (!el || !el.getAttribute || el.getAttribute('data-i') === null) return;
+  if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar'){
+    e.preventDefault();
+    const i = parseInt(el.getAttribute('data-i'), 10);
+    if (!isNaN(i)) act(i, currentMode);
+  }
+});
+
+digBtn.addEventListener('click', function(){ setMode(MODE_DIG); });
+flagBtn.addEventListener('click', function(){ setMode(MODE_FLAG); });
+replayBtn.addEventListener('click', function(){ if (S) startLevel(S.index); });
+
+lvBtn.addEventListener('click', togglePanel);
+
+// 重置进度：两步确认，避免误触（进度只存在本机）
+resetBtn.addEventListener('click', function(){
+  if (!resetArmed){
+    resetArmed = true;
+    resetBtn.textContent = '再点一次确认重置';
+    resetBtn.className = 'mini danger';
+    return;
+  }
+  resetArmed = false;
+  resetBtn.textContent = '重置进度';
+  resetBtn.className = 'mini';
+  progress = { v: 1, cleared: {}, last: 0 };
+  saveProgress();
+  startLevel(0);
+  refreshLevelGrid();
+});
+
+window.addEventListener('keydown', function(e){
+  if ((e.key === 'Escape' || e.key === 'Esc') && panelOpen) closePanel();
+});
+
+if (Array.isArray(LEVELS) && LEVELS.length){
+  loadProgress();
+  buildLevelGrid();
+  startLevel(startIndex());
+} else {
+  boardEl.innerHTML = '<p class="err">关卡数据缺失。</p>';
+}
+})();
+</script>
+</body>
+</html>

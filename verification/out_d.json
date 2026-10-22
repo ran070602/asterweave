@@ -1,0 +1,986 @@
+{
+  "summary": {
+    "html_path": "D:\\AI-Native casual game\\dist\\冉政-游戏本体\\index.html",
+    "html_sha256": "de013c5bafd78c15ed97f3008e7ef1dc4407bb5725fdbe8b3968d83facea8a60",
+    "html_utf8_bytes": 37675,
+    "html_mtime": "2026-10-21T07:49:32.531Z",
+    "total": 194,
+    "pass": 194,
+    "fail": 0,
+    "failed": [],
+    "rafCalls": 50,
+    "script_error": null
+  },
+  "results": [
+    {
+      "id": "D2 不含 \"http://\"",
+      "ok": true,
+      "detail": "出现次数=0"
+    },
+    {
+      "id": "D2 不含 \"https://\"",
+      "ok": true,
+      "detail": "出现次数=0"
+    },
+    {
+      "id": "D2 不含 \"fetch(\"",
+      "ok": true,
+      "detail": "出现次数=0"
+    },
+    {
+      "id": "D2 不含 \"XMLHttpRequest\"",
+      "ok": true,
+      "detail": "出现次数=0"
+    },
+    {
+      "id": "D2 不含 \"WebSocket\"",
+      "ok": true,
+      "detail": "出现次数=0"
+    },
+    {
+      "id": "D2 不含 \"<img\"",
+      "ok": true,
+      "detail": "出现次数=0"
+    },
+    {
+      "id": "D2 不含 \"<link\"",
+      "ok": true,
+      "detail": "出现次数=0"
+    },
+    {
+      "id": "D2 不含 \"import(\"",
+      "ok": true,
+      "detail": "出现次数=0"
+    },
+    {
+      "id": "D2 <script> 标签数",
+      "ok": true,
+      "detail": "<script 数=1"
+    },
+    {
+      "id": "D1 找到 <script> 块",
+      "ok": true,
+      "detail": "长度=27888"
+    },
+    {
+      "id": "D1 脚本执行无异常抛出（无 localStorage 时静默降级）",
+      "ok": true,
+      "detail": "无异常"
+    },
+    {
+      "id": "D1 requestAnimationFrame/fitBoard 路径被执行",
+      "ok": true,
+      "detail": "requestAnimationFrame 调用次数=1"
+    },
+    {
+      "id": "D1 内嵌 LEVELS 解析成功",
+      "ok": true,
+      "detail": "关卡数=10（期望 10）"
+    },
+    {
+      "id": "D1 内嵌 LEVELS 与冻结数据逐关 id 一致",
+      "ok": true,
+      "detail": "ids=1,2,3,4,5,6,7,8,9,10"
+    },
+    {
+      "id": "D8a 首次进入从第 1 关开始",
+      "ok": true,
+      "detail": "level=1 cleared=0/10"
+    },
+    {
+      "id": "D8a 未通关时第 2..10 关锁定（10 关解锁链起点）",
+      "ok": true,
+      "detail": "lvl class=[lvl current playing | lvl locked | lvl locked | lvl locked | lvl locked | lvl locked | lvl locked | lvl locked | lvl locked | lvl locked]"
+    },
+    {
+      "id": "D8a 关卡面板可打开",
+      "ok": true,
+      "detail": "panel.hidden=false class=panel open"
+    },
+    {
+      "id": "D8a 面板可再次关闭",
+      "ok": true,
+      "detail": "panel.hidden=true"
+    },
+    {
+      "id": "D1 第1关 棋盘格数 = n²",
+      "ok": true,
+      "detail": "cells=36 n²=36"
+    },
+    {
+      "id": "D1 第1关 线索格数 = (n+1)²-n²",
+      "ok": true,
+      "detail": "clues=0 期望=0 showRuns=false"
+    },
+    {
+      "id": "D1 第1关 gameState 可读且 status=playing",
+      "ok": true,
+      "detail": "{\"level\":1,\"levelId\":1,\"size\":6,\"revealed\":14,\"totalSafe\":30,\"flagged\":0,\"mines\":6,\"lives\":3,\"status\":\"playing\",\"mode\":\"dig\",\"totalLevels\":10,\"clearedLevels\":0}"
+    },
+    {
+      "id": "D6 第1关 不显示行列线索（SPEC §1）",
+      "ok": true,
+      "detail": "线索元素数=0"
+    },
+    {
+      "id": "D1 第2关 棋盘格数 = n²",
+      "ok": true,
+      "detail": "cells=36 n²=36"
+    },
+    {
+      "id": "D1 第2关 线索格数 = (n+1)²-n²",
+      "ok": true,
+      "detail": "clues=0 期望=0 showRuns=false"
+    },
+    {
+      "id": "D1 第2关 gameState 可读且 status=playing",
+      "ok": true,
+      "detail": "{\"level\":2,\"levelId\":2,\"size\":6,\"revealed\":17,\"totalSafe\":30,\"flagged\":0,\"mines\":6,\"lives\":3,\"status\":\"playing\",\"mode\":\"dig\",\"totalLevels\":10,\"clearedLevels\":0}"
+    },
+    {
+      "id": "D6 第2关 不显示行列线索（SPEC §1）",
+      "ok": true,
+      "detail": "线索元素数=0"
+    },
+    {
+      "id": "D1 第3关 棋盘格数 = n²",
+      "ok": true,
+      "detail": "cells=36 n²=36"
+    },
+    {
+      "id": "D1 第3关 线索格数 = (n+1)²-n²",
+      "ok": true,
+      "detail": "clues=0 期望=0 showRuns=false"
+    },
+    {
+      "id": "D1 第3关 gameState 可读且 status=playing",
+      "ok": true,
+      "detail": "{\"level\":3,\"levelId\":3,\"size\":6,\"revealed\":8,\"totalSafe\":29,\"flagged\":0,\"mines\":7,\"lives\":3,\"status\":\"playing\",\"mode\":\"dig\",\"totalLevels\":10,\"clearedLevels\":0}"
+    },
+    {
+      "id": "D6 第3关 不显示行列线索（SPEC §1）",
+      "ok": true,
+      "detail": "线索元素数=0"
+    },
+    {
+      "id": "D1 第4关 棋盘格数 = n²",
+      "ok": true,
+      "detail": "cells=36 n²=36"
+    },
+    {
+      "id": "D1 第4关 线索格数 = (n+1)²-n²",
+      "ok": true,
+      "detail": "clues=13 期望=13 showRuns=true"
+    },
+    {
+      "id": "D1 第4关 gameState 可读且 status=playing",
+      "ok": true,
+      "detail": "{\"level\":4,\"levelId\":4,\"size\":6,\"revealed\":15,\"totalSafe\":29,\"flagged\":0,\"mines\":7,\"lives\":3,\"status\":\"playing\",\"mode\":\"dig\",\"totalLevels\":10,\"clearedLevels\":0}"
+    },
+    {
+      "id": "D6 第4关 左侧行线索文本 == 独立重算",
+      "ok": true,
+      "detail": "DOM=[\"0\",\"0\",\"2\",\"1 1\",\"1\",\"1 1\"] 期望=[\"0\",\"0\",\"2\",\"1 1\",\"1\",\"1 1\"]"
+    },
+    {
+      "id": "D6 第4关 上方列线索文本 == 独立重算",
+      "ok": true,
+      "detail": "DOM=[\"2\",\"1 1\",\"1\",\"0\",\"1 1\",\"0\"] 期望=[\"2\",\"1 1\",\"1\",\"0\",\"1 1\",\"0\"]"
+    },
+    {
+      "id": "D1 第5关 棋盘格数 = n²",
+      "ok": true,
+      "detail": "cells=36 n²=36"
+    },
+    {
+      "id": "D1 第5关 线索格数 = (n+1)²-n²",
+      "ok": true,
+      "detail": "clues=13 期望=13 showRuns=true"
+    },
+    {
+      "id": "D1 第5关 gameState 可读且 status=playing",
+      "ok": true,
+      "detail": "{\"level\":5,\"levelId\":5,\"size\":6,\"revealed\":11,\"totalSafe\":28,\"flagged\":0,\"mines\":8,\"lives\":3,\"status\":\"playing\",\"mode\":\"dig\",\"totalLevels\":10,\"clearedLevels\":0}"
+    },
+    {
+      "id": "D6 第5关 左侧行线索文本 == 独立重算",
+      "ok": true,
+      "detail": "DOM=[\"0\",\"1 2\",\"1 2\",\"1\",\"1\",\"0\"] 期望=[\"0\",\"1 2\",\"1 2\",\"1\",\"1\",\"0\"]"
+    },
+    {
+      "id": "D6 第5关 上方列线索文本 == 独立重算",
+      "ok": true,
+      "detail": "DOM=[\"0\",\"1 1\",\"1 1\",\"0\",\"2\",\"2\"] 期望=[\"0\",\"1 1\",\"1 1\",\"0\",\"2\",\"2\"]"
+    },
+    {
+      "id": "D1 第6关 棋盘格数 = n²",
+      "ok": true,
+      "detail": "cells=49 n²=49"
+    },
+    {
+      "id": "D1 第6关 线索格数 = (n+1)²-n²",
+      "ok": true,
+      "detail": "clues=15 期望=15 showRuns=true"
+    },
+    {
+      "id": "D1 第6关 gameState 可读且 status=playing",
+      "ok": true,
+      "detail": "{\"level\":6,\"levelId\":6,\"size\":7,\"revealed\":15,\"totalSafe\":41,\"flagged\":0,\"mines\":8,\"lives\":3,\"status\":\"playing\",\"mode\":\"dig\",\"totalLevels\":10,\"clearedLevels\":0}"
+    },
+    {
+      "id": "D6 第6关 左侧行线索文本 == 独立重算",
+      "ok": true,
+      "detail": "DOM=[\"0\",\"2 1\",\"1\",\"1 1\",\"0\",\"0\",\"2\"] 期望=[\"0\",\"2 1\",\"1\",\"1 1\",\"0\",\"0\",\"2\"]"
+    },
+    {
+      "id": "D6 第6关 上方列线索文本 == 独立重算",
+      "ok": true,
+      "detail": "DOM=[\"0\",\"1\",\"2 1\",\"1 1 1\",\"0\",\"0\",\"1\"] 期望=[\"0\",\"1\",\"2 1\",\"1 1 1\",\"0\",\"0\",\"1\"]"
+    },
+    {
+      "id": "D1 第7关 棋盘格数 = n²",
+      "ok": true,
+      "detail": "cells=49 n²=49"
+    },
+    {
+      "id": "D1 第7关 线索格数 = (n+1)²-n²",
+      "ok": true,
+      "detail": "clues=15 期望=15 showRuns=true"
+    },
+    {
+      "id": "D1 第7关 gameState 可读且 status=playing",
+      "ok": true,
+      "detail": "{\"level\":7,\"levelId\":7,\"size\":7,\"revealed\":8,\"totalSafe\":40,\"flagged\":0,\"mines\":9,\"lives\":3,\"status\":\"playing\",\"mode\":\"dig\",\"totalLevels\":10,\"clearedLevels\":0}"
+    },
+    {
+      "id": "D6 第7关 左侧行线索文本 == 独立重算",
+      "ok": true,
+      "detail": "DOM=[\"1\",\"1 1\",\"0\",\"2\",\"1 1 1\",\"0\",\"1\"] 期望=[\"1\",\"1 1\",\"0\",\"2\",\"1 1 1\",\"0\",\"1\"]"
+    },
+    {
+      "id": "D6 第7关 上方列线索文本 == 独立重算",
+      "ok": true,
+      "detail": "DOM=[\"1\",\"1\",\"1\",\"1\",\"2\",\"1\",\"2\"] 期望=[\"1\",\"1\",\"1\",\"1\",\"2\",\"1\",\"2\"]"
+    },
+    {
+      "id": "D1 第8关 棋盘格数 = n²",
+      "ok": true,
+      "detail": "cells=49 n²=49"
+    },
+    {
+      "id": "D1 第8关 线索格数 = (n+1)²-n²",
+      "ok": true,
+      "detail": "clues=15 期望=15 showRuns=true"
+    },
+    {
+      "id": "D1 第8关 gameState 可读且 status=playing",
+      "ok": true,
+      "detail": "{\"level\":8,\"levelId\":8,\"size\":7,\"revealed\":6,\"totalSafe\":39,\"flagged\":0,\"mines\":10,\"lives\":3,\"status\":\"playing\",\"mode\":\"dig\",\"totalLevels\":10,\"clearedLevels\":0}"
+    },
+    {
+      "id": "D6 第8关 左侧行线索文本 == 独立重算",
+      "ok": true,
+      "detail": "DOM=[\"1\",\"1 1\",\"1\",\"1\",\"2\",\"1 2\",\"0\"] 期望=[\"1\",\"1 1\",\"1\",\"1\",\"2\",\"1 2\",\"0\"]"
+    },
+    {
+      "id": "D6 第8关 上方列线索文本 == 独立重算",
+      "ok": true,
+      "detail": "DOM=[\"0\",\"1 2\",\"1\",\"2 1\",\"1 1\",\"1\",\"0\"] 期望=[\"0\",\"1 2\",\"1\",\"2 1\",\"1 1\",\"1\",\"0\"]"
+    },
+    {
+      "id": "D1 第9关 棋盘格数 = n²",
+      "ok": true,
+      "detail": "cells=64 n²=64"
+    },
+    {
+      "id": "D1 第9关 线索格数 = (n+1)²-n²",
+      "ok": true,
+      "detail": "clues=17 期望=17 showRuns=true"
+    },
+    {
+      "id": "D1 第9关 gameState 可读且 status=playing",
+      "ok": true,
+      "detail": "{\"level\":9,\"levelId\":9,\"size\":8,\"revealed\":9,\"totalSafe\":53,\"flagged\":0,\"mines\":11,\"lives\":3,\"status\":\"playing\",\"mode\":\"dig\",\"totalLevels\":10,\"clearedLevels\":0}"
+    },
+    {
+      "id": "D6 第9关 左侧行线索文本 == 独立重算",
+      "ok": true,
+      "detail": "DOM=[\"1 1\",\"0\",\"0\",\"2 1 1\",\"2\",\"0\",\"1 1 1\",\"0\"] 期望=[\"1 1\",\"0\",\"0\",\"2 1 1\",\"2\",\"0\",\"1 1 1\",\"0\"]"
+    },
+    {
+      "id": "D6 第9关 上方列线索文本 == 独立重算",
+      "ok": true,
+      "detail": "DOM=[\"1\",\"1 1\",\"1\",\"1 1\",\"2\",\"0\",\"1 1\",\"1\"] 期望=[\"1\",\"1 1\",\"1\",\"1 1\",\"2\",\"0\",\"1 1\",\"1\"]"
+    },
+    {
+      "id": "D1 第10关 棋盘格数 = n²",
+      "ok": true,
+      "detail": "cells=64 n²=64"
+    },
+    {
+      "id": "D1 第10关 线索格数 = (n+1)²-n²",
+      "ok": true,
+      "detail": "clues=17 期望=17 showRuns=true"
+    },
+    {
+      "id": "D1 第10关 gameState 可读且 status=playing",
+      "ok": true,
+      "detail": "{\"level\":10,\"levelId\":10,\"size\":8,\"revealed\":14,\"totalSafe\":52,\"flagged\":0,\"mines\":12,\"lives\":3,\"status\":\"playing\",\"mode\":\"dig\",\"totalLevels\":10,\"clearedLevels\":0}"
+    },
+    {
+      "id": "D6 第10关 左侧行线索文本 == 独立重算",
+      "ok": true,
+      "detail": "DOM=[\"1 1\",\"0\",\"1 1 1\",\"1\",\"1 1\",\"1 1\",\"1\",\"1\"] 期望=[\"1 1\",\"0\",\"1 1 1\",\"1\",\"1 1\",\"1 1\",\"1\",\"1\"]"
+    },
+    {
+      "id": "D6 第10关 上方列线索文本 == 独立重算",
+      "ok": true,
+      "detail": "DOM=[\"1 2 1\",\"0\",\"1 1 1\",\"1\",\"0\",\"1\",\"2 1\",\"0\"] 期望=[\"1 2 1\",\"0\",\"1 1 1\",\"1\",\"0\",\"1\",\"2 1\",\"0\"]"
+    },
+    {
+      "id": "D5 第1关 playing 时无 mine/wonmine 类",
+      "ok": true,
+      "detail": "命中=0"
+    },
+    {
+      "id": "D5 第1关 playing 时无 💣 文本",
+      "ok": true,
+      "detail": "命中=0"
+    },
+    {
+      "id": "D5 第1关 playing 时未插旗",
+      "ok": true,
+      "detail": "命中=0"
+    },
+    {
+      "id": "D5 第1关 全部未翻开格形态同构（未翻开格之间无差异标注）",
+      "ok": true,
+      "detail": "未翻开格的不同形态数=1（1=同构）"
+    },
+    {
+      "id": "D5 第1关 每格属性值都是位置的纯函数（不含雷信息）",
+      "ok": true,
+      "detail": "data-i/data-r/data-c/aria-label 全部与索引一致"
+    },
+    {
+      "id": "D5 第1关 雷格与安全格属性键集合一致（无差异化标注）",
+      "ok": true,
+      "detail": "雷格=aria-label,data-c,data-i,data-r 安全格=aria-label,data-c,data-i,data-r"
+    },
+    {
+      "id": "D5 第2关 playing 时无 mine/wonmine 类",
+      "ok": true,
+      "detail": "命中=0"
+    },
+    {
+      "id": "D5 第2关 playing 时无 💣 文本",
+      "ok": true,
+      "detail": "命中=0"
+    },
+    {
+      "id": "D5 第2关 playing 时未插旗",
+      "ok": true,
+      "detail": "命中=0"
+    },
+    {
+      "id": "D5 第2关 全部未翻开格形态同构（未翻开格之间无差异标注）",
+      "ok": true,
+      "detail": "未翻开格的不同形态数=1（1=同构）"
+    },
+    {
+      "id": "D5 第2关 每格属性值都是位置的纯函数（不含雷信息）",
+      "ok": true,
+      "detail": "data-i/data-r/data-c/aria-label 全部与索引一致"
+    },
+    {
+      "id": "D5 第2关 雷格与安全格属性键集合一致（无差异化标注）",
+      "ok": true,
+      "detail": "雷格=aria-label,data-c,data-i,data-r 安全格=aria-label,data-c,data-i,data-r"
+    },
+    {
+      "id": "D5 第3关 playing 时无 mine/wonmine 类",
+      "ok": true,
+      "detail": "命中=0"
+    },
+    {
+      "id": "D5 第3关 playing 时无 💣 文本",
+      "ok": true,
+      "detail": "命中=0"
+    },
+    {
+      "id": "D5 第3关 playing 时未插旗",
+      "ok": true,
+      "detail": "命中=0"
+    },
+    {
+      "id": "D5 第3关 全部未翻开格形态同构（未翻开格之间无差异标注）",
+      "ok": true,
+      "detail": "未翻开格的不同形态数=1（1=同构）"
+    },
+    {
+      "id": "D5 第3关 每格属性值都是位置的纯函数（不含雷信息）",
+      "ok": true,
+      "detail": "data-i/data-r/data-c/aria-label 全部与索引一致"
+    },
+    {
+      "id": "D5 第3关 雷格与安全格属性键集合一致（无差异化标注）",
+      "ok": true,
+      "detail": "雷格=aria-label,data-c,data-i,data-r 安全格=aria-label,data-c,data-i,data-r"
+    },
+    {
+      "id": "D5 第4关 playing 时无 mine/wonmine 类",
+      "ok": true,
+      "detail": "命中=0"
+    },
+    {
+      "id": "D5 第4关 playing 时无 💣 文本",
+      "ok": true,
+      "detail": "命中=0"
+    },
+    {
+      "id": "D5 第4关 playing 时未插旗",
+      "ok": true,
+      "detail": "命中=0"
+    },
+    {
+      "id": "D5 第4关 全部未翻开格形态同构（未翻开格之间无差异标注）",
+      "ok": true,
+      "detail": "未翻开格的不同形态数=1（1=同构）"
+    },
+    {
+      "id": "D5 第4关 每格属性值都是位置的纯函数（不含雷信息）",
+      "ok": true,
+      "detail": "data-i/data-r/data-c/aria-label 全部与索引一致"
+    },
+    {
+      "id": "D5 第4关 雷格与安全格属性键集合一致（无差异化标注）",
+      "ok": true,
+      "detail": "雷格=aria-label,data-c,data-i,data-r 安全格=aria-label,data-c,data-i,data-r"
+    },
+    {
+      "id": "D5 第5关 playing 时无 mine/wonmine 类",
+      "ok": true,
+      "detail": "命中=0"
+    },
+    {
+      "id": "D5 第5关 playing 时无 💣 文本",
+      "ok": true,
+      "detail": "命中=0"
+    },
+    {
+      "id": "D5 第5关 playing 时未插旗",
+      "ok": true,
+      "detail": "命中=0"
+    },
+    {
+      "id": "D5 第5关 全部未翻开格形态同构（未翻开格之间无差异标注）",
+      "ok": true,
+      "detail": "未翻开格的不同形态数=1（1=同构）"
+    },
+    {
+      "id": "D5 第5关 每格属性值都是位置的纯函数（不含雷信息）",
+      "ok": true,
+      "detail": "data-i/data-r/data-c/aria-label 全部与索引一致"
+    },
+    {
+      "id": "D5 第5关 雷格与安全格属性键集合一致（无差异化标注）",
+      "ok": true,
+      "detail": "雷格=aria-label,data-c,data-i,data-r 安全格=aria-label,data-c,data-i,data-r"
+    },
+    {
+      "id": "D5 第6关 playing 时无 mine/wonmine 类",
+      "ok": true,
+      "detail": "命中=0"
+    },
+    {
+      "id": "D5 第6关 playing 时无 💣 文本",
+      "ok": true,
+      "detail": "命中=0"
+    },
+    {
+      "id": "D5 第6关 playing 时未插旗",
+      "ok": true,
+      "detail": "命中=0"
+    },
+    {
+      "id": "D5 第6关 全部未翻开格形态同构（未翻开格之间无差异标注）",
+      "ok": true,
+      "detail": "未翻开格的不同形态数=1（1=同构）"
+    },
+    {
+      "id": "D5 第6关 每格属性值都是位置的纯函数（不含雷信息）",
+      "ok": true,
+      "detail": "data-i/data-r/data-c/aria-label 全部与索引一致"
+    },
+    {
+      "id": "D5 第6关 雷格与安全格属性键集合一致（无差异化标注）",
+      "ok": true,
+      "detail": "雷格=aria-label,data-c,data-i,data-r 安全格=aria-label,data-c,data-i,data-r"
+    },
+    {
+      "id": "D5 第7关 playing 时无 mine/wonmine 类",
+      "ok": true,
+      "detail": "命中=0"
+    },
+    {
+      "id": "D5 第7关 playing 时无 💣 文本",
+      "ok": true,
+      "detail": "命中=0"
+    },
+    {
+      "id": "D5 第7关 playing 时未插旗",
+      "ok": true,
+      "detail": "命中=0"
+    },
+    {
+      "id": "D5 第7关 全部未翻开格形态同构（未翻开格之间无差异标注）",
+      "ok": true,
+      "detail": "未翻开格的不同形态数=1（1=同构）"
+    },
+    {
+      "id": "D5 第7关 每格属性值都是位置的纯函数（不含雷信息）",
+      "ok": true,
+      "detail": "data-i/data-r/data-c/aria-label 全部与索引一致"
+    },
+    {
+      "id": "D5 第7关 雷格与安全格属性键集合一致（无差异化标注）",
+      "ok": true,
+      "detail": "雷格=aria-label,data-c,data-i,data-r 安全格=aria-label,data-c,data-i,data-r"
+    },
+    {
+      "id": "D5 第8关 playing 时无 mine/wonmine 类",
+      "ok": true,
+      "detail": "命中=0"
+    },
+    {
+      "id": "D5 第8关 playing 时无 💣 文本",
+      "ok": true,
+      "detail": "命中=0"
+    },
+    {
+      "id": "D5 第8关 playing 时未插旗",
+      "ok": true,
+      "detail": "命中=0"
+    },
+    {
+      "id": "D5 第8关 全部未翻开格形态同构（未翻开格之间无差异标注）",
+      "ok": true,
+      "detail": "未翻开格的不同形态数=1（1=同构）"
+    },
+    {
+      "id": "D5 第8关 每格属性值都是位置的纯函数（不含雷信息）",
+      "ok": true,
+      "detail": "data-i/data-r/data-c/aria-label 全部与索引一致"
+    },
+    {
+      "id": "D5 第8关 雷格与安全格属性键集合一致（无差异化标注）",
+      "ok": true,
+      "detail": "雷格=aria-label,data-c,data-i,data-r 安全格=aria-label,data-c,data-i,data-r"
+    },
+    {
+      "id": "D5 第9关 playing 时无 mine/wonmine 类",
+      "ok": true,
+      "detail": "命中=0"
+    },
+    {
+      "id": "D5 第9关 playing 时无 💣 文本",
+      "ok": true,
+      "detail": "命中=0"
+    },
+    {
+      "id": "D5 第9关 playing 时未插旗",
+      "ok": true,
+      "detail": "命中=0"
+    },
+    {
+      "id": "D5 第9关 全部未翻开格形态同构（未翻开格之间无差异标注）",
+      "ok": true,
+      "detail": "未翻开格的不同形态数=1（1=同构）"
+    },
+    {
+      "id": "D5 第9关 每格属性值都是位置的纯函数（不含雷信息）",
+      "ok": true,
+      "detail": "data-i/data-r/data-c/aria-label 全部与索引一致"
+    },
+    {
+      "id": "D5 第9关 雷格与安全格属性键集合一致（无差异化标注）",
+      "ok": true,
+      "detail": "雷格=aria-label,data-c,data-i,data-r 安全格=aria-label,data-c,data-i,data-r"
+    },
+    {
+      "id": "D5 第10关 playing 时无 mine/wonmine 类",
+      "ok": true,
+      "detail": "命中=0"
+    },
+    {
+      "id": "D5 第10关 playing 时无 💣 文本",
+      "ok": true,
+      "detail": "命中=0"
+    },
+    {
+      "id": "D5 第10关 playing 时未插旗",
+      "ok": true,
+      "detail": "命中=0"
+    },
+    {
+      "id": "D5 第10关 全部未翻开格形态同构（未翻开格之间无差异标注）",
+      "ok": true,
+      "detail": "未翻开格的不同形态数=1（1=同构）"
+    },
+    {
+      "id": "D5 第10关 每格属性值都是位置的纯函数（不含雷信息）",
+      "ok": true,
+      "detail": "data-i/data-r/data-c/aria-label 全部与索引一致"
+    },
+    {
+      "id": "D5 第10关 雷格与安全格属性键集合一致（无差异化标注）",
+      "ok": true,
+      "detail": "雷格=aria-label,data-c,data-i,data-r 安全格=aria-label,data-c,data-i,data-r"
+    },
+    {
+      "id": "D3 第1关 按独立序列(22 步)通关 status=won",
+      "ok": true,
+      "detail": "status=won revealed=30/30 flagged=6/6 lives=3"
+    },
+    {
+      "id": "D3 第1关 胜利时所有安全格已翻开且所有雷已插旗",
+      "ok": true,
+      "detail": "revealed=30/30 flagged=6/6"
+    },
+    {
+      "id": "D3 点「下一关」进入第 2 关",
+      "ok": true,
+      "detail": "level=2"
+    },
+    {
+      "id": "D8a 通关第 1 关后第 2 关解锁",
+      "ok": true,
+      "detail": "class=lvl current playing disabled=false"
+    },
+    {
+      "id": "D3 第2关 按独立序列(18 步)通关 status=won",
+      "ok": true,
+      "detail": "status=won revealed=30/30 flagged=6/6 lives=3"
+    },
+    {
+      "id": "D3 第2关 胜利时所有安全格已翻开且所有雷已插旗",
+      "ok": true,
+      "detail": "revealed=30/30 flagged=6/6"
+    },
+    {
+      "id": "D3 点「下一关」进入第 3 关",
+      "ok": true,
+      "detail": "level=3"
+    },
+    {
+      "id": "D8a 通关第 2 关后第 3 关解锁",
+      "ok": true,
+      "detail": "class=lvl current playing disabled=false"
+    },
+    {
+      "id": "D3 第3关 按独立序列(28 步)通关 status=won",
+      "ok": true,
+      "detail": "status=won revealed=29/29 flagged=7/7 lives=3"
+    },
+    {
+      "id": "D3 第3关 胜利时所有安全格已翻开且所有雷已插旗",
+      "ok": true,
+      "detail": "revealed=29/29 flagged=7/7"
+    },
+    {
+      "id": "D3 点「下一关」进入第 4 关",
+      "ok": true,
+      "detail": "level=4"
+    },
+    {
+      "id": "D8a 通关第 3 关后第 4 关解锁",
+      "ok": true,
+      "detail": "class=lvl current playing disabled=false"
+    },
+    {
+      "id": "D3 第4关 按独立序列(21 步)通关 status=won",
+      "ok": true,
+      "detail": "status=won revealed=29/29 flagged=7/7 lives=3"
+    },
+    {
+      "id": "D3 第4关 胜利时所有安全格已翻开且所有雷已插旗",
+      "ok": true,
+      "detail": "revealed=29/29 flagged=7/7"
+    },
+    {
+      "id": "D3 点「下一关」进入第 5 关",
+      "ok": true,
+      "detail": "level=5"
+    },
+    {
+      "id": "D8a 通关第 4 关后第 5 关解锁",
+      "ok": true,
+      "detail": "class=lvl current playing disabled=false"
+    },
+    {
+      "id": "D3 第5关 按独立序列(22 步)通关 status=won",
+      "ok": true,
+      "detail": "status=won revealed=28/28 flagged=8/8 lives=3"
+    },
+    {
+      "id": "D3 第5关 胜利时所有安全格已翻开且所有雷已插旗",
+      "ok": true,
+      "detail": "revealed=28/28 flagged=8/8"
+    },
+    {
+      "id": "D3 点「下一关」进入第 6 关",
+      "ok": true,
+      "detail": "level=6"
+    },
+    {
+      "id": "D8a 通关第 5 关后第 6 关解锁",
+      "ok": true,
+      "detail": "class=lvl current playing disabled=false"
+    },
+    {
+      "id": "D3 第6关 按独立序列(26 步)通关 status=won",
+      "ok": true,
+      "detail": "status=won revealed=41/41 flagged=8/8 lives=3"
+    },
+    {
+      "id": "D3 第6关 胜利时所有安全格已翻开且所有雷已插旗",
+      "ok": true,
+      "detail": "revealed=41/41 flagged=8/8"
+    },
+    {
+      "id": "D3 点「下一关」进入第 7 关",
+      "ok": true,
+      "detail": "level=7"
+    },
+    {
+      "id": "D8a 通关第 6 关后第 7 关解锁",
+      "ok": true,
+      "detail": "class=lvl current playing disabled=false"
+    },
+    {
+      "id": "D3 第7关 按独立序列(36 步)通关 status=won",
+      "ok": true,
+      "detail": "status=won revealed=40/40 flagged=9/9 lives=3"
+    },
+    {
+      "id": "D3 第7关 胜利时所有安全格已翻开且所有雷已插旗",
+      "ok": true,
+      "detail": "revealed=40/40 flagged=9/9"
+    },
+    {
+      "id": "D3 点「下一关」进入第 8 关",
+      "ok": true,
+      "detail": "level=8"
+    },
+    {
+      "id": "D8a 通关第 7 关后第 8 关解锁",
+      "ok": true,
+      "detail": "class=lvl current playing disabled=false"
+    },
+    {
+      "id": "D3 第8关 按独立序列(39 步)通关 status=won",
+      "ok": true,
+      "detail": "status=won revealed=39/39 flagged=10/10 lives=3"
+    },
+    {
+      "id": "D3 第8关 胜利时所有安全格已翻开且所有雷已插旗",
+      "ok": true,
+      "detail": "revealed=39/39 flagged=10/10"
+    },
+    {
+      "id": "D3 点「下一关」进入第 9 关",
+      "ok": true,
+      "detail": "level=9"
+    },
+    {
+      "id": "D8a 通关第 8 关后第 9 关解锁",
+      "ok": true,
+      "detail": "class=lvl current playing disabled=false"
+    },
+    {
+      "id": "D3 第9关 按独立序列(50 步)通关 status=won",
+      "ok": true,
+      "detail": "status=won revealed=53/53 flagged=11/11 lives=3"
+    },
+    {
+      "id": "D3 第9关 胜利时所有安全格已翻开且所有雷已插旗",
+      "ok": true,
+      "detail": "revealed=53/53 flagged=11/11"
+    },
+    {
+      "id": "D3 点「下一关」进入第 10 关",
+      "ok": true,
+      "detail": "level=10"
+    },
+    {
+      "id": "D8a 通关第 9 关后第 10 关解锁",
+      "ok": true,
+      "detail": "class=lvl current playing disabled=false"
+    },
+    {
+      "id": "D3 第10关 按独立序列(45 步)通关 status=won",
+      "ok": true,
+      "detail": "status=won revealed=52/52 flagged=12/12 lives=3"
+    },
+    {
+      "id": "D3 第10关 胜利时所有安全格已翻开且所有雷已插旗",
+      "ok": true,
+      "detail": "revealed=52/52 flagged=12/12"
+    },
+    {
+      "id": "SPEC §4.6 第10关（末关）通关显示「全部通关」",
+      "ok": true,
+      "detail": "result=\"🎉 全部通关！↻ 再玩一遍\""
+    },
+    {
+      "id": "D8a 10 关全部通关后 clearedLevels=10",
+      "ok": true,
+      "detail": "cleared=10/10"
+    },
+    {
+      "id": "D8a gameState.totalLevels == 10",
+      "ok": true,
+      "detail": "totalLevels=10"
+    },
+    {
+      "id": "D3b 全部安全格翻开但未插旗 → status 仍为 playing",
+      "ok": true,
+      "detail": "status=playing revealed=30/30 flagged=0/6"
+    },
+    {
+      "id": "D3b 差 1 颗雷未插旗 → status 仍为 playing",
+      "ok": true,
+      "detail": "status=playing flagged=5/6"
+    },
+    {
+      "id": "D3b 最后一颗雷插旗后 → status=won",
+      "ok": true,
+      "detail": "status=won revealed=30/30 flagged=6/6"
+    },
+    {
+      "id": "D4 探格模式点雷 → 命数 -1",
+      "ok": true,
+      "detail": "lives 3 -> 2"
+    },
+    {
+      "id": "D4 点雷后 status 仍 playing（还有命）",
+      "ok": true,
+      "detail": "status=playing"
+    },
+    {
+      "id": "D4 再点一颗雷 → 命数再 -1",
+      "ok": true,
+      "detail": "lives=1"
+    },
+    {
+      "id": "D4 连点 3 颗雷 → status=lost",
+      "ok": true,
+      "detail": "status=lost lives=0"
+    },
+    {
+      "id": "SPEC §4.6 失败显示「重来」",
+      "ok": true,
+      "detail": "result=\"❌ 命数耗尽，踩到雷了。↻ 重来\""
+    },
+    {
+      "id": "D4 插旗 → 计数 +1",
+      "ok": true,
+      "detail": "flagged=1"
+    },
+    {
+      "id": "D4 插旗 → 格子显示 🚩",
+      "ok": true,
+      "detail": "class=cell flagged text=🚩"
+    },
+    {
+      "id": "D4 再点一次插旗 → 取消（计数归 0）",
+      "ok": true,
+      "detail": "flagged=0"
+    },
+    {
+      "id": "D4 取消后格子恢复未标记",
+      "ok": true,
+      "detail": "class=cell"
+    },
+    {
+      "id": "D4b 右键（button=2）直接插旗",
+      "ok": true,
+      "detail": "flagged=1"
+    },
+    {
+      "id": "D4b 重玩本关 → 回到 playing/满命/0 旗",
+      "ok": true,
+      "detail": "{\"level\":1,\"levelId\":1,\"size\":6,\"revealed\":14,\"totalSafe\":30,\"flagged\":0,\"mines\":6,\"lives\":3,\"status\":\"playing\",\"mode\":\"flag\",\"totalLevels\":10,\"clearedLevels\":10}"
+    },
+    {
+      "id": "SPEC §4.5 10 关 teach 显示规则与数据一致（空则隐藏、非空则显示）",
+      "ok": true,
+      "detail": "L1:有/显示 L2:空/隐藏 L3:空/隐藏 L4:有/显示 L5:空/隐藏 L6:空/隐藏 L7:空/隐藏 L8:有/显示 L9:空/隐藏 L10:空/隐藏"
+    },
+    {
+      "id": "SPEC §4.5 第 3 关 teach 为空且隐藏（正文点名项）",
+      "ok": true,
+      "detail": "teach=\"\" class=teach hidden"
+    },
+    {
+      "id": "SPEC v1.1 §1 踩爆的雷算「已标出」→ 应判 won，且该格是 revealed mine 而非 flagged",
+      "ok": true,
+      "detail": "status=won 该雷 class=\"cell revealed mine\" text=\"💣\" gameState.flagged=6/6（实际插旗数=5）"
+    },
+    {
+      "id": "SPEC v1.1 §1 已插旗的格子会挡住 flood fill（与文档一致）",
+      "ok": true,
+      "detail": "第1关：先插旗安全格 (1,5)，再探开 0 格 (1,6) → 该边界格 class=\"cell flagged\" 未被翻开（符合 v1.1「插旗挡住 flood fill」）"
+    },
+    {
+      "id": "SPEC v1.1 §1 该行为可恢复（取消插旗后可正常翻开）",
+      "ok": true,
+      "detail": "取消插旗后再探 → class=\"cell revealed n1\""
+    },
+    {
+      "id": "D8b 带 localStorage 时脚本仍无异常",
+      "ok": true,
+      "detail": "无异常"
+    },
+    {
+      "id": "D8b 第 1 关通关",
+      "ok": true,
+      "detail": "status=won"
+    },
+    {
+      "id": "D8b 进度写入 localStorage",
+      "ok": true,
+      "detail": "STORAGE={\"v\":1,\"cleared\":{\"0\":1},\"last\":0}"
+    },
+    {
+      "id": "D8b 新会话恢复进度（clearedLevels=1，当前第 2 关）",
+      "ok": true,
+      "detail": "{\"level\":2,\"levelId\":2,\"size\":6,\"revealed\":17,\"totalSafe\":30,\"flagged\":0,\"mines\":6,\"lives\":3,\"status\":\"playing\",\"mode\":\"dig\",\"totalLevels\":10,\"clearedLevels\":1}"
+    },
+    {
+      "id": "D8b 新会话中第 1 关标记为已通关、第 3 关仍锁定",
+      "ok": true,
+      "detail": "grid=[lvl cleared | lvl current playing | lvl locked | lvl locked | lvl locked | lvl locked | lvl locked | lvl locked | lvl locked | lvl locked]"
+    },
+    {
+      "id": "D8b 重置进度为两步确认且生效",
+      "ok": true,
+      "detail": "armed=true state={\"level\":1,\"levelId\":1,\"size\":6,\"revealed\":14,\"totalSafe\":30,\"flagged\":0,\"mines\":6,\"lives\":3,\"status\":\"playing\",\"mode\":\"dig\",\"totalLevels\":10,\"clearedLevels\":0} grid=[lvl current playing | lvl locked | lvl locked | lvl locked | lvl locked | lvl locked | lvl locked | lvl locked | lvl locked | lvl locked]"
+    },
+    {
+      "id": "SPEC §4.7 LEVELS 位于注入注释块之间",
+      "ok": true,
+      "detail": "存在"
+    },
+    {
+      "id": "SPEC §4.7 注入块自成一体（不含外部变量引用）",
+      "ok": true,
+      "detail": "const LEVELS = [ { \"id\": 1,  …"
+    },
+    {
+      "id": "SPEC §4.7 内嵌 LEVELS == 冻结的 levels.json",
+      "ok": true,
+      "detail": "对比文件=D:\\AI-Native casual game\\tools\\levels.json（逐字段比较）"
+    }
+  ]
+}

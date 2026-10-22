@@ -1,0 +1,117 @@
+{
+  "budget_s": 120.0,
+  "levels": [
+    {
+      "id": 1,
+      "showRuns": false,
+      "revealed_at_start": 14,
+      "true_layout_valid": true,
+      "solutions": 26,
+      "timeout": false,
+      "nodes": 74613,
+      "elapsed_s": 0.09,
+      "method": "comb"
+    },
+    {
+      "id": 2,
+      "showRuns": true,
+      "revealed_at_start": 6,
+      "true_layout_valid": true,
+      "solutions": 1,
+      "timeout": false,
+      "nodes": 21,
+      "elapsed_s": 0.0,
+      "method": "rowdfs"
+    },
+    {
+      "id": 3,
+      "showRuns": true,
+      "revealed_at_start": 8,
+      "true_layout_valid": true,
+      "solutions": 1,
+      "timeout": false,
+      "nodes": 44,
+      "elapsed_s": 0.0,
+      "method": "rowdfs"
+    },
+    {
+      "id": 4,
+      "showRuns": true,
+      "revealed_at_start": 6,
+      "true_layout_valid": true,
+      "solutions": 8,
+      "timeout": false,
+      "nodes": 584,
+      "elapsed_s": 0.02,
+      "method": "rowdfs"
+    },
+    {
+      "id": 5,
+      "showRuns": true,
+      "revealed_at_start": 15,
+      "true_layout_valid": true,
+      "solutions": 1,
+      "timeout": false,
+      "nodes": 59,
+      "elapsed_s": 0.0,
+      "method": "rowdfs"
+    },
+    {
+      "id": 6,
+      "showRuns": true,
+      "revealed_at_start": 6,
+      "true_layout_valid": true,
+      "solutions": 2,
+      "timeout": false,
+      "nodes": 160,
+      "elapsed_s": 0.0,
+      "method": "rowdfs"
+    },
+    {
+      "id": 7,
+      "showRuns": true,
+      "revealed_at_start": 12,
+      "true_layout_valid": true,
+      "solutions": 20,
+      "timeout": false,
+      "nodes": 863,
+      "elapsed_s": 0.0,
+      "method": "rowdfs"
+    },
+    {
+      "id": 8,
+      "showRuns": true,
+      "revealed_at_start": 11,
+      "true_layout_valid": true,
+      "solutions": 68,
+      "timeout": false,
+      "nodes": 17285,
+      "elapsed_s": 0.05,
+      "method": "rowdfs"
+    },
+    {
+      "id": 9,
+      "showRuns": true,
+      "revealed_at_start": 20,
+      "true_layout_valid": true,
+      "solutions": 1,
+      "timeout": false,
+      "nodes": 137,
+      "elapsed_s": 0.0,
+      "method": "rowdfs"
+    },
+    {
+      "id": 10,
+      "showRuns": true,
+      "revealed_at_start": 9,
+      "true_layout_valid": true,
+      "solutions": 11,
+      "timeout": false,
+      "nodes": 16512,
+      "elapsed_s": 0.03,
+      "method": "rowdfs"
+    }
+  ],
+  "fails": [],
+  "verdict": "PASS"
+}

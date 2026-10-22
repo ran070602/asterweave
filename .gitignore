@@ -1,0 +1,12 @@
+# 临时/工作目录
+.scratch/
+.workbuddy/
+
+# Python
+__pycache__/
+*.pyc
+
+# 系统
+Thumbs.db
+desktop.ini
+.DS_Store

@@ -1,0 +1,101 @@
+{
+  "levels_file": "D:\\AI-Native casual game\\tools\\levels.json",
+  "level_count": 10,
+  "embedded_levels_count": 10,
+  "embedded_levels_equal": true,
+  "shell_equal_modulo_levels": true,
+  "per_level": [
+    {
+      "id": 1,
+      "size": 6,
+      "mines": 6,
+      "showRuns": false,
+      "teach_nonempty": true,
+      "errors": [],
+      "opening_flood_size": 14
+    },
+    {
+      "id": 2,
+      "size": 6,
+      "mines": 7,
+      "showRuns": true,
+      "teach_nonempty": true,
+      "errors": [],
+      "opening_flood_size": 6
+    },
+    {
+      "id": 3,
+      "size": 6,
+      "mines": 8,
+      "showRuns": true,
+      "teach_nonempty": false,
+      "errors": [],
+      "opening_flood_size": 8
+    },
+    {
+      "id": 4,
+      "size": 7,
+      "mines": 8,
+      "showRuns": true,
+      "teach_nonempty": false,
+      "errors": [],
+      "opening_flood_size": 6
+    },
+    {
+      "id": 5,
+      "size": 7,
+      "mines": 9,
+      "showRuns": true,
+      "teach_nonempty": false,
+      "errors": [],
+      "opening_flood_size": 15
+    },
+    {
+      "id": 6,
+      "size": 7,
+      "mines": 10,
+      "showRuns": true,
+      "teach_nonempty": true,
+      "errors": [],
+      "opening_flood_size": 6
+    },
+    {
+      "id": 7,
+      "size": 8,
+      "mines": 11,
+      "showRuns": true,
+      "teach_nonempty": false,
+      "errors": [],
+      "opening_flood_size": 12
+    },
+    {
+      "id": 8,
+      "size": 8,
+      "mines": 12,
+      "showRuns": true,
+      "teach_nonempty": false,
+      "errors": [],
+      "opening_flood_size": 11
+    },
+    {
+      "id": 9,
+      "size": 8,
+      "mines": 13,
+      "showRuns": true,
+      "teach_nonempty": false,
+      "errors": [],
+      "opening_flood_size": 20
+    },
+    {
+      "id": 10,
+      "size": 8,
+      "mines": 14,
+      "showRuns": true,
+      "teach_nonempty": false,
+      "errors": [],
+      "opening_flood_size": 9
+    }
+  ],
+  "fails": [],
+  "verdict": "PASS"
+}

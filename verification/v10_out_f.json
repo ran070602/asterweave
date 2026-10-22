@@ -1,0 +1,59 @@
+{
+ "html_sha256": "e43e0b4d62d05ae51bf4e0551985de603fb1361e2b7f4e03120f1d267dac24b4",
+ "html_bytes": 151517,
+ "zip_sha256": "d944827034e36b91edaeed1002e6179f22be4c6e591311240105d6a3217586c4",
+ "zip_bytes": 27361,
+ "manifest_encoding": "utf-8",
+ "manifest": {
+  "ui_source": "game\\index.html",
+  "ui_sha256": "7f5237e22bd398e94690b2791f0e9f377b01b0369fec3d5eeb6a140b1f9817bb",
+  "levels_source": "tools\\levels.json",
+  "levels_sha256": "cfcc26a1bf974e357c37b98f8887c0a59afbba9356071748020b0c5b13b0bc1c",
+  "level_count": 20,
+  "build_output": "dist\\星织-游戏本体\\index.html",
+  "build_sha256": "e43e0b4d62d05ae51bf4e0551985de603fb1361e2b7f4e03120f1d267dac24b4",
+  "zip": "星织-游戏本体.zip",
+  "zip_sha256": "d944827034e36b91edaeed1002e6179f22be4c6e591311240105d6a3217586c4",
+  "zip_bytes": 27361,
+  "html_bytes": 151517,
+  "zip_root_entries": [
+   "index.html",
+   "README.txt"
+  ],
+  "checks": {
+   "levels_roundtrip": true,
+   "offline_selfcontained": true,
+   "node_syntax": true,
+   "clue_selfconsistent": true,
+   "zip_root_index": true
+  }
+ },
+ "manifest_fields_match": {
+  "levels_sha256": true,
+  "build_sha256": true,
+  "html_bytes": true,
+  "zip_sha256": true,
+  "zip_bytes": true,
+  "level_count": true
+ },
+ "zip_entries": [
+  "index.html",
+  "README.txt"
+ ],
+ "zip_root_index": true,
+ "zip_index_bytes": 151517,
+ "zip_index_sha256": "e43e0b4d62d05ae51bf4e0551985de603fb1361e2b7f4e03120f1d267dac24b4",
+ "zip_index_equals_dist": true,
+ "external_refs": {
+  "http(s)://": 0,
+  "fetch(": 0,
+  "XMLHttpRequest": 0,
+  "WebSocket": 0,
+  "<link": 0,
+  "<img": 0,
+  "import(": 0
+ },
+ "script_src": 0,
+ "title": "星织 Asterweave · 10 关",
+ "title_claims_10": true
+}

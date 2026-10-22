@@ -1,0 +1,394 @@
+{
+  "levels": [
+    {
+      "id": 1,
+      "report_steps": 22,
+      "independent_steps": 22,
+      "same_action_set": true,
+      "report_by_rule": {
+        "邻域": 22,
+        "连续块": 0
+      },
+      "independent_by_rule": {
+        "邻域": 22,
+        "连续块": 0
+      },
+      "report_digs": 16,
+      "independent_digs": 16,
+      "report_flood_size": 14,
+      "report_static_solutions": null,
+      "report_static_nodes": null,
+      "report_gen_attempts": 22,
+      "report_gen_accepted": 5
+    },
+    {
+      "id": 2,
+      "report_steps": 18,
+      "independent_steps": 18,
+      "same_action_set": true,
+      "report_by_rule": {
+        "邻域": 18,
+        "连续块": 0
+      },
+      "independent_by_rule": {
+        "邻域": 18,
+        "连续块": 0
+      },
+      "report_digs": 12,
+      "independent_digs": 12,
+      "report_flood_size": 17,
+      "report_static_solutions": null,
+      "report_static_nodes": null,
+      "report_gen_attempts": 23,
+      "report_gen_accepted": 5
+    },
+    {
+      "id": 3,
+      "report_steps": 28,
+      "independent_steps": 28,
+      "same_action_set": true,
+      "report_by_rule": {
+        "邻域": 28,
+        "连续块": 0
+      },
+      "independent_by_rule": {
+        "邻域": 28,
+        "连续块": 0
+      },
+      "report_digs": 21,
+      "independent_digs": 21,
+      "report_flood_size": 8,
+      "report_static_solutions": null,
+      "report_static_nodes": null,
+      "report_gen_attempts": 36,
+      "report_gen_accepted": 5
+    },
+    {
+      "id": 4,
+      "report_steps": 21,
+      "independent_steps": 21,
+      "same_action_set": true,
+      "report_by_rule": {
+        "邻域": 14,
+        "连续块": 7
+      },
+      "independent_by_rule": {
+        "邻域": 5,
+        "连续块": 16
+      },
+      "report_digs": 14,
+      "independent_digs": 14,
+      "report_flood_size": 15,
+      "report_static_solutions": null,
+      "report_static_nodes": null,
+      "report_gen_attempts": 6,
+      "report_gen_accepted": 5
+    },
+    {
+      "id": 5,
+      "report_steps": 22,
+      "independent_steps": 22,
+      "same_action_set": true,
+      "report_by_rule": {
+        "邻域": 15,
+        "连续块": 7
+      },
+      "independent_by_rule": {
+        "邻域": 7,
+        "连续块": 15
+      },
+      "report_digs": 14,
+      "independent_digs": 14,
+      "report_flood_size": 11,
+      "report_static_solutions": null,
+      "report_static_nodes": null,
+      "report_gen_attempts": 7,
+      "report_gen_accepted": 5
+    },
+    {
+      "id": 6,
+      "report_steps": 26,
+      "independent_steps": 26,
+      "same_action_set": true,
+      "report_by_rule": {
+        "邻域": 23,
+        "连续块": 3
+      },
+      "independent_by_rule": {
+        "邻域": 8,
+        "连续块": 18
+      },
+      "report_digs": 18,
+      "independent_digs": 18,
+      "report_flood_size": 15,
+      "report_static_solutions": null,
+      "report_static_nodes": null,
+      "report_gen_attempts": 6,
+      "report_gen_accepted": 5
+    },
+    {
+      "id": 7,
+      "report_steps": 36,
+      "independent_steps": 36,
+      "same_action_set": true,
+      "report_by_rule": {
+        "邻域": 21,
+        "连续块": 15
+      },
+      "independent_by_rule": {
+        "邻域": 11,
+        "连续块": 25
+      },
+      "report_digs": 27,
+      "independent_digs": 27,
+      "report_flood_size": 8,
+      "report_static_solutions": null,
+      "report_static_nodes": null,
+      "report_gen_attempts": 8,
+      "report_gen_accepted": 5
+    },
+    {
+      "id": 8,
+      "report_steps": 39,
+      "independent_steps": 39,
+      "same_action_set": false,
+      "report_by_rule": {
+        "邻域": 27,
+        "连续块": 12
+      },
+      "independent_by_rule": {
+        "邻域": 12,
+        "连续块": 27
+      },
+      "report_digs": 29,
+      "independent_digs": 29,
+      "report_flood_size": 6,
+      "report_static_solutions": null,
+      "report_static_nodes": null,
+      "report_gen_attempts": 5,
+      "report_gen_accepted": 5
+    },
+    {
+      "id": 9,
+      "report_steps": 50,
+      "independent_steps": 50,
+      "same_action_set": true,
+      "report_by_rule": {
+        "邻域": 39,
+        "连续块": 11
+      },
+      "independent_by_rule": {
+        "邻域": 9,
+        "连续块": 41
+      },
+      "report_digs": 39,
+      "independent_digs": 39,
+      "report_flood_size": 9,
+      "report_static_solutions": null,
+      "report_static_nodes": null,
+      "report_gen_attempts": 5,
+      "report_gen_accepted": 5
+    },
+    {
+      "id": 10,
+      "report_steps": 44,
+      "independent_steps": 45,
+      "same_action_set": false,
+      "report_by_rule": {
+        "邻域": 41,
+        "连续块": 3
+      },
+      "independent_by_rule": {
+        "邻域": 8,
+        "连续块": 37
+      },
+      "report_digs": 32,
+      "independent_digs": 33,
+      "report_flood_size": 14,
+      "report_static_solutions": null,
+      "report_static_nodes": null,
+      "report_gen_attempts": 6,
+      "report_gen_accepted": 5
+    }
+  ],
+  "diffs": [
+    {
+      "level": 8,
+      "only_report": [
+        [
+          "探开安全格",
+          7,
+          6
+        ],
+        [
+          "探开安全格",
+          7,
+          7
+        ]
+      ],
+      "only_independent": [
+        [
+          "探开安全格",
+          5,
+          7
+        ],
+        [
+          "探开安全格",
+          6,
+          7
+        ]
+      ]
+    },
+    {
+      "level": 10,
+      "only_report": [
+        [
+          "探开安全格",
+          7,
+          3
+        ],
+        [
+          "探开安全格",
+          8,
+          3
+        ]
+      ],
+      "only_independent": [
+        [
+          "探开安全格",
+          7,
+          5
+        ],
+        [
+          "探开安全格",
+          7,
+          6
+        ],
+        [
+          "探开安全格",
+          8,
+          5
+        ]
+      ]
+    }
+  ],
+  "main_table": {
+    "1": [
+      "1",
+      "6×6",
+      "6",
+      "否",
+      "✅ 能",
+      "否",
+      "0",
+      "22",
+      "16",
+      "26（>1：开局线索本身有歧义，玩家靠探格获得新数字收敛）",
+      "✅ 通过"
+    ],
+    "2": [
+      "2",
+      "6×6",
+      "6",
+      "否",
+      "✅ 能",
+      "否",
+      "0",
+      "18",
+      "12",
+      "8（>1：开局线索本身有歧义，玩家靠探格获得新数字收敛）",
+      "✅ 通过"
+    ],
+    "3": [
+      "3",
+      "6×6",
+      "7",
+      "否",
+      "✅ 能",
+      "否",
+      "0",
+      "28",
+      "21",
+      "5985（>1：开局线索本身有歧义，玩家靠探格获得新数字收敛）",
+      "✅ 通过"
+    ],
+    "4": [
+      "4",
+      "6×6",
+      "7",
+      "是",
+      "❌ 会卡住",
+      "✅ 必须",
+      "7",
+      "14",
+      "14",
+      "1（开局线索下唯一）（独立复核实测）",
+      "✅ 通过"
+    ],
+    "5": [
+      "5",
+      "6×6",
+      "8",
+      "是",
+      "❌ 会卡住",
+      "✅ 必须",
+      "7",
+      "15",
+      "14",
+      "1（开局线索下唯一）（独立复核实测）",
+      "✅ 通过"
+    ],
+    "6": [
+      "6",
+      "7×7",
+      "8",
+      "是",
+      "❌ 会卡住",
+      "✅ 必须",
+      "3",
+      "23",
+      "18",
+      "1（开局线索下唯一）（独立复核实测）",
+      "✅ 通过"
+    ],
+    "7": [
+      "7",
+      "7×7",
+      "9",
+      "是",
+      "❌ 会卡住",
+      "✅ 必须",
+      "15",
+      "21",
+      "27",
+      "2（>1：开局线索本身有歧义，玩家靠探格获得新数字收敛）（独立复核实测）",
+      "✅ 通过"
+    ],
+    "8": [
+      "8",
+      "7×7",
+      "10",
+      "是",
+      "❌ 会卡住",
+      "✅ 必须",
+      "12",
+      "27",
+      "29",
+      "1（开局线索下唯一）（独立复核实测）",
+      "✅ 通过"
+    ],
+    "9": [
+      "9",
+      "8×8",
+      "11",
+      "是",
+      "❌ 会卡住",
+      "✅ 必须",
+      "11",
+      "39",
+      "39",
+      "1（开局线索下唯一）（独立复核实测）",
+      "✅ 通过"
+    ]
+  }
+}

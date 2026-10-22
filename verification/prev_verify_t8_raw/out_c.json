@@ -1,0 +1,821 @@
+{
+  "budget_s": 120.0,
+  "levels": [
+    {
+      "id": 1,
+      "revealed_at_start": 14,
+      "row_option_counts": [
+        64,
+        64,
+        16,
+        4,
+        4,
+        4
+      ],
+      "true_layout_valid": true,
+      "full": {
+        "solutions": 26,
+        "nodes": 17813,
+        "timeout": false,
+        "sols_sample": [
+          [
+            "......",
+            "X.....",
+            "..X.X.",
+            "....X.",
+            "....X.",
+            ".....X"
+          ],
+          [
+            "......",
+            "X.....",
+            "..X.X.",
+            "....X.",
+            "....XX",
+            "......"
+          ],
+          [
+            "......",
+            "X.....",
+            "..X.X.",
+            "....XX",
+            "....X.",
+            "......"
+          ],
+          [
+            "......",
+            "X.....",
+            "..X.XX",
+            "....X.",
+            "....X.",
+            "......"
+          ],
+          [
+            "......",
+            ".X....",
+            "..X.X.",
+            "....X.",
+            "....X.",
+            ".....X"
+          ],
+          [
+            "......",
+            ".X....",
+            "..X.X.",
+            "....X.",
+            "....XX",
+            "......"
+          ]
+        ],
+        "elapsed_s": 0.235
+      },
+      "no_numbers": {
+        "solutions": 74613,
+        "nodes": 0,
+        "timeout": false,
+        "sols_sample": [],
+        "note": "组合数捷径 C(22,6)",
+        "elapsed_s": 0.0
+      },
+      "bruteforce": {
+        "available": false,
+        "product_rows": 4194304,
+        "solutions": null,
+        "note": "行模式全展开规模 4194304 超过上限 3000000，未执行"
+      },
+      "comb_bruteforce": {
+        "available": true,
+        "solutions": 26,
+        "timeout": false,
+        "elapsed_s": 0.12,
+        "sols_sample": [
+          [
+            0,
+            6,
+            14,
+            16,
+            22,
+            28
+          ],
+          [
+            0,
+            7,
+            14,
+            16,
+            22,
+            28
+          ],
+          [
+            1,
+            6,
+            14,
+            16,
+            22,
+            28
+          ]
+        ]
+      },
+      "cross_check_solutions": 26,
+      "cross_check_agree": true,
+      "solution_count_sane": true
+    },
+    {
+      "id": 2,
+      "revealed_at_start": 17,
+      "row_option_counts": [
+        8,
+        2,
+        2,
+        4,
+        64,
+        64
+      ],
+      "true_layout_valid": true,
+      "full": {
+        "solutions": 8,
+        "nodes": 28,
+        "timeout": false,
+        "sols_sample": [
+          [
+            "..X...",
+            "......",
+            "X.....",
+            ".....X",
+            ".XX...",
+            "X....."
+          ],
+          [
+            "..X...",
+            "......",
+            "X.....",
+            ".....X",
+            ".XX...",
+            ".X...."
+          ],
+          [
+            "..X...",
+            "......",
+            "X.....",
+            ".....X",
+            ".XX...",
+            "..X..."
+          ],
+          [
+            "..X...",
+            "......",
+            "X.....",
+            ".....X",
+            ".XX...",
+            "...X.."
+          ],
+          [
+            "..X...",
+            "......",
+            "X.....",
+            ".....X",
+            ".XX...",
+            "....X."
+          ],
+          [
+            "..X...",
+            "......",
+            "X.....",
+            ".....X",
+            ".XX...",
+            ".....X"
+          ]
+        ],
+        "elapsed_s": 0.0
+      },
+      "no_numbers": {
+        "solutions": 27132,
+        "nodes": 0,
+        "timeout": false,
+        "sols_sample": [],
+        "note": "组合数捷径 C(19,6)",
+        "elapsed_s": 0.0
+      },
+      "bruteforce": {
+        "available": true,
+        "product_rows": 524288,
+        "solutions": 8,
+        "timeout": false,
+        "elapsed_s": 0.59,
+        "sols_sample": [
+          [
+            "..X...",
+            "......",
+            "X.....",
+            ".....X",
+            ".XX...",
+            "X....."
+          ],
+          [
+            "..X...",
+            "......",
+            "X.....",
+            ".....X",
+            ".XX...",
+            ".X...."
+          ],
+          [
+            "..X...",
+            "......",
+            "X.....",
+            ".....X",
+            ".XX...",
+            "..X..."
+          ]
+        ]
+      },
+      "comb_bruteforce": {
+        "available": true,
+        "solutions": 8,
+        "timeout": false,
+        "elapsed_s": 0.06,
+        "sols_sample": [
+          [
+            0,
+            2,
+            18,
+            23,
+            25,
+            26
+          ],
+          [
+            2,
+            6,
+            23,
+            24,
+            25,
+            26
+          ],
+          [
+            2,
+            12,
+            23,
+            25,
+            26,
+            30
+          ]
+        ]
+      },
+      "cross_check_solutions": 8,
+      "cross_check_agree": true,
+      "solution_count_sane": true
+    },
+    {
+      "id": 3,
+      "revealed_at_start": 8,
+      "row_option_counts": [
+        64,
+        64,
+        64,
+        64,
+        4,
+        4
+      ],
+      "true_layout_valid": true,
+      "full": {
+        "solutions": 5985,
+        "nodes": 1216360,
+        "timeout": false,
+        "sols_sample": [
+          [
+            "......",
+            "......",
+            "X.....",
+            "X...X.",
+            "XX....",
+            "XX...."
+          ],
+          [
+            "......",
+            "......",
+            ".X....",
+            "X...X.",
+            "XX....",
+            "XX...."
+          ],
+          [
+            "......",
+            "......",
+            "XX....",
+            "....X.",
+            "XX....",
+            "XX...."
+          ],
+          [
+            "......",
+            "......",
+            "XX....",
+            "X...X.",
+            ".X....",
+            "XX...."
+          ],
+          [
+            "......",
+            "......",
+            "XX....",
+            "X...X.",
+            "XX....",
+            ".X...."
+          ],
+          [
+            "......",
+            "......",
+            "..X...",
+            "X...X.",
+            "XX....",
+            "XX...."
+          ]
+        ],
+        "elapsed_s": 11.859
+      },
+      "no_numbers": {
+        "solutions": 1184040,
+        "nodes": 0,
+        "timeout": false,
+        "sols_sample": [],
+        "note": "组合数捷径 C(28,7)",
+        "elapsed_s": 0.0
+      },
+      "bruteforce": {
+        "available": false,
+        "product_rows": 268435456,
+        "solutions": null,
+        "note": "行模式全展开规模 268435456 超过上限 3000000，未执行"
+      },
+      "comb_bruteforce": {
+        "available": true,
+        "solutions": 5985,
+        "timeout": false,
+        "elapsed_s": 1.19,
+        "sols_sample": [
+          [
+            0,
+            1,
+            2,
+            3,
+            22,
+            25,
+            31
+          ],
+          [
+            0,
+            1,
+            2,
+            4,
+            22,
+            25,
+            31
+          ],
+          [
+            0,
+            1,
+            2,
+            5,
+            22,
+            25,
+            31
+          ]
+        ]
+      },
+      "cross_check_solutions": 5985,
+      "cross_check_agree": true,
+      "solution_count_sane": true
+    },
+    {
+      "id": 4,
+      "revealed_at_start": 15,
+      "row_option_counts": [
+        1,
+        1,
+        2,
+        10,
+        6,
+        10
+      ],
+      "true_layout_valid": true,
+      "full": {
+        "solutions": 1,
+        "nodes": 7,
+        "timeout": false,
+        "sols_sample": [
+          [
+            "......",
+            "......",
+            ".XX...",
+            "X...X.",
+            "X.....",
+            ".X..X."
+          ]
+        ],
+        "elapsed_s": 0.0
+      },
+      "bruteforce": {
+        "available": true,
+        "product_rows": 1200,
+        "solutions": 1,
+        "timeout": false,
+        "elapsed_s": 0.01,
+        "sols_sample": [
+          [
+            "......",
+            "......",
+            ".XX...",
+            "X...X.",
+            "X.....",
+            ".X..X."
+          ]
+        ]
+      },
+      "cross_check_solutions": 1,
+      "cross_check_agree": true,
+      "solution_count_sane": true
+    },
+    {
+      "id": 5,
+      "revealed_at_start": 11,
+      "row_option_counts": [
+        1,
+        6,
+        6,
+        3,
+        2,
+        1
+      ],
+      "true_layout_valid": true,
+      "full": {
+        "solutions": 1,
+        "nodes": 10,
+        "timeout": false,
+        "sols_sample": [
+          [
+            "......",
+            "..X.XX",
+            ".X..XX",
+            "..X...",
+            ".X....",
+            "......"
+          ]
+        ],
+        "elapsed_s": 0.0
+      },
+      "bruteforce": {
+        "available": true,
+        "product_rows": 216,
+        "solutions": 1,
+        "timeout": false,
+        "elapsed_s": 0.0,
+        "sols_sample": [
+          [
+            "......",
+            "..X.XX",
+            ".X..XX",
+            "..X...",
+            ".X....",
+            "......"
+          ]
+        ]
+      },
+      "cross_check_solutions": 1,
+      "cross_check_agree": true,
+      "solution_count_sane": true
+    },
+    {
+      "id": 6,
+      "revealed_at_start": 15,
+      "row_option_counts": [
+        1,
+        10,
+        4,
+        3,
+        1,
+        1,
+        3
+      ],
+      "true_layout_valid": true,
+      "full": {
+        "solutions": 1,
+        "nodes": 9,
+        "timeout": false,
+        "sols_sample": [
+          [
+            ".......",
+            "..XX..X",
+            "..X....",
+            ".X.X...",
+            ".......",
+            ".......",
+            "..XX..."
+          ]
+        ],
+        "elapsed_s": 0.0
+      },
+      "bruteforce": {
+        "available": true,
+        "product_rows": 360,
+        "solutions": 1,
+        "timeout": false,
+        "elapsed_s": 0.0,
+        "sols_sample": [
+          [
+            ".......",
+            "..XX..X",
+            "..X....",
+            ".X.X...",
+            ".......",
+            ".......",
+            "..XX..."
+          ]
+        ]
+      },
+      "cross_check_solutions": 1,
+      "cross_check_agree": true,
+      "solution_count_sane": true
+    },
+    {
+      "id": 7,
+      "revealed_at_start": 8,
+      "row_option_counts": [
+        5,
+        6,
+        1,
+        4,
+        10,
+        1,
+        7
+      ],
+      "true_layout_valid": true,
+      "full": {
+        "solutions": 2,
+        "nodes": 29,
+        "timeout": false,
+        "sols_sample": [
+          [
+            "....X..",
+            "..X.X..",
+            ".......",
+            ".....XX",
+            "X..X..X",
+            ".......",
+            ".X....."
+          ],
+          [
+            "....X..",
+            "..X.X..",
+            ".......",
+            ".....XX",
+            ".X.X..X",
+            ".......",
+            "X......"
+          ]
+        ],
+        "elapsed_s": 0.0
+      },
+      "bruteforce": {
+        "available": true,
+        "product_rows": 8400,
+        "solutions": 2,
+        "timeout": false,
+        "elapsed_s": 0.03,
+        "sols_sample": [
+          [
+            "....X..",
+            "..X.X..",
+            ".......",
+            ".....XX",
+            "X..X..X",
+            ".......",
+            ".X....."
+          ],
+          [
+            "....X..",
+            "..X.X..",
+            ".......",
+            ".....XX",
+            ".X.X..X",
+            ".......",
+            "X......"
+          ]
+        ]
+      },
+      "cross_check_solutions": 2,
+      "cross_check_agree": true,
+      "solution_count_sane": true
+    },
+    {
+      "id": 8,
+      "revealed_at_start": 6,
+      "row_option_counts": [
+        5,
+        6,
+        5,
+        7,
+        6,
+        10,
+        1
+      ],
+      "true_layout_valid": true,
+      "full": {
+        "solutions": 1,
+        "nodes": 18,
+        "timeout": false,
+        "sols_sample": [
+          [
+            "....X..",
+            ".X.X...",
+            "...X...",
+            ".....X.",
+            ".XX....",
+            ".X.XX..",
+            "......."
+          ]
+        ],
+        "elapsed_s": 0.0
+      },
+      "bruteforce": {
+        "available": true,
+        "product_rows": 63000,
+        "solutions": 1,
+        "timeout": false,
+        "elapsed_s": 0.14,
+        "sols_sample": [
+          [
+            "....X..",
+            ".X.X...",
+            "...X...",
+            ".....X.",
+            ".XX....",
+            ".X.XX..",
+            "......."
+          ]
+        ]
+      },
+      "cross_check_solutions": 1,
+      "cross_check_agree": true,
+      "solution_count_sane": true
+    },
+    {
+      "id": 9,
+      "revealed_at_start": 9,
+      "row_option_counts": [
+        7,
+        1,
+        1,
+        10,
+        7,
+        1,
+        20,
+        1
+      ],
+      "true_layout_valid": true,
+      "full": {
+        "solutions": 1,
+        "nodes": 16,
+        "timeout": false,
+        "sols_sample": [
+          [
+            "..X...X.",
+            "........",
+            "........",
+            "XX..X..X",
+            "...XX...",
+            "........",
+            ".X.X..X.",
+            "........"
+          ]
+        ],
+        "elapsed_s": 0.0
+      },
+      "bruteforce": {
+        "available": true,
+        "product_rows": 9800,
+        "solutions": 1,
+        "timeout": false,
+        "elapsed_s": 0.03,
+        "sols_sample": [
+          [
+            "..X...X.",
+            "........",
+            "........",
+            "XX..X..X",
+            "...XX...",
+            "........",
+            ".X.X..X.",
+            "........"
+          ]
+        ]
+      },
+      "cross_check_solutions": 1,
+      "cross_check_agree": true,
+      "solution_count_sane": true
+    },
+    {
+      "id": 10,
+      "revealed_at_start": 14,
+      "row_option_counts": [
+        1,
+        1,
+        4,
+        6,
+        21,
+        21,
+        8,
+        8
+      ],
+      "true_layout_valid": true,
+      "full": {
+        "solutions": 4,
+        "nodes": 19,
+        "timeout": false,
+        "sols_sample": [
+          [
+            "X.X.....",
+            "........",
+            "X.X..X..",
+            "X.......",
+            "..X...X.",
+            "X.....X.",
+            "...X....",
+            "......X."
+          ],
+          [
+            "X.X.....",
+            "........",
+            "X.X..X..",
+            "X.......",
+            "..X...X.",
+            "...X..X.",
+            "X.......",
+            "......X."
+          ],
+          [
+            "X.X.....",
+            "........",
+            "X.X..X..",
+            "X.......",
+            "...X..X.",
+            "X.....X.",
+            "..X.....",
+            "......X."
+          ],
+          [
+            "X.X.....",
+            "........",
+            "X.X..X..",
+            "X.......",
+            "...X..X.",
+            "..X...X.",
+            "X.......",
+            "......X."
+          ]
+        ],
+        "elapsed_s": 0.0
+      },
+      "bruteforce": {
+        "available": true,
+        "product_rows": 677376,
+        "solutions": 4,
+        "timeout": false,
+        "elapsed_s": 1.58,
+        "sols_sample": [
+          [
+            "X.X.....",
+            "........",
+            "X.X..X..",
+            "X.......",
+            "..X...X.",
+            "X.....X.",
+            "...X....",
+            "......X."
+          ],
+          [
+            "X.X.....",
+            "........",
+            "X.X..X..",
+            "X.......",
+            "..X...X.",
+            "...X..X.",
+            "X.......",
+            "......X."
+          ],
+          [
+            "X.X.....",
+            "........",
+            "X.X..X..",
+            "X.......",
+            "...X..X.",
+            "X.....X.",
+            "..X.....",
+            "......X."
+          ]
+        ]
+      },
+      "cross_check_solutions": 4,
+      "cross_check_agree": true,
+      "solution_count_sane": true
+    }
+  ]
+}

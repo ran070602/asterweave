@@ -1,0 +1,806 @@
+{
+  "html": "D:\\AI-Native casual game\\dist\\冉政-游戏本体\\index.html",
+  "html_sha256": "f9c7d69ca249c067eaf8dac094c37e8b0d50e3c018f6539f2b8ee0668969b1a9",
+  "html_bytes": 48555,
+  "levels": 10,
+  "total_checks": 158,
+  "passed": 157,
+  "failed": [
+    {
+      "id": "D0 <title> 与 10 关版本一致（不应写「3 关体验」）",
+      "detail": "实测 <title>=\"雷线谜图 · 3 关体验\""
+    }
+  ],
+  "results": [
+    {
+      "id": "D0 被复核对象 sha256",
+      "ok": true,
+      "detail": "f9c7d69ca249… (48555 B)"
+    },
+    {
+      "id": "D0 只有 1 段内联 <script> 且无 src",
+      "ok": true,
+      "detail": "<script 标签数=1"
+    },
+    {
+      "id": "D0 零外部引用 \"http://\"",
+      "ok": true,
+      "detail": "出现次数=0"
+    },
+    {
+      "id": "D0 零外部引用 \"https://\"",
+      "ok": true,
+      "detail": "出现次数=0"
+    },
+    {
+      "id": "D0 零外部引用 \"fetch(\"",
+      "ok": true,
+      "detail": "出现次数=0"
+    },
+    {
+      "id": "D0 零外部引用 \"XMLHttpRequest\"",
+      "ok": true,
+      "detail": "出现次数=0"
+    },
+    {
+      "id": "D0 零外部引用 \"WebSocket\"",
+      "ok": true,
+      "detail": "出现次数=0"
+    },
+    {
+      "id": "D0 零外部引用 \"<img\"",
+      "ok": true,
+      "detail": "出现次数=0"
+    },
+    {
+      "id": "D0 零外部引用 \"<link\"",
+      "ok": true,
+      "detail": "出现次数=0"
+    },
+    {
+      "id": "D0 零外部引用 \"import(\"",
+      "ok": true,
+      "detail": "出现次数=0"
+    },
+    {
+      "id": "D0 <title> 与 10 关版本一致（不应写「3 关体验」）",
+      "ok": false,
+      "detail": "实测 <title>=\"雷线谜图 · 3 关体验\""
+    },
+    {
+      "id": "D0 CSS：overlay 全屏遮罩（fixed + inset:0 + flex 居中）",
+      "ok": true,
+      "detail": "需 .overlay{position:fixed;inset:0;align-items:center;justify-content:center}"
+    },
+    {
+      "id": "D0 CSS：overlay 有 z-index（遮住提示条，非棋盘点击层）",
+      "ok": true,
+      "detail": "z-index 存在"
+    },
+    {
+      "id": "D0 CSS：modal 竖屏自适应（min(92vw,420px) + max-height）",
+      "ok": true,
+      "detail": "需 width:min(92vw,420px) 与 max-height:82vh"
+    },
+    {
+      "id": "D0 CSS：modal 按钮 ≥44px（min-height:48px）",
+      "ok": true,
+      "detail": "需 .modal-btns .btn{min-height:48px}"
+    },
+    {
+      "id": "D1 脚本执行无异常",
+      "ok": true,
+      "detail": "ok"
+    },
+    {
+      "id": "D1 body.dataset.gameState 可解析",
+      "ok": true,
+      "detail": "{\"level\":1,\"levelId\":1,\"size\":6,\"revealed\":14,\"totalSafe\":30,\"flagged\":0,\"mines\":6,\"lives\":3,\"status\":\"playing\",\"mode\":\"dig\",\"totalLevels\":10,\"clearedLevels\":0}"
+    },
+    {
+      "id": "D1 初始关卡=1 / 总关数=10",
+      "ok": true,
+      "detail": "level=1 totalLevels=10"
+    },
+    {
+      "id": "D1 初始命数=3 / status=playing",
+      "ok": true,
+      "detail": "lives=3 status=playing"
+    },
+    {
+      "id": "D1 初始 hearts=❤❤❤",
+      "ok": true,
+      "detail": "{\"label\":\"剩余命数 3 / 3\",\"text\":\"❤❤❤\",\"count\":3,\"slots\":[{\"text\":\"❤\",\"cls\":\"heart full\",\"len\":1},{\"text\":\"❤\",\"cls\":\"heart full\",\"len\":1},{\"text\":\"❤\",\"cls\":\"heart full\",\"len\":1}],\"role\":\"img\"}"
+    },
+    {
+      "id": "D7 初始 dataset 字段齐全",
+      "ok": true,
+      "detail": "9/9 齐全"
+    },
+    {
+      "id": "D7 初始 playing 时 DOM 不泄露雷坐标",
+      "ok": true,
+      "detail": "0 处泄露"
+    },
+    {
+      "id": "D2 爱心容器 role=img",
+      "ok": true,
+      "detail": "role=img"
+    },
+    {
+      "id": "D2 初始 aria-label=「剩余命数 3 / 3」",
+      "ok": true,
+      "detail": "剩余命数 3 / 3"
+    },
+    {
+      "id": "D2 爱心固定 3 槽位（不随命数增减节点）",
+      "ok": true,
+      "detail": "槽位=3"
+    },
+    {
+      "id": "D2 每颗爱心单字符（等宽槽位近似）",
+      "ok": true,
+      "detail": "[1,1,1]"
+    },
+    {
+      "id": "D2 CSS：hearts 固定最小宽度 3*1.15em（防换行/跳动）",
+      "ok": true,
+      "detail": "需 .hearts{min-width:calc(3 * 1.15em)}"
+    },
+    {
+      "id": "D2 CSS：每颗 heart 固定宽 1.15em",
+      "ok": true,
+      "detail": "需 .hearts .heart{width:1.15em}"
+    },
+    {
+      "id": "D2 踩 1 雷：lives=2 / ❤❤♡ / aria-label 2/3 / 仍 playing",
+      "ok": true,
+      "detail": "{\"lives\":2,\"hearts\":\"❤❤♡\",\"label\":\"剩余命数 2 / 3\",\"status\":\"playing\"}"
+    },
+    {
+      "id": "D2 踩 1 雷：modal 不应出现（未失败）",
+      "ok": true,
+      "detail": "overlayOpen=false"
+    },
+    {
+      "id": "D2 踩 2 雷：lives=1 / ❤♡♡ / aria-label 1/3",
+      "ok": true,
+      "detail": "{\"lives\":1,\"hearts\":\"❤♡♡\",\"label\":\"剩余命数 1 / 3\"}"
+    },
+    {
+      "id": "D2 爱心槽位在 3→1 全程保持 3 个",
+      "ok": true,
+      "detail": "槽位恒=3"
+    },
+    {
+      "id": "D3 踩爆 3 雷：lives=0 / status=lost / ♡♡♡ / aria-label 0/3",
+      "ok": true,
+      "detail": "{\"lives\":0,\"status\":\"lost\",\"hearts\":\"♡♡♡\",\"label\":\"剩余命数 0 / 3\"}"
+    },
+    {
+      "id": "D3 失败时出现 modal",
+      "ok": true,
+      "detail": "overlayOpen=true"
+    },
+    {
+      "id": "D3 modal 有 role=dialog / aria-modal=true / 有 aria-labelledby",
+      "ok": true,
+      "detail": "{\"role\":\"dialog\",\"ariaModal\":\"true\",\"labelledby\":\"modalTitle\"}"
+    },
+    {
+      "id": "D3 失败标题含「雷」",
+      "ok": true,
+      "detail": "标题=\"踩到雷了\""
+    },
+    {
+      "id": "D3 「重来本关」按钮存在且可用",
+      "ok": true,
+      "detail": "[{\"text\":\"↻ 重来本关\",\"disabled\":false},{\"text\":\"换个关卡\",\"disabled\":false}]"
+    },
+    {
+      "id": "D3 失败后规则行为不变（再踩雷无效，lives 仍 0、status 仍 lost）",
+      "ok": true,
+      "detail": "{\"lives\":0,\"status\":\"lost\",\"revealed\":14}"
+    },
+    {
+      "id": "D3 失败 modal 中无「下一关」（不应诱导越关）",
+      "ok": true,
+      "detail": "[{\"text\":\"↻ 重来本关\",\"disabled\":false},{\"text\":\"换个关卡\",\"disabled\":false}]"
+    },
+    {
+      "id": "D3 点「重来本关」：重置本关、命数恢复 3、modal 关闭",
+      "ok": true,
+      "detail": "{\"level\":1,\"lives\":3,\"status\":\"playing\",\"hearts\":\"❤❤❤\"}"
+    },
+    {
+      "id": "D4 第1关有独立求解序列（22 步）",
+      "ok": true,
+      "detail": "steps=22"
+    },
+    {
+      "id": "D4 第1关通关：status=won / lives=3",
+      "ok": true,
+      "detail": "{\"status\":\"won\",\"lives\":3}"
+    },
+    {
+      "id": "D4 第1关游玩过程中无提前 modal / 无雷坐标泄露",
+      "ok": true,
+      "detail": "0 处"
+    },
+    {
+      "id": "D4 第1关通关 modal 出现（role=dialog/aria-modal）",
+      "ok": true,
+      "detail": "{\"open\":true,\"role\":\"dialog\",\"ariaModal\":\"true\"}"
+    },
+    {
+      "id": "D4 第1关 modal 标题正确",
+      "ok": true,
+      "detail": "\"第 1 关 · 通关！\""
+    },
+    {
+      "id": "D4 第1关 modal 按钮正确",
+      "ok": true,
+      "detail": "[{\"text\":\"↻ 重来本关\",\"disabled\":false},{\"text\":\"下一关 →\",\"disabled\":false}]"
+    },
+    {
+      "id": "D4 第1关 modal 打开后焦点在主按钮",
+      "ok": true,
+      "detail": "active=下一关 →"
+    },
+    {
+      "id": "D5 第1关 modal 的「下一关」可用",
+      "ok": true,
+      "detail": "[{\"text\":\"↻ 重来本关\",\"disabled\":false},{\"text\":\"下一关 →\",\"disabled\":false}]"
+    },
+    {
+      "id": "D5 进入第2关：modal 关闭、status=playing、命数=3",
+      "ok": true,
+      "detail": "{\"open\":false,\"level\":2,\"status\":\"playing\",\"lives\":3}"
+    },
+    {
+      "id": "D5 第2关开局展开格数=6",
+      "ok": true,
+      "detail": "revealed=6"
+    },
+    {
+      "id": "D4 第2关有独立求解序列（26 步）",
+      "ok": true,
+      "detail": "steps=26"
+    },
+    {
+      "id": "D4 第2关通关：status=won / lives=3",
+      "ok": true,
+      "detail": "{\"status\":\"won\",\"lives\":3}"
+    },
+    {
+      "id": "D4 第2关游玩过程中无提前 modal / 无雷坐标泄露",
+      "ok": true,
+      "detail": "0 处"
+    },
+    {
+      "id": "D4 第2关通关 modal 出现（role=dialog/aria-modal）",
+      "ok": true,
+      "detail": "{\"open\":true,\"role\":\"dialog\",\"ariaModal\":\"true\"}"
+    },
+    {
+      "id": "D4 第2关 modal 标题正确",
+      "ok": true,
+      "detail": "\"第 2 关 · 通关！\""
+    },
+    {
+      "id": "D4 第2关 modal 按钮正确",
+      "ok": true,
+      "detail": "[{\"text\":\"↻ 重来本关\",\"disabled\":false},{\"text\":\"下一关 →\",\"disabled\":false}]"
+    },
+    {
+      "id": "D4 第2关 modal 打开后焦点在主按钮",
+      "ok": true,
+      "detail": "active=下一关 →"
+    },
+    {
+      "id": "D5 第2关 modal「重来本关」按钮存在",
+      "ok": true,
+      "detail": "[{\"text\":\"↻ 重来本关\",\"disabled\":false},{\"text\":\"下一关 →\",\"disabled\":false}]"
+    },
+    {
+      "id": "D5 点「重来本关」：留在第2关、重置开局、命数 3、modal 关闭",
+      "ok": true,
+      "detail": "{\"level\":2,\"status\":\"playing\",\"lives\":3,\"revealed\":6,\"open\":false}"
+    },
+    {
+      "id": "D5 第2关重玩后再次 won",
+      "ok": true,
+      "detail": "status=won"
+    },
+    {
+      "id": "D5 第2关 modal 的「下一关」可用",
+      "ok": true,
+      "detail": "[{\"text\":\"↻ 重来本关\",\"disabled\":false},{\"text\":\"下一关 →\",\"disabled\":false}]"
+    },
+    {
+      "id": "D5 进入第3关：modal 关闭、status=playing、命数=3",
+      "ok": true,
+      "detail": "{\"open\":false,\"level\":3,\"status\":\"playing\",\"lives\":3}"
+    },
+    {
+      "id": "D5 第3关开局展开格数=8",
+      "ok": true,
+      "detail": "revealed=8"
+    },
+    {
+      "id": "D4 第3关有独立求解序列（28 步）",
+      "ok": true,
+      "detail": "steps=28"
+    },
+    {
+      "id": "D4 第3关通关：status=won / lives=3",
+      "ok": true,
+      "detail": "{\"status\":\"won\",\"lives\":3}"
+    },
+    {
+      "id": "D4 第3关游玩过程中无提前 modal / 无雷坐标泄露",
+      "ok": true,
+      "detail": "0 处"
+    },
+    {
+      "id": "D4 第3关通关 modal 出现（role=dialog/aria-modal）",
+      "ok": true,
+      "detail": "{\"open\":true,\"role\":\"dialog\",\"ariaModal\":\"true\"}"
+    },
+    {
+      "id": "D4 第3关 modal 标题正确",
+      "ok": true,
+      "detail": "\"第 3 关 · 通关！\""
+    },
+    {
+      "id": "D4 第3关 modal 按钮正确",
+      "ok": true,
+      "detail": "[{\"text\":\"↻ 重来本关\",\"disabled\":false},{\"text\":\"下一关 →\",\"disabled\":false}]"
+    },
+    {
+      "id": "D4 第3关 modal 打开后焦点在主按钮",
+      "ok": true,
+      "detail": "active=下一关 →"
+    },
+    {
+      "id": "D5 第3关 modal 的「下一关」可用",
+      "ok": true,
+      "detail": "[{\"text\":\"↻ 重来本关\",\"disabled\":false},{\"text\":\"下一关 →\",\"disabled\":false}]"
+    },
+    {
+      "id": "D5 进入第4关：modal 关闭、status=playing、命数=3",
+      "ok": true,
+      "detail": "{\"open\":false,\"level\":4,\"status\":\"playing\",\"lives\":3}"
+    },
+    {
+      "id": "D5 第4关开局展开格数=6",
+      "ok": true,
+      "detail": "revealed=6"
+    },
+    {
+      "id": "D4 第4关有独立求解序列（38 步）",
+      "ok": true,
+      "detail": "steps=38"
+    },
+    {
+      "id": "D4 第4关通关：status=won / lives=3",
+      "ok": true,
+      "detail": "{\"status\":\"won\",\"lives\":3}"
+    },
+    {
+      "id": "D4 第4关游玩过程中无提前 modal / 无雷坐标泄露",
+      "ok": true,
+      "detail": "0 处"
+    },
+    {
+      "id": "D4 第4关通关 modal 出现（role=dialog/aria-modal）",
+      "ok": true,
+      "detail": "{\"open\":true,\"role\":\"dialog\",\"ariaModal\":\"true\"}"
+    },
+    {
+      "id": "D4 第4关 modal 标题正确",
+      "ok": true,
+      "detail": "\"第 4 关 · 通关！\""
+    },
+    {
+      "id": "D4 第4关 modal 按钮正确",
+      "ok": true,
+      "detail": "[{\"text\":\"↻ 重来本关\",\"disabled\":false},{\"text\":\"下一关 →\",\"disabled\":false}]"
+    },
+    {
+      "id": "D4 第4关 modal 打开后焦点在主按钮",
+      "ok": true,
+      "detail": "active=下一关 →"
+    },
+    {
+      "id": "D5 第4关 modal 的「下一关」可用",
+      "ok": true,
+      "detail": "[{\"text\":\"↻ 重来本关\",\"disabled\":false},{\"text\":\"下一关 →\",\"disabled\":false}]"
+    },
+    {
+      "id": "D5 进入第5关：modal 关闭、status=playing、命数=3",
+      "ok": true,
+      "detail": "{\"open\":false,\"level\":5,\"status\":\"playing\",\"lives\":3}"
+    },
+    {
+      "id": "D5 第5关开局展开格数=15",
+      "ok": true,
+      "detail": "revealed=15"
+    },
+    {
+      "id": "D4 第5关有独立求解序列（32 步）",
+      "ok": true,
+      "detail": "steps=32"
+    },
+    {
+      "id": "D4 第5关通关：status=won / lives=3",
+      "ok": true,
+      "detail": "{\"status\":\"won\",\"lives\":3}"
+    },
+    {
+      "id": "D4 第5关游玩过程中无提前 modal / 无雷坐标泄露",
+      "ok": true,
+      "detail": "0 处"
+    },
+    {
+      "id": "D4 第5关通关 modal 出现（role=dialog/aria-modal）",
+      "ok": true,
+      "detail": "{\"open\":true,\"role\":\"dialog\",\"ariaModal\":\"true\"}"
+    },
+    {
+      "id": "D4 第5关 modal 标题正确",
+      "ok": true,
+      "detail": "\"第 5 关 · 通关！\""
+    },
+    {
+      "id": "D4 第5关 modal 按钮正确",
+      "ok": true,
+      "detail": "[{\"text\":\"↻ 重来本关\",\"disabled\":false},{\"text\":\"下一关 →\",\"disabled\":false}]"
+    },
+    {
+      "id": "D4 第5关 modal 打开后焦点在主按钮",
+      "ok": true,
+      "detail": "active=下一关 →"
+    },
+    {
+      "id": "D5 第5关 modal 的「下一关」可用",
+      "ok": true,
+      "detail": "[{\"text\":\"↻ 重来本关\",\"disabled\":false},{\"text\":\"下一关 →\",\"disabled\":false}]"
+    },
+    {
+      "id": "D5 进入第6关：modal 关闭、status=playing、命数=3",
+      "ok": true,
+      "detail": "{\"open\":false,\"level\":6,\"status\":\"playing\",\"lives\":3}"
+    },
+    {
+      "id": "D5 第6关开局展开格数=6",
+      "ok": true,
+      "detail": "revealed=6"
+    },
+    {
+      "id": "D4 第6关有独立求解序列（32 步）",
+      "ok": true,
+      "detail": "steps=32"
+    },
+    {
+      "id": "D4 第6关通关：status=won / lives=3",
+      "ok": true,
+      "detail": "{\"status\":\"won\",\"lives\":3}"
+    },
+    {
+      "id": "D4 第6关游玩过程中无提前 modal / 无雷坐标泄露",
+      "ok": true,
+      "detail": "0 处"
+    },
+    {
+      "id": "D4 第6关通关 modal 出现（role=dialog/aria-modal）",
+      "ok": true,
+      "detail": "{\"open\":true,\"role\":\"dialog\",\"ariaModal\":\"true\"}"
+    },
+    {
+      "id": "D4 第6关 modal 标题正确",
+      "ok": true,
+      "detail": "\"第 6 关 · 通关！\""
+    },
+    {
+      "id": "D4 第6关 modal 按钮正确",
+      "ok": true,
+      "detail": "[{\"text\":\"↻ 重来本关\",\"disabled\":false},{\"text\":\"下一关 →\",\"disabled\":false}]"
+    },
+    {
+      "id": "D4 第6关 modal 打开后焦点在主按钮",
+      "ok": true,
+      "detail": "active=下一关 →"
+    },
+    {
+      "id": "D5 第6关 modal 的「下一关」可用",
+      "ok": true,
+      "detail": "[{\"text\":\"↻ 重来本关\",\"disabled\":false},{\"text\":\"下一关 →\",\"disabled\":false}]"
+    },
+    {
+      "id": "D5 进入第7关：modal 关闭、status=playing、命数=3",
+      "ok": true,
+      "detail": "{\"open\":false,\"level\":7,\"status\":\"playing\",\"lives\":3}"
+    },
+    {
+      "id": "D5 第7关开局展开格数=12",
+      "ok": true,
+      "detail": "revealed=12"
+    },
+    {
+      "id": "D4 第7关有独立求解序列（44 步）",
+      "ok": true,
+      "detail": "steps=44"
+    },
+    {
+      "id": "D4 第7关通关：status=won / lives=3",
+      "ok": true,
+      "detail": "{\"status\":\"won\",\"lives\":3}"
+    },
+    {
+      "id": "D4 第7关游玩过程中无提前 modal / 无雷坐标泄露",
+      "ok": true,
+      "detail": "0 处"
+    },
+    {
+      "id": "D4 第7关通关 modal 出现（role=dialog/aria-modal）",
+      "ok": true,
+      "detail": "{\"open\":true,\"role\":\"dialog\",\"ariaModal\":\"true\"}"
+    },
+    {
+      "id": "D4 第7关 modal 标题正确",
+      "ok": true,
+      "detail": "\"第 7 关 · 通关！\""
+    },
+    {
+      "id": "D4 第7关 modal 按钮正确",
+      "ok": true,
+      "detail": "[{\"text\":\"↻ 重来本关\",\"disabled\":false},{\"text\":\"下一关 →\",\"disabled\":false}]"
+    },
+    {
+      "id": "D4 第7关 modal 打开后焦点在主按钮",
+      "ok": true,
+      "detail": "active=下一关 →"
+    },
+    {
+      "id": "D5 第7关 modal 的「下一关」可用",
+      "ok": true,
+      "detail": "[{\"text\":\"↻ 重来本关\",\"disabled\":false},{\"text\":\"下一关 →\",\"disabled\":false}]"
+    },
+    {
+      "id": "D5 进入第8关：modal 关闭、status=playing、命数=3",
+      "ok": true,
+      "detail": "{\"open\":false,\"level\":8,\"status\":\"playing\",\"lives\":3}"
+    },
+    {
+      "id": "D5 第8关开局展开格数=11",
+      "ok": true,
+      "detail": "revealed=11"
+    },
+    {
+      "id": "D4 第8关有独立求解序列（42 步）",
+      "ok": true,
+      "detail": "steps=42"
+    },
+    {
+      "id": "D4 第8关通关：status=won / lives=3",
+      "ok": true,
+      "detail": "{\"status\":\"won\",\"lives\":3}"
+    },
+    {
+      "id": "D4 第8关游玩过程中无提前 modal / 无雷坐标泄露",
+      "ok": true,
+      "detail": "0 处"
+    },
+    {
+      "id": "D4 第8关通关 modal 出现（role=dialog/aria-modal）",
+      "ok": true,
+      "detail": "{\"open\":true,\"role\":\"dialog\",\"ariaModal\":\"true\"}"
+    },
+    {
+      "id": "D4 第8关 modal 标题正确",
+      "ok": true,
+      "detail": "\"第 8 关 · 通关！\""
+    },
+    {
+      "id": "D4 第8关 modal 按钮正确",
+      "ok": true,
+      "detail": "[{\"text\":\"↻ 重来本关\",\"disabled\":false},{\"text\":\"下一关 →\",\"disabled\":false}]"
+    },
+    {
+      "id": "D4 第8关 modal 打开后焦点在主按钮",
+      "ok": true,
+      "detail": "active=下一关 →"
+    },
+    {
+      "id": "D5 第8关 modal 的「下一关」可用",
+      "ok": true,
+      "detail": "[{\"text\":\"↻ 重来本关\",\"disabled\":false},{\"text\":\"下一关 →\",\"disabled\":false}]"
+    },
+    {
+      "id": "D5 进入第9关：modal 关闭、status=playing、命数=3",
+      "ok": true,
+      "detail": "{\"open\":false,\"level\":9,\"status\":\"playing\",\"lives\":3}"
+    },
+    {
+      "id": "D5 第9关开局展开格数=20",
+      "ok": true,
+      "detail": "revealed=20"
+    },
+    {
+      "id": "D4 第9关有独立求解序列（41 步）",
+      "ok": true,
+      "detail": "steps=41"
+    },
+    {
+      "id": "D4 第9关通关：status=won / lives=3",
+      "ok": true,
+      "detail": "{\"status\":\"won\",\"lives\":3}"
+    },
+    {
+      "id": "D4 第9关游玩过程中无提前 modal / 无雷坐标泄露",
+      "ok": true,
+      "detail": "0 处"
+    },
+    {
+      "id": "D4 第9关通关 modal 出现（role=dialog/aria-modal）",
+      "ok": true,
+      "detail": "{\"open\":true,\"role\":\"dialog\",\"ariaModal\":\"true\"}"
+    },
+    {
+      "id": "D4 第9关 modal 标题正确",
+      "ok": true,
+      "detail": "\"第 9 关 · 通关！\""
+    },
+    {
+      "id": "D4 第9关 modal 按钮正确",
+      "ok": true,
+      "detail": "[{\"text\":\"↻ 重来本关\",\"disabled\":false},{\"text\":\"下一关 →\",\"disabled\":false}]"
+    },
+    {
+      "id": "D4 第9关 modal 打开后焦点在主按钮",
+      "ok": true,
+      "detail": "active=下一关 →"
+    },
+    {
+      "id": "D5 第9关 modal 的「下一关」可用",
+      "ok": true,
+      "detail": "[{\"text\":\"↻ 重来本关\",\"disabled\":false},{\"text\":\"下一关 →\",\"disabled\":false}]"
+    },
+    {
+      "id": "D5 进入第10关：modal 关闭、status=playing、命数=3",
+      "ok": true,
+      "detail": "{\"open\":false,\"level\":10,\"status\":\"playing\",\"lives\":3}"
+    },
+    {
+      "id": "D5 第10关开局展开格数=9",
+      "ok": true,
+      "detail": "revealed=9"
+    },
+    {
+      "id": "D4 第10关有独立求解序列（46 步）",
+      "ok": true,
+      "detail": "steps=46"
+    },
+    {
+      "id": "D4 第10关通关：status=won / lives=3",
+      "ok": true,
+      "detail": "{\"status\":\"won\",\"lives\":3}"
+    },
+    {
+      "id": "D4 第10关游玩过程中无提前 modal / 无雷坐标泄露",
+      "ok": true,
+      "detail": "0 处"
+    },
+    {
+      "id": "D4 第10关通关 modal 出现（role=dialog/aria-modal）",
+      "ok": true,
+      "detail": "{\"open\":true,\"role\":\"dialog\",\"ariaModal\":\"true\"}"
+    },
+    {
+      "id": "D4 第10关 modal 标题正确",
+      "ok": true,
+      "detail": "\"全部通关！\""
+    },
+    {
+      "id": "D4 第10关 modal 按钮正确",
+      "ok": true,
+      "detail": "[{\"text\":\"↻ 重来本关\",\"disabled\":false},{\"text\":\"全部通关\",\"disabled\":true}]"
+    },
+    {
+      "id": "D4 第10关 modal 打开后焦点在主按钮",
+      "ok": true,
+      "detail": "active=↻ 重来本关"
+    },
+    {
+      "id": "D5 最后一关：标题「全部通关！」",
+      "ok": true,
+      "detail": "\"全部通关！\""
+    },
+    {
+      "id": "D5 最后一关：第二个按钮 disabled（不是死按钮）",
+      "ok": true,
+      "detail": "[{\"text\":\"↻ 重来本关\",\"disabled\":false},{\"text\":\"全部通关\",\"disabled\":true}]"
+    },
+    {
+      "id": "D5 最后一关：点 disabled 的「下一关位」无任何反应",
+      "ok": true,
+      "detail": "{\"status\":\"won\",\"open\":true}"
+    },
+    {
+      "id": "D6 独立会话启动：level=1 / playing",
+      "ok": true,
+      "detail": "{\"level\":1,\"status\":\"playing\"}"
+    },
+    {
+      "id": "D6 第1关通关 modal 打开且两个按钮均可用",
+      "ok": true,
+      "detail": "[{\"text\":\"↻ 重来本关\",\"disabled\":false},{\"text\":\"下一关 →\",\"disabled\":false}]"
+    },
+    {
+      "id": "D6 Tab 从按钮1 → 按钮2（焦点不跑出 modal）",
+      "ok": true,
+      "detail": "active=下一关 →"
+    },
+    {
+      "id": "D6 Tab 从按钮2 → 循环回按钮1",
+      "ok": true,
+      "detail": "active=↻ 重来本关"
+    },
+    {
+      "id": "D6 Shift+Tab 反向循环到按钮2",
+      "ok": true,
+      "detail": "active=下一关 →"
+    },
+    {
+      "id": "D6 Esc 关闭 modal（aria-hidden=true、无 open）",
+      "ok": true,
+      "detail": "{\"open\":false,\"ariaHidden\":\"true\"}"
+    },
+    {
+      "id": "D6 Esc 后底部结算条出现（保留入口，不是关了没入口）",
+      "ok": true,
+      "detail": "{\"cls\":\"result show win\",\"text\":\"✅ 本关已通关下一关 →↻ 重来本关结算\"}"
+    },
+    {
+      "id": "D6 结算条含「结算」再次打开入口",
+      "ok": true,
+      "detail": "下一关 → / ↻ 重来本关 / 结算"
+    },
+    {
+      "id": "D6 点「结算」重新打开 modal",
+      "ok": true,
+      "detail": "{\"open\":true,\"ariaHidden\":\"false\"}"
+    },
+    {
+      "id": "D6 Enter 前：主按钮是原生 <button> 且非 disabled",
+      "ok": true,
+      "detail": "BUTTON disabled=false"
+    },
+    {
+      "id": "D6 Enter 触发「下一关」→ 进入第2关、modal 关闭",
+      "ok": true,
+      "detail": "{\"level\":2,\"status\":\"playing\",\"open\":false}"
+    },
+    {
+      "id": "D8 全部通关后 clearedLevels=10 / totalLevels=10",
+      "ok": true,
+      "detail": "{\"clearedLevels\":10,\"totalLevels\":10}"
+    },
+    {
+      "id": "D8 localStorage 已写入进度",
+      "ok": true,
+      "detail": "{\"v\":1,\"cleared\":{\"0\":1,\"1\":1,\"2\":1,\"3\":1,\"4\":1,\"5\":1,\"6\":1,\"7\":1,\"8\":1,\"9\":1},\"last\":9}"
+    },
+    {
+      "id": "D8 新会话沿用进度：全部通关后从最后一关开始（level=10）",
+      "ok": true,
+      "detail": "{\"level\":10,\"clearedLevels\":10}"
+    },
+    {
+      "id": "D8 localStorage 不可用时静默降级（仍能开始第1关、无异常）",
+      "ok": true,
+      "detail": "{\"level\":1,\"status\":\"playing\"}"
+    }
+  ]
+}

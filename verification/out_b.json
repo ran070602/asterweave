@@ -1,0 +1,6475 @@
+{
+  "time_limit_s": 60.0,
+  "levels": [
+    {
+      "id": 1,
+      "size": 6,
+      "mines_true": [
+        3,
+        6,
+        14,
+        16,
+        22,
+        28
+      ],
+      "a_only": {
+        "mode": "a_only",
+        "use_runs": false,
+        "complete": true,
+        "timeout": false,
+        "contradiction": null,
+        "elapsed_s": 0.0,
+        "steps_total": 22,
+        "steps_a": 22,
+        "steps_b": 0,
+        "a_safe": 16,
+        "a_mine": 6,
+        "b_safe": 0,
+        "b_mine": 0,
+        "explicit_reveals": 16,
+        "revealed_total": 30,
+        "deduced_mines": 6,
+        "unknown_left": 0,
+        "deduced_mines_equal_truth": true,
+        "revealed_all_safe_true": true,
+        "unknown_cells_1based": [],
+        "steps_seq": [
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              3,
+              3
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              3,
+              4
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              3,
+              5
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              4,
+              5
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              5,
+              5
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              2,
+              3
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              2,
+              4
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              2,
+              5
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              6,
+              5
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              5,
+              6
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              6,
+              6
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              4,
+              6
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              3,
+              6
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              2,
+              6
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              1,
+              5
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              1,
+              6
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              1,
+              4
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              1,
+              2
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              1,
+              3
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              2,
+              2
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              2,
+              1
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              1,
+              1
+            ]
+          }
+        ],
+        "solve_actions": [
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 2,
+            "c": 2
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 2,
+            "c": 3
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 2,
+            "c": 4
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 3,
+            "c": 4
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 4,
+            "c": 4
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 1,
+            "c": 2
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 1,
+            "c": 3
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 1,
+            "c": 4
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 5,
+            "c": 4
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 4,
+            "c": 5
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 5,
+            "c": 5
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 3,
+            "c": 5
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 2,
+            "c": 5
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 1,
+            "c": 5
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 0,
+            "c": 4
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 0,
+            "c": 5
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 0,
+            "c": 3
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 0,
+            "c": 1
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 0,
+            "c": 2
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 1,
+            "c": 1
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 1,
+            "c": 0
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 0,
+            "c": 0
+          }
+        ]
+      },
+      "a_plus_b": {
+        "mode": "a_plus_b",
+        "use_runs": true,
+        "complete": true,
+        "timeout": false,
+        "contradiction": null,
+        "elapsed_s": 0.0,
+        "steps_total": 22,
+        "steps_a": 22,
+        "steps_b": 0,
+        "a_safe": 16,
+        "a_mine": 6,
+        "b_safe": 0,
+        "b_mine": 0,
+        "explicit_reveals": 16,
+        "revealed_total": 30,
+        "deduced_mines": 6,
+        "unknown_left": 0,
+        "deduced_mines_equal_truth": true,
+        "revealed_all_safe_true": true,
+        "unknown_cells_1based": [],
+        "steps_seq": [
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              3,
+              3
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              3,
+              4
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              3,
+              5
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              4,
+              5
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              5,
+              5
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              2,
+              3
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              2,
+              4
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              2,
+              5
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              6,
+              5
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              5,
+              6
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              6,
+              6
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              4,
+              6
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              3,
+              6
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              2,
+              6
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              1,
+              5
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              1,
+              6
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              1,
+              4
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              1,
+              2
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              1,
+              3
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              2,
+              2
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              2,
+              1
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              1,
+              1
+            ]
+          }
+        ],
+        "solve_actions": [
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 2,
+            "c": 2
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 2,
+            "c": 3
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 2,
+            "c": 4
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 3,
+            "c": 4
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 4,
+            "c": 4
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 1,
+            "c": 2
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 1,
+            "c": 3
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 1,
+            "c": 4
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 5,
+            "c": 4
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 4,
+            "c": 5
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 5,
+            "c": 5
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 3,
+            "c": 5
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 2,
+            "c": 5
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 1,
+            "c": 5
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 0,
+            "c": 4
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 0,
+            "c": 5
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 0,
+            "c": 3
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 0,
+            "c": 1
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 0,
+            "c": 2
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 1,
+            "c": 1
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 1,
+            "c": 0
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 0,
+            "c": 0
+          }
+        ]
+      },
+      "verdict": {
+        "a_only_solves": true,
+        "a_plus_b_solves": true,
+        "b_needed": false,
+        "b_contribution_cells": 0
+      }
+    },
+    {
+      "id": 2,
+      "size": 6,
+      "mines_true": [
+        0,
+        2,
+        18,
+        23,
+        25,
+        26
+      ],
+      "a_only": {
+        "mode": "a_only",
+        "use_runs": false,
+        "complete": true,
+        "timeout": false,
+        "contradiction": null,
+        "elapsed_s": 0.0,
+        "steps_total": 18,
+        "steps_a": 18,
+        "steps_b": 0,
+        "a_safe": 12,
+        "a_mine": 6,
+        "b_safe": 0,
+        "b_mine": 0,
+        "explicit_reveals": 12,
+        "revealed_total": 30,
+        "deduced_mines": 6,
+        "unknown_left": 0,
+        "deduced_mines_equal_truth": true,
+        "revealed_all_safe_true": true,
+        "unknown_cells_1based": [],
+        "steps_seq": [
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              1,
+              3
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              4,
+              6
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              1,
+              2
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              5,
+              4
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              5,
+              5
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              5,
+              6
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              5,
+              2
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              5,
+              3
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              6,
+              4
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              6,
+              5
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              6,
+              3
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              6,
+              2
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              5,
+              1
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              6,
+              1
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              4,
+              1
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              2,
+              1
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              3,
+              1
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              1,
+              1
+            ]
+          }
+        ],
+        "solve_actions": [
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 0,
+            "c": 2
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 3,
+            "c": 5
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 0,
+            "c": 1
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 4,
+            "c": 3
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 4,
+            "c": 4
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 4,
+            "c": 5
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 4,
+            "c": 1
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 4,
+            "c": 2
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 5,
+            "c": 3
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 5,
+            "c": 4
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 5,
+            "c": 2
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 5,
+            "c": 1
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 4,
+            "c": 0
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 5,
+            "c": 0
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 3,
+            "c": 0
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 1,
+            "c": 0
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 2,
+            "c": 0
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 0,
+            "c": 0
+          }
+        ]
+      },
+      "a_plus_b": {
+        "mode": "a_plus_b",
+        "use_runs": true,
+        "complete": true,
+        "timeout": false,
+        "contradiction": null,
+        "elapsed_s": 0.0,
+        "steps_total": 18,
+        "steps_a": 18,
+        "steps_b": 0,
+        "a_safe": 12,
+        "a_mine": 6,
+        "b_safe": 0,
+        "b_mine": 0,
+        "explicit_reveals": 12,
+        "revealed_total": 30,
+        "deduced_mines": 6,
+        "unknown_left": 0,
+        "deduced_mines_equal_truth": true,
+        "revealed_all_safe_true": true,
+        "unknown_cells_1based": [],
+        "steps_seq": [
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              1,
+              3
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              4,
+              6
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              1,
+              2
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              5,
+              4
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              5,
+              5
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              5,
+              6
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              5,
+              2
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              5,
+              3
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              6,
+              4
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              6,
+              5
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              6,
+              3
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              6,
+              2
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              5,
+              1
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              6,
+              1
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              4,
+              1
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              2,
+              1
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              3,
+              1
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              1,
+              1
+            ]
+          }
+        ],
+        "solve_actions": [
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 0,
+            "c": 2
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 3,
+            "c": 5
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 0,
+            "c": 1
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 4,
+            "c": 3
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 4,
+            "c": 4
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 4,
+            "c": 5
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 4,
+            "c": 1
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 4,
+            "c": 2
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 5,
+            "c": 3
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 5,
+            "c": 4
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 5,
+            "c": 2
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 5,
+            "c": 1
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 4,
+            "c": 0
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 5,
+            "c": 0
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 3,
+            "c": 0
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 1,
+            "c": 0
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 2,
+            "c": 0
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 0,
+            "c": 0
+          }
+        ]
+      },
+      "verdict": {
+        "a_only_solves": true,
+        "a_plus_b_solves": true,
+        "b_needed": false,
+        "b_contribution_cells": 0
+      }
+    },
+    {
+      "id": 3,
+      "size": 6,
+      "mines_true": [
+        4,
+        7,
+        8,
+        15,
+        22,
+        25,
+        31
+      ],
+      "a_only": {
+        "mode": "a_only",
+        "use_runs": false,
+        "complete": true,
+        "timeout": false,
+        "contradiction": null,
+        "elapsed_s": 0.0,
+        "steps_total": 28,
+        "steps_a": 28,
+        "steps_b": 0,
+        "a_safe": 21,
+        "a_mine": 7,
+        "b_safe": 0,
+        "b_mine": 0,
+        "explicit_reveals": 21,
+        "revealed_total": 29,
+        "deduced_mines": 7,
+        "unknown_left": 0,
+        "deduced_mines_equal_truth": true,
+        "revealed_all_safe_true": true,
+        "unknown_cells_1based": [],
+        "steps_seq": [
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              5,
+              2
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              6,
+              2
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              4,
+              2
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              4,
+              3
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              4,
+              4
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              4,
+              5
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              3,
+              1
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              3,
+              2
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              3,
+              3
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              4,
+              1
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              5,
+              1
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              3,
+              4
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              6,
+              1
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              4,
+              6
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              3,
+              5
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              3,
+              6
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              2,
+              4
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              2,
+              5
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              2,
+              6
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              2,
+              2
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              2,
+              3
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              2,
+              1
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              1,
+              1
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              1,
+              2
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              1,
+              3
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              1,
+              4
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              1,
+              5
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              1,
+              6
+            ]
+          }
+        ],
+        "solve_actions": [
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 4,
+            "c": 1
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 5,
+            "c": 1
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 3,
+            "c": 1
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 3,
+            "c": 2
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 3,
+            "c": 3
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 3,
+            "c": 4
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 2,
+            "c": 0
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 2,
+            "c": 1
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 2,
+            "c": 2
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 3,
+            "c": 0
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 4,
+            "c": 0
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 2,
+            "c": 3
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 5,
+            "c": 0
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 3,
+            "c": 5
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 2,
+            "c": 4
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 2,
+            "c": 5
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 1,
+            "c": 3
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 1,
+            "c": 4
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 1,
+            "c": 5
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 1,
+            "c": 1
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 1,
+            "c": 2
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 1,
+            "c": 0
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 0,
+            "c": 0
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 0,
+            "c": 1
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 0,
+            "c": 2
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 0,
+            "c": 3
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 0,
+            "c": 4
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 0,
+            "c": 5
+          }
+        ]
+      },
+      "a_plus_b": {
+        "mode": "a_plus_b",
+        "use_runs": true,
+        "complete": true,
+        "timeout": false,
+        "contradiction": null,
+        "elapsed_s": 0.0,
+        "steps_total": 28,
+        "steps_a": 28,
+        "steps_b": 0,
+        "a_safe": 21,
+        "a_mine": 7,
+        "b_safe": 0,
+        "b_mine": 0,
+        "explicit_reveals": 21,
+        "revealed_total": 29,
+        "deduced_mines": 7,
+        "unknown_left": 0,
+        "deduced_mines_equal_truth": true,
+        "revealed_all_safe_true": true,
+        "unknown_cells_1based": [],
+        "steps_seq": [
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              5,
+              2
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              6,
+              2
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              4,
+              2
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              4,
+              3
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              4,
+              4
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              4,
+              5
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              3,
+              1
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              3,
+              2
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              3,
+              3
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              4,
+              1
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              5,
+              1
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              3,
+              4
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              6,
+              1
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              4,
+              6
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              3,
+              5
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              3,
+              6
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              2,
+              4
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              2,
+              5
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              2,
+              6
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              2,
+              2
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              2,
+              3
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              2,
+              1
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              1,
+              1
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              1,
+              2
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              1,
+              3
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              1,
+              4
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              1,
+              5
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              1,
+              6
+            ]
+          }
+        ],
+        "solve_actions": [
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 4,
+            "c": 1
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 5,
+            "c": 1
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 3,
+            "c": 1
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 3,
+            "c": 2
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 3,
+            "c": 3
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 3,
+            "c": 4
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 2,
+            "c": 0
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 2,
+            "c": 1
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 2,
+            "c": 2
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 3,
+            "c": 0
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 4,
+            "c": 0
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 2,
+            "c": 3
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 5,
+            "c": 0
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 3,
+            "c": 5
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 2,
+            "c": 4
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 2,
+            "c": 5
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 1,
+            "c": 3
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 1,
+            "c": 4
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 1,
+            "c": 5
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 1,
+            "c": 1
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 1,
+            "c": 2
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 1,
+            "c": 0
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 0,
+            "c": 0
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 0,
+            "c": 1
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 0,
+            "c": 2
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 0,
+            "c": 3
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 0,
+            "c": 4
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 0,
+            "c": 5
+          }
+        ]
+      },
+      "verdict": {
+        "a_only_solves": true,
+        "a_plus_b_solves": true,
+        "b_needed": false,
+        "b_contribution_cells": 0
+      }
+    },
+    {
+      "id": 4,
+      "size": 6,
+      "mines_true": [
+        13,
+        14,
+        18,
+        22,
+        24,
+        31,
+        34
+      ],
+      "a_only": {
+        "mode": "a_only",
+        "use_runs": false,
+        "complete": false,
+        "timeout": false,
+        "contradiction": null,
+        "elapsed_s": 0.0,
+        "steps_total": 3,
+        "steps_a": 3,
+        "steps_b": 0,
+        "a_safe": 1,
+        "a_mine": 2,
+        "b_safe": 0,
+        "b_mine": 0,
+        "explicit_reveals": 1,
+        "revealed_total": 16,
+        "deduced_mines": 2,
+        "unknown_left": 18,
+        "deduced_mines_equal_truth": false,
+        "revealed_all_safe_true": true,
+        "unknown_cells_1based": [
+          "(4,1)",
+          "(4,2)",
+          "(4,3)",
+          "(4,4)",
+          "(4,5)",
+          "(4,6)",
+          "(5,1)",
+          "(5,2)",
+          "(5,3)",
+          "(5,4)",
+          "(5,5)",
+          "(5,6)",
+          "(6,1)",
+          "(6,2)",
+          "(6,3)",
+          "(6,4)",
+          "(6,5)",
+          "(6,6)"
+        ],
+        "steps_seq": [
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              3,
+              2
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              3,
+              3
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              3,
+              1
+            ]
+          }
+        ],
+        "solve_actions": [
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 2,
+            "c": 1
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 2,
+            "c": 2
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 2,
+            "c": 0
+          }
+        ]
+      },
+      "a_plus_b": {
+        "mode": "a_plus_b",
+        "use_runs": true,
+        "complete": true,
+        "timeout": false,
+        "contradiction": null,
+        "elapsed_s": 0.0,
+        "steps_total": 21,
+        "steps_a": 5,
+        "steps_b": 16,
+        "a_safe": 3,
+        "a_mine": 2,
+        "b_safe": 11,
+        "b_mine": 5,
+        "explicit_reveals": 14,
+        "revealed_total": 29,
+        "deduced_mines": 7,
+        "unknown_left": 0,
+        "deduced_mines_equal_truth": true,
+        "revealed_all_safe_true": true,
+        "unknown_cells_1based": [],
+        "steps_seq": [
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              3,
+              2
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              3,
+              3
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "rc": [
+              4,
+              5
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "rc": [
+              6,
+              5
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              4,
+              2
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              4,
+              3
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              4,
+              4
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              4,
+              6
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              5,
+              3
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              5,
+              4
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              5,
+              5
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              5,
+              6
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              6,
+              3
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              6,
+              4
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              6,
+              6
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              3,
+              1
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              5,
+              2
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "rc": [
+              4,
+              1
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "rc": [
+              5,
+              1
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "rc": [
+              6,
+              2
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              6,
+              1
+            ]
+          }
+        ],
+        "solve_actions": [
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 2,
+            "c": 1
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 2,
+            "c": 2
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "r": 3,
+            "c": 4
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "r": 5,
+            "c": 4
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 3,
+            "c": 1
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 3,
+            "c": 2
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 3,
+            "c": 3
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 3,
+            "c": 5
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 4,
+            "c": 2
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 4,
+            "c": 3
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 4,
+            "c": 4
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 4,
+            "c": 5
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 5,
+            "c": 2
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 5,
+            "c": 3
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 5,
+            "c": 5
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 2,
+            "c": 0
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 4,
+            "c": 1
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "r": 3,
+            "c": 0
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "r": 4,
+            "c": 0
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "r": 5,
+            "c": 1
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 5,
+            "c": 0
+          }
+        ]
+      },
+      "verdict": {
+        "a_only_solves": false,
+        "a_plus_b_solves": true,
+        "b_needed": true,
+        "b_contribution_cells": 16
+      }
+    },
+    {
+      "id": 5,
+      "size": 6,
+      "mines_true": [
+        8,
+        10,
+        11,
+        13,
+        16,
+        17,
+        20,
+        25
+      ],
+      "a_only": {
+        "mode": "a_only",
+        "use_runs": false,
+        "complete": false,
+        "timeout": false,
+        "contradiction": null,
+        "elapsed_s": 0.0,
+        "steps_total": 5,
+        "steps_a": 5,
+        "steps_b": 0,
+        "a_safe": 2,
+        "a_mine": 3,
+        "b_safe": 0,
+        "b_mine": 0,
+        "explicit_reveals": 2,
+        "revealed_total": 13,
+        "deduced_mines": 3,
+        "unknown_left": 20,
+        "deduced_mines_equal_truth": false,
+        "revealed_all_safe_true": true,
+        "unknown_cells_1based": [
+          "(1,1)",
+          "(1,2)",
+          "(1,3)",
+          "(1,4)",
+          "(1,5)",
+          "(1,6)",
+          "(2,1)",
+          "(2,2)",
+          "(2,3)",
+          "(2,4)",
+          "(2,5)",
+          "(2,6)",
+          "(3,1)",
+          "(3,2)",
+          "(4,1)",
+          "(4,2)",
+          "(5,1)",
+          "(5,2)",
+          "(6,1)",
+          "(6,2)"
+        ],
+        "steps_seq": [
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              3,
+              5
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              3,
+              6
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              4,
+              3
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              3,
+              3
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              3,
+              4
+            ]
+          }
+        ],
+        "solve_actions": [
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 2,
+            "c": 4
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 2,
+            "c": 5
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 3,
+            "c": 2
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 2,
+            "c": 2
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 2,
+            "c": 3
+          }
+        ]
+      },
+      "a_plus_b": {
+        "mode": "a_plus_b",
+        "use_runs": true,
+        "complete": true,
+        "timeout": false,
+        "contradiction": null,
+        "elapsed_s": 0.0,
+        "steps_total": 22,
+        "steps_a": 7,
+        "steps_b": 15,
+        "a_safe": 1,
+        "a_mine": 6,
+        "b_safe": 13,
+        "b_mine": 2,
+        "explicit_reveals": 14,
+        "revealed_total": 28,
+        "deduced_mines": 8,
+        "unknown_left": 0,
+        "deduced_mines_equal_truth": true,
+        "revealed_all_safe_true": true,
+        "unknown_cells_1based": [],
+        "steps_seq": [
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              3,
+              5
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              3,
+              6
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              4,
+              3
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "rc": [
+              2,
+              5
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "rc": [
+              2,
+              6
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              1,
+              1
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              1,
+              3
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              1,
+              4
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              1,
+              5
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              1,
+              6
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              2,
+              4
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              3,
+              1
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              3,
+              4
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              4,
+              1
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              5,
+              1
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              6,
+              1
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              6,
+              2
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              2,
+              3
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              3,
+              2
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              5,
+              2
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              3,
+              3
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              4,
+              2
+            ]
+          }
+        ],
+        "solve_actions": [
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 2,
+            "c": 4
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 2,
+            "c": 5
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 3,
+            "c": 2
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "r": 1,
+            "c": 4
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "r": 1,
+            "c": 5
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 0,
+            "c": 0
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 0,
+            "c": 2
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 0,
+            "c": 3
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 0,
+            "c": 4
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 0,
+            "c": 5
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 1,
+            "c": 3
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 2,
+            "c": 0
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 2,
+            "c": 3
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 3,
+            "c": 0
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 4,
+            "c": 0
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 5,
+            "c": 0
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 5,
+            "c": 1
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 1,
+            "c": 2
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 2,
+            "c": 1
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 4,
+            "c": 1
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 2,
+            "c": 2
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 3,
+            "c": 1
+          }
+        ]
+      },
+      "verdict": {
+        "a_only_solves": false,
+        "a_plus_b_solves": true,
+        "b_needed": true,
+        "b_contribution_cells": 15
+      }
+    },
+    {
+      "id": 6,
+      "size": 7,
+      "mines_true": [
+        9,
+        10,
+        13,
+        16,
+        22,
+        24,
+        44,
+        45
+      ],
+      "a_only": {
+        "mode": "a_only",
+        "use_runs": false,
+        "complete": false,
+        "timeout": false,
+        "contradiction": null,
+        "elapsed_s": 0.0,
+        "steps_total": 0,
+        "steps_a": 0,
+        "steps_b": 0,
+        "a_safe": 0,
+        "a_mine": 0,
+        "b_safe": 0,
+        "b_mine": 0,
+        "explicit_reveals": 0,
+        "revealed_total": 15,
+        "deduced_mines": 0,
+        "unknown_left": 34,
+        "deduced_mines_equal_truth": false,
+        "revealed_all_safe_true": true,
+        "unknown_cells_1based": [
+          "(1,1)",
+          "(1,2)",
+          "(1,3)",
+          "(1,4)",
+          "(1,5)",
+          "(1,6)",
+          "(1,7)",
+          "(2,1)",
+          "(2,2)",
+          "(2,3)",
+          "(2,4)",
+          "(2,5)",
+          "(2,6)",
+          "(2,7)",
+          "(3,1)",
+          "(3,2)",
+          "(3,3)",
+          "(3,4)",
+          "(4,1)",
+          "(4,2)",
+          "(4,3)",
+          "(4,4)",
+          "(5,1)",
+          "(5,2)",
+          "(5,3)",
+          "(5,4)",
+          "(6,1)",
+          "(6,2)",
+          "(6,3)",
+          "(6,4)",
+          "(7,1)",
+          "(7,2)",
+          "(7,3)",
+          "(7,4)"
+        ],
+        "steps_seq": [],
+        "solve_actions": []
+      },
+      "a_plus_b": {
+        "mode": "a_plus_b",
+        "use_runs": true,
+        "complete": true,
+        "timeout": false,
+        "contradiction": null,
+        "elapsed_s": 0.0,
+        "steps_total": 26,
+        "steps_a": 8,
+        "steps_b": 18,
+        "a_safe": 0,
+        "a_mine": 8,
+        "b_safe": 18,
+        "b_mine": 0,
+        "explicit_reveals": 18,
+        "revealed_total": 41,
+        "deduced_mines": 8,
+        "unknown_left": 0,
+        "deduced_mines_equal_truth": true,
+        "revealed_all_safe_true": true,
+        "unknown_cells_1based": [],
+        "steps_seq": [
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              1,
+              1
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              1,
+              3
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              1,
+              4
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              1,
+              5
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              1,
+              6
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              1,
+              7
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              2,
+              5
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              2,
+              6
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              4,
+              1
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              5,
+              1
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              5,
+              2
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              5,
+              3
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              5,
+              4
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              6,
+              1
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              6,
+              3
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              6,
+              4
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              2,
+              3
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              2,
+              4
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              2,
+              7
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              3,
+              3
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              4,
+              2
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              4,
+              4
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              7,
+              3
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              7,
+              4
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              3,
+              4
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              4,
+              3
+            ]
+          }
+        ],
+        "solve_actions": [
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 0,
+            "c": 0
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 0,
+            "c": 2
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 0,
+            "c": 3
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 0,
+            "c": 4
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 0,
+            "c": 5
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 0,
+            "c": 6
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 1,
+            "c": 4
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 1,
+            "c": 5
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 3,
+            "c": 0
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 4,
+            "c": 0
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 4,
+            "c": 1
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 4,
+            "c": 2
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 4,
+            "c": 3
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 5,
+            "c": 0
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 5,
+            "c": 2
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 5,
+            "c": 3
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 1,
+            "c": 2
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 1,
+            "c": 3
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 1,
+            "c": 6
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 2,
+            "c": 2
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 3,
+            "c": 1
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 3,
+            "c": 3
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 6,
+            "c": 2
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 6,
+            "c": 3
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 2,
+            "c": 3
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 3,
+            "c": 2
+          }
+        ]
+      },
+      "verdict": {
+        "a_only_solves": false,
+        "a_plus_b_solves": true,
+        "b_needed": true,
+        "b_contribution_cells": 18
+      }
+    },
+    {
+      "id": 7,
+      "size": 7,
+      "mines_true": [
+        4,
+        9,
+        11,
+        26,
+        27,
+        28,
+        31,
+        34,
+        43
+      ],
+      "a_only": {
+        "mode": "a_only",
+        "use_runs": false,
+        "complete": false,
+        "timeout": false,
+        "contradiction": null,
+        "elapsed_s": 0.0,
+        "steps_total": 0,
+        "steps_a": 0,
+        "steps_b": 0,
+        "a_safe": 0,
+        "a_mine": 0,
+        "b_safe": 0,
+        "b_mine": 0,
+        "explicit_reveals": 0,
+        "revealed_total": 8,
+        "deduced_mines": 0,
+        "unknown_left": 41,
+        "deduced_mines_equal_truth": false,
+        "revealed_all_safe_true": true,
+        "unknown_cells_1based": [
+          "(1,3)",
+          "(1,4)",
+          "(1,5)",
+          "(1,6)",
+          "(1,7)",
+          "(2,3)",
+          "(2,4)",
+          "(2,5)",
+          "(2,6)",
+          "(2,7)",
+          "(3,3)",
+          "(3,4)",
+          "(3,5)",
+          "(3,6)",
+          "(3,7)",
+          "(4,3)",
+          "(4,4)",
+          "(4,5)",
+          "(4,6)",
+          "(4,7)",
+          "(5,1)",
+          "(5,2)",
+          "(5,3)",
+          "(5,4)",
+          "(5,5)",
+          "(5,6)",
+          "(5,7)",
+          "(6,1)",
+          "(6,2)",
+          "(6,3)",
+          "(6,4)",
+          "(6,5)",
+          "(6,6)",
+          "(6,7)",
+          "(7,1)",
+          "(7,2)",
+          "(7,3)",
+          "(7,4)",
+          "(7,5)",
+          "(7,6)"
+        ],
+        "steps_seq": [],
+        "solve_actions": []
+      },
+      "a_plus_b": {
+        "mode": "a_plus_b",
+        "use_runs": true,
+        "complete": true,
+        "timeout": false,
+        "contradiction": null,
+        "elapsed_s": 0.0,
+        "steps_total": 36,
+        "steps_a": 11,
+        "steps_b": 25,
+        "a_safe": 6,
+        "a_mine": 5,
+        "b_safe": 21,
+        "b_mine": 4,
+        "explicit_reveals": 27,
+        "revealed_total": 40,
+        "deduced_mines": 9,
+        "unknown_left": 0,
+        "deduced_mines_equal_truth": true,
+        "revealed_all_safe_true": true,
+        "unknown_cells_1based": [],
+        "steps_seq": [
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              3,
+              3
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              3,
+              4
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              3,
+              5
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              3,
+              6
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              3,
+              7
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              6,
+              1
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              6,
+              2
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              6,
+              3
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              6,
+              4
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              6,
+              5
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              6,
+              6
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              6,
+              7
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              7,
+              5
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              7,
+              2
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              5,
+              2
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              5,
+              1
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              7,
+              1
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              4,
+              3
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              5,
+              3
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              2,
+              3
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              5,
+              4
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              1,
+              4
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              2,
+              4
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              5,
+              5
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              1,
+              3
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              4,
+              4
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              5,
+              6
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "rc": [
+              1,
+              5
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "rc": [
+              2,
+              5
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "rc": [
+              4,
+              6
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "rc": [
+              5,
+              7
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              4,
+              5
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              4,
+              7
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              2,
+              6
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              1,
+              6
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              1,
+              7
+            ]
+          }
+        ],
+        "solve_actions": [
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 2,
+            "c": 2
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 2,
+            "c": 3
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 2,
+            "c": 4
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 2,
+            "c": 5
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 2,
+            "c": 6
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 5,
+            "c": 0
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 5,
+            "c": 1
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 5,
+            "c": 2
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 5,
+            "c": 3
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 5,
+            "c": 4
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 5,
+            "c": 5
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 5,
+            "c": 6
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 6,
+            "c": 4
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 6,
+            "c": 1
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 4,
+            "c": 1
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 4,
+            "c": 0
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 6,
+            "c": 0
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 3,
+            "c": 2
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 4,
+            "c": 2
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 1,
+            "c": 2
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 4,
+            "c": 3
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 0,
+            "c": 3
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 1,
+            "c": 3
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 4,
+            "c": 4
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 0,
+            "c": 2
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 3,
+            "c": 3
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 4,
+            "c": 5
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "r": 0,
+            "c": 4
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "r": 1,
+            "c": 4
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "r": 3,
+            "c": 5
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "r": 4,
+            "c": 6
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 3,
+            "c": 4
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 3,
+            "c": 6
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 1,
+            "c": 5
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 0,
+            "c": 5
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 0,
+            "c": 6
+          }
+        ]
+      },
+      "verdict": {
+        "a_only_solves": false,
+        "a_plus_b_solves": true,
+        "b_needed": true,
+        "b_contribution_cells": 25
+      }
+    },
+    {
+      "id": 8,
+      "size": 7,
+      "mines_true": [
+        4,
+        8,
+        10,
+        17,
+        26,
+        29,
+        30,
+        36,
+        38,
+        39
+      ],
+      "a_only": {
+        "mode": "a_only",
+        "use_runs": false,
+        "complete": false,
+        "timeout": false,
+        "contradiction": null,
+        "elapsed_s": 0.0,
+        "steps_total": 0,
+        "steps_a": 0,
+        "steps_b": 0,
+        "a_safe": 0,
+        "a_mine": 0,
+        "b_safe": 0,
+        "b_mine": 0,
+        "explicit_reveals": 0,
+        "revealed_total": 6,
+        "deduced_mines": 0,
+        "unknown_left": 43,
+        "deduced_mines_equal_truth": false,
+        "revealed_all_safe_true": true,
+        "unknown_cells_1based": [
+          "(1,1)",
+          "(1,2)",
+          "(1,3)",
+          "(1,4)",
+          "(1,5)",
+          "(2,1)",
+          "(2,2)",
+          "(2,3)",
+          "(2,4)",
+          "(2,5)",
+          "(3,1)",
+          "(3,2)",
+          "(3,3)",
+          "(3,4)",
+          "(3,5)",
+          "(4,1)",
+          "(4,2)",
+          "(4,3)",
+          "(4,4)",
+          "(4,5)",
+          "(4,6)",
+          "(4,7)",
+          "(5,1)",
+          "(5,2)",
+          "(5,3)",
+          "(5,4)",
+          "(5,5)",
+          "(5,6)",
+          "(5,7)",
+          "(6,1)",
+          "(6,2)",
+          "(6,3)",
+          "(6,4)",
+          "(6,5)",
+          "(6,6)",
+          "(6,7)",
+          "(7,1)",
+          "(7,2)",
+          "(7,3)",
+          "(7,4)"
+        ],
+        "steps_seq": [],
+        "solve_actions": []
+      },
+      "a_plus_b": {
+        "mode": "a_plus_b",
+        "use_runs": true,
+        "complete": true,
+        "timeout": false,
+        "contradiction": null,
+        "elapsed_s": 0.0,
+        "steps_total": 39,
+        "steps_a": 12,
+        "steps_b": 27,
+        "a_safe": 7,
+        "a_mine": 5,
+        "b_safe": 22,
+        "b_mine": 5,
+        "explicit_reveals": 29,
+        "revealed_total": 39,
+        "deduced_mines": 10,
+        "unknown_left": 0,
+        "deduced_mines_equal_truth": true,
+        "revealed_all_safe_true": true,
+        "unknown_cells_1based": [],
+        "steps_seq": [
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              1,
+              1
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              2,
+              1
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              3,
+              1
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              4,
+              1
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              4,
+              7
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              5,
+              1
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              5,
+              7
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              6,
+              1
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              6,
+              7
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              7,
+              1
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              7,
+              2
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              7,
+              3
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              7,
+              4
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              7,
+              5
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              4,
+              6
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              5,
+              2
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              6,
+              2
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              6,
+              4
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              6,
+              5
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "rc": [
+              5,
+              3
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              4,
+              2
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              4,
+              3
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              4,
+              4
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              5,
+              4
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              5,
+              5
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              6,
+              3
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              2,
+              5
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              3,
+              5
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              4,
+              5
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              3,
+              2
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              3,
+              3
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "rc": [
+              1,
+              5
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "rc": [
+              2,
+              2
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "rc": [
+              2,
+              4
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "rc": [
+              3,
+              4
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              1,
+              3
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              2,
+              3
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              1,
+              2
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              1,
+              4
+            ]
+          }
+        ],
+        "solve_actions": [
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 0,
+            "c": 0
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 1,
+            "c": 0
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 2,
+            "c": 0
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 3,
+            "c": 0
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 3,
+            "c": 6
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 4,
+            "c": 0
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 4,
+            "c": 6
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 5,
+            "c": 0
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 5,
+            "c": 6
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 6,
+            "c": 0
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 6,
+            "c": 1
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 6,
+            "c": 2
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 6,
+            "c": 3
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 6,
+            "c": 4
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 3,
+            "c": 5
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 4,
+            "c": 1
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 5,
+            "c": 1
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 5,
+            "c": 3
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 5,
+            "c": 4
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "r": 4,
+            "c": 2
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 3,
+            "c": 1
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 3,
+            "c": 2
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 3,
+            "c": 3
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 4,
+            "c": 3
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 4,
+            "c": 4
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 5,
+            "c": 2
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 1,
+            "c": 4
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 2,
+            "c": 4
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 3,
+            "c": 4
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 2,
+            "c": 1
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 2,
+            "c": 2
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "r": 0,
+            "c": 4
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "r": 1,
+            "c": 1
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "r": 1,
+            "c": 3
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "r": 2,
+            "c": 3
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 0,
+            "c": 2
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 1,
+            "c": 2
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 0,
+            "c": 1
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 0,
+            "c": 3
+          }
+        ]
+      },
+      "verdict": {
+        "a_only_solves": false,
+        "a_plus_b_solves": true,
+        "b_needed": true,
+        "b_contribution_cells": 27
+      }
+    },
+    {
+      "id": 9,
+      "size": 8,
+      "mines_true": [
+        2,
+        6,
+        24,
+        25,
+        28,
+        31,
+        35,
+        36,
+        49,
+        51,
+        54
+      ],
+      "a_only": {
+        "mode": "a_only",
+        "use_runs": false,
+        "complete": false,
+        "timeout": false,
+        "contradiction": null,
+        "elapsed_s": 0.0,
+        "steps_total": 0,
+        "steps_a": 0,
+        "steps_b": 0,
+        "a_safe": 0,
+        "a_mine": 0,
+        "b_safe": 0,
+        "b_mine": 0,
+        "explicit_reveals": 0,
+        "revealed_total": 9,
+        "deduced_mines": 0,
+        "unknown_left": 55,
+        "deduced_mines_equal_truth": false,
+        "revealed_all_safe_true": true,
+        "unknown_cells_1based": [
+          "(1,1)",
+          "(1,2)",
+          "(1,3)",
+          "(1,7)",
+          "(1,8)",
+          "(2,1)",
+          "(2,2)",
+          "(2,3)",
+          "(2,7)",
+          "(2,8)",
+          "(3,1)",
+          "(3,2)",
+          "(3,3)",
+          "(3,7)",
+          "(3,8)",
+          "(4,1)",
+          "(4,2)",
+          "(4,3)",
+          "(4,4)",
+          "(4,5)",
+          "(4,6)",
+          "(4,7)",
+          "(4,8)",
+          "(5,1)",
+          "(5,2)",
+          "(5,3)",
+          "(5,4)",
+          "(5,5)",
+          "(5,6)",
+          "(5,7)",
+          "(5,8)",
+          "(6,1)",
+          "(6,2)",
+          "(6,3)",
+          "(6,4)",
+          "(6,5)",
+          "(6,6)",
+          "(6,7)",
+          "(6,8)",
+          "(7,1)"
+        ],
+        "steps_seq": [],
+        "solve_actions": []
+      },
+      "a_plus_b": {
+        "mode": "a_plus_b",
+        "use_runs": true,
+        "complete": true,
+        "timeout": false,
+        "contradiction": null,
+        "elapsed_s": 0.0,
+        "steps_total": 50,
+        "steps_a": 9,
+        "steps_b": 41,
+        "a_safe": 3,
+        "a_mine": 6,
+        "b_safe": 36,
+        "b_mine": 5,
+        "explicit_reveals": 39,
+        "revealed_total": 53,
+        "deduced_mines": 11,
+        "unknown_left": 0,
+        "deduced_mines_equal_truth": true,
+        "revealed_all_safe_true": true,
+        "unknown_cells_1based": [],
+        "steps_seq": [
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              2,
+              1
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              2,
+              3
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              2,
+              7
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              2,
+              8
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              3,
+              3
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              3,
+              7
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              3,
+              8
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              4,
+              6
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              5,
+              6
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              6,
+              1
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              6,
+              2
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              6,
+              3
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              6,
+              4
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              6,
+              5
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              6,
+              6
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              6,
+              7
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              6,
+              8
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              7,
+              6
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              8,
+              1
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              8,
+              2
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              8,
+              3
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              8,
+              4
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              8,
+              5
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              8,
+              6
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              8,
+              7
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              8,
+              8
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              1,
+              3
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              1,
+              7
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              4,
+              1
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              4,
+              2
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "rc": [
+              4,
+              5
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "rc": [
+              5,
+              5
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "rc": [
+              7,
+              2
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "rc": [
+              7,
+              4
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              1,
+              8
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              4,
+              3
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              5,
+              1
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              5,
+              2
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              5,
+              3
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              7,
+              1
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              7,
+              3
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              7,
+              5
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              5,
+              4
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              7,
+              7
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              4,
+              4
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              4,
+              7
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              5,
+              7
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "rc": [
+              4,
+              8
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              5,
+              8
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              7,
+              8
+            ]
+          }
+        ],
+        "solve_actions": [
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 1,
+            "c": 0
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 1,
+            "c": 2
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 1,
+            "c": 6
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 1,
+            "c": 7
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 2,
+            "c": 2
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 2,
+            "c": 6
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 2,
+            "c": 7
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 3,
+            "c": 5
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 4,
+            "c": 5
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 5,
+            "c": 0
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 5,
+            "c": 1
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 5,
+            "c": 2
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 5,
+            "c": 3
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 5,
+            "c": 4
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 5,
+            "c": 5
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 5,
+            "c": 6
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 5,
+            "c": 7
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 6,
+            "c": 5
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 7,
+            "c": 0
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 7,
+            "c": 1
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 7,
+            "c": 2
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 7,
+            "c": 3
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 7,
+            "c": 4
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 7,
+            "c": 5
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 7,
+            "c": 6
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 7,
+            "c": 7
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 0,
+            "c": 2
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 0,
+            "c": 6
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 3,
+            "c": 0
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 3,
+            "c": 1
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "r": 3,
+            "c": 4
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "r": 4,
+            "c": 4
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "r": 6,
+            "c": 1
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "r": 6,
+            "c": 3
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 0,
+            "c": 7
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 3,
+            "c": 2
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 4,
+            "c": 0
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 4,
+            "c": 1
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 4,
+            "c": 2
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 6,
+            "c": 0
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 6,
+            "c": 2
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 6,
+            "c": 4
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 4,
+            "c": 3
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 6,
+            "c": 6
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 3,
+            "c": 3
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 3,
+            "c": 6
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 4,
+            "c": 6
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "r": 3,
+            "c": 7
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 4,
+            "c": 7
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 6,
+            "c": 7
+          }
+        ]
+      },
+      "verdict": {
+        "a_only_solves": false,
+        "a_plus_b_solves": true,
+        "b_needed": true,
+        "b_contribution_cells": 41
+      }
+    },
+    {
+      "id": 10,
+      "size": 8,
+      "mines_true": [
+        0,
+        2,
+        16,
+        18,
+        21,
+        24,
+        34,
+        38,
+        43,
+        46,
+        48,
+        62
+      ],
+      "a_only": {
+        "mode": "a_only",
+        "use_runs": false,
+        "complete": false,
+        "timeout": false,
+        "contradiction": null,
+        "elapsed_s": 0.0,
+        "steps_total": 11,
+        "steps_a": 11,
+        "steps_b": 0,
+        "a_safe": 9,
+        "a_mine": 2,
+        "b_safe": 0,
+        "b_mine": 0,
+        "explicit_reveals": 9,
+        "revealed_total": 23,
+        "deduced_mines": 2,
+        "unknown_left": 39,
+        "deduced_mines_equal_truth": false,
+        "revealed_all_safe_true": true,
+        "unknown_cells_1based": [
+          "(1,1)",
+          "(1,2)",
+          "(1,3)",
+          "(2,1)",
+          "(2,2)",
+          "(2,3)",
+          "(3,1)",
+          "(3,2)",
+          "(3,3)",
+          "(4,1)",
+          "(4,2)",
+          "(4,3)",
+          "(5,1)",
+          "(5,2)",
+          "(5,3)",
+          "(6,1)",
+          "(6,2)",
+          "(6,3)",
+          "(6,4)",
+          "(6,5)",
+          "(6,6)",
+          "(6,7)",
+          "(6,8)",
+          "(7,1)",
+          "(7,2)",
+          "(7,3)",
+          "(7,4)",
+          "(7,5)",
+          "(7,6)",
+          "(7,7)",
+          "(7,8)",
+          "(8,1)",
+          "(8,2)",
+          "(8,3)",
+          "(8,4)",
+          "(8,5)",
+          "(8,6)",
+          "(8,7)",
+          "(8,8)"
+        ],
+        "steps_seq": [
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              3,
+              6
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              3,
+              4
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              3,
+              5
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              4,
+              6
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              4,
+              4
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              4,
+              5
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              5,
+              4
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              5,
+              5
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              5,
+              6
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              5,
+              7
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              5,
+              8
+            ]
+          }
+        ],
+        "solve_actions": [
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 2,
+            "c": 5
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 2,
+            "c": 3
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 2,
+            "c": 4
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 3,
+            "c": 5
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 3,
+            "c": 3
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 3,
+            "c": 4
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 4,
+            "c": 3
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 4,
+            "c": 4
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 4,
+            "c": 5
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 4,
+            "c": 6
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 4,
+            "c": 7
+          }
+        ]
+      },
+      "a_plus_b": {
+        "mode": "a_plus_b",
+        "use_runs": true,
+        "complete": true,
+        "timeout": false,
+        "contradiction": null,
+        "elapsed_s": 0.0,
+        "steps_total": 45,
+        "steps_a": 8,
+        "steps_b": 37,
+        "a_safe": 3,
+        "a_mine": 5,
+        "b_safe": 30,
+        "b_mine": 7,
+        "explicit_reveals": 33,
+        "revealed_total": 52,
+        "deduced_mines": 12,
+        "unknown_left": 0,
+        "deduced_mines_equal_truth": true,
+        "revealed_all_safe_true": true,
+        "unknown_cells_1based": [],
+        "steps_seq": [
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              3,
+              6
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "rc": [
+              1,
+              1
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "rc": [
+              1,
+              3
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "rc": [
+              5,
+              7
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "rc": [
+              6,
+              7
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "rc": [
+              8,
+              7
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              1,
+              2
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              2,
+              1
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              2,
+              2
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              2,
+              3
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              3,
+              2
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              3,
+              5
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              4,
+              2
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              4,
+              5
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              4,
+              6
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              5,
+              2
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              5,
+              5
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              5,
+              6
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              5,
+              8
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              6,
+              2
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              6,
+              5
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              6,
+              6
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              6,
+              8
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              7,
+              2
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              7,
+              5
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              7,
+              6
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              7,
+              7
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              7,
+              8
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              8,
+              2
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              8,
+              5
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              8,
+              8
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              3,
+              1
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              3,
+              3
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              6,
+              4
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              3,
+              4
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              4,
+              4
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "rc": [
+              5,
+              4
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "rc": [
+              4,
+              1
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "rc": [
+              7,
+              1
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              4,
+              3
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              5,
+              1
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              6,
+              1
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              6,
+              3
+            ]
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "rc": [
+              8,
+              1
+            ]
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "rc": [
+              5,
+              3
+            ]
+          }
+        ],
+        "solve_actions": [
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 2,
+            "c": 5
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "r": 0,
+            "c": 0
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "r": 0,
+            "c": 2
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "r": 4,
+            "c": 6
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "r": 5,
+            "c": 6
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "r": 7,
+            "c": 6
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 0,
+            "c": 1
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 1,
+            "c": 0
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 1,
+            "c": 1
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 1,
+            "c": 2
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 2,
+            "c": 1
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 2,
+            "c": 4
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 3,
+            "c": 1
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 3,
+            "c": 4
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 3,
+            "c": 5
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 4,
+            "c": 1
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 4,
+            "c": 4
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 4,
+            "c": 5
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 4,
+            "c": 7
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 5,
+            "c": 1
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 5,
+            "c": 4
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 5,
+            "c": 5
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 5,
+            "c": 7
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 6,
+            "c": 1
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 6,
+            "c": 4
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 6,
+            "c": 5
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 6,
+            "c": 6
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 6,
+            "c": 7
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 7,
+            "c": 1
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 7,
+            "c": 4
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 7,
+            "c": 7
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 2,
+            "c": 0
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 2,
+            "c": 2
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 5,
+            "c": 3
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 2,
+            "c": 3
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 3,
+            "c": 3
+          },
+          {
+            "rule": "a",
+            "kind": "safe",
+            "r": 4,
+            "c": 3
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "r": 3,
+            "c": 0
+          },
+          {
+            "rule": "b",
+            "kind": "mine",
+            "r": 6,
+            "c": 0
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 3,
+            "c": 2
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 4,
+            "c": 0
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 5,
+            "c": 0
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 5,
+            "c": 2
+          },
+          {
+            "rule": "b",
+            "kind": "safe",
+            "r": 7,
+            "c": 0
+          },
+          {
+            "rule": "a",
+            "kind": "mine",
+            "r": 4,
+            "c": 2
+          }
+        ]
+      },
+      "verdict": {
+        "a_only_solves": false,
+        "a_plus_b_solves": true,
+        "b_needed": true,
+        "b_contribution_cells": 37
+      }
+    }
+  ]
+}

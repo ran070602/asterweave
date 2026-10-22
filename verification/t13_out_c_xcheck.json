@@ -1,0 +1,822 @@
+{
+  "budget_s": 120.0,
+  "levels": [
+    {
+      "id": 1,
+      "revealed_at_start": 14,
+      "row_option_counts": [
+        64,
+        64,
+        16,
+        4,
+        4,
+        4
+      ],
+      "true_layout_valid": true,
+      "full": {
+        "solutions": 26,
+        "nodes": 17813,
+        "timeout": false,
+        "sols_sample": [
+          [
+            "......",
+            "X.....",
+            "..X.X.",
+            "....X.",
+            "....X.",
+            ".....X"
+          ],
+          [
+            "......",
+            "X.....",
+            "..X.X.",
+            "....X.",
+            "....XX",
+            "......"
+          ],
+          [
+            "......",
+            "X.....",
+            "..X.X.",
+            "....XX",
+            "....X.",
+            "......"
+          ],
+          [
+            "......",
+            "X.....",
+            "..X.XX",
+            "....X.",
+            "....X.",
+            "......"
+          ],
+          [
+            "......",
+            ".X....",
+            "..X.X.",
+            "....X.",
+            "....X.",
+            ".....X"
+          ],
+          [
+            "......",
+            ".X....",
+            "..X.X.",
+            "....X.",
+            "....XX",
+            "......"
+          ]
+        ],
+        "elapsed_s": 0.234
+      },
+      "no_numbers": {
+        "solutions": 74613,
+        "nodes": 0,
+        "timeout": false,
+        "sols_sample": [],
+        "note": "组合数捷径 C(22,6)",
+        "elapsed_s": 0.0
+      },
+      "bruteforce": {
+        "available": false,
+        "product_rows": 4194304,
+        "solutions": null,
+        "note": "行模式全展开规模 4194304 超过上限 3000000，未执行"
+      },
+      "comb_bruteforce": {
+        "available": true,
+        "solutions": 26,
+        "timeout": false,
+        "elapsed_s": 0.12,
+        "sols_sample": [
+          [
+            0,
+            6,
+            14,
+            16,
+            22,
+            28
+          ],
+          [
+            0,
+            7,
+            14,
+            16,
+            22,
+            28
+          ],
+          [
+            1,
+            6,
+            14,
+            16,
+            22,
+            28
+          ]
+        ]
+      },
+      "cross_check_solutions": 26,
+      "cross_check_agree": true,
+      "solution_count_sane": true
+    },
+    {
+      "id": 2,
+      "revealed_at_start": 6,
+      "row_option_counts": [
+        1,
+        6,
+        4,
+        1,
+        4,
+        5
+      ],
+      "true_layout_valid": true,
+      "full": {
+        "solutions": 1,
+        "nodes": 7,
+        "timeout": false,
+        "sols_sample": [
+          [
+            "......",
+            ".XX.X.",
+            "....X.",
+            "......",
+            "..X...",
+            ".XX..."
+          ]
+        ],
+        "elapsed_s": 0.0
+      },
+      "bruteforce": {
+        "available": true,
+        "product_rows": 480,
+        "solutions": 1,
+        "timeout": false,
+        "elapsed_s": 0.02,
+        "sols_sample": [
+          [
+            "......",
+            ".XX.X.",
+            "....X.",
+            "......",
+            "..X...",
+            ".XX..."
+          ]
+        ]
+      },
+      "cross_check_solutions": 1,
+      "cross_check_agree": true,
+      "solution_count_sane": true
+    },
+    {
+      "id": 3,
+      "revealed_at_start": 8,
+      "row_option_counts": [
+        3,
+        4,
+        1,
+        3,
+        4,
+        1
+      ],
+      "true_layout_valid": true,
+      "full": {
+        "solutions": 1,
+        "nodes": 17,
+        "timeout": false,
+        "sols_sample": [
+          [
+            "....XX",
+            "..X...",
+            "......",
+            "...XX.",
+            "X.X..X",
+            "......"
+          ]
+        ],
+        "elapsed_s": 0.0
+      },
+      "bruteforce": {
+        "available": true,
+        "product_rows": 144,
+        "solutions": 1,
+        "timeout": false,
+        "elapsed_s": 0.0,
+        "sols_sample": [
+          [
+            "....XX",
+            "..X...",
+            "......",
+            "...XX.",
+            "X.X..X",
+            "......"
+          ]
+        ]
+      },
+      "cross_check_solutions": 1,
+      "cross_check_agree": true,
+      "solution_count_sane": true
+    },
+    {
+      "id": 4,
+      "revealed_at_start": 6,
+      "row_option_counts": [
+        7,
+        6,
+        1,
+        15,
+        5,
+        1,
+        6
+      ],
+      "true_layout_valid": true,
+      "full": {
+        "solutions": 8,
+        "nodes": 161,
+        "timeout": false,
+        "sols_sample": [
+          [
+            "...X...",
+            "....XX.",
+            ".......",
+            ".X.X...",
+            "....X..",
+            ".......",
+            "..X..X."
+          ],
+          [
+            "...X...",
+            "....XX.",
+            ".......",
+            ".X.X...",
+            ".....X.",
+            ".......",
+            "..X.X.."
+          ],
+          [
+            "...X...",
+            "....XX.",
+            ".......",
+            ".X..X..",
+            "...X...",
+            ".......",
+            "..X..X."
+          ],
+          [
+            "...X...",
+            "....XX.",
+            ".......",
+            ".X...X.",
+            "...X...",
+            ".......",
+            "..X.X.."
+          ],
+          [
+            ".....X.",
+            "...XX..",
+            ".......",
+            ".X.X...",
+            "....X..",
+            ".......",
+            "..X..X."
+          ],
+          [
+            ".....X.",
+            "...XX..",
+            ".......",
+            ".X.X...",
+            ".....X.",
+            ".......",
+            "..X.X.."
+          ]
+        ],
+        "elapsed_s": 0.0
+      },
+      "bruteforce": {
+        "available": true,
+        "product_rows": 18900,
+        "solutions": 8,
+        "timeout": false,
+        "elapsed_s": 0.05,
+        "sols_sample": [
+          [
+            "...X...",
+            "....XX.",
+            ".......",
+            ".X.X...",
+            "....X..",
+            ".......",
+            "..X..X."
+          ],
+          [
+            "...X...",
+            "....XX.",
+            ".......",
+            ".X.X...",
+            ".....X.",
+            ".......",
+            "..X.X.."
+          ],
+          [
+            "...X...",
+            "....XX.",
+            ".......",
+            ".X..X..",
+            "...X...",
+            ".......",
+            "..X..X."
+          ]
+        ]
+      },
+      "cross_check_solutions": 8,
+      "cross_check_agree": true,
+      "solution_count_sane": true
+    },
+    {
+      "id": 5,
+      "revealed_at_start": 15,
+      "row_option_counts": [
+        1,
+        15,
+        4,
+        4,
+        2,
+        1,
+        4
+      ],
+      "true_layout_valid": true,
+      "full": {
+        "solutions": 1,
+        "nodes": 26,
+        "timeout": false,
+        "sols_sample": [
+          [
+            ".......",
+            ".X..X..",
+            "......X",
+            "X...X..",
+            ".....XX",
+            ".......",
+            "X...X.."
+          ]
+        ],
+        "elapsed_s": 0.0
+      },
+      "bruteforce": {
+        "available": true,
+        "product_rows": 1920,
+        "solutions": 1,
+        "timeout": false,
+        "elapsed_s": 0.0,
+        "sols_sample": [
+          [
+            ".......",
+            ".X..X..",
+            "......X",
+            "X...X..",
+            ".....XX",
+            ".......",
+            "X...X.."
+          ]
+        ]
+      },
+      "cross_check_solutions": 1,
+      "cross_check_agree": true,
+      "solution_count_sane": true
+    },
+    {
+      "id": 6,
+      "revealed_at_start": 6,
+      "row_option_counts": [
+        3,
+        5,
+        1,
+        10,
+        7,
+        15,
+        1
+      ],
+      "true_layout_valid": true,
+      "full": {
+        "solutions": 2,
+        "nodes": 22,
+        "timeout": false,
+        "sols_sample": [
+          [
+            "..XX.X.",
+            "...X...",
+            ".......",
+            "X..X.X.",
+            "....X..",
+            "....X.X",
+            "......."
+          ],
+          [
+            "..XX.X.",
+            "...X...",
+            ".......",
+            "X...X.X",
+            "....X..",
+            "...X.X.",
+            "......."
+          ]
+        ],
+        "elapsed_s": 0.0
+      },
+      "bruteforce": {
+        "available": true,
+        "product_rows": 15750,
+        "solutions": 2,
+        "timeout": false,
+        "elapsed_s": 0.05,
+        "sols_sample": [
+          [
+            "..XX.X.",
+            "...X...",
+            ".......",
+            "X..X.X.",
+            "....X..",
+            "....X.X",
+            "......."
+          ],
+          [
+            "..XX.X.",
+            "...X...",
+            ".......",
+            "X...X.X",
+            "....X..",
+            "...X.X.",
+            "......."
+          ]
+        ]
+      },
+      "cross_check_solutions": 2,
+      "cross_check_agree": true,
+      "solution_count_sane": true
+    },
+    {
+      "id": 7,
+      "revealed_at_start": 12,
+      "row_option_counts": [
+        4,
+        3,
+        1,
+        21,
+        21,
+        1,
+        21,
+        21
+      ],
+      "true_layout_valid": true,
+      "full": {
+        "solutions": 20,
+        "nodes": 74,
+        "timeout": false,
+        "sols_sample": [
+          [
+            "......X.",
+            "....X..X",
+            "........",
+            ".X....X.",
+            "X.....X.",
+            "........",
+            ".X.X....",
+            "..X.X..."
+          ],
+          [
+            "......X.",
+            "....X..X",
+            "........",
+            ".X....X.",
+            "X.....X.",
+            "........",
+            "..X.X...",
+            ".X.X...."
+          ],
+          [
+            "......X.",
+            "....X..X",
+            "........",
+            ".X....X.",
+            "..X...X.",
+            "........",
+            "X..X....",
+            ".X..X..."
+          ],
+          [
+            "......X.",
+            "....X..X",
+            "........",
+            ".X....X.",
+            "..X...X.",
+            "........",
+            "X...X...",
+            ".X.X...."
+          ],
+          [
+            "......X.",
+            "....X..X",
+            "........",
+            ".X....X.",
+            "..X...X.",
+            "........",
+            ".X.X....",
+            "X...X..."
+          ],
+          [
+            "......X.",
+            "....X..X",
+            "........",
+            ".X....X.",
+            "..X...X.",
+            "........",
+            ".X..X...",
+            "X..X...."
+          ]
+        ],
+        "elapsed_s": 0.0
+      },
+      "bruteforce": {
+        "available": true,
+        "product_rows": 2333772,
+        "solutions": 20,
+        "timeout": false,
+        "elapsed_s": 6.56,
+        "sols_sample": [
+          [
+            "......X.",
+            "....X..X",
+            "........",
+            ".X....X.",
+            "X.....X.",
+            "........",
+            ".X.X....",
+            "..X.X..."
+          ],
+          [
+            "......X.",
+            "....X..X",
+            "........",
+            ".X....X.",
+            "X.....X.",
+            "........",
+            "..X.X...",
+            ".X.X...."
+          ],
+          [
+            "......X.",
+            "....X..X",
+            "........",
+            ".X....X.",
+            "..X...X.",
+            "........",
+            "X..X....",
+            ".X..X..."
+          ]
+        ]
+      },
+      "cross_check_solutions": 20,
+      "cross_check_agree": true,
+      "solution_count_sane": true
+    },
+    {
+      "id": 8,
+      "revealed_at_start": 11,
+      "row_option_counts": [
+        20,
+        21,
+        1,
+        8,
+        21,
+        5,
+        4,
+        4
+      ],
+      "true_layout_valid": true,
+      "full": {
+        "solutions": 68,
+        "nodes": 6568,
+        "timeout": false,
+        "sols_sample": [
+          [
+            "X.X....X",
+            "....X..X",
+            "........",
+            ".....X..",
+            ".X....X.",
+            "...X....",
+            ".X......",
+            "..X....X"
+          ],
+          [
+            "X.X....X",
+            "....X..X",
+            "........",
+            ".....X..",
+            ".X....X.",
+            "...X....",
+            "..X.....",
+            ".X.....X"
+          ],
+          [
+            "X.X....X",
+            ".....X.X",
+            "........",
+            "....X...",
+            ".X....X.",
+            "...X....",
+            ".X......",
+            "..X....X"
+          ],
+          [
+            "X.X....X",
+            ".....X.X",
+            "........",
+            "....X...",
+            ".X....X.",
+            "...X....",
+            "..X.....",
+            ".X.....X"
+          ],
+          [
+            "X...X..X",
+            ".X.....X",
+            "........",
+            ".....X..",
+            "..X...X.",
+            "...X....",
+            ".X......",
+            "..X....X"
+          ],
+          [
+            "X...X..X",
+            ".X.....X",
+            "........",
+            ".....X..",
+            "..X...X.",
+            "...X....",
+            "..X.....",
+            ".X.....X"
+          ]
+        ],
+        "elapsed_s": 0.203
+      },
+      "bruteforce": {
+        "available": false,
+        "product_rows": 5644800,
+        "solutions": null,
+        "note": "行模式全展开规模 5644800 超过上限 3000000，未执行"
+      },
+      "cross_check_solutions": null,
+      "cross_check_agree": null,
+      "solution_count_sane": true
+    },
+    {
+      "id": 9,
+      "revealed_at_start": 20,
+      "row_option_counts": [
+        7,
+        21,
+        7,
+        20,
+        3,
+        1,
+        3,
+        2
+      ],
+      "true_layout_valid": true,
+      "full": {
+        "solutions": 1,
+        "nodes": 54,
+        "timeout": false,
+        "sols_sample": [
+          [
+            ".XX.....",
+            "..X..X..",
+            ".XX.....",
+            ".X..X..X",
+            ".......X",
+            "........",
+            ".....X..",
+            "......XX"
+          ]
+        ],
+        "elapsed_s": 0.0
+      },
+      "bruteforce": {
+        "available": true,
+        "product_rows": 370440,
+        "solutions": 1,
+        "timeout": false,
+        "elapsed_s": 0.84,
+        "sols_sample": [
+          [
+            ".XX.....",
+            "..X..X..",
+            ".XX.....",
+            ".X..X..X",
+            ".......X",
+            "........",
+            ".....X..",
+            "......XX"
+          ]
+        ]
+      },
+      "cross_check_solutions": 1,
+      "cross_check_agree": true,
+      "solution_count_sane": true
+    },
+    {
+      "id": 10,
+      "revealed_at_start": 9,
+      "row_option_counts": [
+        8,
+        21,
+        8,
+        8,
+        10,
+        5,
+        5,
+        4
+      ],
+      "true_layout_valid": true,
+      "full": {
+        "solutions": 11,
+        "nodes": 5231,
+        "timeout": false,
+        "sols_sample": [
+          [
+            "X.......",
+            "X..X....",
+            ".......X",
+            ".....X..",
+            "X..XX..X",
+            ".X......",
+            "..X.....",
+            ".XX...X."
+          ],
+          [
+            "X.......",
+            "X..X....",
+            ".......X",
+            ".....X..",
+            ".X.XX..X",
+            "X.......",
+            "..X.....",
+            ".XX...X."
+          ],
+          [
+            "X.......",
+            "X......X",
+            "...X....",
+            ".....X..",
+            "X..XX..X",
+            ".X......",
+            "..X.....",
+            ".XX...X."
+          ],
+          [
+            "X.......",
+            "X......X",
+            "...X....",
+            ".....X..",
+            ".X.XX..X",
+            "X.......",
+            "..X.....",
+            ".XX...X."
+          ],
+          [
+            "...X....",
+            "X......X",
+            "X.......",
+            ".....X..",
+            "X..XX..X",
+            ".X......",
+            "..X.....",
+            ".XX...X."
+          ],
+          [
+            "...X....",
+            "X......X",
+            "X.......",
+            ".....X..",
+            ".X.XX..X",
+            "X.......",
+            "..X.....",
+            ".XX...X."
+          ]
+        ],
+        "elapsed_s": 0.172
+      },
+      "bruteforce": {
+        "available": false,
+        "product_rows": 10752000,
+        "solutions": null,
+        "note": "行模式全展开规模 10752000 超过上限 3000000，未执行"
+      },
+      "cross_check_solutions": null,
+      "cross_check_agree": null,
+      "solution_count_sane": true
+    }
+  ]
+}

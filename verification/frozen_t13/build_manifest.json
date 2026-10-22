@@ -1,0 +1,24 @@
+{
+  "ui_source": "game\\index.html",
+  "ui_sha256": "97161ea8844b7f0135a9d0e8e7e1e412770d7b3d54fb3ed8cff5b028b06b4975",
+  "levels_source": "tools\\levels.json",
+  "levels_sha256": "891b416c1ac53e586039d4020a8f5a09152ae396be23109b14f0c2ed61009746",
+  "level_count": 10,
+  "build_output": "dist\\冉政-游戏本体\\index.html",
+  "build_sha256": "f9c7d69ca249c067eaf8dac094c37e8b0d50e3c018f6539f2b8ee0668969b1a9",
+  "zip": "冉政-游戏本体.zip",
+  "zip_sha256": "bdea61a74973bfc509650bc402a80a9543ab0b614d2c71a392cdd995779d4231",
+  "zip_bytes": 12977,
+  "html_bytes": 48555,
+  "zip_root_entries": [
+    "index.html",
+    "README.txt"
+  ],
+  "checks": {
+    "levels_roundtrip": true,
+    "offline_selfcontained": true,
+    "node_syntax": true,
+    "clue_selfconsistent": true,
+    "zip_root_index": true
+  }
+}

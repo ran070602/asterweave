@@ -1,0 +1,100 @@
+{
+  "levels": [
+    {
+      "id": 1,
+      "steps": 22,
+      "illegal_steps": [],
+      "complete_after_replay": true,
+      "mines_equal_truth": true
+    },
+    {
+      "id": 2,
+      "steps": 18,
+      "illegal_steps": [],
+      "complete_after_replay": true,
+      "mines_equal_truth": true
+    },
+    {
+      "id": 3,
+      "steps": 28,
+      "illegal_steps": [],
+      "complete_after_replay": true,
+      "mines_equal_truth": true
+    },
+    {
+      "id": 4,
+      "steps": 21,
+      "illegal_steps": [],
+      "complete_after_replay": true,
+      "mines_equal_truth": true
+    },
+    {
+      "id": 5,
+      "steps": 22,
+      "illegal_steps": [
+        {
+          "step": 12,
+          "rule": "连续块",
+          "kind": "探开安全格",
+          "rc": [
+            4,
+            2
+          ],
+          "state": "未知",
+          "other_rule_justifies": false,
+          "verdict": "两类规则都推不出（按此顺序会卡住）"
+        }
+      ],
+      "complete_after_replay": true,
+      "mines_equal_truth": true
+    },
+    {
+      "id": 6,
+      "steps": 26,
+      "illegal_steps": [],
+      "complete_after_replay": true,
+      "mines_equal_truth": true
+    },
+    {
+      "id": 7,
+      "steps": 35,
+      "illegal_steps": [
+        {
+          "step": 15,
+          "rule": "连续块",
+          "kind": "探开安全格",
+          "rc": [
+            7,
+            1
+          ],
+          "state": "未知",
+          "other_rule_justifies": false,
+          "verdict": "两类规则都推不出（按此顺序会卡住）"
+        }
+      ],
+      "complete_after_replay": true,
+      "mines_equal_truth": true
+    },
+    {
+      "id": 8,
+      "steps": 39,
+      "illegal_steps": [],
+      "complete_after_replay": true,
+      "mines_equal_truth": true
+    },
+    {
+      "id": 9,
+      "steps": 50,
+      "illegal_steps": [],
+      "complete_after_replay": true,
+      "mines_equal_truth": true
+    },
+    {
+      "id": 10,
+      "steps": 44,
+      "illegal_steps": [],
+      "complete_after_replay": true,
+      "mines_equal_truth": true
+    }
+  ]
+}

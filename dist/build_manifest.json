@@ -1,0 +1,24 @@
+{
+  "ui_source": "game\\index.html",
+  "ui_sha256": "7f5237e22bd398e94690b2791f0e9f377b01b0369fec3d5eeb6a140b1f9817bb",
+  "levels_source": "tools\\levels.json",
+  "levels_sha256": "cfcc26a1bf974e357c37b98f8887c0a59afbba9356071748020b0c5b13b0bc1c",
+  "level_count": 20,
+  "build_output": "dist\\星织-游戏本体\\index.html",
+  "build_sha256": "e43e0b4d62d05ae51bf4e0551985de603fb1361e2b7f4e03120f1d267dac24b4",
+  "zip": "星织-游戏本体.zip",
+  "zip_sha256": "1479150690c7e1019ea592b636e5b6c1b86a950ffdbccfbe6dda5660ffaa3b36",
+  "zip_bytes": 28083,
+  "html_bytes": 151517,
+  "zip_root_entries": [
+    "index.html",
+    "README.txt"
+  ],
+  "checks": {
+    "levels_roundtrip": true,
+    "offline_selfcontained": true,
+    "node_syntax": true,
+    "clue_selfconsistent": true,
+    "zip_root_index": true
+  }
+}

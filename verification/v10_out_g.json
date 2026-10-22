@@ -1,0 +1,536 @@
+{
+ "docs": {
+  "冉政-设计思路文档.md": {
+   "name_ok": true,
+   "mentions_10": 12,
+   "mentions_20": 1,
+   "tables": [
+    {
+     "line": 162,
+     "rows": 20,
+     "all_ok": true,
+     "parsed": [
+      {
+       "id": 1,
+       "theme": "南十字座",
+       "size_raw": "8×8",
+       "stars": 4,
+       "noise": 6,
+       "mines": 10,
+       "digs": 24,
+       "ok": true
+      },
+      {
+       "id": 2,
+       "theme": "天箭座",
+       "size_raw": "7×7",
+       "stars": 4,
+       "noise": 7,
+       "mines": 11,
+       "digs": 19,
+       "ok": true
+      },
+      {
+       "id": 3,
+       "theme": "仙后座",
+       "size_raw": "8×8",
+       "stars": 5,
+       "noise": 9,
+       "mines": 14,
+       "digs": 34,
+       "ok": true
+      },
+      {
+       "id": 4,
+       "theme": "猎户座",
+       "size_raw": "9×9",
+       "stars": 7,
+       "noise": 10,
+       "mines": 17,
+       "digs": 47,
+       "ok": true
+      },
+      {
+       "id": 5,
+       "theme": "小熊座",
+       "size_raw": "8×8",
+       "stars": 7,
+       "noise": 6,
+       "mines": 13,
+       "digs": 20,
+       "ok": true
+      },
+      {
+       "id": 6,
+       "theme": "天鹅座",
+       "size_raw": "7×7",
+       "stars": 9,
+       "noise": 3,
+       "mines": 12,
+       "digs": 21,
+       "ok": true
+      },
+      {
+       "id": 7,
+       "theme": "狮子座",
+       "size_raw": "9×9",
+       "stars": 9,
+       "noise": 9,
+       "mines": 18,
+       "digs": 32,
+       "ok": true
+      },
+      {
+       "id": 8,
+       "theme": "飞马座",
+       "size_raw": "10×10",
+       "stars": 9,
+       "noise": 10,
+       "mines": 19,
+       "digs": 30,
+       "ok": true
+      },
+      {
+       "id": 9,
+       "theme": "双子座",
+       "size_raw": "9×9",
+       "stars": 12,
+       "noise": 6,
+       "mines": 18,
+       "digs": 32,
+       "ok": true
+      },
+      {
+       "id": 10,
+       "theme": "天蝎座",
+       "size_raw": "10×10",
+       "stars": 13,
+       "noise": 8,
+       "mines": 21,
+       "digs": 40,
+       "ok": true
+      },
+      {
+       "id": 11,
+       "theme": "天琴座",
+       "size_raw": "10×10",
+       "stars": 7,
+       "noise": 13,
+       "mines": 20,
+       "digs": 29,
+       "ok": true
+      },
+      {
+       "id": 12,
+       "theme": "大熊座",
+       "size_raw": "9×9",
+       "stars": 7,
+       "noise": 9,
+       "mines": 16,
+       "digs": 25,
+       "ok": true
+      },
+      {
+       "id": 13,
+       "theme": "北冕座",
+       "size_raw": "9×9",
+       "stars": 7,
+       "noise": 12,
+       "mines": 19,
+       "digs": 33,
+       "ok": true
+      },
+      {
+       "id": 14,
+       "theme": "仙王座",
+       "size_raw": "10×10",
+       "stars": 8,
+       "noise": 12,
+       "mines": 20,
+       "digs": 27,
+       "ok": true
+      },
+      {
+       "id": 15,
+       "theme": "御夫座",
+       "size_raw": "10×10",
+       "stars": 8,
+       "noise": 12,
+       "mines": 20,
+       "digs": 31,
+       "ok": true
+      },
+      {
+       "id": 16,
+       "theme": "牧夫座",
+       "size_raw": "11×11",
+       "stars": 10,
+       "noise": 15,
+       "mines": 25,
+       "digs": 40,
+       "ok": true
+      },
+      {
+       "id": 17,
+       "theme": "英仙座",
+       "size_raw": "11×11",
+       "stars": 10,
+       "noise": 18,
+       "mines": 28,
+       "digs": 37,
+       "ok": true
+      },
+      {
+       "id": 18,
+       "theme": "武仙座",
+       "size_raw": "11×11",
+       "stars": 14,
+       "noise": 13,
+       "mines": 27,
+       "digs": 43,
+       "ok": true
+      },
+      {
+       "id": 19,
+       "theme": "天龙座",
+       "size_raw": "11×11",
+       "stars": 14,
+       "noise": 11,
+       "mines": 25,
+       "digs": 40,
+       "ok": true
+      },
+      {
+       "id": 20,
+       "theme": "半人马座",
+       "size_raw": "11×11",
+       "stars": 14,
+       "noise": 11,
+       "mines": 25,
+       "digs": 34,
+       "ok": true
+      }
+     ]
+    }
+   ],
+   "level_table_found": true
+  },
+  "冉政-迭代优化过程文档.md": {
+   "name_ok": true,
+   "mentions_10": 29,
+   "mentions_20": 4,
+   "tables": [
+    {
+     "line": 117,
+     "rows": 20,
+     "all_ok": true,
+     "parsed": [
+      {
+       "id": 1,
+       "theme": "南十字座",
+       "size_raw": "8×8",
+       "stars": 4,
+       "noise": 6,
+       "mines": 10,
+       "digs": 24,
+       "ok": true
+      },
+      {
+       "id": 2,
+       "theme": "天箭座",
+       "size_raw": "7×7",
+       "stars": 4,
+       "noise": 7,
+       "mines": 11,
+       "digs": 19,
+       "ok": true
+      },
+      {
+       "id": 3,
+       "theme": "仙后座",
+       "size_raw": "8×8",
+       "stars": 5,
+       "noise": 9,
+       "mines": 14,
+       "digs": 34,
+       "ok": true
+      },
+      {
+       "id": 4,
+       "theme": "猎户座",
+       "size_raw": "9×9",
+       "stars": 7,
+       "noise": 10,
+       "mines": 17,
+       "digs": 47,
+       "ok": true
+      },
+      {
+       "id": 5,
+       "theme": "小熊座",
+       "size_raw": "8×8",
+       "stars": 7,
+       "noise": 6,
+       "mines": 13,
+       "digs": 20,
+       "ok": true
+      },
+      {
+       "id": 6,
+       "theme": "天鹅座",
+       "size_raw": "7×7",
+       "stars": 9,
+       "noise": 3,
+       "mines": 12,
+       "digs": 21,
+       "ok": true
+      },
+      {
+       "id": 7,
+       "theme": "狮子座",
+       "size_raw": "9×9",
+       "stars": 9,
+       "noise": 9,
+       "mines": 18,
+       "digs": 32,
+       "ok": true
+      },
+      {
+       "id": 8,
+       "theme": "飞马座",
+       "size_raw": "10×10",
+       "stars": 9,
+       "noise": 10,
+       "mines": 19,
+       "digs": 30,
+       "ok": true
+      },
+      {
+       "id": 9,
+       "theme": "双子座",
+       "size_raw": "9×9",
+       "stars": 12,
+       "noise": 6,
+       "mines": 18,
+       "digs": 32,
+       "ok": true
+      },
+      {
+       "id": 10,
+       "theme": "天蝎座",
+       "size_raw": "10×10",
+       "stars": 13,
+       "noise": 8,
+       "mines": 21,
+       "digs": 40,
+       "ok": true
+      },
+      {
+       "id": 11,
+       "theme": "天琴座",
+       "size_raw": "10×10",
+       "stars": 7,
+       "noise": 13,
+       "mines": 20,
+       "digs": 29,
+       "ok": true
+      },
+      {
+       "id": 12,
+       "theme": "大熊座",
+       "size_raw": "9×9",
+       "stars": 7,
+       "noise": 9,
+       "mines": 16,
+       "digs": 25,
+       "ok": true
+      },
+      {
+       "id": 13,
+       "theme": "北冕座",
+       "size_raw": "9×9",
+       "stars": 7,
+       "noise": 12,
+       "mines": 19,
+       "digs": 33,
+       "ok": true
+      },
+      {
+       "id": 14,
+       "theme": "仙王座",
+       "size_raw": "10×10",
+       "stars": 8,
+       "noise": 12,
+       "mines": 20,
+       "digs": 27,
+       "ok": true
+      },
+      {
+       "id": 15,
+       "theme": "御夫座",
+       "size_raw": "10×10",
+       "stars": 8,
+       "noise": 12,
+       "mines": 20,
+       "digs": 31,
+       "ok": true
+      },
+      {
+       "id": 16,
+       "theme": "牧夫座",
+       "size_raw": "11×11",
+       "stars": 10,
+       "noise": 15,
+       "mines": 25,
+       "digs": 40,
+       "ok": true
+      },
+      {
+       "id": 17,
+       "theme": "英仙座",
+       "size_raw": "11×11",
+       "stars": 10,
+       "noise": 18,
+       "mines": 28,
+       "digs": 37,
+       "ok": true
+      },
+      {
+       "id": 18,
+       "theme": "武仙座",
+       "size_raw": "11×11",
+       "stars": 14,
+       "noise": 13,
+       "mines": 27,
+       "digs": 43,
+       "ok": true
+      },
+      {
+       "id": 19,
+       "theme": "天龙座",
+       "size_raw": "11×11",
+       "stars": 14,
+       "noise": 11,
+       "mines": 25,
+       "digs": 40,
+       "ok": true
+      },
+      {
+       "id": 20,
+       "theme": "半人马座",
+       "size_raw": "11×11",
+       "stars": 14,
+       "noise": 11,
+       "mines": 25,
+       "digs": 34,
+       "ok": true
+      }
+     ]
+    }
+   ],
+   "level_table_found": true
+  }
+ },
+ "spec": {
+  "version": "（v1.3）",
+  "mentions_10": 11,
+  "says_l1_3_runs_false": true,
+  "says_teach_126": true,
+  "teach_actual": [
+   1,
+   6,
+   12
+  ]
+ },
+ "mismatches": [],
+ "claims": {
+  "design_l1_3_no_runs": true,
+  "actual_showRuns": [
+   [
+    1,
+    false
+   ],
+   [
+    2,
+    true
+   ],
+   [
+    3,
+    true
+   ],
+   [
+    4,
+    true
+   ],
+   [
+    5,
+    true
+   ],
+   [
+    6,
+    true
+   ],
+   [
+    7,
+    true
+   ],
+   [
+    8,
+    true
+   ],
+   [
+    9,
+    true
+   ],
+   [
+    10,
+    true
+   ],
+   [
+    11,
+    true
+   ],
+   [
+    12,
+    true
+   ],
+   [
+    13,
+    true
+   ],
+   [
+    14,
+    true
+   ],
+   [
+    15,
+    true
+   ],
+   [
+    16,
+    true
+   ],
+   [
+    17,
+    true
+   ],
+   [
+    18,
+    true
+   ],
+   [
+    19,
+    true
+   ],
+   [
+    20,
+    true
+   ]
+  ],
+  "design_teach_148": true,
+  "iteration_teach_148": false,
+  "iteration_16_must_runs": true,
+  "iteration_no_empty_lines": true,
+  "design_87kb_10levels": true
+ }
+}
