@@ -40,6 +40,19 @@ def readme_text():
         return f.read().replace("\n", "\r\n")
 
 
+def _retitle(html, n):
+    """标题里的关数由数据决定，避免文档/标题与实际关数不一致"""
+    return re.sub(r"<title>[^<]*</title>", f"<title>星织 Asterweave · {n} 关</title>", html, count=1)
+
+
+def _check_bindings(html):
+    """闸门：交互按钮的 click 监听必须写在顶层（不得缩进进别的回调里）"""
+    bad = []
+    for m in re.finditer(r"^[ \t]+document\.getElementById\('(\w+)'\)\.addEventListener", html, re.M):
+        bad.append(m.group(1))
+    return bad
+
+
 def main():
     if not os.path.exists(UI):
         print("!! 缺少 game/index.html"); sys.exit(1)
@@ -55,6 +68,12 @@ def main():
     if not pat.search(html):
         print("!! UI 外壳里找不到 LEVELS_INJECT 标记"); sys.exit(1)
     out_html = pat.sub(lambda m: block, html, count=1)
+    # 标题里的关数由数据决定
+    out_html = _retitle(out_html, len(levels))
+    # 闸门：按钮监听必须在顶层（曾被误插进 resetBtn 回调）
+    bad_bind = _check_bindings(out_html)
+    if bad_bind:
+        fail.append("按钮监听写进了别的回调里: " + ", ".join(bad_bind))
 
     # 2) 回读校验：注入后的 LEVELS 必须与 levels.json 完全一致
     m = re.search(r"/\* LEVELS_INJECT_START \*/\s*const LEVELS = (\[.*?\]);\s*/\* LEVELS_INJECT_END \*/",

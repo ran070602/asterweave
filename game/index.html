@@ -1562,8 +1562,10 @@ overlayEl.addEventListener('click', function(e){
 });
 
 // 重置进度：两步确认，避免误触（进度只存在本机）
-resetBtn.addEventListener('click', function(){
 document.getElementById('unlockBtn').addEventListener('click', toggleUnlockAll);
+
+// 重置进度：两步确认，避免误触（进度只存在本机）
+resetBtn.addEventListener('click', function(){
   if (!resetArmed){
     resetArmed = true;
     resetBtn.textContent = '再点一次确认重置';
