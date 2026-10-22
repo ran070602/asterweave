@@ -169,7 +169,7 @@ const iHint = html.indexOf('id="actHint"');
 const iBoard = html.indexOf('id="board"');
 ok('提示在棋盘之前（棋盘上方）', iHint > 0 && iBoard > 0 && iHint < iBoard, `hint@${iHint} board@${iBoard}`);
 ok('提示紧跟「第 N/50 关」之后', html.indexOf('id="lvtag"') < iHint, 'lvtag 在提示之前');
-ok('提示文案含手机与电脑两套操作', (byId.actHint.textContent || '').includes('轻触') && (byId.actHint.textContent || '').includes('双击'),
+ok('提示文案含手机与电脑两套操作', (byId.actHint.textContent || '').includes('轻触') && (byId.actHint.textContent || '').includes('右键') && !(byId.actHint.textContent || '').includes('双击'),
    byId.actHint.textContent);
 ok('提示容器 class 是 acthint（醒目样式生效）', (byId.actHint.className || '').includes('acthint'), byId.actHint.className);
 ok('旧的 modeActions 容器已移除', !byId.modeActions);
@@ -179,8 +179,8 @@ ok('首屏弹出玩法说明', byId.introOverlay && byId.introOverlay.hidden ===
 const lines = (html.match(/class="intro-line"/g) || []).length;
 ok('说明只有三句话', lines === 3, `intro-line 数=${lines}`);
 const introSrc = html.slice(html.indexOf('id="introOverlay"'), html.indexOf('id="introStart"'));
-ok('说明含关键操作（轻触/长按/单击/双击）',
-   introSrc.includes('轻触') && introSrc.includes('长按') && introSrc.includes('单击') && introSrc.includes('双击'));
+ok('说明含关键操作（轻触/长按/单击/右键）',
+   introSrc.includes('轻触') && introSrc.includes('长按') && introSrc.includes('单击') && introSrc.includes('右键') && !introSrc.includes('双击'));
 // 点「开始观测」关闭
 byId.introStart.dispatchEvent(mkEvent('click', { target: byId.introStart }));
 flush(0);
