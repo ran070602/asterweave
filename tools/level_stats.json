@@ -568,5 +568,385 @@
       0
     ],
     "showRuns": true
+  },
+  {
+    "id": 31,
+    "name": "白羊座",
+    "size": 10,
+    "stars": 5,
+    "noise": 16,
+    "mines": 21,
+    "ok": true,
+    "probes": 39,
+    "runs": 1,
+    "nb_only": false,
+    "iso": 0,
+    "zr": 25,
+    "isEmpty": [
+      0,
+      0
+    ],
+    "showRuns": true
+  },
+  {
+    "id": 32,
+    "name": "巨蟹座",
+    "size": 10,
+    "stars": 6,
+    "noise": 15,
+    "mines": 21,
+    "ok": true,
+    "probes": 39,
+    "runs": 2,
+    "nb_only": false,
+    "iso": 0,
+    "zr": 24,
+    "isEmpty": [
+      0,
+      0
+    ],
+    "showRuns": true
+  },
+  {
+    "id": 33,
+    "name": "乌鸦座",
+    "size": 10,
+    "stars": 5,
+    "noise": 17,
+    "mines": 22,
+    "ok": true,
+    "probes": 42,
+    "runs": 4,
+    "nb_only": false,
+    "iso": 0,
+    "zr": 26,
+    "isEmpty": [
+      0,
+      0
+    ],
+    "showRuns": true
+  },
+  {
+    "id": 34,
+    "name": "巨爵座",
+    "size": 10,
+    "stars": 7,
+    "noise": 15,
+    "mines": 22,
+    "ok": true,
+    "probes": 40,
+    "runs": 10,
+    "nb_only": false,
+    "iso": 0,
+    "zr": 26,
+    "isEmpty": [
+      0,
+      0
+    ],
+    "showRuns": true
+  },
+  {
+    "id": 35,
+    "name": "小狮座",
+    "size": 10,
+    "stars": 5,
+    "noise": 17,
+    "mines": 22,
+    "ok": true,
+    "probes": 39,
+    "runs": 7,
+    "nb_only": false,
+    "iso": 0,
+    "zr": 26,
+    "isEmpty": [
+      0,
+      0
+    ],
+    "showRuns": true
+  },
+  {
+    "id": 36,
+    "name": "天猫座",
+    "size": 10,
+    "stars": 7,
+    "noise": 16,
+    "mines": 23,
+    "ok": true,
+    "probes": 42,
+    "runs": 2,
+    "nb_only": false,
+    "iso": 0,
+    "zr": 22,
+    "isEmpty": [
+      0,
+      0
+    ],
+    "showRuns": true
+  },
+  {
+    "id": 37,
+    "name": "麒麟座",
+    "size": 11,
+    "stars": 7,
+    "noise": 21,
+    "mines": 28,
+    "ok": true,
+    "probes": 42,
+    "runs": 6,
+    "nb_only": false,
+    "iso": 0,
+    "zr": 25,
+    "isEmpty": [
+      0,
+      0
+    ],
+    "showRuns": true
+  },
+  {
+    "id": 38,
+    "name": "天秤座",
+    "size": 11,
+    "stars": 6,
+    "noise": 22,
+    "mines": 28,
+    "ok": true,
+    "probes": 49,
+    "runs": 15,
+    "nb_only": false,
+    "iso": 0,
+    "zr": 24,
+    "isEmpty": [
+      0,
+      0
+    ],
+    "showRuns": true
+  },
+  {
+    "id": 39,
+    "name": "天鸽座",
+    "size": 11,
+    "stars": 9,
+    "noise": 19,
+    "mines": 28,
+    "ok": true,
+    "probes": 41,
+    "runs": 7,
+    "nb_only": false,
+    "iso": 0,
+    "zr": 28,
+    "isEmpty": [
+      0,
+      0
+    ],
+    "showRuns": true
+  },
+  {
+    "id": 40,
+    "name": "天兔座",
+    "size": 11,
+    "stars": 10,
+    "noise": 19,
+    "mines": 29,
+    "ok": true,
+    "probes": 42,
+    "runs": 12,
+    "nb_only": false,
+    "iso": 0,
+    "zr": 35,
+    "isEmpty": [
+      0,
+      0
+    ],
+    "showRuns": true
+  },
+  {
+    "id": 41,
+    "name": "南冕座",
+    "size": 10,
+    "stars": 7,
+    "noise": 17,
+    "mines": 24,
+    "ok": true,
+    "probes": 45,
+    "runs": 10,
+    "nb_only": false,
+    "iso": 0,
+    "zr": 16,
+    "isEmpty": [
+      0,
+      0
+    ],
+    "showRuns": true
+  },
+  {
+    "id": 42,
+    "name": "豺狼座",
+    "size": 11,
+    "stars": 10,
+    "noise": 19,
+    "mines": 29,
+    "ok": true,
+    "probes": 43,
+    "runs": 11,
+    "nb_only": false,
+    "iso": 0,
+    "zr": 27,
+    "isEmpty": [
+      0,
+      0
+    ],
+    "showRuns": true
+  },
+  {
+    "id": 43,
+    "name": "天鹰座",
+    "size": 11,
+    "stars": 9,
+    "noise": 20,
+    "mines": 29,
+    "ok": true,
+    "probes": 44,
+    "runs": 15,
+    "nb_only": false,
+    "iso": 0,
+    "zr": 32,
+    "isEmpty": [
+      0,
+      0
+    ],
+    "showRuns": true
+  },
+  {
+    "id": 44,
+    "name": "鲸鱼座",
+    "size": 11,
+    "stars": 13,
+    "noise": 16,
+    "mines": 29,
+    "ok": true,
+    "probes": 45,
+    "runs": 8,
+    "nb_only": false,
+    "iso": 1,
+    "zr": 22,
+    "isEmpty": [
+      0,
+      0
+    ],
+    "showRuns": true
+  },
+  {
+    "id": 45,
+    "name": "人马座",
+    "size": 11,
+    "stars": 12,
+    "noise": 17,
+    "mines": 29,
+    "ok": true,
+    "probes": 45,
+    "runs": 5,
+    "nb_only": false,
+    "iso": 0,
+    "zr": 24,
+    "isEmpty": [
+      0,
+      0
+    ],
+    "showRuns": true
+  },
+  {
+    "id": 46,
+    "name": "船尾座",
+    "size": 11,
+    "stars": 11,
+    "noise": 18,
+    "mines": 29,
+    "ok": true,
+    "probes": 44,
+    "runs": 5,
+    "nb_only": false,
+    "iso": 0,
+    "zr": 23,
+    "isEmpty": [
+      0,
+      0
+    ],
+    "showRuns": true
+  },
+  {
+    "id": 47,
+    "name": "船帆座",
+    "size": 11,
+    "stars": 11,
+    "noise": 18,
+    "mines": 29,
+    "ok": true,
+    "probes": 46,
+    "runs": 16,
+    "nb_only": false,
+    "iso": 0,
+    "zr": 27,
+    "isEmpty": [
+      0,
+      0
+    ],
+    "showRuns": true
+  },
+  {
+    "id": 48,
+    "name": "巨蛇座",
+    "size": 11,
+    "stars": 12,
+    "noise": 17,
+    "mines": 29,
+    "ok": true,
+    "probes": 49,
+    "runs": 13,
+    "nb_only": false,
+    "iso": 0,
+    "zr": 23,
+    "isEmpty": [
+      0,
+      0
+    ],
+    "showRuns": true
+  },
+  {
+    "id": 49,
+    "name": "南鱼座",
+    "size": 11,
+    "stars": 9,
+    "noise": 20,
+    "mines": 29,
+    "ok": true,
+    "probes": 48,
+    "runs": 9,
+    "nb_only": false,
+    "iso": 0,
+    "zr": 21,
+    "isEmpty": [
+      0,
+      0
+    ],
+    "showRuns": true
+  },
+  {
+    "id": 50,
+    "name": "波江座",
+    "size": 11,
+    "stars": 16,
+    "noise": 13,
+    "mines": 29,
+    "ok": true,
+    "probes": 47,
+    "runs": 5,
+    "nb_only": false,
+    "iso": 0,
+    "zr": 24,
+    "isEmpty": [
+      0,
+      0
+    ],
+    "showRuns": true
   }
 ]
