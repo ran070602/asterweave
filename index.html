@@ -336,6 +336,51 @@
     .board.reveal-flash .cell.wonstar,.board.reveal-flash .cell.wonoise{animation:none}
   }
 
+  /* ===== 星座图鉴：天球投影 ===== */
+  .top-actions{display:flex;gap:6px;align-items:center}
+  .panel.sky-panel{position:fixed;inset:0;z-index:40;box-sizing:border-box;display:none;flex-direction:column;gap:10px;
+    margin:0;padding:14px 12px calc(14px + env(safe-area-inset-bottom));overflow:auto;
+    border:0;border-radius:0;background:radial-gradient(circle at 50% 0%,#0d1730 0%,#070a14 60%,#04060c 100%)}
+  .panel.sky-panel.open{display:flex}
+  .panel.sky-panel{width:100vw;max-width:100vw;overflow-x:hidden}
+  .sky-wrap,.sky-map{width:100%;max-width:100%}
+  .sky-hint{padding:0 2px;word-break:break-word}
+  .sky-panel *{box-sizing:border-box;max-width:100%}
+  .sky-detail:empty{display:none}
+  .sky-panel[hidden]{display:none}
+  .sky-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .sky-filters{display:flex;gap:6px;flex-wrap:wrap}
+  .sky-wrap{border:1px solid rgba(120,150,210,.22);border-radius:14px;overflow:hidden;
+    background:radial-gradient(120% 90% at 50% 30%,rgba(56,84,148,.22),rgba(4,6,12,0) 70%),#05070f;
+    box-shadow:inset 0 0 40px rgba(0,0,0,.9)}
+  .sky-map{display:block;width:100%;height:auto}
+  .sky-grid{stroke:rgba(120,150,210,.16);stroke-width:.35}
+  .sky-grid-eq{stroke:rgba(140,190,255,.3);stroke-width:.5;stroke-dasharray:2 2}
+  .sky-lbl{fill:#5f7495;font-size:2.6px}
+  .skynode{cursor:pointer}
+  .skynode .dot{fill:#2b3a55;stroke:#1b2536;stroke-width:.3}
+  .skynode.on .dot{fill:#d6e8ff}
+  .skynode.sel .dot{fill:#ffd9a0;stroke:#fff;stroke-width:.7}
+  .skynode .lbl{fill:#7f95b5;font-size:2.7px;text-anchor:middle}
+  .skynode.on .lbl{fill:#dbeaff;font-weight:700}
+  .skynode.dim{opacity:.25}
+  .skynode .hit{fill:transparent}
+  .sky-hint{font-size:11px;color:#7b8aa3;text-align:center;line-height:1.5}
+  .sky-card{border:1px solid rgba(120,150,210,.22);border-radius:14px;padding:12px;
+    background:linear-gradient(180deg,rgba(20,30,54,.8),rgba(8,12,22,.8))}
+  .sky-card h3{margin:0 0 2px;font-size:16px;color:#eaf2ff}
+  .sky-card .sub{font-size:11px;color:#8fa6c6;margin-bottom:8px}
+  .sky-meta{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:12px;color:#b9c9e0;margin:0}
+  .sky-meta dt{color:#7f95b5}
+  .sky-meta dd{margin:0}
+  .sky-neigh{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .sky-neigh button{font-size:11px;padding:4px 9px;border-radius:999px;border:1px solid #2c4666;
+    background:#111b2c;color:#9fc3ea}
+  .sky-neigh button.link{background:#16294a;border-color:#3f6ea8;color:#dbeaff}
+  .sky-fact{margin:10px 0 0;font-size:12px;line-height:1.6;color:#9fb4d0}
+  .sky-map-slot{margin-top:10px;border-radius:12px;overflow:hidden;background:#05070f}
+  .sky-locked{font-size:13px;color:#8fa6c6;line-height:1.7}
+
   .foot{margin:14px 4px 0;font-size:12px;line-height:1.6;color:#7b8aa3}
   .err{color:#ff9aab;font-size:14px;padding:12px}
 </style>
@@ -344,7 +389,10 @@
 <div class="app">
   <div class="top">
     <div class="title">星织<span class="who" id="lvName"></span></div>
-    <button type="button" class="lvbtn" id="lvBtn" aria-expanded="false" aria-controls="levelPanel">关卡 <b id="lvBtnNum">1</b>/<b id="lvBtnTotal">1</b> ▾</button>
+    <div class="top-actions">
+      <button type="button" class="lvbtn" id="skyBtn" aria-expanded="false" aria-controls="skyPanel">✦ 图鉴 <b id="skyBtnNum">0</b>/<b id="skyBtnTotal">0</b></button>
+      <button type="button" class="lvbtn" id="lvBtn" aria-expanded="false" aria-controls="levelPanel">关卡 <b id="lvBtnNum">1</b>/<b id="lvBtnTotal">1</b> ▾</button>
+    </div>
   </div>
 
   <section class="panel" id="levelPanel" hidden aria-label="关卡选择">
@@ -355,6 +403,17 @@
     </div>
     <div class="lvgrid" id="lvGrid"></div>
     <div class="panel-hint">✓ 已通关　·　高亮 = 当前关卡　·　🔒 未解锁（通关上一关后解锁）<br>想直接玩后面的关？点「全部解锁」（给评审/开发用，不影响进度记录）</div>
+  </section>
+
+  <section class="panel sky-panel" id="skyPanel" hidden aria-label="星座图鉴">
+    <div class="sky-head">
+      <span class="panel-title">星座图鉴 <b id="skyCount">0</b>/<b id="skyTotal">0</b></span>
+      <button type="button" class="mini" id="skyCloseBtn">关闭</button>
+    </div>
+    <div class="sky-filters" id="skyFilters" role="group" aria-label="按季节筛选"></div>
+    <div class="sky-wrap"><svg class="sky-map" id="skyMap" viewBox="0 0 200 120" role="img" aria-label="天球投影星图"></svg></div>
+    <div class="sky-hint">横轴 = 赤经（0–24 时）· 纵轴 = 赤纬（+90° 到 −90°）· 亮 = 已观测，暗 = 未观测</div>
+    <div class="sky-detail" id="skyDetail"></div>
   </section>
 
   <div class="meta" id="lvtag"></div>
@@ -9020,6 +9079,1507 @@ const LEVELS = [
 ];
 /* LEVELS_INJECT_END */
 
+/* SKY_INJECT_START */
+const SKY = [
+  {
+    "id": "crux",
+    "zh": "南十字座",
+    "en": "Crux",
+    "latin": "Crux",
+    "abbr": "Cru",
+    "level": 1,
+    "ra": 12.45,
+    "dec": -60.0,
+    "raText": "12h27m",
+    "decText": "−60°00′",
+    "areaRank": 88,
+    "season": "春季",
+    "zone": "南天",
+    "brightest": {
+      "zh": "十字架二",
+      "en": "Acrux",
+      "mag": 0.77
+    },
+    "neighbors": [
+      {
+        "latin": "Centaurus",
+        "zh": "半人马座",
+        "id": "centaurus",
+        "level": 20
+      },
+      {
+        "latin": "Musca",
+        "zh": "苍蝇座",
+        "id": null,
+        "level": null
+      }
+    ],
+    "inGameNeighbors": [
+      "centaurus"
+    ]
+  },
+  {
+    "id": "sagitta",
+    "zh": "天箭座",
+    "en": "Sagitta",
+    "latin": "Sagitta",
+    "abbr": "Sge",
+    "level": 2,
+    "ra": 19.65,
+    "dec": 18.5,
+    "raText": "19h39m",
+    "decText": "+18°30′",
+    "areaRank": 86,
+    "season": "夏季",
+    "zone": "赤道带",
+    "brightest": {
+      "zh": "天箭γ",
+      "en": "Gamma Sge",
+      "mag": 3.47
+    },
+    "neighbors": [
+      {
+        "latin": "Vulpecula",
+        "zh": "狐狸座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Hercules",
+        "zh": "武仙座",
+        "id": "hercules",
+        "level": 18
+      },
+      {
+        "latin": "Aquila",
+        "zh": "天鹰座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Delphinus",
+        "zh": "海豚座",
+        "id": null,
+        "level": null
+      }
+    ],
+    "inGameNeighbors": [
+      "hercules"
+    ]
+  },
+  {
+    "id": "cassiopeia",
+    "zh": "仙后座",
+    "en": "Cassiopeia",
+    "latin": "Cassiopeia",
+    "abbr": "Cas",
+    "level": 3,
+    "ra": 1.0,
+    "dec": 62.0,
+    "raText": "1h00m",
+    "decText": "+62°00′",
+    "areaRank": 25,
+    "season": "秋季",
+    "zone": "北天",
+    "brightest": {
+      "zh": "王良四",
+      "en": "Schedar",
+      "mag": 2.24
+    },
+    "neighbors": [
+      {
+        "latin": "Camelopardalis",
+        "zh": "鹿豹座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Cepheus",
+        "zh": "仙王座",
+        "id": "cepheus",
+        "level": 14
+      },
+      {
+        "latin": "Lacerta",
+        "zh": "蝎虎座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Andromeda",
+        "zh": "仙女座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Perseus",
+        "zh": "英仙座",
+        "id": "perseus",
+        "level": 17
+      }
+    ],
+    "inGameNeighbors": [
+      "cepheus",
+      "perseus"
+    ]
+  },
+  {
+    "id": "orion",
+    "zh": "猎户座",
+    "en": "Orion",
+    "latin": "Orion",
+    "abbr": "Ori",
+    "level": 4,
+    "ra": 5.5,
+    "dec": 2.0,
+    "raText": "5h30m",
+    "decText": "+2°00′",
+    "areaRank": 26,
+    "season": "冬季",
+    "zone": "赤道带",
+    "brightest": {
+      "zh": "参宿七",
+      "en": "Rigel",
+      "mag": 0.13
+    },
+    "neighbors": [
+      {
+        "latin": "Taurus",
+        "zh": "金牛座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Gemini",
+        "zh": "双子座",
+        "id": "gemini",
+        "level": 9
+      },
+      {
+        "latin": "Monoceros",
+        "zh": "麒麟座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Canis Major",
+        "zh": "大犬座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Eridanus",
+        "zh": "波江座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Lepus",
+        "zh": "天兔座",
+        "id": null,
+        "level": null
+      }
+    ],
+    "inGameNeighbors": [
+      "gemini"
+    ]
+  },
+  {
+    "id": "ursa-minor",
+    "zh": "小熊座",
+    "en": "Ursa Minor",
+    "latin": "Ursa Minor",
+    "abbr": "UMi",
+    "level": 5,
+    "ra": 15.0,
+    "dec": 77.0,
+    "raText": "15h00m",
+    "decText": "+77°00′",
+    "areaRank": 56,
+    "season": "夏季",
+    "zone": "北天",
+    "brightest": {
+      "zh": "北极星",
+      "en": "Polaris",
+      "mag": 1.98
+    },
+    "neighbors": [
+      {
+        "latin": "Cepheus",
+        "zh": "仙王座",
+        "id": "cepheus",
+        "level": 14
+      },
+      {
+        "latin": "Camelopardalis",
+        "zh": "鹿豹座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Draco",
+        "zh": "天龙座",
+        "id": "draco",
+        "level": 19
+      }
+    ],
+    "inGameNeighbors": [
+      "cepheus",
+      "draco"
+    ]
+  },
+  {
+    "id": "cygnus",
+    "zh": "天鹅座",
+    "en": "Cygnus",
+    "latin": "Cygnus",
+    "abbr": "Cyg",
+    "level": 6,
+    "ra": 20.6,
+    "dec": 42.0,
+    "raText": "20h36m",
+    "decText": "+42°00′",
+    "areaRank": 16,
+    "season": "夏季",
+    "zone": "北天",
+    "brightest": {
+      "zh": "天津四",
+      "en": "Deneb",
+      "mag": 1.25
+    },
+    "neighbors": [
+      {
+        "latin": "Draco",
+        "zh": "天龙座",
+        "id": "draco",
+        "level": 19
+      },
+      {
+        "latin": "Lyra",
+        "zh": "天琴座",
+        "id": "lyra",
+        "level": 11
+      },
+      {
+        "latin": "Vulpecula",
+        "zh": "狐狸座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Pegasus",
+        "zh": "飞马座",
+        "id": "pegasus",
+        "level": 8
+      },
+      {
+        "latin": "Lacerta",
+        "zh": "蝎虎座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Cepheus",
+        "zh": "仙王座",
+        "id": "cepheus",
+        "level": 14
+      }
+    ],
+    "inGameNeighbors": [
+      "draco",
+      "lyra",
+      "pegasus",
+      "cepheus"
+    ]
+  },
+  {
+    "id": "leo",
+    "zh": "狮子座",
+    "en": "Leo",
+    "latin": "Leo",
+    "abbr": "Leo",
+    "level": 7,
+    "ra": 10.7,
+    "dec": 13.0,
+    "raText": "10h42m",
+    "decText": "+13°00′",
+    "areaRank": 12,
+    "season": "春季",
+    "zone": "赤道带",
+    "brightest": {
+      "zh": "轩辕十四",
+      "en": "Regulus",
+      "mag": 1.35
+    },
+    "neighbors": [
+      {
+        "latin": "Ursa Major",
+        "zh": "大熊座",
+        "id": "ursa-major",
+        "level": 12
+      },
+      {
+        "latin": "Leo Minor",
+        "zh": "小狮座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Lynx",
+        "zh": "天猫座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Cancer",
+        "zh": "巨蟹座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Hydra",
+        "zh": "长蛇座",
+        "id": "hydra",
+        "level": 23
+      },
+      {
+        "latin": "Sextans",
+        "zh": "六分仪座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Coma Berenices",
+        "zh": "后发座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Virgo",
+        "zh": "室女座",
+        "id": null,
+        "level": null
+      }
+    ],
+    "inGameNeighbors": [
+      "ursa-major",
+      "hydra"
+    ]
+  },
+  {
+    "id": "pegasus",
+    "zh": "飞马座",
+    "en": "Pegasus",
+    "latin": "Pegasus",
+    "abbr": "Peg",
+    "level": 8,
+    "ra": 22.7,
+    "dec": 19.0,
+    "raText": "22h42m",
+    "decText": "+19°00′",
+    "areaRank": 7,
+    "season": "秋季",
+    "zone": "赤道带",
+    "brightest": {
+      "zh": "危宿三",
+      "en": "Enif",
+      "mag": 2.39
+    },
+    "neighbors": [
+      {
+        "latin": "Andromeda",
+        "zh": "仙女座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Lacerta",
+        "zh": "蝎虎座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Cygnus",
+        "zh": "天鹅座",
+        "id": "cygnus",
+        "level": 6
+      },
+      {
+        "latin": "Vulpecula",
+        "zh": "狐狸座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Delphinus",
+        "zh": "海豚座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Equuleus",
+        "zh": "小马座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Pisces",
+        "zh": "双鱼座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Aquarius",
+        "zh": "宝瓶座",
+        "id": null,
+        "level": null
+      }
+    ],
+    "inGameNeighbors": [
+      "cygnus"
+    ]
+  },
+  {
+    "id": "gemini",
+    "zh": "双子座",
+    "en": "Gemini",
+    "latin": "Gemini",
+    "abbr": "Gem",
+    "level": 9,
+    "ra": 7.1,
+    "dec": 22.0,
+    "raText": "7h06m",
+    "decText": "+22°00′",
+    "areaRank": 30,
+    "season": "冬季",
+    "zone": "赤道带",
+    "brightest": {
+      "zh": "北河三",
+      "en": "Pollux",
+      "mag": 1.14
+    },
+    "neighbors": [
+      {
+        "latin": "Lynx",
+        "zh": "天猫座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Auriga",
+        "zh": "御夫座",
+        "id": "auriga",
+        "level": 15
+      },
+      {
+        "latin": "Taurus",
+        "zh": "金牛座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Orion",
+        "zh": "Orion",
+        "id": "orion",
+        "level": 4
+      },
+      {
+        "latin": "Monoceros",
+        "zh": "麒麟座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Canis Minor",
+        "zh": "小犬座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Cancer",
+        "zh": "巨蟹座",
+        "id": null,
+        "level": null
+      }
+    ],
+    "inGameNeighbors": [
+      "auriga",
+      "orion"
+    ]
+  },
+  {
+    "id": "scorpius",
+    "zh": "天蝎座",
+    "en": "Scorpius",
+    "latin": "Scorpius",
+    "abbr": "Sco",
+    "level": 10,
+    "ra": 16.9,
+    "dec": -30.0,
+    "raText": "16h54m",
+    "decText": "−30°00′",
+    "areaRank": 33,
+    "season": "夏季",
+    "zone": "南天",
+    "brightest": {
+      "zh": "心宿二",
+      "en": "Antares",
+      "mag": 0.96
+    },
+    "neighbors": [
+      {
+        "latin": "Ophiuchus",
+        "zh": "蛇夫座",
+        "id": "ophiuchus",
+        "level": 21
+      },
+      {
+        "latin": "Sagittarius",
+        "zh": "人马座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Corona Australis",
+        "zh": "南冕座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Lupus",
+        "zh": "豺狼座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Libra",
+        "zh": "天秤座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Norma",
+        "zh": "矩尺座",
+        "id": null,
+        "level": null
+      }
+    ],
+    "inGameNeighbors": [
+      "ophiuchus"
+    ]
+  },
+  {
+    "id": "lyra",
+    "zh": "天琴座",
+    "en": "Lyra",
+    "latin": "Lyra",
+    "abbr": "Lyr",
+    "level": 11,
+    "ra": 18.8,
+    "dec": 37.0,
+    "raText": "18h48m",
+    "decText": "+37°00′",
+    "areaRank": 52,
+    "season": "夏季",
+    "zone": "北天",
+    "brightest": {
+      "zh": "织女一",
+      "en": "Vega",
+      "mag": 0.03
+    },
+    "neighbors": [
+      {
+        "latin": "Draco",
+        "zh": "天龙座",
+        "id": "draco",
+        "level": 19
+      },
+      {
+        "latin": "Hercules",
+        "zh": "武仙座",
+        "id": "hercules",
+        "level": 18
+      },
+      {
+        "latin": "Cygnus",
+        "zh": "天鹅座",
+        "id": "cygnus",
+        "level": 6
+      },
+      {
+        "latin": "Vulpecula",
+        "zh": "狐狸座",
+        "id": null,
+        "level": null
+      }
+    ],
+    "inGameNeighbors": [
+      "draco",
+      "hercules",
+      "cygnus"
+    ]
+  },
+  {
+    "id": "ursa-major",
+    "zh": "大熊座",
+    "en": "Ursa Major",
+    "latin": "Ursa Major",
+    "abbr": "UMa",
+    "level": 12,
+    "ra": 11.3,
+    "dec": 51.0,
+    "raText": "11h18m",
+    "decText": "+51°00′",
+    "areaRank": 3,
+    "season": "春季",
+    "zone": "北天",
+    "brightest": {
+      "zh": "玉衡",
+      "en": "Alioth",
+      "mag": 1.77
+    },
+    "neighbors": [
+      {
+        "latin": "Draco",
+        "zh": "天龙座",
+        "id": "draco",
+        "level": 19
+      },
+      {
+        "latin": "Camelopardalis",
+        "zh": "鹿豹座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Lynx",
+        "zh": "天猫座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Leo Minor",
+        "zh": "小狮座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Canes Venatici",
+        "zh": "猎犬座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Coma Berenices",
+        "zh": "后发座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Bootes",
+        "zh": "牧夫座",
+        "id": null,
+        "level": null
+      }
+    ],
+    "inGameNeighbors": [
+      "draco"
+    ]
+  },
+  {
+    "id": "corona-borealis",
+    "zh": "北冕座",
+    "en": "Corona Borealis",
+    "latin": "Corona Borealis",
+    "abbr": "CrB",
+    "level": 13,
+    "ra": 15.8,
+    "dec": 32.0,
+    "raText": "15h48m",
+    "decText": "+32°00′",
+    "areaRank": 73,
+    "season": "夏季",
+    "zone": "北天",
+    "brightest": {
+      "zh": "贯索四",
+      "en": "Alphecca",
+      "mag": 2.23
+    },
+    "neighbors": [
+      {
+        "latin": "Hercules",
+        "zh": "武仙座",
+        "id": "hercules",
+        "level": 18
+      },
+      {
+        "latin": "Bootes",
+        "zh": "牧夫座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Serpens",
+        "zh": "巨蛇座",
+        "id": null,
+        "level": null
+      }
+    ],
+    "inGameNeighbors": [
+      "hercules"
+    ]
+  },
+  {
+    "id": "cepheus",
+    "zh": "仙王座",
+    "en": "Cepheus",
+    "latin": "Cepheus",
+    "abbr": "Cep",
+    "level": 14,
+    "ra": 22.0,
+    "dec": 70.0,
+    "raText": "22h00m",
+    "decText": "+70°00′",
+    "areaRank": 27,
+    "season": "秋季",
+    "zone": "北天",
+    "brightest": {
+      "zh": "天钩五",
+      "en": "Alderamin",
+      "mag": 2.45
+    },
+    "neighbors": [
+      {
+        "latin": "Ursa Minor",
+        "zh": "小熊座",
+        "id": "ursa-minor",
+        "level": 5
+      },
+      {
+        "latin": "Camelopardalis",
+        "zh": "鹿豹座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Cassiopeia",
+        "zh": "Cassiopeia",
+        "id": "cassiopeia",
+        "level": 3
+      },
+      {
+        "latin": "Andromeda",
+        "zh": "仙女座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Lacerta",
+        "zh": "蝎虎座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Cygnus",
+        "zh": "天鹅座",
+        "id": "cygnus",
+        "level": 6
+      },
+      {
+        "latin": "Draco",
+        "zh": "天龙座",
+        "id": "draco",
+        "level": 19
+      }
+    ],
+    "inGameNeighbors": [
+      "ursa-minor",
+      "cassiopeia",
+      "cygnus",
+      "draco"
+    ]
+  },
+  {
+    "id": "auriga",
+    "zh": "御夫座",
+    "en": "Auriga",
+    "latin": "Auriga",
+    "abbr": "Aur",
+    "level": 15,
+    "ra": 6.0,
+    "dec": 42.0,
+    "raText": "6h00m",
+    "decText": "+42°00′",
+    "areaRank": 21,
+    "season": "冬季",
+    "zone": "北天",
+    "brightest": {
+      "zh": "五车二",
+      "en": "Capella",
+      "mag": 0.08
+    },
+    "neighbors": [
+      {
+        "latin": "Camelopardalis",
+        "zh": "鹿豹座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Perseus",
+        "zh": "英仙座",
+        "id": "perseus",
+        "level": 17
+      },
+      {
+        "latin": "Taurus",
+        "zh": "金牛座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Gemini",
+        "zh": "双子座",
+        "id": "gemini",
+        "level": 9
+      },
+      {
+        "latin": "Lynx",
+        "zh": "天猫座",
+        "id": null,
+        "level": null
+      }
+    ],
+    "inGameNeighbors": [
+      "perseus",
+      "gemini"
+    ]
+  },
+  {
+    "id": "bootes",
+    "zh": "牧夫座",
+    "en": "Bootes",
+    "latin": "Boötes",
+    "abbr": "Boo",
+    "level": 16,
+    "ra": 14.7,
+    "dec": 31.0,
+    "raText": "14h42m",
+    "decText": "+31°00′",
+    "areaRank": 13,
+    "season": "春季",
+    "zone": "北天",
+    "brightest": {
+      "zh": "大角",
+      "en": "Arcturus",
+      "mag": -0.05
+    },
+    "neighbors": [
+      {
+        "latin": "Draco",
+        "zh": "天龙座",
+        "id": "draco",
+        "level": 19
+      },
+      {
+        "latin": "Ursa Major",
+        "zh": "大熊座",
+        "id": "ursa-major",
+        "level": 12
+      },
+      {
+        "latin": "Canes Venatici",
+        "zh": "猎犬座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Coma Berenices",
+        "zh": "后发座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Virgo",
+        "zh": "室女座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Serpens",
+        "zh": "巨蛇座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Corona Borealis",
+        "zh": "北冕座",
+        "id": "corona-borealis",
+        "level": 13
+      },
+      {
+        "latin": "Hercules",
+        "zh": "武仙座",
+        "id": "hercules",
+        "level": 18
+      }
+    ],
+    "inGameNeighbors": [
+      "draco",
+      "ursa-major",
+      "corona-borealis",
+      "hercules"
+    ]
+  },
+  {
+    "id": "perseus",
+    "zh": "英仙座",
+    "en": "Perseus",
+    "latin": "Perseus",
+    "abbr": "Per",
+    "level": 17,
+    "ra": 3.5,
+    "dec": 45.0,
+    "raText": "3h30m",
+    "decText": "+45°00′",
+    "areaRank": 24,
+    "season": "冬季",
+    "zone": "北天",
+    "brightest": {
+      "zh": "天船三",
+      "en": "Mirfak",
+      "mag": 1.79
+    },
+    "neighbors": [
+      {
+        "latin": "Cassiopeia",
+        "zh": "Cassiopeia",
+        "id": "cassiopeia",
+        "level": 3
+      },
+      {
+        "latin": "Andromeda",
+        "zh": "仙女座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Triangulum",
+        "zh": "三角座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Aries",
+        "zh": "白羊座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Taurus",
+        "zh": "金牛座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Auriga",
+        "zh": "御夫座",
+        "id": "auriga",
+        "level": 15
+      },
+      {
+        "latin": "Camelopardalis",
+        "zh": "鹿豹座",
+        "id": null,
+        "level": null
+      }
+    ],
+    "inGameNeighbors": [
+      "cassiopeia",
+      "auriga"
+    ]
+  },
+  {
+    "id": "hercules",
+    "zh": "武仙座",
+    "en": "Hercules",
+    "latin": "Hercules",
+    "abbr": "Her",
+    "level": 18,
+    "ra": 17.4,
+    "dec": 31.0,
+    "raText": "17h24m",
+    "decText": "+31°00′",
+    "areaRank": 5,
+    "season": "夏季",
+    "zone": "北天",
+    "brightest": {
+      "zh": "帝座",
+      "en": "Kornephoros",
+      "mag": 2.78
+    },
+    "neighbors": [
+      {
+        "latin": "Draco",
+        "zh": "天龙座",
+        "id": "draco",
+        "level": 19
+      },
+      {
+        "latin": "Bootes",
+        "zh": "牧夫座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Corona Borealis",
+        "zh": "北冕座",
+        "id": "corona-borealis",
+        "level": 13
+      },
+      {
+        "latin": "Serpens",
+        "zh": "巨蛇座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Ophiuchus",
+        "zh": "蛇夫座",
+        "id": "ophiuchus",
+        "level": 21
+      },
+      {
+        "latin": "Aquila",
+        "zh": "天鹰座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Sagitta",
+        "zh": "天箭座",
+        "id": "sagitta",
+        "level": 2
+      },
+      {
+        "latin": "Vulpecula",
+        "zh": "狐狸座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Lyra",
+        "zh": "天琴座",
+        "id": "lyra",
+        "level": 11
+      }
+    ],
+    "inGameNeighbors": [
+      "draco",
+      "corona-borealis",
+      "ophiuchus",
+      "sagitta",
+      "lyra"
+    ]
+  },
+  {
+    "id": "draco",
+    "zh": "天龙座",
+    "en": "Draco",
+    "latin": "Draco",
+    "abbr": "Dra",
+    "level": 19,
+    "ra": 17.0,
+    "dec": 65.0,
+    "raText": "17h00m",
+    "decText": "+65°00′",
+    "areaRank": 8,
+    "season": "夏季",
+    "zone": "北天",
+    "brightest": {
+      "zh": "天棓四",
+      "en": "Eltanin",
+      "mag": 2.23
+    },
+    "neighbors": [
+      {
+        "latin": "Ursa Minor",
+        "zh": "小熊座",
+        "id": "ursa-minor",
+        "level": 5
+      },
+      {
+        "latin": "Camelopardalis",
+        "zh": "鹿豹座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Ursa Major",
+        "zh": "大熊座",
+        "id": "ursa-major",
+        "level": 12
+      },
+      {
+        "latin": "Bootes",
+        "zh": "牧夫座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Hercules",
+        "zh": "武仙座",
+        "id": "hercules",
+        "level": 18
+      },
+      {
+        "latin": "Cygnus",
+        "zh": "天鹅座",
+        "id": "cygnus",
+        "level": 6
+      },
+      {
+        "latin": "Lyra",
+        "zh": "天琴座",
+        "id": "lyra",
+        "level": 11
+      },
+      {
+        "latin": "Aquila",
+        "zh": "天鹰座",
+        "id": null,
+        "level": null
+      }
+    ],
+    "inGameNeighbors": [
+      "ursa-minor",
+      "ursa-major",
+      "hercules",
+      "cygnus",
+      "lyra"
+    ]
+  },
+  {
+    "id": "centaurus",
+    "zh": "半人马座",
+    "en": "Centaurus",
+    "latin": "Centaurus",
+    "abbr": "Cen",
+    "level": 20,
+    "ra": 13.5,
+    "dec": -47.0,
+    "raText": "13h30m",
+    "decText": "−47°00′",
+    "areaRank": 9,
+    "season": "春季",
+    "zone": "南天",
+    "brightest": {
+      "zh": "南门二",
+      "en": "Rigil Kentaurus",
+      "mag": -0.27
+    },
+    "neighbors": [
+      {
+        "latin": "Crux",
+        "zh": "南十字座",
+        "id": "crux",
+        "level": 1
+      },
+      {
+        "latin": "Musca",
+        "zh": "苍蝇座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Carina",
+        "zh": "船底座",
+        "id": "carina",
+        "level": 22
+      },
+      {
+        "latin": "Vela",
+        "zh": "船帆座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Puppis",
+        "zh": "船尾座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Hydra",
+        "zh": "长蛇座",
+        "id": "hydra",
+        "level": 23
+      },
+      {
+        "latin": "Antlia",
+        "zh": "唧筒座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Circinus",
+        "zh": "圆规座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Lupus",
+        "zh": "豺狼座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Libra",
+        "zh": "天秤座",
+        "id": null,
+        "level": null
+      }
+    ],
+    "inGameNeighbors": [
+      "crux",
+      "carina",
+      "hydra"
+    ]
+  },
+  {
+    "id": "ophiuchus",
+    "zh": "蛇夫座",
+    "en": "Ophiuchus",
+    "latin": "Ophiuchus",
+    "abbr": "Oph",
+    "level": 21,
+    "ra": 17.4,
+    "dec": -3.0,
+    "raText": "17h24m",
+    "decText": "−3°00′",
+    "areaRank": 11,
+    "season": "夏季",
+    "zone": "赤道带",
+    "brightest": {
+      "zh": "侯",
+      "en": "Rasalhague",
+      "mag": 2.08
+    },
+    "neighbors": [
+      {
+        "latin": "Hercules",
+        "zh": "武仙座",
+        "id": "hercules",
+        "level": 18
+      },
+      {
+        "latin": "Serpens",
+        "zh": "巨蛇座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Scorpius",
+        "zh": "天蝎座",
+        "id": "scorpius",
+        "level": 10
+      },
+      {
+        "latin": "Sagittarius",
+        "zh": "人马座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Aquila",
+        "zh": "天鹰座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Libra",
+        "zh": "天秤座",
+        "id": null,
+        "level": null
+      }
+    ],
+    "inGameNeighbors": [
+      "hercules",
+      "scorpius"
+    ]
+  },
+  {
+    "id": "carina",
+    "zh": "船底座",
+    "en": "Carina",
+    "latin": "Carina",
+    "abbr": "Car",
+    "level": 22,
+    "ra": 8.7,
+    "dec": -63.0,
+    "raText": "8h42m",
+    "decText": "−63°00′",
+    "areaRank": 34,
+    "season": "冬季",
+    "zone": "南天",
+    "brightest": {
+      "zh": "老人星",
+      "en": "Canopus",
+      "mag": -0.72
+    },
+    "neighbors": [
+      {
+        "latin": "Vela",
+        "zh": "船帆座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Puppis",
+        "zh": "船尾座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Pictor",
+        "zh": "绘架座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Volans",
+        "zh": "飞鱼座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Chamaeleon",
+        "zh": "蝘蜓座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Musca",
+        "zh": "苍蝇座",
+        "id": null,
+        "level": null
+      }
+    ],
+    "inGameNeighbors": []
+  },
+  {
+    "id": "hydra",
+    "zh": "长蛇座",
+    "en": "Hydra",
+    "latin": "Hydra",
+    "abbr": "Hya",
+    "level": 23,
+    "ra": 10.5,
+    "dec": -20.0,
+    "raText": "10h30m",
+    "decText": "−20°00′",
+    "areaRank": 1,
+    "season": "春季",
+    "zone": "赤道带",
+    "brightest": {
+      "zh": "星宿一",
+      "en": "Alphard",
+      "mag": 1.98
+    },
+    "neighbors": [
+      {
+        "latin": "Antlia",
+        "zh": "唧筒座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Cancer",
+        "zh": "巨蟹座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Canis Minor",
+        "zh": "小犬座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Centaurus",
+        "zh": "半人马座",
+        "id": "centaurus",
+        "level": 20
+      },
+      {
+        "latin": "Corvus",
+        "zh": "乌鸦座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Crater",
+        "zh": "巨爵座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Leo",
+        "zh": "狮子座",
+        "id": "leo",
+        "level": 7
+      },
+      {
+        "latin": "Libra",
+        "zh": "天秤座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Lupus",
+        "zh": "豺狼座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Monoceros",
+        "zh": "麒麟座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Puppis",
+        "zh": "船尾座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Pyxis",
+        "zh": "罗盘座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Sextans",
+        "zh": "六分仪座",
+        "id": null,
+        "level": null
+      },
+      {
+        "latin": "Virgo",
+        "zh": "室女座",
+        "id": null,
+        "level": null
+      }
+    ],
+    "inGameNeighbors": [
+      "centaurus",
+      "leo"
+    ]
+  }
+];
+/* SKY_INJECT_END */
+
 const boardEl = document.getElementById('board');
 const statusEl = document.getElementById('status');
 const teachEl = document.getElementById('teach');
@@ -9128,8 +10688,9 @@ function markCleared(i){
   progress.cleared[String(i)] = 1;
   progress.last = i;
   saveProgress();
+  refreshLevelGrid();
   refreshUnlockBtn();
-refreshLevelGrid();
+  refreshSkyBadge();
 }
 
 function startIndex(){
@@ -9951,9 +11512,183 @@ resetBtn.addEventListener('click', function(){
   refreshLevelGrid();
 });
 
+
+// ===== 星座图鉴（天球投影）：横轴赤经 0–24h，纵轴赤纬 +90° → −90° =====
+const skyEls = {
+  btn: document.getElementById('skyBtn'),
+  btnNum: document.getElementById('skyBtnNum'),
+  btnTotal: document.getElementById('skyBtnTotal'),
+  panel: document.getElementById('skyPanel'),
+  close: document.getElementById('skyCloseBtn'),
+  map: document.getElementById('skyMap'),
+  detail: document.getElementById('skyDetail'),
+  filters: document.getElementById('skyFilters'),
+  count: document.getElementById('skyCount'),
+  total: document.getElementById('skyTotal')
+};
+let skyFilter = '全部';
+let skySelected = null;
+let skyOpen = false;
+
+function skyIsOn(s){ return isCleared(s.level - 1); }
+function skyOnCount(){ return SKY.filter(skyIsOn).length; }
+function skyProj(ra, dec){
+  return [ 8 + (1 - ra / 24) * 184, 8 + (90 - dec) / 180 * 104 ];
+}
+function skyEsc(t){
+  return String(t == null ? '' : t).replace(/&/g, '&amp;').replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function renderSkyMap(){
+  if (!skyEls.map) return;
+  let g = '';
+  // 网格：赤纬线
+  for (let dec = -60; dec <= 60; dec += 30){
+    const y = (8 + (90 - dec) / 180 * 104).toFixed(1);
+    g += '<line class="sky-grid' + (dec === 0 ? ' sky-grid-eq' : '') + '" x1="8" y1="' + y +
+         '" x2="192" y2="' + y + '"></line>';
+    g += '<text class="sky-lbl" x="4" y="' + y + '" text-anchor="middle">' + (dec > 0 ? '+' : '') + dec + '°</text>';
+  }
+  // 网格：赤经线（每 6 时）
+  for (let ra = 0; ra <= 24; ra += 6){
+    const x = (8 + (1 - ra / 24) * 184).toFixed(1);
+    g += '<line class="sky-grid" x1="' + x + '" y1="8" x2="' + x + '" y2="112"></line>';
+    g += '<text class="sky-lbl" x="' + x + '" y="117" text-anchor="middle">' + ra + 'h</text>';
+  }
+  // 星座节点
+  for (let i = 0; i < SKY.length; i++){
+    const s = SKY[i];
+    const p = skyProj(s.ra, s.dec);
+    const on = skyIsOn(s);
+    const dim = (skyFilter !== '全部' && s.season !== skyFilter) ? ' dim' : '';
+    const sel = (skySelected === s.id) ? ' sel' : '';
+    const cls = 'skynode' + (on ? ' on' : '') + dim + sel;
+    const r = on ? 1.9 : 1.2;
+    const label = on ? s.zh.replace('座', '') : '';
+    let node = '<g class="' + cls + '" data-sky="' + skyEsc(s.id) + '" role="button" tabindex="0" ' +
+      'aria-label="' + skyEsc(s.zh) + (on ? '，已观测' : '，未观测') + '">' +
+      '<circle class="hit" cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="5"></circle>' +
+      '<circle class="dot" cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="' + r + '"></circle>';
+    if (label){
+      const ly = (p[1] + (s.dec >= 20 ? -4.2 : 5.4)).toFixed(1);
+      node += '<text class="lbl" x="' + p[0].toFixed(1) + '" y="' + ly + '">' + skyEsc(label) + '</text>';
+    }
+    node += '</g>';
+    g += node;
+  }
+  skyEls.map.innerHTML = g;
+}
+
+function renderSkyFilters(){
+  if (!skyEls.filters) return;
+  const opts = ['全部', '春季', '夏季', '秋季', '冬季'];
+  skyEls.filters.innerHTML = opts.map(function(o){
+    return '<button type="button" class="mini' + (skyFilter === o ? ' on' : '') +
+      '" data-season="' + o + '" aria-pressed="' + (skyFilter === o) + '">' + o + '</button>';
+  }).join('');
+}
+
+function renderSkyDetail(){
+  if (!skyEls.detail) return;
+  if (!skySelected){
+    skyEls.detail.innerHTML = '<div class="sky-card"><h3>观测你的星空</h3>' +
+      '<p class="sky-locked">每通过一关，图鉴上就会点亮一颗星座。<br>' +
+      '横轴是赤经（0–24 时），纵轴是赤纬（+90° 北天极 → −90° 南天极）；' +
+      '左边/右边就是真实夜空里相邻的方向。<br>点任意一颗（或按季节筛选）看详情。</p></div>';
+    return;
+  }
+  const s = SKY.find(function(x){ return x.id === skySelected; });
+  if (!s){ skyEls.detail.innerHTML = ''; return; }
+  const on = skyIsOn(s);
+  if (!on){
+    skyEls.detail.innerHTML = '<div class="sky-card"><h3>未观测</h3>' +
+      '<div class="sub">第 ' + s.level + ' 关 · 通关后点亮</div>' +
+      '<p class="sky-locked">这个方位上藏着一个星座。先通过第 ' + s.level + ' 关，再来图鉴里看清它。</p></div>';
+    return;
+  }
+  const lv = LEVELS[s.level - 1];
+  const nb = s.neighbors.map(function(n){
+    const known = n.id && SKY.some(function(k){ return k.id === n.id; });
+    const unlocked = known && isCleared(n.level - 1);
+    const cls = unlocked ? 'link' : '';
+    const attr = unlocked ? ' data-jump="' + skyEsc(n.id) + '"' : '';
+    return '<button type="button" class="' + cls + '"' + attr + '>' + skyEsc(n.zh) +
+      (unlocked ? '' : (known ? '（未观测）' : '')) + '</button>';
+  }).join('');
+  const starMap = (lv && lv.theme) ? constSvg(lv.theme, lv.size, lv.noise) : '';
+  skyEls.detail.innerHTML =
+    '<div class="sky-card">' +
+      '<h3>' + skyEsc(s.zh) + ' <span class="sub">' + skyEsc(s.en) + ' · ' + skyEsc(s.abbr) + '</span></h3>' +
+      '<div class="sub">第 ' + s.level + ' 关 · 已观测</div>' +
+      '<dl class="sky-meta">' +
+        '<dt>中心坐标</dt><dd>赤经 ' + s.raText + '，赤纬 ' + s.decText + '</dd>' +
+        '<dt>天区</dt><dd>' + s.zone + ' · ' + s.season + '星空</dd>' +
+        '<dt>面积</dt><dd>全天第 ' + s.areaRank + ' 大</dd>' +
+        '<dt>最亮星</dt><dd>' + skyEsc(s.brightest.zh) + '（' + skyEsc(s.brightest.en) +
+          '，' + s.brightest.mag + ' 等）</dd>' +
+      '</dl>' +
+      '<div class="sky-map-slot">' + starMap + '</div>' +
+      ((lv && lv.theme && lv.theme.fact) ? '<p class="sky-fact">' + skyEsc(lv.theme.fact) + '</p>' : '') +
+      '<div class="sky-neigh">' + nb + '</div>' +
+    '</div>';
+}
+
+function renderSky(){
+  renderSkyFilters();
+  renderSkyMap();
+  renderSkyDetail();
+  const on = skyOnCount();
+  if (skyEls.count) skyEls.count.textContent = String(on);
+  if (skyEls.total) skyEls.total.textContent = String(SKY.length);
+}
+
+function refreshSkyBadge(){
+  if (skyEls.btnNum) skyEls.btnNum.textContent = String(skyOnCount());
+  if (skyEls.btnTotal) skyEls.btnTotal.textContent = String(SKY.length);
+}
+
+function openSky(){
+  if (!skyEls.panel) return;
+  skyOpen = true;
+  skyEls.panel.hidden = false;
+  skyEls.panel.className = 'panel sky-panel open';
+  if (skyEls.btn) skyEls.btn.setAttribute('aria-expanded', 'true');
+  renderSky();
+}
+function closeSky(){
+  if (!skyEls.panel) return;
+  skyOpen = false;
+  skyEls.panel.hidden = true;
+  skyEls.panel.className = 'panel sky-panel';
+  if (skyEls.btn) skyEls.btn.setAttribute('aria-expanded', 'false');
+}
+
+if (skyEls.btn) skyEls.btn.addEventListener('click', function(){ skyOpen ? closeSky() : openSky(); });
+if (skyEls.close) skyEls.close.addEventListener('click', closeSky);
+if (skyEls.filters) skyEls.filters.addEventListener('click', function(e){
+  const b = e.target.closest('[data-season]');
+  if (!b) return;
+  skyFilter = b.getAttribute('data-season');
+  renderSky();
+});
+if (skyEls.map) skyEls.map.addEventListener('click', function(e){
+  const node = e.target.closest('[data-sky]');
+  if (!node) return;
+  skySelected = node.getAttribute('data-sky');
+  renderSky();
+});
+if (skyEls.detail) skyEls.detail.addEventListener('click', function(e){
+  const b = e.target.closest('[data-jump]');
+  if (!b) return;
+  skySelected = b.getAttribute('data-jump');
+  renderSky();
+});
+
 window.addEventListener('keydown', function(e){
   if (e.key === 'Escape' || e.key === 'Esc'){
     if (modalOpenNow){ dismissModal(); return; }   // Esc 收起结算，结算条保留入口
+    if (skyOpen){ closeSky(); return; }
     if (panelOpen) closePanel();
   }
 });
@@ -9961,6 +11696,8 @@ window.addEventListener('keydown', function(e){
 if (Array.isArray(LEVELS) && LEVELS.length){
   loadProgress();
   buildLevelGrid();
+  refreshUnlockBtn();
+  refreshSkyBadge();
   startLevel(startIndex());
 } else {
   boardEl.innerHTML = '<p class="err">关卡数据缺失。</p>';

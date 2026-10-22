@@ -15,6 +15,7 @@ import hashlib, json, os, re, shutil, subprocess, sys, zipfile
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 UI = os.path.join(ROOT, "game", "index.html")
 LEVELS = os.path.join(ROOT, "tools", "levels.json")
+SKY = os.path.join(ROOT, "tools", "sky.json")
 DIST = os.path.join(ROOT, "dist")
 PKG_DIR = os.path.join(DIST, "星织-游戏本体")
 ZIP_PATH = os.path.join(ROOT, "星织-游戏本体.zip")
@@ -58,6 +59,7 @@ def main():
         print("!! 缺少 game/index.html"); sys.exit(1)
     html = open(UI, encoding="utf-8").read()
     levels = json.load(open(LEVELS, encoding="utf-8"))
+    sky = json.load(open(SKY, encoding="utf-8"))
     print(f"UI 外壳 {len(html)} 字节；关卡 {len(levels)} 关")
 
     # 1) 注入关卡块（只替换两个注释标记之间的内容）
@@ -74,6 +76,21 @@ def main():
     bad_bind = _check_bindings(out_html)
     if bad_bind:
         fail.append("按钮监听写进了别的回调里: " + ", ".join(bad_bind))
+
+    # 1b) 注入图鉴数据
+    sky_block = ("/* SKY_INJECT_START */\n"
+                 "const SKY = " + json.dumps(sky, ensure_ascii=False, indent=2) + ";\n"
+                 "/* SKY_INJECT_END */")
+    sky_pat = re.compile(r"/\* SKY_INJECT_START \*/.*?/\* SKY_INJECT_END \*/", re.S)
+    if not sky_pat.search(out_html):
+        fail.append("UI 外壳里找不到 SKY_INJECT 标记")
+    else:
+        out_html = sky_pat.sub(lambda m: sky_block, out_html, count=1)
+        m2 = re.search(r"/\* SKY_INJECT_START \*/\s*const SKY = (\[.*?\]);\s*/\* SKY_INJECT_END \*/", out_html, re.S)
+        if not m2 or json.loads(m2.group(1)) != sky:
+            fail.append("SKY 注入回读不一致")
+        else:
+            print("图鉴数据注入：通过（%d 个星座）" % len(sky))
 
     # 2) 回读校验：注入后的 LEVELS 必须与 levels.json 完全一致
     m = re.search(r"/\* LEVELS_INJECT_START \*/\s*const LEVELS = (\[.*?\]);\s*/\* LEVELS_INJECT_END \*/",
