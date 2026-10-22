@@ -362,7 +362,7 @@
         "latin": "Hydra",
         "zh": "长蛇座",
         "id": "hydra",
-        "level": 23
+        "level": 30
       },
       {
         "latin": "Sextans",
@@ -562,7 +562,7 @@
         "latin": "Ophiuchus",
         "zh": "蛇夫座",
         "id": "ophiuchus",
-        "level": 21
+        "level": 29
       },
       {
         "latin": "Sagittarius",
@@ -1089,7 +1089,7 @@
         "latin": "Ophiuchus",
         "zh": "蛇夫座",
         "id": "ophiuchus",
-        "level": 21
+        "level": 29
       },
       {
         "latin": "Aquila",
@@ -1240,7 +1240,7 @@
         "latin": "Carina",
         "zh": "船底座",
         "id": "carina",
-        "level": 22
+        "level": 26
       },
       {
         "latin": "Vela",
@@ -1258,7 +1258,7 @@
         "latin": "Hydra",
         "zh": "长蛇座",
         "id": "hydra",
-        "level": 23
+        "level": 30
       },
       {
         "latin": "Antlia",
@@ -1301,7 +1301,7 @@
     "en": "Ophiuchus",
     "latin": "Ophiuchus",
     "abbr": "Oph",
-    "level": 21,
+    "level": 29,
     "ra": 17.4,
     "dec": -3.0,
     "raText": "17h24m",
@@ -1367,7 +1367,7 @@
     "en": "Carina",
     "latin": "Carina",
     "abbr": "Car",
-    "level": 22,
+    "level": 26,
     "ra": 8.7,
     "dec": -63.0,
     "raText": "8h42m",
@@ -1712,7 +1712,7 @@
         "latin": "Hydra",
         "zh": "长蛇座",
         "id": "hydra",
-        "level": 23
+        "level": 30
       },
       {
         "latin": "Libra",
@@ -1996,7 +1996,7 @@
         "latin": "Hydra",
         "zh": "长蛇座",
         "id": "hydra",
-        "level": 23
+        "level": 30
       },
       {
         "latin": "Leo",
@@ -2055,7 +2055,7 @@
         "latin": "Hydra",
         "zh": "长蛇座",
         "id": "hydra",
-        "level": 23
+        "level": 30
       }
     ],
     "inGameNeighbors": [
@@ -2100,7 +2100,7 @@
         "latin": "Hydra",
         "zh": "长蛇座",
         "id": "hydra",
-        "level": 23
+        "level": 30
       },
       {
         "latin": "Corvus",
@@ -2288,7 +2288,7 @@
         "latin": "Hydra",
         "zh": "长蛇座",
         "id": "hydra",
-        "level": 23
+        "level": 30
       },
       {
         "latin": "Lepus",
@@ -2347,7 +2347,7 @@
         "latin": "Ophiuchus",
         "zh": "蛇夫座",
         "id": "ophiuchus",
-        "level": 21
+        "level": 29
       },
       {
         "latin": "Serpens",
@@ -2365,7 +2365,7 @@
         "latin": "Hydra",
         "zh": "长蛇座",
         "id": "hydra",
-        "level": 23
+        "level": 30
       },
       {
         "latin": "Centaurus",
@@ -2602,7 +2602,7 @@
         "latin": "Hydra",
         "zh": "长蛇座",
         "id": "hydra",
-        "level": 23
+        "level": 30
       },
       {
         "latin": "Centaurus",
@@ -2666,7 +2666,7 @@
         "latin": "Ophiuchus",
         "zh": "蛇夫座",
         "id": "ophiuchus",
-        "level": 21
+        "level": 29
       },
       {
         "latin": "Serpens",
@@ -2827,7 +2827,7 @@
         "latin": "Ophiuchus",
         "zh": "蛇夫座",
         "id": "ophiuchus",
-        "level": 21
+        "level": 29
       },
       {
         "latin": "Scorpius",
@@ -2899,7 +2899,7 @@
         "latin": "Carina",
         "zh": "船底座",
         "id": "carina",
-        "level": 22
+        "level": 26
       },
       {
         "latin": "Vela",
@@ -2935,7 +2935,7 @@
         "latin": "Hydra",
         "zh": "长蛇座",
         "id": "hydra",
-        "level": 23
+        "level": 30
       },
       {
         "latin": "Pyxis",
@@ -2976,7 +2976,7 @@
         "latin": "Carina",
         "zh": "船底座",
         "id": "carina",
-        "level": 22
+        "level": 26
       },
       {
         "latin": "Puppis",
@@ -3057,7 +3057,7 @@
         "latin": "Ophiuchus",
         "zh": "蛇夫座",
         "id": "ophiuchus",
-        "level": 21
+        "level": 29
       },
       {
         "latin": "Hercules",
@@ -3245,7 +3245,7 @@
     "en": "Hydra",
     "latin": "Hydra",
     "abbr": "Hya",
-    "level": 23,
+    "level": 30,
     "ra": 10.5,
     "dec": -20.0,
     "raText": "10h30m",

@@ -181,10 +181,30 @@ def fmt_dec(dec):
     return ("+" if dec >= 0 else "−") + f"{d}°{m:02d}′"
 
 
+def level_map():
+    """以 tools/levels.json 为准反查"星座 id → 关卡号"。
+    RAW 表里的关卡号是手写的，关卡重排后会过期（曾导致图鉴计数错位 + 未通关星座泄露星图）。"""
+    path = os.path.join(ROOT, "tools", "levels.json")
+    lv = json.load(open(path, encoding="utf-8"))
+    m = {}
+    for x in lv:
+        tid = (x.get("theme") or {}).get("id")
+        if tid:
+            m[tid] = x["id"]
+    return m
+
+
 def main():
     by_latin = {r[3]: r for r in RAW}
+    lm = level_map()
+    fixed = []
     out = []
     for (sid, zh, en, latin, abbr, level, ra, dec, rank, bzh, ben, bmag, neigh) in RAW:
+        real = lm.get(sid)
+        if real is not None and real != level:
+            fixed.append((sid, zh, level, real))
+        if real is not None:
+            level = real
         in_game = [by_latin[n][0] for n in neigh if n in by_latin]
         out.append({
             "id": sid, "zh": zh, "en": en, "latin": latin, "abbr": abbr, "level": level,
@@ -194,13 +214,17 @@ def main():
             "brightest": {"zh": bzh, "en": ben, "mag": bmag},
             "neighbors": [{"latin": n, "zh": CN_NAMES.get(n, n),
                            "id": by_latin[n][0] if n in by_latin else None,
-                           "level": by_latin[n][5] if n in by_latin else None} for n in neigh],
+                           "level": (lm.get(by_latin[n][0]) if n in by_latin else None)} for n in neigh],
             "inGameNeighbors": in_game,
         })
     path = os.path.join(ROOT, "tools", "sky.json")
     with open(path, "w", encoding="utf-8") as f:
         json.dump(out, f, ensure_ascii=False, indent=2)
     print(f"✅ 已写出 {path}（{len(out)} 个星座）")
+    if fixed:
+        print("已按 levels.json 修正关卡号:", ", ".join(f"{z}({a}→{b})" for _,z,a,b in fixed))
+    else:
+        print("关卡号与 levels.json 一致（无需修正）")
     seasons = {}
     for x in out:
         seasons[x["season"]] = seasons.get(x["season"], 0) + 1
