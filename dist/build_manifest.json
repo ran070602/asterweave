@@ -5,11 +5,11 @@
   "levels_sha256": "4e4f0d479113b41d24f0c3f490003ec207ed1fc4baf00807719ea9273320dfbc",
   "level_count": 50,
   "build_output": "dist\\星织-游戏本体\\index.html",
-  "build_sha256": "b70363c50143439599af689b57c94e76ec133c8f1ec1f95c8cfef42ba865f828",
+  "build_sha256": "9c0c4fca96ea576596830d4a3fa4ebd9b77b0fdf85a0975f6cae4e0b0bb897a1",
   "zip": "星织-游戏本体.zip",
-  "zip_sha256": "271e02e46d5a3ee9866adecbea985c4b5b6a2c93ae6bc141c282ea18321edc67",
-  "zip_bytes": 55459,
-  "html_bytes": 416953,
+  "zip_sha256": "cc00861e4c7b7ccee8f722800b7a6387340789631b1d723fb76ae8b1dac6c009",
+  "zip_bytes": 54859,
+  "html_bytes": 392417,
   "zip_root_entries": [
     "index.html",
     "README.txt"

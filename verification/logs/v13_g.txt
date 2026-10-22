@@ -4,9 +4,9 @@ ZIP index.html sha256: b70363c50143439599af689b57c94e76ec133c8f1ec1f95c8cfef42ba
 dist index.html sha256: b70363c50143439599af689b57c94e76ec133c8f1ec1f95c8cfef42ba865f828
 两者一致: True | 字节 416953 vs 416953 -> True
 外部引用计数: {'http://': 0, 'https://': 0, 'fetch(': 0, 'XMLHttpRequest': 0, 'WebSocket': 0, '<link': 0, '<img': 0, 'import(': 0, 'src=': 0, 'url(': 2} -> 全零: False
-build_manifest.json: {"ui_source": "game\\index.html", "ui_sha256": "73405b04cab832b0d6aad8107a96ea777ab86e31f03e08f52fc8557b2fbf5c19", "levels_source": "tools\\levels.json", "levels_sha256": "4e4f0d479113b41d24f0c3f490003ec207ed1fc4baf00807719ea9273320dfbc", "level_count": 50, "build_output": "dist\\星织-游戏本体\\index.html", "build_sha256": "b70363c50143439599af689b57c94e76ec133c8f1ec1f95c8cfef42ba865f828", "zip": "星织-游戏本体.zip", "zip_sha256": "9a77786223486e3ce5e7e2d31b052d71197dcc5a2e1f36739598576191920a13", "zip_bytes": 55400, "html_bytes": 416953, "zip_root_entries": ["index.html", "README.txt"], "checks": {"levels_roundtrip": true, "offline_selfcontained": true, "node_syntax": true, "clue_selfconsistent": true, "zip_root_index": true}}
+build_manifest.json: {"ui_source": "game\\index.html", "ui_sha256": "73405b04cab832b0d6aad8107a96ea777ab86e31f03e08f52fc8557b2fbf5c19", "levels_source": "tools\\levels.json", "levels_sha256": "4e4f0d479113b41d24f0c3f490003ec207ed1fc4baf00807719ea9273320dfbc", "level_count": 50, "build_output": "dist\\星织-游戏本体\\index.html", "build_sha256": "b70363c50143439599af689b57c94e76ec133c8f1ec1f95c8cfef42ba865f828", "zip": "星织-游戏本体.zip", "zip_sha256": "271e02e46d5a3ee9866adecbea985c4b5b6a2c93ae6bc141c282ea18321edc67", "zip_bytes": 55459, "html_bytes": 416953, "zip_root_entries": ["index.html", "README.txt"], "checks": {"levels_roundtrip": true, "offline_selfcontained": true, "node_syntax": true, "clue_selfconsistent": true, "zip_root_index": true}}
 manifest 含 dist sha: True | 含 50: True
-README.txt 字节: 2213 | 行数: 34
+README.txt 字节: 2323 | 行数: 35
   README.txt 含 图鉴    : True
   README.txt 含 观测    : True
   README.txt 含 标记    : True

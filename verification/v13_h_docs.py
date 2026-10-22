@@ -44,8 +44,8 @@ for name, fn, extra in [("design", "冉政-设计思路文档.md", "只用数字
             mism.append("第%s行 表=%s 实测=%s" % (r[0], got, exp))
     # 探格列 & 最后一列（按表头名定位，避免列序差异）
     idx = {c: i for i, c in enumerate(t["header"])}
-    iD = idx.get("探格次数", idx.get("探格"))
-    iC = idx.get("数织线索贡献")
+    iD = next((i for i, c in enumerate(t["header"]) if "探格" in c), None)
+    iC = next((i for i, c in enumerate(t["header"]) if "数织" in c), None)
     iL = len(t["header"]) - 1
     digs = [r[iD] for r in t["rows"]]
     contrib = [r[iC] for r in t["rows"]]
@@ -145,13 +145,16 @@ claims["后半段(26-50)雷数范围"] = (min(len(LV[i]["mines"]) for i in range
 print()
 print("=== 文档具体主张 vs 实测 ===")
 for k, v in claims.items(): print("  %-26s %s" % (k, v))
-print("  设计文档 L165 主张「杂星从第 1 关就少量出现（1–2 颗）」→ 实测第 1 关杂星 {} 颗：不符"
-      .format(claims["第 1 关杂星数"]))
-print("  设计文档 L165 主张「目标雷密度约 18%」/ L223 与 README 主张 20% → 实测均值 {}%"
-      .format(claims["雷密度范围/均值"][2]))
-print("  设计文档 L223「每行每列都至少有一颗星」→ 有空行/空列的关：{}".format([x[0] for x in empty_rc] or "无"))
-print("  迭代文档 L184「除第 1 关（走降级）外无空行空列」→ 第 2–50 关有空行空列: {}"
-      .format([x[0] for x in empty_rc if x[0] != 1] or "无"))
+d1n, d2n = d1, d2
+print("  [旧稿主张是否已订正]")
+print("   设计文档仍写「杂星（1–2 颗）」: {}（期望 False）".format("（1–2 颗）" in d1n))
+print("   仍写「目标雷密度约 18%」: {}（期望 False）".format("约 18%" in d1n))
+print("   仍有「10 关曲线」标题: {}（期望 False）".format(re.search(r"10 关曲线", d1n) is not None))
+print("   已给出杂星实测区间「6–22」: {}（期望 True）".format("6–22" in d1n and "6–22" in d2n))
+print("   已给出密度实测「15.6%–24.0%」: {}（期望 True）".format("15.6%–24.0%" in d1n and "15.6%–24.0%" in d2n))
+print("   已把「每行每列」补上第 1 关例外: {}（期望 True）".format("第 1 关走降级例外" in d1n))
+print("   已把探格列标注为生成器口径: {}（期望 True）".format("生成器口径" in d1n and "生成器口径" in d2n))
+print("   两份文档标题均已改为 50 关: {}（期望 True）".format("50 关曲线" in d1n and "全量 50 关" in d2n))
 
 json.dump(dict(tables={k: {kk: vv for kk, vv in d.items() if kk != "rows"} for k, d in out.items()},
                checks=checks, claims=claims), open(os.path.join(ROOT, "verification", "v13_out_h.json"), "w", encoding="utf-8"),

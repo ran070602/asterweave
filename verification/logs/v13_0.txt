@@ -32,36 +32,36 @@
   "design_doc.md": {
    "rel": "冉政-设计思路文档.md",
    "exists": true,
-   "sha256": "3138ca7c02d466a14d2039f2e7d327c7f832f12dc2bf802333d18130013d340c",
-   "bytes": 24407,
+   "sha256": "e8f6fbefa2b24b26d1fa7efbe6b6321ac7eefe120287520c112094fe6f85cc47",
+   "bytes": 24846,
    "frozen": "verification\\frozen_v13\\design_doc.md"
   },
   "iteration_doc.md": {
    "rel": "冉政-迭代优化过程文档.md",
    "exists": true,
-   "sha256": "c6955db49d3bdb19082943d7fc2e862bd7c431fe651d67028eb5e570538ac8bc",
-   "bytes": 43128,
+   "sha256": "f1be630cfed31a8db643cf5c0c20359ec259eefe090005dd5a51879c235d85ed",
+   "bytes": 43726,
    "frozen": "verification\\frozen_v13\\iteration_doc.md"
   },
   "build_manifest.json": {
    "rel": "dist\\build_manifest.json",
    "exists": true,
-   "sha256": "ddfab955192108268bb298b42e70291f61ef7f62409725f4481ac3cf220bc353",
+   "sha256": "d5ccd0bc23d972a3f5ad1ffbe5a405f8a66a1b5005e715b2ae3362cdda826709",
    "bytes": 836,
    "frozen": "verification\\frozen_v13\\build_manifest.json"
   },
   "release.zip": {
    "rel": "星织-游戏本体.zip",
    "exists": true,
-   "sha256": "9a77786223486e3ce5e7e2d31b052d71197dcc5a2e1f36739598576191920a13",
-   "bytes": 55400,
+   "sha256": "271e02e46d5a3ee9866adecbea985c4b5b6a2c93ae6bc141c282ea18321edc67",
+   "bytes": 55459,
    "frozen": "verification\\frozen_v13\\release.zip"
   },
   "README.md": {
    "rel": "README.md",
    "exists": true,
-   "sha256": "7827727612cd2825946d9b75604fa8005ba6adf8ce2afed852b1b394e5734c77",
-   "bytes": 4111,
+   "sha256": "9c6fbca3603d57312427a9d8cb89d25890dd20a343beafd4f2460a2f980e16b2",
+   "bytes": 4180,
    "frozen": "verification\\frozen_v13\\README.md"
   }
  },

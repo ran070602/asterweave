@@ -35,6 +35,32 @@ def sha256_file(p):
 README_SRC = os.path.join(ROOT, "tools", "README_source.txt")
 
 
+def _assert_consistency(out_path, zip_path, root_index, manifest):
+    """硬断言：manifest 记录的三方 sha 必须与磁盘实测一致，否则构建失败。
+    （复核曾遇到"复核窗口内被重建、zip 与 manifest 对不上"的情况，这里把一致性钉死在构建里。）"""
+    bad = []
+
+    def sha(p):
+        h = hashlib.sha256()
+        with open(p, "rb") as f:
+            for b in iter(lambda: f.read(1 << 16), b""):
+                h.update(b)
+        return h.hexdigest()
+
+    if manifest.get("build_sha256") != sha(out_path):
+        bad.append("dist index.html sha 与 manifest 不一致")
+    if manifest.get("zip_sha256") != sha(zip_path):
+        bad.append("ZIP sha 与 manifest 不一致")
+    if os.path.exists(root_index) and sha(root_index) != sha(out_path):
+        bad.append("根目录 index.html 与 dist 不一致（Pages 会发旧版）")
+    with zipfile.ZipFile(zip_path) as z:
+        if hashlib.sha256(z.read("index.html")).hexdigest() != sha(out_path):
+            bad.append("ZIP 内 index.html 与 dist 不一致")
+        if z.namelist() != ["index.html", "README.txt"]:
+            bad.append(f"ZIP 根目录条目异常: {z.namelist()}")
+    return bad
+
+
 def readme_text():
     """ZIP 里的 README.txt：源文件用 LF，打包时转 CRLF（Windows 记事本友好）"""
     with open(README_SRC, encoding="utf-8") as f:
@@ -158,7 +184,7 @@ def main():
     shutil.rmtree(PKG_DIR, ignore_errors=True)
     os.makedirs(PKG_DIR, exist_ok=True)
     out_path = os.path.join(PKG_DIR, "index.html")
-    open(out_path, "w", encoding="utf-8").write(out_html)
+    open(out_path, "w", encoding="utf-8", newline="\n").write(out_html)
     if os.path.exists(ZIP_PATH):
         os.remove(ZIP_PATH)
     # 确定性打包：固定的时间戳与属性，使同样输入每次都产出**逐字节相同**的 ZIP
@@ -206,6 +232,14 @@ def main():
     }
     json.dump(manifest, open(os.path.join(DIST, "build_manifest.json"), "w", encoding="utf-8"),
               ensure_ascii=False, indent=2)
+
+    bad = _assert_consistency(out_path, ZIP_PATH, os.path.join(ROOT, "index.html"), manifest)
+    if bad:
+        print("\n!! 一致性断言失败：")
+        for x in bad:
+            print("   -", x)
+        sys.exit(1)
+    print("一致性断言：dist / ZIP / 根目录 / manifest 四方 sha 全一致")
 
     print(f"\n✅ 已产出 {os.path.relpath(out_path, ROOT)}（{manifest['html_bytes']} 字节）")
     print(f"✅ 已产出 {os.path.relpath(ZIP_PATH, ROOT)}（{manifest['zip_bytes']} 字节）")

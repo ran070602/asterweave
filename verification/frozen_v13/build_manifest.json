@@ -7,8 +7,8 @@
   "build_output": "dist\\星织-游戏本体\\index.html",
   "build_sha256": "b70363c50143439599af689b57c94e76ec133c8f1ec1f95c8cfef42ba865f828",
   "zip": "星织-游戏本体.zip",
-  "zip_sha256": "9a77786223486e3ce5e7e2d31b052d71197dcc5a2e1f36739598576191920a13",
-  "zip_bytes": 55400,
+  "zip_sha256": "271e02e46d5a3ee9866adecbea985c4b5b6a2c93ae6bc141c282ea18321edc67",
+  "zip_bytes": 55459,
   "html_bytes": 416953,
   "zip_root_entries": [
     "index.html",
