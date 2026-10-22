@@ -57,6 +57,27 @@
     display:none;margin:0 2px 10px;padding:10px;border-radius:12px;
     background:#141a23;border:1px solid #263042;
   }
+  /* 关卡 = 右侧抽屉（不再把页面顶下去） */
+  .panel.lvdrawer{
+    position:fixed;top:0;right:0;bottom:0;left:auto;z-index:45;
+    width:min(360px,88vw);margin:0;border-radius:0;border:0;border-left:1px solid #263042;
+    background:linear-gradient(180deg,#151c27,#0e131b);
+    padding:14px 12px calc(14px + env(safe-area-inset-bottom));
+    box-sizing:border-box;overflow-y:auto;overscroll-behavior:contain;
+    transform:translateX(100%);transition:transform .24s cubic-bezier(.22,.8,.3,1);
+    box-shadow:-18px 0 40px rgba(0,0,0,.45);
+  }
+  .panel.lvdrawer.open{display:block;transform:none}
+  .panel.lvdrawer[hidden]{display:none}
+  .drawer-mask{position:fixed;inset:0;z-index:44;background:rgba(3,6,14,.64);
+    opacity:0;pointer-events:none;transition:opacity .24s ease}
+  .drawer-mask.open{opacity:1;pointer-events:auto}
+  body.drawer-open{overflow:hidden}
+  .lvdrawer .lvgrid{gap:8px}
+  .lvdrawer .panel-head{position:sticky;top:-14px;background:linear-gradient(180deg,#151c27 70%,rgba(21,28,39,0));padding:6px 0 10px;margin-bottom:4px}
+  @media (prefers-reduced-motion: reduce){
+    .panel.lvdrawer,.drawer-mask{transition:none}
+  }
   .panel.open{display:block}
   .panel[hidden]{display:none}
   .panel-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
@@ -405,7 +426,8 @@
     </div>
   </div>
 
-  <section class="panel" id="levelPanel" hidden aria-label="关卡选择">
+  <div class="drawer-mask" id="drawerMask" hidden></div>
+  <section class="panel" id="levelPanel" hidden role="dialog" aria-modal="true" aria-label="关卡选择">
     <div class="panel-head">
       <span class="panel-title">已通关 <b id="clearedCount">0</b>/<b id="totalCount">1</b></span>
       <button type="button" class="mini" id="unlockBtn" aria-pressed="false">🔓 全部解锁</button>
@@ -736,6 +758,7 @@ const lvBtn = document.getElementById('lvBtn');
 const lvBtnNum = document.getElementById('lvBtnNum');
 const lvBtnTotal = document.getElementById('lvBtnTotal');
 const levelPanel = document.getElementById('levelPanel');
+const drawerMask = document.getElementById('drawerMask');
 const lvGrid = document.getElementById('lvGrid');
 const clearedCountEl = document.getElementById('clearedCount');
 const totalCountEl = document.getElementById('totalCount');
@@ -1559,21 +1582,31 @@ function toggleUnlockAll(){
 function openPanel(){
   panelOpen = true;
   levelPanel.hidden = false;
-  levelPanel.className = 'panel open';
+  levelPanel.className = 'panel lvdrawer';
+  drawerMask.hidden = false;
   lvBtn.setAttribute('aria-expanded', 'true');
+  document.body.classList.add('drawer-open');
   refreshLevelGrid();
+  requestAnimationFrame(function(){
+    levelPanel.className = 'panel lvdrawer open';
+    drawerMask.className = 'drawer-mask open';
+  });
   const cur = lvlEls[S ? S.index : 0];
   if (cur && cur.scrollIntoView){
-    try { cur.scrollIntoView({ block: 'nearest' }); }
+    try { cur.scrollIntoView({ block: 'center' }); }
     catch (e) { try { cur.scrollIntoView(); } catch (e2) {} }
   }
 }
 
 function closePanel(){
   panelOpen = false;
-  levelPanel.hidden = true;
-  levelPanel.className = 'panel';
+  levelPanel.className = 'panel lvdrawer';
+  drawerMask.className = 'drawer-mask';
   lvBtn.setAttribute('aria-expanded', 'false');
+  document.body.classList.remove('drawer-open');
+  setTimeout(function(){
+    if (!panelOpen){ levelPanel.hidden = true; drawerMask.hidden = true; }
+  }, 240);
   resetArmed = false;
   resetBtn.textContent = '重置进度';
   resetBtn.className = 'mini';
@@ -1613,6 +1646,7 @@ flagBtn.addEventListener('click', function(){ setMode(MODE_FLAG); });
 replayBtn.addEventListener('click', function(){ if (S) startLevel(S.index); });
 
 lvBtn.addEventListener('click', togglePanel);
+drawerMask.addEventListener('click', function(){ if (panelOpen) closePanel(); });
 
 // 结算 modal：Tab 在两个按钮间循环（焦点不跑到棋盘上）；点遮罩=收起，改由结算条接替
 overlayEl.addEventListener('keydown', function(e){
