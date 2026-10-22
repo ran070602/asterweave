@@ -1699,7 +1699,8 @@ function renderStrip(){
   if (won && !last) row.appendChild(mkBtn('下一关 →', 'btn primary', nextLevel));
   row.appendChild(mkBtn('↻ 重来本关', 'btn again', replayLevel));
   if (!won || last) row.appendChild(mkBtn('换个关卡', 'btn ghost', openPanel));
-  row.appendChild(mkBtn('结算', 'btn ghost', function(){ modalDismissed = false; render(); }));
+  // 通关时保留「结算」：用来回看星座揭晓；失败时不需要（失败 modal 已经弹过，再开一次没有信息量）
+  if (won) row.appendChild(mkBtn('结算', 'btn ghost', function(){ modalDismissed = false; render(); }));
   resultEl.appendChild(row);
 }
 
