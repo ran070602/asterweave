@@ -421,6 +421,26 @@
     background:#111b2c;color:#9fc3ea}
   .sky-neigh button.link{background:#16294a;border-color:#3f6ea8;color:#dbeaff}
   .sky-fact{margin:10px 0 0;font-size:12px;line-height:1.6;color:#9fb4d0}
+  /* 星座详情：屏幕中央弹窗 */
+  .const-modal{position:fixed;inset:0;z-index:70;display:flex;align-items:center;justify-content:center;
+    padding:18px}
+  .const-modal[hidden]{display:none}
+  .const-modal-mask{position:absolute;inset:0;background:rgba(3,6,14,.72)}
+  .const-modal-card{position:relative;width:100%;max-width:420px;max-height:84vh;overflow-y:auto;
+    -webkit-overflow-scrolling:touch;border-radius:16px;border:1px solid rgba(120,150,210,.28);
+    background:linear-gradient(180deg,rgba(21,29,46,.98),rgba(10,14,24,.98));
+    box-shadow:0 24px 60px rgba(0,0,0,.6);padding:14px 14px 16px;
+    opacity:0;transform:translateY(10px) scale(.97);transition:opacity .18s ease,transform .18s ease}
+  .const-modal.open .const-modal-card{opacity:1;transform:none}
+  .const-close{position:absolute;top:8px;right:8px;width:34px;height:34px;border-radius:50%;
+    border:1px solid #2c4666;background:#16294a;color:#dbeaff;font-size:18px;line-height:1;
+    display:flex;align-items:center;justify-content:center;cursor:pointer}
+  .const-close:active{transform:scale(.94)}
+  .const-modal-body .sky-card{border:0;background:none;padding:0}
+  .const-modal-body .sky-map-slot{margin-top:10px}
+  @media (prefers-reduced-motion: reduce){
+    .const-modal-card{transition:none;opacity:1;transform:none}
+  }
   .sky-map-slot{margin-top:10px;border-radius:12px;overflow:hidden;background:#05070f}
   .sky-locked{font-size:13px;color:#8fa6c6;line-height:1.7}
 
@@ -457,8 +477,16 @@
     <div class="sky-filters" id="skyFilters" role="group" aria-label="按季节筛选"></div>
     <div class="sky-wrap"><svg class="sky-map" id="skyMap" viewBox="0 0 200 120" role="img" aria-label="天球投影星图"></svg></div>
     <div class="sky-hint" id="skyHint">横轴 = 赤经（0–24 时）· 纵轴 = 赤纬（+90° 到 −90°）· 亮 = 已观测　·　按住拖动可平移 · 滚轮/双指缩放 · 双击复位</div>
-    <div class="sky-detail" id="skyDetail"></div>
+    <div class="sky-detail" id="skyDetail" hidden></div>
   </section>
+
+  <div class="const-modal" id="constModal" hidden>
+    <div class="const-modal-mask" id="constModalMask"></div>
+    <div class="const-modal-card" role="dialog" aria-modal="true" aria-label="星座详情">
+      <button type="button" class="const-close" id="constClose" aria-label="关闭">×</button>
+      <div class="const-modal-body" id="constModalBody"></div>
+    </div>
+  </div>
 
   <div class="meta" id="lvtag"></div>
   <div class="status" id="status">
@@ -1911,23 +1939,21 @@ function renderSkyFilters(){
   }).join('');
 }
 
-function renderSkyDetail(){
-  if (!skyEls.detail) return;
-  if (!skySelected){
-    skyEls.detail.innerHTML = '<div class="sky-card"><h3>观测你的星空</h3>' +
-      '<p class="sky-locked">每通过一关，图鉴上就会点亮一颗星座。<br>' +
-      '横轴是赤经（0–24 时），纵轴是赤纬（+90° 北天极 → −90° 南天极）；' +
-      '左边/右边就是真实夜空里相邻的方向。<br>点任意一颗（或按季节筛选）看详情。</p></div>';
-    return;
-  }
+function skyDetailHtml(){
+  if (!skySelected) return '';
   const s = SKY.find(function(x){ return x.id === skySelected; });
-  if (!s){ skyEls.detail.innerHTML = ''; return; }
+  if (!s) return '';
   const on = skyIsOn(s);
+  const closeBtnGap = '';
   if (!on){
-    skyEls.detail.innerHTML = '<div class="sky-card"><h3>未观测</h3>' +
+    return '<div class="sky-card"><h3>未观测</h3>' +
       '<div class="sub">第 ' + s.level + ' 关 · 通关后点亮</div>' +
-      '<p class="sky-locked">这个方位上藏着一个星座。先通过第 ' + s.level + ' 关，再来图鉴里看清它。</p></div>';
-    return;
+      '<dl class="sky-meta">' +
+        '<dt>星座</dt><dd>' + skyEsc(s.zh) + '（' + skyEsc(s.en) + '）</dd>' +
+        '<dt>方位</dt><dd>赤经 ' + s.raText + '，赤纬 ' + s.decText + '</dd>' +
+        '<dt>天区</dt><dd>' + s.zone + ' · ' + s.season + '星空</dd>' +
+      '</dl>' +
+      '<p class="sky-locked">先去第 ' + s.level + ' 关观测它，返回来就能看到星图与相邻星座。</p></div>';
   }
   const lv = LEVELS[s.level - 1];
   const nb = s.neighbors.map(function(n){
@@ -1939,10 +1965,9 @@ function renderSkyDetail(){
       (unlocked ? '' : (known ? '（未观测）' : '')) + '</button>';
   }).join('');
   const starMap = (lv && lv.theme) ? constSvg(lv.theme, lv.size, lv.noise) : '';
-  skyEls.detail.innerHTML =
-    '<div class="sky-card">' +
+  return '<div class="sky-card">' +
       '<h3>' + skyEsc(s.zh) + ' <span class="sub">' + skyEsc(s.en) + ' · ' + skyEsc(s.abbr) + '</span></h3>' +
-      '<div class="sub">第 ' + s.level + ' 关 · 已观测</div>' +
+      '<div class="sub">第 ' + s.level + ' 关 · 已观测' + closeBtnGap + '</div>' +
       '<dl class="sky-meta">' +
         '<dt>中心坐标</dt><dd>赤经 ' + s.raText + '，赤纬 ' + s.decText + '</dd>' +
         '<dt>天区</dt><dd>' + s.zone + ' · ' + s.season + '星空</dd>' +
@@ -1956,13 +1981,40 @@ function renderSkyDetail(){
     '</div>';
 }
 
+function showConstModal(){
+  const m = document.getElementById('constModal');
+  if (!m) return;
+  m.hidden = false;
+  void m.offsetWidth;                 // 强制 reflow，保证过渡生效
+  m.className = 'const-modal open';
+  document.body.classList.add('drawer-open');
+}
+function hideConstModal(){
+  const m = document.getElementById('constModal');
+  if (!m) return;
+  m.className = 'const-modal';
+  document.body.classList.remove('drawer-open');
+  setTimeout(function(){
+    const cur = document.getElementById('constModal');
+    if (cur && cur.className.indexOf('open') < 0) cur.hidden = true;
+  }, 200);
+}
+
+function renderSkyDetail(){
+  const body = document.getElementById('constModalBody');
+  if (!body) return;
+  if (!skySelected){ hideConstModal(); body.innerHTML = ''; return; }
+  body.innerHTML = skyDetailHtml();
+  showConstModal();
+}
+
 function skyHintText(){
   if (skyFilter === '全部'){
-    return '全天总览 · 亮字 = 已观测（会闪烁），暗字 = 未观测 · 按住拖动可平移，双击复位';
+    return '全天总览 · 亮字 = 已观测（会闪烁），暗字 = 未观测 · 按住拖动可平移 · 滚轮/双指缩放 · 双击复位';
   }
   const bands = SKY_BANDS[skyFilter] || [];
   const range = bands.map(function(b){ return b[0] + '–' + b[1] + ' 时'; }).join(' 与 ');
-  return skyFilter + '星空 = 赤经 ' + range + ' · 其它季节的星座已隐藏 · 按住拖动可平移 · 滚轮/双指缩放 · 双击复位';
+  return skyFilter + '星空 = 赤经 ' + range + ' · 其它季节的星座已隐藏 · 按住拖动可平移 · 滚轮/双指缩放';
 }
 
 function renderSky(){
@@ -1985,6 +2037,7 @@ function openSky(){
   if (!skyEls.panel) return;
   skyOpen = true;
   skyView = { s: 1, x: 0, y: 0 };
+  skySelected = null;
   skyEls.panel.hidden = false;
   skyEls.panel.className = 'panel sky-panel open';
   if (skyEls.btn) skyEls.btn.setAttribute('aria-expanded', 'true');
@@ -1992,6 +2045,8 @@ function openSky(){
 }
 function closeSky(){
   if (!skyEls.panel) return;
+  skySelected = null;
+  renderSkyDetail();
   skyOpen = false;
   skyEls.panel.hidden = true;
   skyEls.panel.className = 'panel sky-panel';
@@ -2126,16 +2181,30 @@ if (skyEls.map){
 }
 
 let skyDragLast = { x: 0, y: 0 };
-if (skyEls.detail) skyEls.detail.addEventListener('click', function(e){
+// 弹窗内相邻星座跳转（事件委托）
+const constModalBody = document.getElementById('constModalBody');
+if (constModalBody) constModalBody.addEventListener('click', function(e){
   const b = e.target.closest('[data-jump]');
   if (!b) return;
-  skySelected = b.getAttribute('data-jump');
-  renderSky();
+  skySelect(b.getAttribute('data-jump'));
+});
+// 右上角 × 关闭
+const constCloseBtn = document.getElementById('constClose');
+if (constCloseBtn) constCloseBtn.addEventListener('click', function(){ skySelected = null; renderSkyDetail(); });
+// 点空白区域（遮罩）关闭
+const constModalMask = document.getElementById('constModalMask');
+if (constModalMask) constModalMask.addEventListener('click', function(){ skySelected = null; renderSkyDetail(); });
+const constModalEl = document.getElementById('constModal');
+if (constModalEl) constModalEl.addEventListener('click', function(e){
+  // 点在卡片外的空白也算关闭
+  if (e.target === constModalEl){ skySelected = null; renderSkyDetail(); }
 });
 
 window.addEventListener('keydown', function(e){
   if (e.key === 'Escape' || e.key === 'Esc'){
     if (modalOpenNow){ dismissModal(); return; }   // Esc 收起结算，结算条保留入口
+    const cm = document.getElementById('constModal');
+    if (cm && cm.className.indexOf('open') >= 0){ skySelected = null; renderSkyDetail(); return; }
     if (skyOpen){ closeSky(); return; }
     if (panelOpen) closePanel();
   }
