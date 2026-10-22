@@ -2,19 +2,19 @@
   {
     "id": 1,
     "name": "南十字座",
-    "size": 8,
+    "size": 6,
     "stars": 4,
-    "noise": 6,
-    "mines": 10,
+    "noise": 3,
+    "mines": 7,
     "ok": true,
-    "probes": 24,
+    "probes": 11,
     "runs": 0,
     "nb_only": true,
-    "iso": 1,
-    "zr": 22,
+    "iso": 0,
+    "zr": 28,
     "isEmpty": [
-      3,
-      2
+      0,
+      0
     ],
     "showRuns": false
   },

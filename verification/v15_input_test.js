@@ -160,17 +160,11 @@ function actCell(i, mode) {
   flush(0);
 }
 
-// ---------------- v15（v1.8 语义）：触摸轻触/长按；鼠标单击/右键（无双击）----------------
+// ---------------- v15（v1.9）：触摸轻触/长按；鼠标单击/右键（无双击）----------------
+// 注意：每类测试前都先「重玩本关」，避免上一次操作引发的连锁展开影响断言。
 const safeIdx = (play['1'] || []).filter(a => a[0] === 'dig').map(a => a[1]);
 const mineIdx = (play['1'] || []).filter(a => a[0] === 'flag').map(a => a[1]);
-const S0 = state();
-ok('第 1 关 playing', S0.status === 'playing', `size=${S0.size}`);
-const hint = byId.actHint.textContent || '';
-ok('提示说明手机（长按）与电脑（右键）两套操作',
-   hint.includes('轻触') && hint.includes('长按') && hint.includes('右键') && !hint.includes('双击'), hint);
-ok('提示里已无「双击」', !hint.includes('双击'), hint);
-ok('源码中已无双击判定（DBL_MS / lastMouse）', !html.includes('DBL_MS') && !html.includes('lastMouse'));
-ok('模式按钮已移除', !byId.modeDig && !byId.modeFlag);
+if (byId.introStart) { byId.introStart.dispatchEvent(mkEvent('click', { target: byId.introStart })); flush(0); }
 
 function down(i, opts){
   boardEl.dispatchEvent(mkEvent('pointerdown', Object.assign({ target: cellsByI()[i], button: 0, clientX: 100, clientY: 100 }, opts || {})));
@@ -178,8 +172,18 @@ function down(i, opts){
 function up(i, opts){
   boardEl.dispatchEvent(mkEvent('pointerup', Object.assign({ target: cellsByI()[i], button: 0, clientX: 100, clientY: 100 }, opts || {})));
 }
+function restart(){ byId.replay.dispatchEvent(mkEvent('click', { target: byId.replay })); flush(20); }
 
-// 1) 触摸轻触 = 即时观测
+const S0 = state();
+ok('第 1 关可玩', S0.status === 'playing', `size=${S0.size}`);
+const hint = byId.actHint.textContent || '';
+ok('提示说明手机（长按）与电脑（右键），且无「双击」',
+   hint.includes('轻触') && hint.includes('长按') && hint.includes('右键') && !hint.includes('双击'), hint);
+ok('源码中已无双击判定（DBL_MS / lastMouse）', !html.includes('DBL_MS') && !html.includes('lastMouse'));
+ok('模式按钮已移除', !byId.modeDig && !byId.modeFlag);
+
+// 1) 轻触 = 即时观测
+restart();
 let b = state();
 down(safeIdx[0], { pointerType: 'touch' });
 flush(0);
@@ -188,61 +192,61 @@ up(safeIdx[0], { pointerType: 'touch' });
 flush(0);
 ok('轻触抬起 → 立即观测（0ms）', state().revealed > b.revealed, `revealed=${state().revealed} before=${b.revealed}`);
 
-// 2) 长按 = 标记，且抬起不再观测
-b = state();
-down(safeIdx[1], { pointerType: 'touch' });
-flush(420);
-ok('长按 ~420ms → 标记 +1', state().flagged === b.flagged + 1, `flagged=${state().flagged}`);
-up(safeIdx[1], { pointerType: 'touch' });
-flush(0);
-ok('长按后抬起不会补一次观测', state().revealed === b.revealed, `revealed=${state().revealed}`);
-
-// 3) 长按雷位 = 安全标记
+// 2) 长按雷位 = 安全标记（不扣命、不观测）
+restart();
 b = state();
 down(mineIdx[0], { pointerType: 'touch' });
 flush(420);
+ok('长按 ~420ms → 标记 +1', state().flagged === b.flagged + 1, `flagged=${state().flagged}`);
 up(mineIdx[0], { pointerType: 'touch' });
 flush(0);
-ok('长按雷位 → 标记 +1 且不扣命', state().flagged === b.flagged + 1 && state().lives === b.lives,
-   `flagged=${state().flagged} lives=${state().lives}`);
+ok('长按雷位不扣命、也不会被观测引爆', state().lives === b.lives && state().revealed === b.revealed,
+   `lives=${state().lives} revealed=${state().revealed}/${b.revealed}`);
+ok('长按后抬起不会补一次观测', state().revealed === b.revealed, `revealed=${state().revealed}`);
 
-// 4) 划动取消
+// 3) 划动取消长按
+restart();
 b = state();
-down(safeIdx[2], { pointerType: 'touch', clientX: 100, clientY: 100 });
-boardEl.dispatchEvent(mkEvent('pointermove', { target: cellsByI()[safeIdx[2]], pointerType: 'touch', clientX: 160, clientY: 140 }));
+down(safeIdx[0], { pointerType: 'touch', clientX: 100, clientY: 100 });
+boardEl.dispatchEvent(mkEvent('pointermove', { target: cellsByI()[safeIdx[0]], pointerType: 'touch', clientX: 170, clientY: 150 }));
 flush(420);
-up(safeIdx[2], { pointerType: 'touch', clientX: 160, clientY: 140 });
+up(safeIdx[0], { pointerType: 'touch', clientX: 170, clientY: 150 });
 flush(0);
 ok('划动取消长按且不观测、不标记', state().flagged === b.flagged && state().revealed === b.revealed,
    `flagged=${state().flagged}/${b.flagged} revealed=${state().revealed}/${b.revealed}`);
 
-// 5) 鼠标单击 = 即时观测
+// 4) 鼠标左键单击 = 即时观测
+restart();
 b = state();
-down(safeIdx[3], { pointerType: 'mouse' });
+down(safeIdx[0], { pointerType: 'mouse' });
 flush(0);
 ok('鼠标单击 → 立即观测', state().revealed > b.revealed, `revealed=${state().revealed} before=${b.revealed}`);
 
-// 6) 鼠标双击 **不再**标记
+// 5) 鼠标双击 **不再**标记
+restart();
 b = state();
-down(safeIdx[4], { pointerType: 'mouse' });
-down(safeIdx[4], { pointerType: 'mouse' });
+down(safeIdx[0], { pointerType: 'mouse' });
+down(safeIdx[0], { pointerType: 'mouse' });
 flush(0);
-ok('鼠标双击不会标记（v1.8 已移除双击标记）', state().flagged === b.flagged, `flagged=${state().flagged} before=${b.flagged}`);
+ok('鼠标双击不会标记（v1.8 起移除双击标记）', state().flagged === b.flagged, `flagged=${state().flagged} before=${b.flagged}`);
 
-// 7) 右键 = 立即标记（且在雷位上安全）
+// 6) 鼠标右键 = 立即标记
+restart();
 b = state();
-boardEl.dispatchEvent(mkEvent('pointerdown', { target: cellsByI()[mineIdx[1]], button: 2, pointerType: 'mouse', clientX: 100, clientY: 100 }));
+boardEl.dispatchEvent(mkEvent('pointerdown', { target: cellsByI()[mineIdx[0]], button: 2, pointerType: 'mouse', clientX: 100, clientY: 100 }));
 flush(0);
 ok('右键 → 立即标记且不扣命', state().flagged === b.flagged + 1 && state().lives === b.lives,
    `flagged=${state().flagged} lives=${state().lives}`);
 
-// 8) 键盘
+// 7) 键盘：Enter = 观测；空格 = 标记
+restart();
 b = state();
-boardEl.dispatchEvent(mkEvent('keydown', { key: 'Enter', target: cellsByI()[safeIdx[5]] }));
+boardEl.dispatchEvent(mkEvent('keydown', { key: 'Enter', target: cellsByI()[safeIdx[0]] }));
 flush(0);
 ok('键盘 Enter = 立即观测', state().revealed > b.revealed, `revealed=${state().revealed} before=${b.revealed}`);
+restart();
 b = state();
-boardEl.dispatchEvent(mkEvent('keydown', { key: ' ', target: cellsByI()[mineIdx[2]] }));
+boardEl.dispatchEvent(mkEvent('keydown', { key: ' ', target: cellsByI()[mineIdx[0]] }));
 flush(0);
 ok('键盘空格 = 标记且不扣命', state().flagged === b.flagged + 1 && state().lives === b.lives,
    `flagged=${state().flagged} lives=${state().lives}`);
