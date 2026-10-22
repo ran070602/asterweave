@@ -1,16 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""把两份交付文档里的「关卡表」按 tools/levels.json 的真实数据重写。
+"""把两份交付文档里的「关卡表」按 tools/levels.json 的真实数据重写（幂等）。
 
 用法：python tools/sync_docs_tables.py [--dry]
 
-会做的事：
-  1. 用求解器算出每关的「探格次数 / 数织线索贡献 / 是否必须用星图线索」；
-  2. 按固定列格式生成 23（或任意关数）行表格；
-  3. 替换《设计思路文档》与《迭代优化过程文档》里已有的关卡表；
-  4. 把两份文档里的「N 关」数字改成实际关数（只改已知的固定搭配，避免误伤）。
-
-为什么需要它：关卡一扩张，两份文档的表格就会和 levels.json 脱节；手工改容易漏行/错列。
+做法：在文档里找出「最长的、以 | 数字 | 开头的连续表格块」当作关卡表，
+      与按 levels.json + 求解器生成的内容逐行比对；一致就跳过，不一致才整块替换。
+（旧版本用固定正则匹配首行/末行，遇到文档里有多张表时会重复插入，已修正。）
 """
 import importlib.util, json, os, re, sys
 
@@ -37,34 +33,43 @@ for x in lv:
     else:
         rows_design.append(head + ("否（要用星图线索） |" if must else "是 |"))
         rows_iter.append(head + ("是 |" if must else "否（数字即可解） |"))
-rows_design = "\n".join(rows_design) + "\n"
-rows_iter = "\n".join(rows_iter) + "\n"
 
-# 匹配「从第 1 行南十字座到最后一行的表格块」（任意行数）
-pat = re.compile(r"\| 1 \| 南十字座[^\n]*\n(?:\| \d+ \|[^\n]*\n)*?\| \d+ \|[^\n]*\n")
 
-targets = [
-    ("冉政-设计思路文档.md", rows_design),
-    ("冉政-迭代优化过程文档.md", rows_iter),
-]
+def find_level_table(lines):
+    """返回 (start, end) —— 最长的连续「| 数字 |」表格块"""
+    best, i = None, 0
+    while i < len(lines):
+        if re.match(r"^\| \d+ \| ", lines[i]):
+            j = i
+            while j < len(lines) and re.match(r"^\| \d+ \| ", lines[j]):
+                j += 1
+            if best is None or (j - i) > (best[1] - best[0]):
+                best = (i, j)
+            i = j
+        else:
+            i += 1
+    return best
+
+
 changed = 0
-for rel, rows in targets:
+for rel, rows in (("冉政-设计思路文档.md", rows_design),
+                  ("冉政-迭代优化过程文档.md", rows_iter)):
     p = os.path.join(ROOT, rel)
     if not os.path.exists(p):
         print(f"跳过（不存在）：{rel}"); continue
-    s = open(p, encoding="utf-8").read()
-    s2, k = pat.subn(rows, s, count=1)
-    if k == 0:
-        print(f"!! {rel}：没找到关卡表（格式变了？）"); continue
-    # 关数文案同步
-    s2 = re.sub(r"\d+ 关（目标 50 关）", f"{N} 关（目标 50 关）", s2)
-    s2 = re.sub(r"\*\*20 关", f"**{N} 关", s2)
-    s2 = re.sub(r"\*\*23 关", f"**{N} 关", s2)
-    if DRY:
-        print(f"[dry] {rel}：将替换 {len(rows.splitlines())} 行表格")
-    else:
-        open(p, "w", encoding="utf-8").write(s2)
-        print(f"✅ {rel}：表格已同步为 {len(rows.splitlines())} 行")
+    lines = open(p, encoding="utf-8").read().split("\n")
+    span = find_level_table(lines)
+    if not span:
+        print(f"!! {rel}：找不到关卡表"); continue
+    s, e = span
+    cur = lines[s:e]
+    if cur == rows:
+        print(f"= {rel}：关卡表已是最新（{len(cur)} 行），无需修改")
+        continue
+    print(f"~ {rel}：将把 {len(cur)} 行表格替换为 {len(rows)} 行")
+    if not DRY:
+        lines[s:e] = rows
+        open(p, "w", encoding="utf-8").write("\n".join(lines))
     changed += 1
 
-print(f"\n完成：{changed} 份文档{'（dry 模式未写入）' if DRY else '已更新'}；当前 {N} 关")
+print(f"\n完成：{changed} 份文档{'待更新（dry 未写入）' if DRY else '已更新'}；当前 {N} 关")
