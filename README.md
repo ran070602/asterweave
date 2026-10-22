@@ -43,6 +43,7 @@ tools/levels.json              # 关卡数据（星座星、杂星、行列线�
 tools/build_release.py         # 打包：注入数据 → 校验 → dist + ZIP + manifest
 dist/                          # 构建产物（index.html / build_manifest.json）
 docs/SPEC.md                   # 规则与验收契约
+docs/HANDOFF-关卡扩展.md         # 继续扩关卡的协作须知（流程/约束/已知坑）
 冉政-设计思路文档.md            # 设计思路（竞赛文档）
 冉政-迭代优化过程文档.md        # 迭代与验证记录（竞赛文档）
 ```
@@ -52,6 +53,8 @@ docs/SPEC.md                   # 规则与验收契约
 ```bash
 python tools/fit_constellation_levels.py   # 生成/重排关卡（需要求解器验收）
 python tools/build_release.py              # 注入数据、校验、打包
+python tools/check_levels.py               # 关卡自检（可解性/孤立雷/空行/密度/图鉴覆盖）
+python tools/sync_docs_tables.py           # 把两份文档里的关卡表同步成最新数据
 ```
 
 ## 技术
