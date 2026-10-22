@@ -299,7 +299,7 @@ PAVO_L = [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 8], [8, 9]
 # 十关曲线：先小后大；杂星只从第 6 关起少量出现
 PLAN = [
     dict(lid=1, zh="南十字座", en="Crux", stars=CRUX, lines=CRUX_L, board=6, probes=(16,26), runs=False,
-         teach="黑格是夜空里的星。左边和上面的数字 = 这一行/列里连着几颗星。把星标出来，星座就会亮。"),
+         teach="黑格是夜空里的星。数字 = 它周围 8 格里有几颗星（扫雷规则）。翻开所有安全格，再把所有星都标出来就通关。"),
     dict(lid=2, zh="天箭座", en="Sagitta", stars=SAGITTA, lines=SAGITTA_L, board=6, probes=(16,24), teach=""),
     dict(lid=3, zh="仙后座", en="Cassiopeia", stars=CAS, lines=CAS_L, board=6, probes=(16,24), teach=""),
     dict(lid=4, zh="猎户座", en="Orion", stars=ORION, lines=ORION_L, board=7, probes=(20,28), teach=""),
