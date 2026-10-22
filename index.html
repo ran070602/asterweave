@@ -501,8 +501,20 @@
   .sky-map-slot{margin-top:10px;border-radius:12px;overflow:hidden;background:#05070f}
   .sky-locked{font-size:13px;color:#8fa6c6;line-height:1.7}
 
-  .acthint{padding:10px 12px;border:1px solid rgba(120,150,210,.22);border-radius:12px;background:rgba(18,26,48,.55);
-    font-size:12px;line-height:1.5;color:#9fb4d0;text-align:center}
+  #replayActions[hidden]{display:none}
+  .intro-overlay{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;
+    padding:18px;background:rgba(4,7,16,.72);backdrop-filter:blur(2px)}
+  .intro-overlay[hidden]{display:none}
+  .intro-card{width:100%;max-width:340px;padding:18px 16px 16px;border:1px solid rgba(126,180,255,.34);border-radius:16px;
+    background:linear-gradient(180deg,rgba(20,30,58,.98),rgba(10,16,34,.98));box-shadow:0 18px 50px rgba(0,0,0,.55)}
+  .intro-title{font-size:16px;font-weight:800;color:#eaf2ff;margin-bottom:10px;letter-spacing:.02em}
+  .intro-line{margin:0 0 8px;font-size:13px;line-height:1.6;color:#b9cbe6}
+  .intro-line b{color:#eaf2ff}
+  .intro-card .btn{width:100%;margin-top:6px}
+  .acthint{margin:8px 2px 2px;padding:9px 10px;border:1px solid rgba(126,180,255,.42);border-radius:12px;
+    background:linear-gradient(180deg,rgba(38,62,116,.72),rgba(20,32,62,.72));
+    font-size:13px;font-weight:600;line-height:1.5;color:#cfe2ff;text-align:center;
+    box-shadow:0 0 0 1px rgba(10,16,32,.6) inset,0 2px 10px rgba(20,50,110,.35)}
   .foot{margin:14px 4px 0;font-size:12px;line-height:1.6;color:#7b8aa3}
   .err{color:#ff9aab;font-size:14px;padding:12px}
 </style>
@@ -550,7 +562,18 @@
     </div>
   </div>
 
+  <div class="intro-overlay" id="introOverlay" hidden>
+    <div class="intro-card" role="dialog" aria-modal="true" aria-labelledby="introTitle">
+      <div class="intro-title" id="introTitle">✦ 怎么玩</div>
+      <p class="intro-line">翻开所有安全格、并把所有星标出来，这一关就通了。</p>
+      <p class="intro-line">手机：<b>轻触</b>观测、<b>长按</b>标记；电脑：<b>单击</b>观测、<b>双击 / 右键</b>标记。</p>
+      <p class="intro-line">数字 = 它周围 8 格里有几颗星（0 会连锁翻开）。</p>
+      <button type="button" class="btn primary" id="introStart">开始观测</button>
+    </div>
+  </div>
+
   <div class="meta" id="lvtag"></div>
+  <div class="acthint" id="actHint">📱 轻触 = 🔭 观测　长按 = ★ 标记　｜　💻 单击 = 🔭 观测　双击 / 右键 = ★ 标记</div>
   <div class="status" id="status">
     <span class="stat-counts" id="statusCounts"></span>
     <span class="scopes" id="scopes" role="img" aria-label="剩余命数 3 / 3"></span>
@@ -559,9 +582,6 @@
 
   <div class="boardwrap"><div class="board" id="board"></div></div>
 
-  <div class="actions" id="modeActions">
-    <div class="acthint" id="actHint">📱 轻触 = 🔭 观测　长按 = ★ 标记　｜　💻 单击 = 🔭 观测　双击 / 右键 = ★ 标记</div>
-  </div>
   <div class="actions" id="replayActions">
     <button type="button" class="btn ghost" id="replay">↻ 重玩本关</button>
   </div>
@@ -23148,6 +23168,7 @@ const lvBtn = document.getElementById('lvBtn');
 const lvBtnNum = document.getElementById('lvBtnNum');
 const lvBtnTotal = document.getElementById('lvBtnTotal');
 const levelPanel = document.getElementById('levelPanel');
+const replayActionsEl = document.getElementById('replayActions');
 const drawerMask = document.getElementById('drawerMask');
 const lvGrid = document.getElementById('lvGrid');
 const clearedCountEl = document.getElementById('clearedCount');
@@ -23185,7 +23206,7 @@ let flashing = false;
 
 // ---------- 进度记忆：localStorage 不可用时静默降级为内存进度，绝不弹错 ----------
 const STORAGE_KEY = 'leixian.migong.progress.v1';
-let progress = { v: 1, cleared: {}, last: 0, devUnlock: false, devSkyLit: false };
+let progress = { v: 1, cleared: {}, last: 0, devUnlock: false, devSkyLit: false, introSeen: false };
 let storageOK = true;
 
 function loadProgress(){
@@ -23207,7 +23228,8 @@ function loadProgress(){
       cleared: cleared,
       last: (typeof saved.last === 'number' && saved.last >= 0) ? Math.floor(saved.last) : 0,
       devUnlock: saved.devUnlock === true,
-      devSkyLit: saved.devSkyLit === true
+      devSkyLit: saved.devSkyLit === true,
+      introSeen: saved.introSeen === true
     };
   } catch (e) {
     storageOK = false;          // 本地文件或隐私模式下存储被禁用：静默降级
@@ -23221,6 +23243,21 @@ function saveProgress(){
   } catch (e) {
     storageOK = false;          // 写失败也不打断游戏
   }
+}
+
+function showIntro(){
+  const el = document.getElementById('introOverlay');
+  if (!el) return;
+  el.hidden = false;
+  const btn = document.getElementById('introStart');
+  if (btn){ try { btn.focus(); } catch (e) {} }
+}
+
+function hideIntro(){
+  const el = document.getElementById('introOverlay');
+  if (el) el.hidden = true;
+  progress.introSeen = true;      // 只弹一次
+  saveProgress();
 }
 
 function isCleared(i){ return !!progress.cleared[String(i)]; }
@@ -23611,6 +23648,7 @@ function render(){
   teachEl.textContent = teach;
   teachEl.className = teach ? 'teach' : 'teach hidden';
 
+  if (replayActionsEl) replayActionsEl.hidden = (S.status !== 'playing');   // 结算时只留 modal/结算条里的那一个
   nameEl.textContent = S.level.name ? (' · ' + S.level.name) : '';
   lvtagEl.textContent = '第 ' + (S.index + 1) + ' / ' + LEVELS.length + ' 关 · ' +
     S.n + '×' + S.n + (S.level.showRuns ? ' · 含行列线索' : ' · 仅邻域数字');
@@ -24176,7 +24214,7 @@ resetBtn.addEventListener('click', function(){
   resetArmed = false;
   resetBtn.textContent = '重置进度';
   resetBtn.className = 'mini';
-  progress = { v: 1, cleared: {}, last: 0 };
+  progress = { v: 1, cleared: {}, last: 0, introSeen: true };
   saveProgress();
   startLevel(0);
   refreshLevelGrid();
@@ -24684,7 +24722,13 @@ if (Array.isArray(LEVELS) && LEVELS.length){
   buildLevelGrid();
   refreshUnlockBtn();
   refreshSkyBadge();
-  startLevel(startIndex());
+  const idx0 = startIndex();
+  startLevel(idx0);
+  if (!progress.introSeen && idx0 === 0) showIntro();
+  const ib = document.getElementById('introStart');
+  if (ib) ib.addEventListener('click', hideIntro);
+  const io = document.getElementById('introOverlay');
+  if (io) io.addEventListener('click', function(e){ if (e.target === io) hideIntro(); });
 } else {
   boardEl.innerHTML = '<p class="err">关卡数据缺失。</p>';
 }
