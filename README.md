@@ -2,9 +2,13 @@
 
 > 扫雷 × 数织 的星座解谜 · 单文件 H5 · 离线可玩
 
-## 🎮 [▶ 点这里在线试玩](https://ran070602.github.io/asterweave/)
+## 🎮 [▶ 点这里在线试玩](https://asterweave.pages.dev/)（Cloudflare，推荐）
 
-> 也可以直接打开仓库里的 [`index.html`](index.html)（同一个文件，双击即玩）。
+> 备用入口（GitHub Pages，永久有效）：<https://ran070602.github.io/asterweave/>
+>
+> 也可以直接打开仓库里的 [`index.html`](index.html)（同一个文件，双击即玩，不需要联网）。
+>
+> 推送 `main` 后 Cloudflare Pages 与 GitHub Pages 都会自动重新部署。
 
 棋盘上的黑格是夜空里的星：**数字**告诉你周围 8 格有几颗星（扫雷），**上方/左侧的数字**告诉你这一列/行里"连续的星"有多长（数织）。翻开所有安全格、并把所有星都标出来即通关；3 条命，踩到未标记的星会掉一条。通关后会揭晓本关对应的**真实星座**——棋盘上那些不属于星座的"杂星"不参与连线。
 
