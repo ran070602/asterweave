@@ -82,6 +82,13 @@
   .lvbtn.sndoff .ico .wave{display:none}
   .lvbtn.sndoff .ico .offmark{display:block}
   .lvbtn.sndoff{color:#7f8ea6}
+  .status .timer{margin-left:auto;font-variant-numeric:tabular-nums;font-weight:800;color:#8fc3ff;font-size:12px}
+  .status .timer.over{color:#ffb27a}
+  .status .timer[hidden]{display:none}
+  .lvtime{margin-top:2px}
+  .lvtime .panel-title{font-size:12px;color:#9fb4d0}
+  .lvtime .panel-title b{color:#8fc3ff}
+  .lvl.timeok::before{content:"⏱";position:absolute;top:2px;left:5px;font-size:9px;opacity:.95}
   .lvbtn.vol-1 .ico .w2,.lvbtn.vol-1 .ico .w3{display:none}
   .lvbtn.vol-2 .ico .w3{display:none}
   .top-actions{position:relative}
@@ -703,8 +710,12 @@
       <button type="button" class="mini" id="unlockBtn" aria-pressed="false">🔓 全部解锁</button>
       <button type="button" class="mini" id="resetBtn">重置进度</button>
     </div>
+    <div class="panel-head lvtime">
+      <span class="panel-title">⏱ 计时挑战 <b>第 11 关起</b></span>
+      <button type="button" class="mini" id="strictBtn" aria-pressed="false">严格限时：关</button>
+    </div>
     <div class="lvgrid" id="lvGrid"></div>
-    <div class="panel-hint">✓ 已通关　·　高亮 = 当前关卡　·　🔒 未解锁（通关上一关后解锁）<br>想直接玩后面的关？点「全部解锁」（给评审/开发用，不影响进度记录）</div>
+    <div class="panel-hint">✓ 已通关　·　高亮 = 当前关卡　·　🔒 未解锁（通关上一关后解锁）<br>⏱ = 已在目标时间内观测完成　·　想直接玩后面的关？点「全部解锁」（给评审/开发用，不影响进度记录）</div>
   </section>
 
   <section class="panel sky-panel" id="skyPanel" hidden aria-label="星座图鉴">
@@ -768,7 +779,7 @@
             <li><b>教学节奏</b>：第 1 关只给扫雷数字（纯教学），第 2 关起才引入行列线索。</li>
           </ol>
 
-          <p class="note">提示：翻开的数字是「周围有几颗星」，不是「周围有几颗杂星」——杂星与星座星在推理上完全等价。顶部 🔊 图标点开可调音量（图标会随音量变化，可一键静音）。</p>
+          <p class="note">提示：翻开的数字是「周围有几颗星」，不是「周围有几颗杂星」——杂星与星座星在推理上完全等价。<br>⏱ <b>计时挑战</b>：第 11 关起每关有目标时间，达标会在关卡面板留下 ⏱ 标记；<b>默认超时不失败</b>，想更紧张可在「关卡」面板打开「严格限时」。顶部 🔊 图标点开可调音量（图标会随音量变化，可一键静音）。</p>
         </div>
       </div>
     </div>
@@ -836,6 +847,7 @@
   <div class="acthint" id="actHint">📱 轻触 = 🔭 观测　长按 = ★ 标记　｜　💻 单击 = 🔭 观测　右键 = ★ 标记</div>
   <div class="status" id="status">
     <span class="stat-counts" id="statusCounts"></span>
+    <span class="timer" id="timerChip" hidden></span>
     <span class="scopes" id="scopes" role="img" aria-label="剩余命数 3 / 3"></span>
   </div>
   <div class="teach hidden" id="teach"></div>
@@ -1181,7 +1193,7 @@ const STORAGE_KEY = 'leixian.migong.progress.v1';
 const FEEDBACK = { "email": "", "show": "", "mailto": "", "qr": "", "version": "", "subject": "", "form_url": "", "form_qr": "" };
 /* FEEDBACK_INJECT_END */
 
-let progress = { v: 1, cleared: {}, last: 0, devUnlock: false, devSkyLit: false, introSeen: false, sound: true, volume: 0.85, sky3d: true };
+let progress = { v: 1, cleared: {}, last: 0, devUnlock: false, devSkyLit: false, introSeen: false, sound: true, volume: 0.85, sky3d: true, strictTime: false, best: {}, timeOk: {} };
 let storageOK = true;
 
 function loadProgress(){
@@ -1206,6 +1218,9 @@ function loadProgress(){
       devSkyLit: saved.devSkyLit === true,
       sound: saved.sound !== false,
       volume: (typeof saved.volume === 'number') ? saved.volume : 0.85,
+      strictTime: saved.strictTime === true,
+      best: (saved.best && typeof saved.best === 'object') ? saved.best : {},
+      timeOk: (saved.timeOk && typeof saved.timeOk === 'object') ? saved.timeOk : {},
       introSeen: saved.introSeen === true,
       sky3d: saved.sky3d !== false
     };
@@ -1294,6 +1309,8 @@ function runsFromMines(mineSet, n, byRow, k){
 }
 
 function startLevel(rawIndex){
+  resetClock();
+  if (S) S.timeUp = false;
   resetRevealVisuals();
   if (typeof cancelPress === 'function') cancelPress();
   if (!Array.isArray(LEVELS) || LEVELS.length === 0){
@@ -1487,6 +1504,8 @@ function checkWin(){
   }
   const alreadyCleared = isCleared(S.index);   // 重玩已通关的关卡 → 揭晓走快速版
   S.status = 'won';
+  stopClock();                                 // 计时停止
+  recordBestTime();
   markCleared(S.index);
   winRevealDone = false;
   winRevealPending = true;
@@ -1497,6 +1516,8 @@ function checkWin(){
 function act(i, mode){
   if (mode === MODE_DIG || mode === MODE_FLAG) currentMode = mode;
   if (!S || S.status !== 'playing') return;
+  startClock();                               // 第一次操作开始计时
+  refreshTimerChip();
   if (S.revealedSafe[i] || S.revealedMine[i]) return;
   if (mode === MODE_FLAG){
     S.flagged[i] = S.flagged[i] ? 0 : 1;   // 插旗可取消
@@ -1620,6 +1641,7 @@ function render(){
 
   statusCountsEl.textContent = '已翻开 ' + revealed + '/' + S.totalSafe +
     ' · 已标记 ★ ' + marked + '/' + minesTotal;
+  refreshTimerChip();
   renderScopes();
 
   const teach = (typeof S.level.teach === 'string') ? S.level.teach : '';
@@ -1870,13 +1892,24 @@ function buildModal(){
       modalSubEl.appendChild(nm);
       const meta = document.createElement('span');
       meta.className = 'modal-cmeta';
-      meta.textContent = (best && best.st && best.st.name
+      let metaTxt = (best && best.st && best.st.name
           ? '最亮星 ' + best.st.name + '（' + best.mag + ' 等） · ' : '')
         + (last ? '全部 ' + LEVELS.length + ' 关观测完成' : '已收入星座图鉴');
+      if (timeIsTimed() && timeStart){
+        const el = Math.round(timeElapsedSec()), target = levelTargetSec(S.level);
+        const bestS = (progress.best || {})[String(S.index)];
+        metaTxt += ' · 用时 ' + fmtClock(el) + (el <= target ? ' ⏱ 达标' : '（目标 ' + fmtClock(target) + '）');
+        if (typeof bestS === 'number') metaTxt += ' · 最快 ' + fmtClock(bestS);
+      }
+      meta.textContent = metaTxt;
       modalSubEl.appendChild(meta);
     } else {
       modalSubEl.textContent = last ? '所有 ' + LEVELS.length + ' 关观测完成。' : '本关观测完成。';
     }
+  } else if (S.timeUp){
+    modalTitleEl.textContent = '⏱ 超时';
+    modalSubEl.textContent = '超过本关目标时间（' + fmtClock(levelTargetSec(S.level)) +
+      '），严格限时模式下判定失败。可以重来，或在「关卡」面板关掉严格限时。';
   } else {
     modalTitleEl.textContent = '观测失败';
     modalSubEl.textContent = S.lastHitNoise
@@ -1919,6 +1952,81 @@ function buildModal(){
     modalBtnsEl.appendChild(mkBtn('换个关卡', 'btn again', function(){ dismissModal(); openPanel(); }));
   }
 }
+
+// ===== 计时挑战（第 11 关起；默认软性，达标给 ⏱）=====
+const TIMED_FROM = 11;                       // 1-based：从第几关开始计时
+let timeStart = 0, timeStop = 0;
+const timerChipEl = document.getElementById('timerChip');
+const strictBtnEl = document.getElementById('strictBtn');
+
+function levelTargetSec(level){
+  if (!level) return 0;
+  const n = level.size || 0;
+  const mines = Array.isArray(level.mines) ? level.mines.length : 0;
+  const safe = n * n - mines;
+  return Math.round((15 + 0.99 * safe + 2.2 * mines) / 5) * 5;
+}
+function fmtClock(sec){
+  sec = Math.max(0, Math.floor(sec));
+  return Math.floor(sec / 60) + ':' + ('0' + (sec % 60)).slice(-2);
+}
+function timeIsTimed(){ return !!S && (S.index + 1) >= TIMED_FROM; }
+function timeElapsedSec(){
+  if (!timeStart) return 0;
+  return ((timeStop || Date.now()) - timeStart) / 1000;
+}
+function startClock(){ if (!timeStart){ timeStart = Date.now(); timeStop = 0; } }
+function stopClock(){ if (timeStart && !timeStop) timeStop = Date.now(); }
+function resetClock(){ timeStart = 0; timeStop = 0; }
+
+function refreshTimerChip(){
+  if (!timerChipEl) return;
+  if (!S || !timeIsTimed() || S.status !== 'playing' || !timeStart){ timerChipEl.hidden = true; return; }
+  const target = levelTargetSec(S.level), el = timeElapsedSec();
+  timerChipEl.hidden = false;
+  timerChipEl.textContent = '⏱ ' + fmtClock(el) + ' / ' + fmtClock(target);
+  timerChipEl.className = 'timer' + (el > target ? ' over' : '');
+}
+function timeUp(){
+  if (!S || S.status !== 'playing') return;
+  stopClock();
+  S.timeUp = true;
+  S.status = 'lost';
+  sndFail();
+  render();
+}
+function tickClock(){
+  if (!S || S.status !== 'playing' || !timeStart) return;
+  const target = levelTargetSec(S.level);
+  refreshTimerChip();
+  if (progress.strictTime === true && timeElapsedSec() > target) timeUp();
+}
+setInterval(tickClock, 500);
+
+function recordBestTime(){
+  if (!S || !timeStart) return;
+  const el = Math.round(timeElapsedSec());
+  const key = String(S.index);
+  if (!progress.best) progress.best = {};
+  if (!progress.timeOk) progress.timeOk = {};
+  const target = levelTargetSec(S.level);
+  const prev = progress.best[key];
+  if (typeof prev !== 'number' || el < prev) progress.best[key] = el;
+  if (el <= target) progress.timeOk[key] = 1;
+  saveProgress();
+}
+function refreshStrictBtn(){
+  if (!strictBtnEl) return;
+  const on = progress.strictTime === true;
+  strictBtnEl.textContent = '严格限时：' + (on ? '开' : '关');
+  strictBtnEl.setAttribute('aria-pressed', on ? 'true' : 'false');
+  strictBtnEl.className = 'mini' + (on ? ' on' : '');
+}
+if (strictBtnEl) strictBtnEl.addEventListener('click', function(){
+  progress.strictTime = progress.strictTime !== true;
+  saveProgress();
+  refreshStrictBtn();
+});
 
 // ===== 音效：WebAudio 合成，零外部文件 =====
 let audioCtx = null, noiseBuf = null;
@@ -2275,6 +2383,7 @@ function renderStrip(){
 }
 
 refreshSoundBtn();
+refreshStrictBtn();
 
 function buildLevelGrid(){
   lvGrid.innerHTML = '';
@@ -2286,6 +2395,7 @@ function buildLevelGrid(){
     b.textContent = String(i + 1);                 // 关卡号
     b.setAttribute('data-level', String(i + 1));
     b.setAttribute('data-index', String(i));
+    if (progress.timeOk && progress.timeOk[String(i)]) b.classList.add('timeok');
     b.addEventListener('click', (function(k){
       return function(){ startLevel(k); closePanel(); };
     })(i));
@@ -2309,6 +2419,7 @@ function refreshLevelGrid(){
     else if (!unlocked){ cls += ' locked'; label += '，未解锁'; }
     else if (i === f && progress.devUnlock !== true){ cls += ' current'; label += '，当前关卡'; }
     if (playing) cls += ' playing';
+    if (progress.timeOk && progress.timeOk[String(i)]) cls += ' timeok';   // ⏱ 达标标记
     if (b.className !== cls) b.className = cls;
     b.disabled = !(unlocked || cleared);
     b.setAttribute('aria-label', label);
