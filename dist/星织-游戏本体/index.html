@@ -590,15 +590,18 @@
   .fb-float-x{background:none;border:0;color:#8ba0bd;font-size:16px;line-height:1;cursor:pointer;padding:0 3px}
   .fb-float-body{font-size:11.5px;color:#9fb4d0}
   .fb-float-card .btn{width:100%;margin-top:10px}
-  .fb-mail-addr{margin:0 0 8px;font-size:13px;font-weight:700;color:#eaf2ff;word-break:break-all;
-    letter-spacing:.01em;user-select:all}
-  .fb-mail-acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+  .fb-mail-line{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 9px}
+  .fb-mail-addr{font-size:13px;font-weight:700;color:#eaf2ff;word-break:break-all;letter-spacing:.01em;user-select:all}
+  .fb-copy-mini{flex:0 0 auto;padding:3px 9px;border-radius:8px;border:1px solid rgba(126,180,255,.3);
+    background:rgba(126,180,255,.1);color:#cfe2ff;font:inherit;font-size:11px;font-weight:700;cursor:pointer;
+    touch-action:manipulation}
+  .fb-copy-mini:hover{background:rgba(126,180,255,.18)}
+  /* 一页呈现：信息不截断、不加内部滚动条 */
   .fb-pop-body{margin:0;font-size:11px;line-height:1.6;color:#9fb4d0;white-space:pre-wrap;word-break:break-all;
-    max-height:154px;overflow:auto;font-family:inherit}
+    font-family:inherit}
   .fb-pop-note{margin:7px 0 0;font-size:10.5px;line-height:1.5;color:#7b8aa3}
   .fb-rows{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px}
   .fb-rows .btn{flex:1 1 auto;min-width:104px;margin:0}
-  .fb-mail-acts a{color:#cfe2ff}
   .fb-status{margin:10px 0 0;font-size:11px;line-height:1.5;color:#8fd0a8;min-height:16px}
   .intro-overlay{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;
     padding:18px;background:rgba(4,7,16,.72);backdrop-filter:blur(2px)}
@@ -773,12 +776,8 @@
             <p class="fb-pop-note">只在你点「复制」或「导出」时一起带出；不会自动上传。</p>
           </div>
           <div id="fbFloatMail" hidden>
-            <p class="fb-mail-addr" id="fbMailAddr">—</p>
-            <p class="fb-pop-note">把「复制反馈」的内容粘进邮件发给我就行；也可以点下面用邮件 App 打开（需要手机/电脑已配置邮箱 App）。</p>
-            <div class="fb-mail-acts">
-              <button type="button" class="mini" id="fbCopyMail">复制邮箱</button>
-              <a class="mini" id="fbMailLink" href="#">用邮件 App 打开</a>
-            </div>
+            <p class="fb-mail-line"><span class="fb-mail-addr" id="fbMailAddr">—</span><button type="button" class="fb-copy-mini" id="fbCopyMail">复制</button></p>
+            <p class="fb-pop-note">把「复制反馈」里的内容粘进邮件，发到这个地址就行。</p>
           </div>
         </div>
         <button type="button" class="btn ghost" id="fbFloatOk">知道了</button>
@@ -25117,7 +25116,7 @@ function fbContextLines(){
            '　已翻开 ' + (g.revealed || 0) + '/' + (g.totalSafe || '?') +
            '　命数 ' + (g.lives || '?') + '　状态 ' + (g.status || '?'));
   out.push('设备：' + fbDevice());
-  try { out.push('浏览器：' + String(navigator.userAgent || '').slice(0, 110)); } catch (e) {}
+  try { out.push('浏览器：' + String(navigator.userAgent || '').slice(0, 72)); } catch (e) {}
   try { out.push('视口：' + (window.innerWidth || 0) + '×' + (window.innerHeight || 0)); } catch (e) {}
   return out;
 }
@@ -25220,8 +25219,6 @@ function fbFloatOpen(kind){
     fbRefreshCtx();
   } else {
     if (fbMailAddrEl) fbMailAddrEl.textContent = FEEDBACK.email || '（未配置邮箱）';
-    const link = document.getElementById('fbMailLink');
-    if (link && FEEDBACK.mailto) link.setAttribute('href', FEEDBACK.mailto);
   }
   fbFloatEl.hidden = false;
   if (fbMoreEl) fbMoreEl.setAttribute('aria-expanded', info ? 'true' : 'false');

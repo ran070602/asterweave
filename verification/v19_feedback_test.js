@@ -198,7 +198,13 @@ flush(0);
 ok('点「查看作者邮箱」打开 modal', byId.fbFloat.hidden === false);
 ok('modal 标题是「作者邮箱」', String(byId.fbFloatTitle.textContent).includes('作者邮箱'), byId.fbFloatTitle.textContent);
 ok('显示真实邮箱地址', String(byId.fbMailAddr.textContent).includes('@') && String(byId.fbMailAddr.textContent).includes('.'), byId.fbMailAddr.textContent);
-ok('邮件链接是 mailto:', String(byId.fbMailLink.attrs.href || '').indexOf('mailto:') === 0, String(byId.fbMailLink.attrs.href || '').slice(0, 42));
+ok('已删除「用邮件 App 打开」', !byId.fbMailLink && !html.includes('fbMailLink') && !html.includes('用邮件 App 打开'));
+ok('「复制」小按钮紧跟邮箱地址（同一行）',
+   /class="fb-mail-line"><span class="fb-mail-addr" id="fbMailAddr">—<\/span><button[^>]*id="fbCopyMail">复制<\/button>/.test(html),
+   'HTML 结构断言');
+ok('小按钮文案是「复制」', String(byId.fbCopyMail.textContent).trim() === '复制', byId.fbCopyMail.textContent);
+ok('详情/邮箱 modal 一页呈现（无内部滚动条）',
+   !/\.fb-pop-body\{[^}]*max-height/.test(html) && !/\.fb-pop-body\{[^}]*overflow/.test(html), 'CSS 断言：无 max-height / overflow');
 byId.fbCopyMail.dispatchEvent(mkEvent('click', { target: byId.fbCopyMail }));
 flush(0);
 ok('「复制邮箱」给出提示', String(byId.fbStatus.textContent || '').includes('邮箱') || String(byId.fbStatus.textContent || '').length > 0, byId.fbStatus.textContent);
