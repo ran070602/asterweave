@@ -769,8 +769,7 @@
       <button type="button" class="mini" id="resetBtn">重置进度</button>
     </div>
     <div class="panel-head lvtime">
-      <span class="panel-title">⏱ 计时挑战 <b>第 11 关起</b></span>
-      <button type="button" class="mini" id="strictBtn" aria-pressed="false">严格限时：关</button>
+      <span class="panel-title">⏱ <b>第 11 关起为限时关卡</b>，超时即失败（⏱ 金标 = 在目标时间内完成）</span>
     </div>
     <div class="lvgrid" id="lvGrid"></div>
     <div class="panel-hint">✓ 已通关　·　高亮 = 当前关卡　·　🔒 未解锁（通关上一关后解锁）<br>⏱ = 已在目标时间内观测完成　·　想直接玩后面的关？点「全部解锁」（给评审/开发用，不影响进度记录）</div>
@@ -838,7 +837,7 @@
           </ol>
 
           <button type="button" class="mini" id="replayIntro" style="margin-top:10px">↻ 重看入场页</button>
-          <p class="note">提示：翻开的数字是「周围有几颗星」，不是「周围有几颗杂星」——杂星与星座星在推理上完全等价。<br>⏱ <b>计时挑战</b>：第 11 关起每关有目标时间（关卡信息行会显示），<b>从你第一次翻开格子开始倒计时</b>，状态栏显示剩余时间（剩余 20% 变黄、最后 10 秒变红）；达标会在关卡面板留下 ⏱ 标记。<b>默认超时不失败</b>（超时后显示「超时 +x」继续玩），想更紧张可在「关卡」面板打开「严格限时」。顶部 🔊 图标点开可调音量（图标会随音量变化，可一键静音）。</p>
+          <p class="note">提示：翻开的数字是「周围有几颗星」，不是「周围有几颗杂星」——杂星与星座星在推理上完全等价。<br>⏱ <b>限时关卡</b>：<b>第 11 关起每关都有时间限制，超时即判定失败</b>。限时从你<b>第一次翻开格子</b>开始倒计时，状态栏显示剩余时间（剩余 20% 变黄、最后 10 秒变红）。每关另有一个更紧的「目标时间」：在目标时间内完成，关卡面板会留下 ⏱ 金色标记。顶部 🔊 图标点开可调音量（图标会随音量变化，可一键静音）。</p>
         </div>
       </div>
     </div>
@@ -1484,10 +1483,11 @@ function runClockPause(){
   if (run && run.activeSince){ run.activeMs += Date.now() - run.activeSince; run.activeSince = 0; }
 }
 function runClockResume(){ if (run && !run.activeSince) run.activeSince = Date.now(); }
-function runScore(){
-  if (!run) return 0;
-  return Math.max(0, run.score + run.lives * 200 - Math.round(runElapsedMs() / 1000) * 2);
-}
+// 进行中的分数：只增不减（开局 0）。时间与命数的奖惩都放到结算一次算。
+function runScore(){ return run ? run.score : 0; }
+// 结算总分 = 通关得分 + 剩余望远镜奖励
+function runFinalScore(){ return run ? (run.score + run.lives * 200) : 0; }
+function runTimeBonusNote(){ return '每架望远镜 +200'; }
 function refreshModeUi(){
   const endless = runMode === 'endless';
   if (lvBtn) lvBtn.hidden = endless;
@@ -1536,7 +1536,9 @@ function endlessBoardCleared(){
   run.cleared += 1;
   run.streak += 1;
   if (run.streak > run.bestStreak) run.bestStreak = run.streak;
-  const gain = 100 + 25 * Math.min(run.streak, 20);
+  // 通关加分：基础 100 + 连击加成（连击越高越多），难度越大基础越高
+  const sizeBonus = Math.max(0, (S ? S.n : 6) - 5) * 10;
+  const gain = 100 + sizeBonus + 25 * Math.min(run.streak, 20);
   run.score += gain;
   runClockPause();
   let extra = '';
@@ -1549,10 +1551,16 @@ function endlessBoardCleared(){
 }
 function endlessMistake(){
   if (!run || run.over) return false;   // 返回 true 表示本轮结束
+  // 约定：望远镜只是"还能承受几次失误"。只有**在 0 架时再失误**才结束本轮。
+  if (run.lives <= 0){
+    endEndlessRun('mistake');
+    return true;
+  }
   run.lives -= 1;
   run.streak = 0;
-  if (run.lives <= 0){ run.lives = 0; endEndlessRun('mistake'); return true; }
-  showRunToast('望远镜 −1 · 剩 ' + run.lives + ' 架');
+  showRunToast(run.lives > 0
+    ? ('望远镜 −1 · 剩 ' + run.lives + ' 架')
+    : '望远镜已用尽 · 再失误就结束');
   saveProgress();
   return false;
 }
@@ -1561,8 +1569,10 @@ function endEndlessRun(reason){
   run.over = true;
   runClockPause();
   const st = endlessStats();
-  const sc = runScore();
-  run.score = sc;
+  const sc = runFinalScore();
+  run.base = run.score;                 // 通关得分
+  run.lifeBonus = run.lives * 200;      // 望远镜奖励
+  run.final = sc;
   run.reason = reason || 'mistake';
   if (sc > st.best) st.best = sc;
   if (run.bestStreak > st.bestStreak) st.bestStreak = run.bestStreak;
@@ -1650,7 +1660,7 @@ function startBoard(rawIndex, overrideLevel, endless){
   }
 
   const lives = endless
-    ? Math.max(1, run ? run.lives : ENDLESS_START_LIVES)
+    ? Math.max(0, run ? run.lives : ENDLESS_START_LIVES)
     : ((typeof level.lives === 'number' && level.lives > 0) ? Math.floor(level.lives) : 3);
 
   S = {
@@ -1962,7 +1972,7 @@ function render(){
   if (!(runMode === 'endless' && run)){
     lvtagEl.textContent = '第 ' + (S.index + 1) + ' / ' + LEVELS.length + ' 关 · ' +
       S.n + '×' + S.n + (S.level.showRuns ? ' · 含行列线索' : ' · 仅邻域数字') +
-      (timeIsTimed() ? ' · 目标 ' + fmtClock(levelTargetSec(S.level)) : '');
+      (timeIsTimed() ? ' · 限时 ' + fmtClock(levelLimitSec(S.level)) : '');
   }
 
   applyCellFx();
@@ -2192,9 +2202,16 @@ function buildEndlessEnd(){
     const lab = document.createElement('div');
     lab.className = 'endless-label';
     lab.textContent = 'SCORE';
+    const total = run ? (typeof run.final === 'number' ? run.final : runScore()) : 0;
+    const base = run ? (typeof run.base === 'number' ? run.base : run.score) : 0;
+    const lifeBonus = run ? (typeof run.lifeBonus === 'number' ? run.lifeBonus : run.lives * 200) : 0;
     const sc = document.createElement('div');
     sc.className = 'endless-score';
-    sc.textContent = String(run ? run.score : 0);
+    sc.textContent = String(total);
+    const br = document.createElement('div');
+    br.className = 'endless-stats';
+    br.style.marginTop = '2px';
+    br.innerHTML = '通关得分 <b>' + base + '</b> ＋ 望远镜奖励 <b>' + lifeBonus + '</b>（' + (run ? run.lives : 0) + ' 架 × 200）';
     const stats = document.createElement('div');
     stats.className = 'endless-stats';
     const secs = Math.round((run ? runElapsedMs() : 0) / 1000);
@@ -2206,13 +2223,14 @@ function buildEndlessEnd(){
     const tip = document.createElement('div');
     tip.className = 'endless-stats';
     tip.style.color = '#9fb4d0';
-    tip.textContent = '规则：开局 1 架望远镜，每通关 ' + ENDLESS_LIFE_EVERY + ' 题 +1 架（上限 ' + ENDLESS_MAX_LIVES + '）；失误 −1 架，0 架时再失误即结束。';
+    tip.textContent = '规则：开局 1 架望远镜，每通关 ' + ENDLESS_LIFE_EVERY + ' 题 +1 架（上限 ' + ENDLESS_MAX_LIVES +
+      '）；失误 −1 架，0 架时再失误即结束。进行中的分数只增不减，时间不扣分。';
     const clearBtn = mkBtn('↻ 清除最高分', 'btn ghost', function(){
       const s2 = endlessStats(); s2.best = 0; s2.bestStreak = 0; s2.fastestMs = null; saveProgress();
       modalSignature = ''; modalDismissed = false; render();
     });
     const slot = document.createElement('div');
-    slot.appendChild(lab); slot.appendChild(sc); slot.appendChild(stats); slot.appendChild(tip);
+    slot.appendChild(lab); slot.appendChild(sc); slot.appendChild(br); slot.appendChild(stats); slot.appendChild(tip);
     constSlotEl.innerHTML = '';
     constSlotEl.appendChild(slot);
     constSlotEl.appendChild(clearBtn);
@@ -2259,9 +2277,10 @@ function buildModal(){
           ? '最亮星 ' + best.st.name + '（' + best.mag + ' 等） · ' : '')
         + (last ? '全部 ' + LEVELS.length + ' 关观测完成' : '已收入星座图鉴');
       if (timeIsTimed() && timeStart){
-        const el = Math.round(timeElapsedSec()), target = levelTargetSec(S.level);
+        const el = Math.round(timeElapsedSec()), goal = levelTargetSec(S.level);
         const bestS = (progress.best || {})[String(S.index)];
-        metaTxt += ' · 用时 ' + fmtClock(el) + (el <= target ? ' ⏱ 达标' : '（目标 ' + fmtClock(target) + '）');
+        metaTxt += ' · 用时 ' + fmtClock(el) + ' / 限时 ' + fmtClock(levelLimitSec(S.level))
+          + (el <= goal ? ' · ⏱ 提前达标' : '');
         if (typeof bestS === 'number') metaTxt += ' · 最快 ' + fmtClock(bestS);
       }
       meta.textContent = metaTxt;
@@ -2271,8 +2290,8 @@ function buildModal(){
     }
   } else if (S.timeUp){
     modalTitleEl.textContent = '⏱ 超时';
-    modalSubEl.textContent = '超过本关目标时间（' + fmtClock(levelTargetSec(S.level)) +
-      '），严格限时模式下判定失败。可以重来，或在「关卡」面板关掉严格限时。';
+    modalSubEl.textContent = '超过本关限时（' + fmtClock(levelLimitSec(S.level)) +
+      '），判定失败。可以重来本关——记住，先标出最确定的星，再动手翻格会快很多。';
   } else {
     modalTitleEl.textContent = '观测失败';
     modalSubEl.textContent = S.lastHitNoise
@@ -2317,10 +2336,10 @@ function buildModal(){
 }
 
 // ===== 计时挑战（第 11 关起；默认软性，达标给 ⏱）=====
-const TIMED_FROM = 11;                       // 1-based：从第几关开始计时
+const TIMED_FROM = 11;                       // 1-based：第 11 关起为限时关卡（强制，不可关闭）
+const TIME_GRACE = 1.35;                     // 硬限时 = 目标时间 × 该系数（给思考留余量）
 let timeStart = 0, timeStop = 0;
 const timerChipEl = document.getElementById('timerChip');
-const strictBtnEl = document.getElementById('strictBtn');
 
 function levelTargetSec(level){
   if (!level) return 0;
@@ -2328,6 +2347,9 @@ function levelTargetSec(level){
   const mines = Array.isArray(level.mines) ? level.mines.length : 0;
   const safe = n * n - mines;
   return Math.round((15 + 0.99 * safe + 2.2 * mines) / 5) * 5;
+}
+function levelLimitSec(level){                // 硬限时（倒计时显示的就是它）
+  return Math.round(levelTargetSec(level) * TIME_GRACE / 5) * 5;
 }
 function fmtClock(sec){
   sec = Math.max(0, Math.floor(sec));
@@ -2345,18 +2367,18 @@ function resetClock(){ timeStart = 0; timeStop = 0; }
 function refreshTimerChip(){
   if (!timerChipEl) return;
   if (!S || !timeIsTimed() || S.status !== 'playing'){ timerChipEl.hidden = true; return; }
-  const target = levelTargetSec(S.level);
+  const limit = levelLimitSec(S.level);
   timerChipEl.hidden = false;
   if (!timeStart){
-    // 还没开始操作：只显示目标，不倒计时（避免“还没动就在掉时间”的压力）
+    // 还没开始操作：显示限时，不倒计时（避免“还没动就在掉时间”的压力）
     timerChipEl.className = 'timer idle';
-    timerChipEl.textContent = '目标 ' + fmtClock(target);
-    timerChipEl.setAttribute('aria-label', '本关目标时间 ' + fmtClock(target));
+    timerChipEl.textContent = '限时 ' + fmtClock(limit);
+    timerChipEl.setAttribute('aria-label', '本关限时 ' + fmtClock(limit) + '，超时失败');
     return;
   }
-  const left = target - timeElapsedSec();
+  const left = limit - timeElapsedSec();
   if (left >= 0){
-    timerChipEl.className = 'timer' + (left <= 10 ? ' danger' : (left <= Math.max(20, target * 0.2) ? ' warn' : ''));
+    timerChipEl.className = 'timer' + (left <= 10 ? ' danger' : (left <= Math.max(20, limit * 0.2) ? ' warn' : ''));
     timerChipEl.textContent = '⏱ ' + fmtClock(left);
     timerChipEl.setAttribute('aria-label', '剩余 ' + fmtClock(left));
   } else {
@@ -2376,9 +2398,8 @@ function timeUp(){
 function tickClock(){
   if (!timeIsTimed()) return;                 // 无限模式不判负
   if (!S || S.status !== 'playing' || !timeStart) return;
-  const target = levelTargetSec(S.level);
   refreshTimerChip();
-  if (progress.strictTime === true && timeElapsedSec() > target) timeUp();
+  if (timeElapsedSec() > levelLimitSec(S.level)) timeUp();   // 限时关卡：到点即判负
 }
 setInterval(tickClock, 500);
 
@@ -2395,18 +2416,6 @@ function recordBestTime(){
   if (el <= target) progress.timeOk[key] = 1;
   saveProgress();
 }
-function refreshStrictBtn(){
-  if (!strictBtnEl) return;
-  const on = progress.strictTime === true;
-  strictBtnEl.textContent = '严格限时：' + (on ? '开' : '关');
-  strictBtnEl.setAttribute('aria-pressed', on ? 'true' : 'false');
-  strictBtnEl.className = 'mini' + (on ? ' on' : '');
-}
-if (strictBtnEl) strictBtnEl.addEventListener('click', function(){
-  progress.strictTime = progress.strictTime !== true;
-  saveProgress();
-  refreshStrictBtn();
-});
 
 // ===== 音效：WebAudio 合成，零外部文件 =====
 let audioCtx = null, noiseBuf = null;
@@ -2775,7 +2784,6 @@ function renderStrip(){
 }
 
 refreshSoundBtn();
-refreshStrictBtn();
 
 function buildLevelGrid(){
   lvGrid.innerHTML = '';
