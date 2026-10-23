@@ -684,6 +684,22 @@
     .modal.win .modal-btns .btn{font-size:12px;padding:0 7px}
     .modal.win .const-map{max-width:148px}
   }
+  /* ===== 入场页 ===== */
+  .intro-card{max-height:92vh;overflow:auto}
+  .intro-brand{text-align:center;margin:2px 0 8px}
+  .intro-card .intro-title{font-size:26px;font-weight:800;letter-spacing:.16em;line-height:1.15;
+    margin:0 0 0 -0.16em;color:#eef5ff;text-shadow:0 2px 18px rgba(120,170,255,.45)}
+  .intro-en{font-size:10.5px;font-weight:800;letter-spacing:.34em;color:#8fc3ff;margin-top:3px}
+  .intro-tag{margin:0 0 12px;text-align:center;font-size:12.5px;line-height:1.5;color:#a9bcd8}
+  .intro-steps{margin:0 0 13px;padding-left:17px}
+  .intro-steps li{margin:0 0 6px;font-size:12.5px;line-height:1.5;color:#c2d1e6}
+  .intro-steps li b{color:#eaf2ff}
+  .intro-card #introRestart{margin-top:8px}
+  .intro-foot{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+  .intro-chip{min-height:32px;padding:0 11px;border-radius:999px;border:1px solid #2c4666;background:#16294a;
+    color:#dbeaff;font:inherit;font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap}
+  .intro-chip b{color:#8fc3ff;font-variant-numeric:tabular-nums}
+  .intro-chip:active{transform:scale(.97)}
 </style>
 </head>
 <body>
@@ -779,6 +795,7 @@
             <li><b>教学节奏</b>：第 1 关只给扫雷数字（纯教学），第 2 关起才引入行列线索。</li>
           </ol>
 
+          <button type="button" class="mini" id="replayIntro" style="margin-top:10px">↻ 重看入场页</button>
           <p class="note">提示：翻开的数字是「周围有几颗星」，不是「周围有几颗杂星」——杂星与星座星在推理上完全等价。<br>⏱ <b>计时挑战</b>：第 11 关起每关有目标时间，达标会在关卡面板留下 ⏱ 标记；<b>默认超时不失败</b>，想更紧张可在「关卡」面板打开「严格限时」。顶部 🔊 图标点开可调音量（图标会随音量变化，可一键静音）。</p>
         </div>
       </div>
@@ -795,11 +812,22 @@
 
   <div class="intro-overlay" id="introOverlay" hidden>
     <div class="intro-card" role="dialog" aria-modal="true" aria-labelledby="introTitle">
-      <div class="intro-title" id="introTitle">✦ 怎么玩</div>
-      <p class="intro-line">翻开所有安全格、并把所有星标出来，这一关就通了。</p>
-      <p class="intro-line">手机：<b>轻触</b>观测、<b>长按</b>标记；电脑：<b>单击</b>观测、<b>右键</b>标记。</p>
-      <p class="intro-line">数字 = 它周围 8 格里有几颗星（0 会连锁翻开）。</p>
+      <div class="intro-brand">
+        <div class="intro-title" id="introTitle">星织</div>
+        <div class="intro-en">ASTERWEAVE</div>
+      </div>
+      <p class="intro-tag">扫雷 × 数织 · 用标记拼出你的真实星座</p>
+      <ul class="intro-steps">
+        <li>翻开所有<b>安全格</b>，再把夜空里所有<b>星</b>标出来 —— 这一关就通了。</li>
+        <li>数字 = 它周围 8 格里有几颗星；上方 / 左侧数字 = 这一行 / 列「连续几颗星」。</li>
+        <li>手机：<b>轻触</b>观测、<b>长按</b>标记　·　电脑：<b>单击</b>观测、<b>右键</b>标记。</li>
+      </ul>
       <button type="button" class="btn primary" id="introStart">开始观测</button>
+      <button type="button" class="btn ghost" id="introRestart" hidden>从第 1 关开始</button>
+      <div class="intro-foot">
+        <button type="button" class="intro-chip" id="introSky">✦ 图鉴 <b id="introSkyNum">0</b>/<b id="introSkyTotal">50</b></button>
+        <button type="button" class="intro-chip" id="introSound">🔊 音效开</button>
+      </div>
     </div>
   </div>
 
@@ -1238,19 +1266,47 @@ function saveProgress(){
   }
 }
 
+function introHasSave(){
+  const clearedCount = progress.cleared ? Object.keys(progress.cleared).length : 0;
+  return frontier() > 0 || clearedCount > 0;
+}
+function introLitCount(){
+  let lit = 0;
+  for (let i = 0; i < SKY.length; i++){ if (skyIsOn(SKY[i])) lit++; }
+  return lit;
+}
+function refreshIntro(){
+  const goBtn = document.getElementById('introStart');
+  const againBtn = document.getElementById('introRestart');
+  const hasSave = introHasSave();
+  if (goBtn){
+    goBtn.textContent = hasSave
+      ? ('继续第 ' + Math.min(frontier() + 1, LEVELS.length) + ' 关')
+      : '开始观测';
+  }
+  if (againBtn) againBtn.hidden = !hasSave;
+  const num = document.getElementById('introSkyNum');
+  const tot = document.getElementById('introSkyTotal');
+  if (num) num.textContent = String(introLitCount());
+  if (tot) tot.textContent = String(SKY.length);
+  const sb = document.getElementById('introSound');
+  if (sb) sb.textContent = soundEnabled() ? '🔊 音效开' : '🔇 音效关';
+}
 function showIntro(){
   const el = document.getElementById('introOverlay');
   if (!el) return;
+  refreshIntro();
   el.hidden = false;
   const btn = document.getElementById('introStart');
   if (btn){ try { btn.focus(); } catch (e) {} }
 }
 
-function hideIntro(){
+function hideIntro(goFirst){
   const el = document.getElementById('introOverlay');
   if (el) el.hidden = true;
   progress.introSeen = true;      // 只弹一次
   saveProgress();
+  if (goFirst) startLevel(0);     // 「从第 1 关开始」
 }
 
 function isCleared(i){ return !!progress.cleared[String(i)]; }
@@ -2088,6 +2144,7 @@ function noiseHit(dur, delay, vol, cutoff){
     src.start(t0); src.stop(t0 + dur + 0.02);
   } catch (e) {}
 }
+function sndStart(){ tone(523.25, 0.18, 0, 'sine', 0.16); tone(783.99, 0.26, 0.08, 'sine', 0.14); }
 function sndDig(){ tone(560, 0.06, 0, 'sine', 0.06); }
 function sndMark(){ tone(780, 0.06, 0, 'triangle', 0.05); }
 function sndStars(){ tone(587.33, 0.5, 0, 'sine', 0.10); tone(880, 0.5, 0.02, 'sine', 0.075);
@@ -3513,6 +3570,8 @@ function closeRules(){
     if (ruleModalEl.className.indexOf('open') < 0) ruleModalEl.hidden = true;
   }, 200);
 }
+const replayIntroEl = document.getElementById('replayIntro');
+if (replayIntroEl) replayIntroEl.addEventListener('click', function(){ closeRules(); showIntro(); });
 const ruleBtnEl = document.getElementById('ruleBtn');
 if (ruleBtnEl) ruleBtnEl.addEventListener('click', openRules);
 const ruleCloseEl = document.getElementById('ruleClose');
@@ -3722,11 +3781,18 @@ if (Array.isArray(LEVELS) && LEVELS.length){
   refreshSkyModeBtns();
   const idx0 = startIndex();
   startLevel(idx0);
-  if (!progress.introSeen && idx0 === 0) showIntro();
+  // 入场页：首次打开必显示（不论停在哪一关）；之后再进来直接进棋盘
+  if (!progress.introSeen) showIntro();
   const ib = document.getElementById('introStart');
-  if (ib) ib.addEventListener('click', hideIntro);
+  if (ib) ib.addEventListener('click', function(){ initAudio(); sndStart(); hideIntro(false); });
+  const ire = document.getElementById('introRestart');
+  if (ire) ire.addEventListener('click', function(){ initAudio(); sndStart(); hideIntro(true); });
+  const isk = document.getElementById('introSky');
+  if (isk) isk.addEventListener('click', function(){ hideIntro(false); openSky(); });
+  const isd = document.getElementById('introSound');
+  if (isd) isd.addEventListener('click', function(){ initAudio(); setSound(!soundEnabled()); refreshIntro(); });
   const io = document.getElementById('introOverlay');
-  if (io) io.addEventListener('click', function(e){ if (e.target === io) hideIntro(); });
+  if (io) io.addEventListener('click', function(e){ if (e.target === io) hideIntro(false); });
 } else {
   boardEl.innerHTML = '<p class="err">关卡数据缺失。</p>';
 }
