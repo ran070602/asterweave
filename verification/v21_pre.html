@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>星织 Asterweave · 50 关</title>
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  html{background:#05070f}
+  body{
+    color:#e8eefc;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    -webkit-text-size-adjust:100%;
+    overflow-x:hidden;
+    min-height:100vh;
+    touch-action:manipulation;
+    -webkit-tap-highlight-color:transparent;
+    /* 深蓝紫夜空：多层星云径向渐变 + 竖向底色（纯 CSS，无图片） */
+    background:
+      radial-gradient(1100px 780px at 82% -12%, rgba(96,74,190,.42), rgba(96,74,190,0) 62%),
+      radial-gradient(900px 700px at 8% 2%, rgba(38,118,190,.30), rgba(38,118,190,0) 60%),
+      radial-gradient(820px 620px at 52% 112%, rgba(126,60,168,.30), rgba(126,60,168,0) 62%),
+      linear-gradient(180deg,#05070f 0%,#080d1e 42%,#0b1130 78%,#0a0f26 100%);
+    background-repeat:no-repeat;
+  }
+  /* 静态星点层：多层 radial-gradient 平铺（无动画，省电；无图片/外链） */
+  body::before{
+    content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+    background-image:
+      radial-gradient(1.3px 1.3px at 18px 26px, rgba(255,255,255,.95), rgba(255,255,255,0) 60%),
+      radial-gradient(1px 1px at 74px 92px, rgba(200,225,255,.85), rgba(200,225,255,0) 60%),
+      radial-gradient(1.6px 1.6px at 132px 48px, rgba(255,245,225,.9), rgba(255,245,225,0) 60%),
+      radial-gradient(1px 1px at 42px 148px, rgba(190,205,255,.7), rgba(190,205,255,0) 60%),
+      radial-gradient(1.4px 1.4px at 168px 178px, rgba(255,255,255,.8), rgba(255,255,255,0) 60%),
+      radial-gradient(1px 1px at 200px 110px, rgba(170,200,255,.65), rgba(170,200,255,0) 60%);
+    background-size:220px 220px,260px 260px,300px 300px,180px 180px,340px 340px,240px 240px;
+    background-repeat:repeat;
+    opacity:.85;
+    will-change:opacity;
+    animation:starTwinkle 6.5s ease-in-out infinite;
+  }
+  /* 第二层：更亮的星 + 十字星芒，缓慢闪烁并轻微漂移（纯 CSS，无图片） */
+  body::after{
+    content:"";position:fixed;inset:-6%;z-index:0;pointer-events:none;
+    background-image:
+      radial-gradient(2.2px 2.2px at 120px 60px, rgba(255,255,255,.98), rgba(255,255,255,0) 62%),
+      radial-gradient(1.8px 1.8px at 300px 220px, rgba(210,232,255,.92), rgba(210,232,255,0) 62%),
+      radial-gradient(2.6px 2.6px at 460px 120px, rgba(255,246,228,.95), rgba(255,246,228,0) 62%),
+      radial-gradient(1.6px 1.6px at 60px 320px, rgba(255,255,255,.8), rgba(255,255,255,0) 60%),
+      radial-gradient(2px 2px at 380px 400px, rgba(190,214,255,.85), rgba(190,214,255,0) 60%),
+      radial-gradient(1.5px 1.5px at 540px 300px, rgba(255,255,255,.75), rgba(255,255,255,0) 60%);
+    background-size:600px 480px,600px 480px,600px 480px,600px 480px,600px 480px,600px 480px;
+    background-repeat:repeat;
+    opacity:.7;
+    will-change:opacity,transform;
+    animation:starTwinkle 4.2s ease-in-out infinite, starDrift 90s linear infinite;
+  }
+  @keyframes starTwinkle{0%,100%{opacity:.45}50%{opacity:.95}}
+  @keyframes starDrift{from{transform:translate3d(0,0,0)}to{transform:translate3d(-1.6%,-1.2%,0)}}
+  @media (prefers-reduced-motion: reduce){
+    body::before,body::after{animation:none;opacity:.8}
+  }
+  .app{position:relative;z-index:1;max-width:560px;margin:0 auto;padding:10px 8px 28px}
+
+  .top{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:2px 2px 8px;flex-wrap:wrap}
+  .title{font-size:17px;font-weight:800;letter-spacing:.02em;flex:1 1 auto;min-width:0;overflow-wrap:anywhere}
+  .title .who{font-size:13px;font-weight:600;color:#8fa0b8;margin-left:6px}
+  .meta{font-size:12px;color:#7f8ea6;padding:0 2px 8px;font-variant-numeric:tabular-nums}
+
+  .lvbtn{
+    min-height:44px;padding:0 12px;border-radius:10px;border:1px solid #2b3444;
+    background:#161c26;color:#c3d0e2;font:inherit;font-size:13px;font-weight:800;
+    cursor:pointer;touch-action:manipulation;white-space:nowrap;
+  }
+  .lvbtn b{color:#8fc3ff;font-variant-numeric:tabular-nums}
+  /* 按钮内联图标：与文字同一视觉重量（描边 1.5，18px） */
+  .lvbtn .ico{width:18px;height:18px;display:inline-block;vertical-align:-3.5px;margin-right:5px}
+  .lvbtn.icononly{padding:0 10px}
+  .lvbtn.icononly .ico{margin-right:0}
+  .lvbtn .ico .offmark{display:none}
+  .lvbtn.sndoff .ico .wave{display:none}
+  .lvbtn.sndoff .ico .offmark{display:block}
+  .lvbtn.sndoff{color:#7f8ea6}
+  .lvbtn[aria-expanded="true"]{background:#1f3a63;border-color:#4b7fbd;color:#e4f0ff}
+
+  .panel{
+    display:none;margin:0 2px 10px;padding:10px;border-radius:12px;
+    background:#141a23;border:1px solid #263042;
+  }
+  /* 关卡 = 右侧抽屉（不再把页面顶下去） */
+  .panel.lvdrawer{
+    position:fixed;top:0;right:0;bottom:auto;left:0;z-index:45;
+    width:auto;max-height:min(74vh,600px);margin:0;
+    border:0;border-bottom:1px solid #263042;border-radius:0 0 16px 16px;
+    background:linear-gradient(180deg,#171e2a,#0d121a);
+    padding:14px 12px 16px;
+    box-sizing:border-box;overflow-y:auto;overscroll-behavior:contain;
+    transform:translateY(-102%);transition:transform .26s cubic-bezier(.22,.8,.3,1);
+    box-shadow:0 20px 44px rgba(0,0,0,.5);
+  }
+  .panel.lvdrawer.open{display:block;transform:none}
+  .panel.lvdrawer[hidden]{display:none}
+  .drawer-mask{position:fixed;inset:0;z-index:44;background:rgba(3,6,14,.64);
+    opacity:0;pointer-events:none;transition:opacity .24s ease}
+  .drawer-mask.open{opacity:1;pointer-events:auto}
+  body.drawer-open{overflow:hidden}
+  .lvdrawer .lvgrid{gap:8px}
+  .lvdrawer .panel-head{position:sticky;top:-14px;z-index:2;background:linear-gradient(180deg,#171e2a 72%,rgba(23,30,42,0));padding:4px 0 10px;margin-bottom:2px}
+  @media (prefers-reduced-motion: reduce){
+    .panel.lvdrawer,.drawer-mask{transition:none}
+  }
+  .panel.open{display:block}
+  .panel[hidden]{display:none}
+  .panel-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+  .panel-title{font-size:13px;font-weight:800;color:#b9c8dc}
+  .panel-title b{color:#8fc3ff;font-variant-numeric:tabular-nums}
+  .mini{
+    min-height:44px;padding:0 10px;border-radius:9px;border:1px solid #2b3444;
+    background:#121821;color:#9fb0c6;font:inherit;font-size:12px;font-weight:700;
+    cursor:pointer;touch-action:manipulation;
+  }
+  .mini.danger{background:#2a1418;border-color:#7a2333;color:#ff9aab}
+
+  .lvgrid{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(52px,1fr));
+    gap:6px;max-height:44vh;overflow-y:auto;-webkit-overflow-scrolling:touch;
+    padding:2px;
+  }
+  .lvl{
+    position:relative;min-height:52px;border-radius:10px;border:1px solid #2b3444;
+    background:#161c26;color:#a9b8cd;font:inherit;font-size:14px;font-weight:800;
+    cursor:pointer;touch-action:manipulation;
+  }
+  .lvl.cleared{background:#14301f;border-color:#2f6b46;color:#8ff0b4}
+  .lvl.cleared::after{content:"✓";position:absolute;top:2px;right:6px;font-size:10px;color:#5fd08a}
+  .lvl.current{background:#1f3a63;border-color:#4b7fbd;color:#eaf3ff;box-shadow:0 0 0 2px rgba(75,127,189,.3)}
+  .lvl.locked{background:#101419;border-color:#1f2734;color:#59647a;cursor:not-allowed}
+  .lvl.locked::after{content:"🔒";position:absolute;top:2px;right:5px;font-size:10px;opacity:.85}
+  .lvl.playing{outline:2px dashed #ffd166;outline-offset:2px}
+  .mini.on{background:#1d3550;border-color:#4b7fbd;color:#dbeaff}
+  .panel-hint{margin-top:8px;font-size:11px;color:#6f7f96;line-height:1.5}
+
+  .status{
+    margin:0 2px 8px;padding:9px 10px;border-radius:10px;
+    background:#151b24;border:1px solid #232c3a;
+    font-size:14px;font-weight:700;color:#cbd8ea;
+    font-variant-numeric:tabular-nums;
+    display:flex;align-items:center;flex-wrap:wrap;gap:6px 8px;
+  }
+  .status .stat-counts{flex:1 1 auto;min-width:0}
+
+  /* 三架望远镜 = 命数：固定槽位宽度，熄灭/受击都不改变状态栏尺寸 */
+  .scopes{
+    display:inline-flex;align-items:center;justify-content:flex-end;gap:2px;
+    min-width:calc(3 * 1.28em);            /* 3 个的固定宽度，布局不跳动 */
+    line-height:1;font-size:1.05em;
+  }
+  .scopes .scope{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:1.28em;height:1.28em;
+    transition:color .18s ease, opacity .18s ease, transform .18s ease;
+  }
+  .scope-svg{width:100%;height:100%;display:block;overflow:visible}
+  .scope-tube{fill:currentColor;fill-opacity:.20;stroke:currentColor;stroke-width:1.2;stroke-linejoin:round}
+  .scope-lens,.scope-leg{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round}
+  .scopes .scope.full{color:#9adbff;filter:drop-shadow(0 0 5px rgba(120,196,255,.55))}
+  .scopes .scope.empty{color:#3a4459;opacity:.5;filter:none}
+  .scopes.flash .scope{animation:scopeHit .22s ease}
+  @keyframes scopeHit{50%{transform:scale(1.22)}}
+  @media (prefers-reduced-motion: reduce){
+    .scopes.flash .scope{animation:none}
+  }
+
+  .teach{
+    margin:0 2px 10px;padding:9px 10px;border-radius:10px;
+    background:#182333;border:1px solid #2b3f5c;color:#bcd3ef;
+    font-size:13px;line-height:1.5;
+  }
+  .teach.hidden{display:none}
+
+  .boardwrap{display:flex;justify-content:center;position:relative}
+  /* ===== 通关揭晓：星座画在玩家自己的棋盘上 ===== */
+  .board-reveal{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:visible}
+  .board-reveal line{stroke:#8ab4ff;stroke-width:1.6;stroke-linecap:round;stroke-opacity:0;
+    filter:drop-shadow(0 0 3px rgba(120,170,255,.5))}
+  .board-reveal line.draw{animation:boardLine .46s cubic-bezier(.3,.8,.4,1) forwards}
+  @keyframes boardLine{from{stroke-opacity:.9;stroke-dashoffset:1}to{stroke-opacity:.72;stroke-dashoffset:0}}
+  .board.reveal-stage .cell.wonoise{opacity:.16;filter:grayscale(1) brightness(.7);
+    transition:opacity .28s ease,filter .28s ease}
+  .board.reveal-stage .cell.wonstar{opacity:.22;filter:brightness(.45);
+    transition:opacity .2s ease,filter .2s ease}
+  .board.reveal-stage .cell.wonstar.lit{opacity:1;filter:none;
+    animation:starGlow .62s ease both}
+  @keyframes starGlow{
+    0%{box-shadow:0 0 0 rgba(140,190,255,0)}
+    60%{box-shadow:0 0 13px rgba(160,205,255,.5)}
+    100%{box-shadow:0 0 6px rgba(140,190,255,.28)}
+  }
+    font-weight:800;color:#08111f;background:linear-gradient(180deg,#a9d8ff,#6fb3f0)}
+  @media (prefers-reduced-motion: reduce){
+    .board-reveal line,.board.reveal-stage .cell,.winname{transition:none;animation:none}
+    .board-reveal line{stroke-opacity:.7}
+  }
+  /* 棋盘 = 观测窗：半透明夜空 + 细边框 + 内发光 */
+  .board{
+    --cols:6;--fs:18px;
+    display:grid;
+    grid-template-columns:repeat(var(--cols),1fr);
+    align-items:start;
+    gap:3px;
+    width:100%;max-width:520px;
+    padding:6px;border-radius:16px;
+    background:linear-gradient(180deg, rgba(16,24,52,.74), rgba(7,11,26,.86));
+    border:1px solid rgba(122,160,230,.26);
+    box-shadow:inset 0 0 34px rgba(86,126,220,.16), 0 14px 40px rgba(0,0,0,.45);
+    -webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);
+    user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;
+  }
+  .cell{
+    appearance:none;-webkit-appearance:none;
+    display:flex;align-items:center;justify-content:center;
+    aspect-ratio:1/1;width:100%;
+    padding:0;margin:0;border-radius:8px;
+    border:1px solid rgba(124,158,224,.26);
+    background:linear-gradient(180deg, rgba(36,50,92,.86), rgba(15,21,45,.92));
+    color:#eaf1ff;font-family:inherit;font-weight:800;line-height:1;
+    font-size:var(--fs);
+    cursor:pointer;touch-action:manipulation;
+    box-shadow:inset 0 1px 0 rgba(180,210,255,.08);
+    transition:background .12s ease, border-color .12s ease;
+  }
+  .cell:active{transform:scale(.96)}
+  .cell.revealed{
+    position:relative;
+    background:rgba(4,7,18,.74);
+    border-color:rgba(90,120,180,.18);
+    cursor:default;transform:none;
+    box-shadow:inset 0 0 12px rgba(60,100,180,.10);
+    /* 数字：等宽 + 星等质感（字号仍由 --fs 自适应） */
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  /* 极细刻度环：只做装饰，绝对定位不占位、不影响字号自适应 */
+  .cell.revealed.tick::after{
+    content:"";position:absolute;inset:15%;border-radius:50%;
+    border:1px solid currentColor;opacity:.13;pointer-events:none;
+  }
+  .cell.n0{color:#4d5c7a}
+  .cell.n1{color:#7cc0ff;text-shadow:0 0 7px rgba(124,192,255,.52),0 0 16px rgba(124,192,255,.20)}
+  .cell.n2{color:#6ee7b0;text-shadow:0 0 7px rgba(110,231,176,.45),0 0 16px rgba(110,231,176,.18)}
+  .cell.n3{color:#ff9a9a;text-shadow:0 0 7px rgba(255,154,154,.5),0 0 16px rgba(255,154,154,.18)}
+  .cell.n4{color:#c9a6ff;text-shadow:0 0 7px rgba(201,166,255,.5),0 0 16px rgba(201,166,255,.18)}
+  .cell.n5{color:#ffcf7a;text-shadow:0 0 7px rgba(255,207,122,.5),0 0 16px rgba(255,207,122,.18)}
+  .cell.n6{color:#74e4e4;text-shadow:0 0 7px rgba(116,228,228,.45),0 0 16px rgba(116,228,228,.16)}
+  .cell.n7{color:#ffaede;text-shadow:0 0 7px rgba(255,174,222,.5),0 0 16px rgba(255,174,222,.18)}
+  .cell.n8{color:#d7e2f5;text-shadow:0 0 7px rgba(215,226,245,.45),0 0 16px rgba(215,226,245,.16)}
+  /* 插旗 = 玩家标记的星（暖金 ★），与踩爆的星区分 */
+  .cell.flagged{
+    background:linear-gradient(180deg,rgba(54,46,92,.92),rgba(26,22,50,.94));
+    border-color:rgba(150,120,220,.55);color:#ffd166;
+    text-shadow:0 0 8px rgba(255,209,102,.5);
+  }
+  /* 踩到未标记的星：亮起 + 轻微抖动 */
+  .cell.hitstar{
+    background:radial-gradient(circle at 50% 45%, rgba(130,190,255,.40), rgba(28,12,30,.94) 72%);
+    border-color:rgba(160,200,255,.65);color:#ffffff;
+    text-shadow:0 0 10px #9ad0ff,0 0 22px #6fb3f0;
+    animation:starHit .42s ease;
+  }
+  /* 踩到杂星：冷灰内联 SVG 四角星，明显更暗、无光晕、更小（一眼区分；SVG 避免字体回退方框） */
+  .cell.hitnoise{
+    background:radial-gradient(circle at 50% 45%, rgba(122,138,168,.20), rgba(8,10,18,.95) 74%);
+    border-color:rgba(132,148,178,.42);color:#aab6c9;
+    animation:starHit .42s ease;
+  }
+  /* 杂星图形（内联 SVG 四角星）：尺寸交给宽度百分比，冷灰走 currentColor */
+  .cell .noise-star{width:64%;height:64%;display:block;fill:currentColor;opacity:.92}
+  @keyframes starHit{
+    0%{transform:scale(1.26) rotate(-6deg)}
+    18%{transform:translateX(-3px) scale(1.1)}
+    36%{transform:translateX(3px) scale(1.05)}
+    54%{transform:translateX(-2px) scale(1.02)}
+    72%{transform:translateX(2px) scale(1)}
+    100%{transform:scale(1)}
+  }
+  /* 观测：翻开时轻微弹一下 + 亮度闪一下 */
+  @keyframes cellReveal{
+    0%{transform:scale(.82);filter:brightness(1.9)}
+    55%{transform:scale(1.07);filter:brightness(1.25)}
+    100%{transform:scale(1);filter:none}
+  }
+  /* 标记：格子抖一下，星形弹出来 */
+  @keyframes cellShake{
+    0%{transform:translateX(0)}
+    22%{transform:translateX(-1.2px)}
+    46%{transform:translateX(1.2px)}
+    68%{transform:translateX(-.7px)}
+    100%{transform:translateX(0)}
+  }
+  @keyframes flagPop{
+    0%{transform:scale(.3) rotate(-22deg);opacity:.3}
+    60%{transform:scale(1.28) rotate(6deg);opacity:1}
+    100%{transform:scale(1) rotate(0)}
+  }
+  .cell.fx-reveal{animation:cellReveal .3s cubic-bezier(.2,.9,.3,1) both}
+  .cell.fx-flag{animation:cellShake .3s ease both, flagPop .3s cubic-bezier(.2,.9,.3,1) both}
+  .cell.fx-unflag{animation:cellShake .22s ease both}
+  .cell.fx-runflash{animation:cellReveal .34s cubic-bezier(.2,.9,.3,1) both}
+  @media (prefers-reduced-motion: reduce){
+    .cell.fx-reveal,.cell.fx-flag,.cell.fx-unflag,.cell.fx-runflash{animation:none}
+  }
+  /* 通关揭晓：星座星点亮为亮白 ✦ */
+  .cell.wonstar{
+    background:linear-gradient(180deg,rgba(22,34,64,.92),rgba(11,17,40,.94));
+    border-color:rgba(110,150,220,.5);color:#e2eeff;
+    text-shadow:0 0 9px #9ad0ff,0 0 20px rgba(111,179,240,.6);
+  }
+  /* 通关揭晓：杂星只留暗灰四角星，不参与星座 */
+  .cell.wonoise{
+    background:linear-gradient(180deg,rgba(16,19,30,.94),rgba(8,10,18,.96));
+    border-color:rgba(96,108,132,.30);color:#6c7891;
+    text-shadow:none;opacity:.82;
+  }
+  .cell.wonoise .noise-star{opacity:.72}
+  @media (prefers-reduced-motion: reduce){
+    .cell.hitstar,.cell.hitnoise{animation:none}
+    .cell{transition:none}
+  }
+
+  .clue{
+    display:flex;align-items:center;justify-content:center;
+    font-size:calc(var(--fs)*.52);font-weight:800;color:#8fa7c8;
+    line-height:1.15;min-width:0;min-height:0;overflow:hidden;
+    font-variant-numeric:tabular-nums;
+  }
+  .clue-col{flex-direction:column;justify-content:flex-end;gap:1px}
+  .clue-row{flex-direction:row;justify-content:flex-end;gap:4px}
+  .clue-corner{visibility:hidden}
+
+  .actions{display:flex;gap:8px;margin:14px 2px 0;flex-wrap:wrap}
+  .actions.split{justify-content:space-between}
+  .btn{
+    flex:1 1 0;min-height:48px;min-width:96px;padding:0 12px;
+    border-radius:12px;border:1px solid #2b3444;background:#161c26;color:#c3d0e2;
+    font:inherit;font-size:14px;font-weight:800;cursor:pointer;
+    touch-action:manipulation;
+  }
+  .btn:active{transform:scale(.98)}
+  .btn.on{background:#1f3a63;border-color:#4b7fbd;color:#e4f0ff;box-shadow:0 0 0 1px #4b7fbd inset}
+  .btn.primary{background:#28623f;border-color:#3f9c66;color:#e6fff0}
+  .btn.ghost{background:#121821;color:#9fb0c6}
+
+  .result{
+    margin:12px 2px 0;padding:12px;border-radius:12px;display:none;
+    border:1px solid #2b3444;background:#141a23;
+  }
+  .result.show{display:block;position:fixed;left:8px;right:8px;
+    bottom:calc(8px + env(safe-area-inset-bottom));z-index:6;margin:0;
+    background:#141a23;box-shadow:0 14px 36px rgba(0,0,0,.55)}
+  .overlay.open{opacity:1;visibility:visible;pointer-events:auto}
+  .modal{
+    width:min(92vw,420px);max-height:82vh;overflow:auto;
+    padding:20px 18px 18px;border-radius:16px;
+    background:#161d29;border:1px solid #33405a;
+    box-shadow:0 18px 50px rgba(0,0,0,.55);
+    transform:translateY(6px) scale(.985);
+    transition:transform .16s ease;
+    text-align:center;
+  }
+  .overlay.open .modal{transform:none}
+  .modal:focus{outline:none}
+  .modal-title{margin:0 0 6px;font-size:19px;font-weight:800;color:#eaf1fb;line-height:1.35}
+  .modal-sub{margin:0 0 16px;font-size:13px;line-height:1.6;color:#9fb0c6}
+  .modal.win .modal-title{color:#8ff0b4}
+  .modal.lose .modal-title{color:#ff9aab}
+  .modal-btns{display:flex;flex-direction:column;gap:10px}
+  .modal-btns .btn{width:100%;min-height:48px;flex:none}
+  .modal-btns .btn.primary{background:#28623f;border-color:#3f9c66;color:#e6fff0}
+  .modal-btns .btn.again{background:#1f3a63;border-color:#4b7fbd;color:#e4f0ff}
+  .modal-btns .btn:disabled{opacity:.45;cursor:default}
+  @media (prefers-reduced-motion: reduce){
+    .overlay,.modal{transition:none}
+  }
+
+  /* ===== 通关揭晓：深空照片感（相框 + 视星等星点 + 连线；≤0.8s 曝光渐亮） ===== */
+  .const-slot:empty{display:none}
+  .const-panel{margin:2px auto 14px;width:100%;text-align:center}
+  .const-name{font-size:16px;font-weight:800;color:#eaf2ff;letter-spacing:.02em}
+  .const-name span{font-size:11px;font-weight:600;color:#8fa6c6;margin-left:6px;letter-spacing:0}
+  /* 深空相框：径向夜空 + 两层极淡星云 + 暗角 + 极淡银河斜带（纯 CSS） */
+  .const-map{position:relative;margin:8px auto 2px;width:100%;max-width:250px;border-radius:14px;overflow:hidden;
+    border:1px solid rgba(120,150,210,.22);
+    background:radial-gradient(72% 58% at 24% 20%,rgba(92,70,150,.22),rgba(92,70,150,0) 70%),radial-gradient(78% 62% at 80% 76%,rgba(122,62,104,.16),rgba(122,62,104,0) 72%),radial-gradient(120% 92% at 50% 38%,rgba(56,84,148,.28),rgba(6,9,20,0) 64%),radial-gradient(circle at 50% 46%,#0a1124 0%,#05070f 66%,#02030a 100%);
+    box-shadow:inset 0 0 46px rgba(0,0,0,.92),0 8px 22px rgba(0,0,0,.42)}
+  .const-map::before{content:"";position:absolute;left:-30%;top:33%;width:160%;height:26%;transform:rotate(-20deg);pointer-events:none;
+    background:linear-gradient(90deg,rgba(150,180,255,0),rgba(150,180,255,.07) 34%,rgba(200,170,255,.06) 62%,rgba(150,180,255,0));filter:blur(6px)}
+  .const-map::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;
+    background:radial-gradient(circle at 50% 45%,rgba(0,0,0,0) 40%,rgba(0,0,0,.66) 100%)}
+  .const-svg{position:relative;z-index:1;width:100%;height:auto;display:block;overflow:visible;animation:constExposure .7s ease-out both}
+  .const-svg .gdust{fill:#cfe0ff}
+  .const-svg .gnoise{fill:#8b98ad;stroke:none;opacity:.5;animation:constNoiseFade 1.5s ease forwards}
+  @keyframes constNoiseFade{0%{opacity:0}22%{opacity:.55}55%{opacity:.42}100%{opacity:.12}}
+  .const-svg .gline-glow{stroke:#7fb0ff;stroke-width:2.4;stroke-linecap:round;stroke-opacity:.1}
+  .const-svg .gline{stroke:#8ab4ff;stroke-width:.6;stroke-linecap:round;stroke-opacity:.45;stroke-dasharray:200;stroke-dashoffset:200;animation:constDraw .32s ease forwards}
+  .const-svg .ghalo,.const-svg .ghalo2,.const-svg .gstar,.const-svg .gspike{opacity:0;animation:constPop .3s ease forwards}
+  .const-fact{margin:8px 2px 0;font-size:12px;line-height:1.55;color:#9fb4d0;text-align:center}
+  .const-tag{display:inline-block;margin-top:9px;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:800;color:#08111f;background:linear-gradient(180deg,#a9d8ff,#6fb3f0)}
+  @keyframes constDraw{to{stroke-dashoffset:0}}
+  @keyframes constPop{to{opacity:1}}
+  @keyframes constExposure{0%{opacity:0;filter:brightness(.35)}60%{opacity:1;filter:brightness(1.18)}100%{opacity:1;filter:brightness(1)}}
+  @media (prefers-reduced-motion:reduce){
+    .const-svg{animation:none;opacity:1;filter:none}
+    .const-svg .gline{animation:none;stroke-dashoffset:0}
+    .const-svg .ghalo,.const-svg .ghalo2,.const-svg .gstar,.const-svg .gspike{animation:none;opacity:1}
+    .const-svg .gnoise{animation:none;opacity:.14}
+    .const-map::before{filter:none}
+  }
+
+  /* 通关：星座点亮后整体闪一下（再弹结算弹窗） */
+  .board.reveal-flash .cell.wonstar{animation:winStarFlash .85s ease-out both}
+  .board.reveal-flash .cell.wonoise{animation:winStarFlashDim .85s ease-out both}
+  @keyframes winStarFlash{0%{filter:none;transform:scale(1)}
+    30%{filter:brightness(2.5) drop-shadow(0 0 7px #9ad0ff);transform:scale(1.13)}
+    60%{filter:brightness(1.5) drop-shadow(0 0 4px #9ad0ff);transform:scale(1.04)}
+    100%{filter:none;transform:scale(1)}}
+  @keyframes winStarFlashDim{0%,100%{opacity:.9}50%{opacity:.45}}
+  @media (prefers-reduced-motion: reduce){
+    .board.reveal-flash .cell.wonstar,.board.reveal-flash .cell.wonoise{animation:none}
+  }
+
+  /* ===== 星座图鉴：天球投影 ===== */
+  .top-actions{display:flex;gap:6px;align-items:center}
+  .panel.sky-panel{position:fixed;inset:0;z-index:40;box-sizing:border-box;display:none;flex-direction:column;gap:10px;
+    margin:0;padding:14px 12px calc(14px + env(safe-area-inset-bottom));overflow:auto;
+    border:0;border-radius:0;background:radial-gradient(circle at 50% 0%,#0d1730 0%,#070a14 60%,#04060c 100%)}
+  .panel.sky-panel.open{display:flex}
+  .panel.sky-panel{width:100vw;max-width:100vw;overflow-x:hidden}
+  .sky-wrap,.sky-map{width:100%;max-width:100%}
+  .sky-wrap{flex:0 0 auto;height:min(44vh,320px)}
+  .sky-map{height:100%}
+  .sky-head,.sky-filters,.sky-hint{flex:0 0 auto}
+  .sky-detail{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch}
+  .sky-hint{padding:0 2px;word-break:break-word}
+  .sky-panel *{box-sizing:border-box;max-width:100%}
+  .sky-detail:empty{display:none}
+  .sky-panel[hidden]{display:none}
+  .sky-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .sky-filters{display:flex;gap:6px;flex-wrap:wrap}
+  .sky-tools{display:flex;gap:6px;flex-wrap:wrap}
+  .sky-wrap{border:1px solid rgba(120,150,210,.22);border-radius:14px;overflow:hidden;
+    background:radial-gradient(120% 90% at 50% 30%,rgba(56,84,148,.22),rgba(4,6,12,0) 70%),#05070f;
+    box-shadow:inset 0 0 40px rgba(0,0,0,.9)}
+  .sky-map{display:block;width:100%;height:auto}
+  .sky-grid{stroke:rgba(120,150,210,.16);stroke-width:.35}
+  .sky-sector{fill:rgba(120,170,255,.10);stroke:rgba(140,190,255,.34);stroke-width:.5;stroke-dasharray:3 2}
+  .sky-vignette{pointer-events:none}
+  .sky-map{touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}
+  .sky-map.dragging{cursor:grabbing}
+  .skynode .halo{fill:#8fc4ff;opacity:.16}
+  .skynode.on .dot{animation:skyTwinkle 3.6s ease-in-out infinite}
+  .skynode.on .halo{animation:skyHalo 3.6s ease-in-out infinite}
+  .skynode:not(.on) .dot{opacity:.55}
+  @keyframes skyTwinkle{0%,100%{opacity:1}45%{opacity:.5}70%{opacity:.85}}
+  @keyframes skyHalo{0%,100%{opacity:.20}50%{opacity:.05}}
+  @media (prefers-reduced-motion: reduce){
+    .skynode.on .dot,.skynode.on .halo{animation:none}
+  }
+  .skynode .lbl.off{fill:#6d81a3;opacity:.68;font-weight:400}
+  .skynode:not(.on) .dot{opacity:.45}
+  .skynode .dot{fill:#33455f}
+  .skynode:hover .dot{fill:#9fd0ff}
+  .sky-grid-eq{stroke:rgba(140,190,255,.3);stroke-width:.5;stroke-dasharray:2 2}
+  .sky-lbl{fill:#5f7495;font-size:2.6px}
+  .skynode{cursor:pointer}
+  .skynode .dot{fill:#2b3a55;stroke:#1b2536;stroke-width:.3}
+  .skynode.on .dot{fill:#d6e8ff}
+  .skynode.sel .dot{fill:#ffd9a0;stroke:#fff;stroke-width:.7}
+  .skynode .lbl{fill:#7f95b5;font-size:2.7px;text-anchor:middle}
+  .skynode.on .lbl{fill:#dbeaff;font-weight:700}
+  .skynode.dim{opacity:.25}
+  .skynode .hit{fill:transparent}
+  .sky-hint{font-size:11px;color:#7b8aa3;text-align:center;line-height:1.5}
+  .sky-card{border:1px solid rgba(120,150,210,.22);border-radius:14px;padding:12px;
+    background:linear-gradient(180deg,rgba(20,30,54,.8),rgba(8,12,22,.8))}
+  .sky-card h3{margin:0 0 2px;font-size:16px;color:#eaf2ff}
+  .sky-card .sub{font-size:11px;color:#8fa6c6;margin-bottom:8px}
+  .sky-meta{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:12px;color:#b9c9e0;margin:0}
+  .sky-meta dt{color:#7f95b5}
+  .sky-meta dd{margin:0}
+  .sky-neigh{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .sky-neigh button{font-size:11px;padding:4px 9px;border-radius:999px;border:1px solid #2c4666;
+    background:#111b2c;color:#9fc3ea}
+  .sky-neigh button.link{background:#16294a;border-color:#3f6ea8;color:#dbeaff}
+  .sky-fact{margin:10px 0 0;font-size:12px;line-height:1.6;color:#9fb4d0}
+  /* 星座详情：屏幕中央弹窗 */
+  .const-modal{position:fixed;inset:0;z-index:70;display:flex;align-items:center;justify-content:center;
+    padding:18px}
+  .const-modal[hidden]{display:none}
+  .const-modal-mask{position:absolute;inset:0;background:rgba(3,6,14,.72)}
+  .const-modal-card{position:relative;width:100%;max-width:420px;max-height:84vh;overflow-y:auto;
+    -webkit-overflow-scrolling:touch;border-radius:16px;border:1px solid rgba(120,150,210,.28);
+    background:linear-gradient(180deg,rgba(21,29,46,.98),rgba(10,14,24,.98));
+    box-shadow:0 24px 60px rgba(0,0,0,.6);padding:14px 14px 16px;
+    opacity:0;transform:translateY(10px) scale(.97);transition:opacity .18s ease,transform .18s ease}
+  .const-modal.open .const-modal-card{opacity:1;transform:none}
+  .const-close{position:absolute;top:8px;right:8px;width:34px;height:34px;border-radius:50%;
+    border:1px solid #2c4666;background:#16294a;color:#dbeaff;font-size:18px;line-height:1;
+    display:flex;align-items:center;justify-content:center;cursor:pointer}
+  .const-close:active{transform:scale(.94)}
+  .const-modal-body .sky-card{border:0;background:none;padding:0}
+  .rules h3{margin:0 0 6px;font-size:16px;font-weight:800;color:#e8f1ff}
+  .rules .lead{margin:0;font-size:13px;line-height:1.65;color:#c8d6ea}
+  .rules .lead b{color:#eaf3ff}
+  .rules .sec{margin:14px 0 6px;font-size:12px;font-weight:800;letter-spacing:.06em;color:#8fc3ff}
+  .rules ol{margin:0;padding-left:19px}
+  .rules li{margin:6px 0;font-size:13px;line-height:1.62;color:#c2d1e6}
+  .rules li b{color:#eaf3ff}
+  .rules .k{display:inline-block;min-width:14px;padding:0 5px;border-radius:4px;border:1px solid #2c4666;
+    background:#16294a;color:#dbeaff;font-size:12px;font-weight:700;text-align:center}
+  .rules .note{margin:12px 0 0;padding:8px 10px;border-radius:8px;border:1px solid #26364f;
+    background:#0f1a2c;font-size:12px;line-height:1.6;color:#9fb4d0}
+  .const-modal-body .sky-map-slot{margin-top:10px}
+  @media (prefers-reduced-motion: reduce){
+    .const-modal-card{transition:none;opacity:1;transform:none}
+  }
+  .sky-map-slot{margin-top:10px;border-radius:12px;overflow:hidden;background:#05070f}
+  .sky-locked{font-size:13px;color:#8fa6c6;line-height:1.7}
+
+  #replayActions[hidden]{display:none}
+  .intro-overlay{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;
+    padding:18px;background:rgba(4,7,16,.72);backdrop-filter:blur(2px)}
+  .intro-overlay[hidden]{display:none}
+  .intro-card{width:100%;max-width:340px;padding:18px 16px 16px;border:1px solid rgba(126,180,255,.34);border-radius:16px;
+    background:linear-gradient(180deg,rgba(20,30,58,.98),rgba(10,16,34,.98));box-shadow:0 18px 50px rgba(0,0,0,.55)}
+  .intro-title{font-size:16px;font-weight:800;color:#eaf2ff;margin-bottom:10px;letter-spacing:.02em}
+  .intro-line{margin:0 0 8px;font-size:13px;line-height:1.6;color:#b9cbe6}
+  .intro-line b{color:#eaf2ff}
+  .intro-card .btn{width:100%;margin-top:6px}
+  .acthint{margin:8px 2px 2px;padding:9px 10px;border:1px solid rgba(126,180,255,.42);border-radius:12px;
+    background:linear-gradient(180deg,rgba(38,62,116,.72),rgba(20,32,62,.72));
+    font-size:13px;font-weight:600;line-height:1.5;color:#cfe2ff;text-align:center;
+    box-shadow:0 0 0 1px rgba(10,16,32,.6) inset,0 2px 10px rgba(20,50,110,.35)}
+  .foot{margin:14px 4px 0;font-size:12px;line-height:1.6;color:#7b8aa3}
+  .err{color:#ff9aab;font-size:14px;padding:12px}
+  /* ===== 通关弹窗：收紧排版，尽量不用滚动就能看全 ===== */
+  .overlay{padding:12px}
+  .modal{max-height:92vh;padding:14px 14px 12px}
+  .modal.win .modal-title{font-size:16px;margin:0 0 2px}
+  .modal.win .modal-sub{margin:0 0 8px;font-size:12px;line-height:1.45}
+  .modal .modal-cname{font-size:17px;margin-top:1px}
+  .modal .modal-cmeta{margin-top:2px;font-size:11.5px}
+  .modal.win .const-map{max-width:168px;margin:6px auto 0;border-radius:12px}
+  .modal.win .const-fact{margin:6px 2px 0;font-size:11.5px;line-height:1.45}
+  .modal.win .modal-btns{flex-direction:row;flex-wrap:wrap;gap:8px}
+  .modal.win .modal-btns .btn{width:auto;flex:1 1 auto;min-width:0;min-height:40px;font-size:13px;padding:0 10px}
+  .modal.win .const-tag{display:none}
+  @media (max-width:345px){
+    .modal.win .modal-btns .btn{font-size:12px;padding:0 7px}
+    .modal.win .const-map{max-width:148px}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="top">
+    <div class="title">星织<span class="who" id="lvName"></span></div>
+    <div class="top-actions">
+      <button type="button" class="lvbtn" id="skyBtn" aria-expanded="false" aria-controls="skyPanel"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6.3 14.5 10 8.3l4.3 3.5 1.2-6.2"/><circle cx="6.3" cy="14.5" r="1.5" fill="currentColor" stroke="none"/><circle cx="10" cy="8.3" r="1.5" fill="currentColor" stroke="none"/><circle cx="14.3" cy="11.8" r="1.5" fill="currentColor" stroke="none"/><circle cx="15.5" cy="5.6" r="1.5" fill="currentColor" stroke="none"/></svg>图鉴</button>
+      <button type="button" class="lvbtn" id="ruleBtn" aria-haspopup="dialog"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 2.5h6.4l3.6 3.6v11.4a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1v-14a1 1 0 0 1 1-1z"/><path d="M11.9 2.6v3.6h3.6"/><path d="M10 8.7l.95 2.05 2.05.95-2.05.95L10 14.7l-.95-2.05L7 11.7l2.05-.95z" fill="currentColor" stroke="none"/></svg>规则</button>
+      <button type="button" class="lvbtn" id="lvBtn" aria-expanded="false" aria-controls="levelPanel">关卡 <b id="lvBtnNum">1</b>/<b id="lvBtnTotal">1</b> ▾</button>
+      <button type="button" class="lvbtn icononly" id="soundBtn" aria-pressed="true" aria-label="音效开关" title="音效开关"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h2.6L10 5.2v9.6L6.9 12H4z"/><path class="wave" d="M12.6 7.7a3.4 3.4 0 0 1 0 4.6"/><path class="wave" d="M14.9 5.5a6.5 6.5 0 0 1 0 9"/><path class="offmark" d="M3.8 3.8l12.4 12.4"/></svg></button>
+    </div>
+  </div>
+
+  <div class="drawer-mask" id="drawerMask" hidden></div>
+  <section class="panel" id="levelPanel" hidden role="dialog" aria-modal="true" aria-label="关卡选择">
+    <div class="panel-head">
+      <span class="panel-title">已通关 <b id="clearedCount">0</b>/<b id="totalCount">1</b></span>
+      <button type="button" class="mini" id="unlockBtn" aria-pressed="false">🔓 全部解锁</button>
+      <button type="button" class="mini" id="resetBtn">重置进度</button>
+    </div>
+    <div class="lvgrid" id="lvGrid"></div>
+    <div class="panel-hint">✓ 已通关　·　高亮 = 当前关卡　·　🔒 未解锁（通关上一关后解锁）<br>想直接玩后面的关？点「全部解锁」（给评审/开发用，不影响进度记录）</div>
+  </section>
+
+  <section class="panel sky-panel" id="skyPanel" hidden aria-label="星座图鉴">
+    <div class="sky-head">
+      <span class="panel-title">星座图鉴 <b id="skyCount">0</b>/<b id="skyTotal">0</b></span>
+      <button type="button" class="mini" id="skyCloseBtn">关闭</button>
+    </div>
+    <div class="sky-filters" id="skyFilters" role="group" aria-label="按季节筛选"></div>
+    <div class="sky-tools">
+      <button type="button" class="mini" id="skyLitBtn" aria-pressed="false">🔆 一键点亮（预览）</button>
+    </div>
+    <div class="sky-wrap"><svg class="sky-map" id="skyMap" viewBox="0 0 200 120" role="img" aria-label="天球投影星图"></svg></div>
+    <div class="sky-hint" id="skyHint">横轴 = 赤经（0–24 时）· 纵轴 = 赤纬（+90° 到 −90°）· 亮 = 已观测　·　按住拖动可平移 · 滚轮/双指缩放 · 双击复位</div>
+    <div class="sky-detail" id="skyDetail" hidden></div>
+  </section>
+
+  <div class="const-modal" id="ruleModal" hidden>
+    <div class="const-modal-mask" id="ruleModalMask"></div>
+    <div class="const-modal-card" role="dialog" aria-modal="true" aria-labelledby="ruleTitle">
+      <button type="button" class="const-close" id="ruleClose" aria-label="关闭">×</button>
+      <div class="const-modal-body">
+        <div class="rules">
+          <h3 id="ruleTitle">玩法规则</h3>
+          <p class="lead">棋盘是夜空：<b>把安全格全部翻开</b>，并把<b>所有的星都标出来</b>，即通关。</p>
+
+          <div class="sec">两种线索</div>
+          <ol>
+            <li><b>数字（扫雷）</b>：格子上的数字 = 它周围 8 格里的星数。</li>
+            <li><b>行 / 列数字（数织）</b>：棋盘上方与左侧的数字，表示这一列 / 这一行里「连续星块」的长度，按出现顺序排列。例如 <span class="k">2 1</span> = 两颗连着的星、至少空一格、再一颗星。</li>
+            <li><b>两者要一起用</b>：多数关卡只靠数字推不完，只靠行列线索也推不完 —— 交叉推理才能定死一颗星。</li>
+          </ol>
+
+          <div class="sec">怎么操作</div>
+          <ol>
+            <li><b>手机 / 平板</b>：<b>轻触</b>格子 = 观测；<b>长按</b>格子约 0.4 秒 = 标记 ★ / 取消标记（会有一点点震动）。</li>
+            <li><b>电脑（鼠标）</b>：<b>左键单击</b>格子 = 观测；<b>右键</b>格子 = 标记 ★ / 取消标记。</li>
+            <li><b>键盘</b>：<span class="k">Enter</span> = 观测；<span class="k">空格</span> 或 <span class="k">Shift</span>+<span class="k">Enter</span> = 标记。</li>
+            <li><b>防误触</b>：按住后手指滑动超过约 12 像素，视为"在拖动页面"，不会触发观测或标记。</li>
+          </ol>
+
+          <div class="sec">生命与杂星</div>
+          <ol>
+            <li>共有 <b>3 条命</b>。观测到还没标记的星会掉一条命，同时把那颗星亮出来。</li>
+            <li><b>杂星</b>：有些星并不属于本关星座（用来增加迷惑与密度）。它们<b>同样是星</b>，一样要标记；通关揭晓时不会出现在星座连线里。</li>
+          </ol>
+
+          <div class="sec">通关与图鉴</div>
+          <ol>
+            <li>翻开全部安全格 + 标出全部星 → 揭晓本关对应的<b>真实星座</b>，并在图鉴里点亮它。</li>
+            <li><b>图鉴</b>（顶部星座连线图标）：按真实天球位置摆放星座（横轴赤经 0–24 时、纵轴赤纬 ±90°）。可按季节筛选、滚轮或双指缩放、按住拖动；点星座看详情（赤经赤纬、面积排名、最亮星、相邻星座可互相跳转）。</li>
+            <li>未观测的星座只显示暗色名字，观测过的会亮起并闪烁。</li>
+          </ol>
+
+          <div class="sec">难度与公平性</div>
+          <ol>
+            <li><b>不用猜</b>：每一关都由逻辑求解器验证过「不靠运气也能推完」。</li>
+            <li><b>教学节奏</b>：第 1 关只给扫雷数字（纯教学），第 2 关起才引入行列线索。</li>
+          </ol>
+
+          <p class="note">提示：翻开的数字是「周围有几颗星」，不是「周围有几颗杂星」——杂星与星座星在推理上完全等价。顶部 🔊 图标可随时开关音效。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="const-modal" id="constModal" hidden>
+    <div class="const-modal-mask" id="constModalMask"></div>
+    <div class="const-modal-card" role="dialog" aria-modal="true" aria-label="星座详情">
+      <button type="button" class="const-close" id="constClose" aria-label="关闭">×</button>
+      <div class="const-modal-body" id="constModalBody"></div>
+    </div>
+  </div>
+
+  <div class="intro-overlay" id="introOverlay" hidden>
+    <div class="intro-card" role="dialog" aria-modal="true" aria-labelledby="introTitle">
+      <div class="intro-title" id="introTitle">✦ 怎么玩</div>
+      <p class="intro-line">翻开所有安全格、并把所有星标出来，这一关就通了。</p>
+      <p class="intro-line">手机：<b>轻触</b>观测、<b>长按</b>标记；电脑：<b>单击</b>观测、<b>右键</b>标记。</p>
+      <p class="intro-line">数字 = 它周围 8 格里有几颗星（0 会连锁翻开）。</p>
+      <button type="button" class="btn primary" id="introStart">开始观测</button>
+    </div>
+  </div>
+
+  <div class="meta" id="lvtag"></div>
+  <div class="acthint" id="actHint">📱 轻触 = 🔭 观测　长按 = ★ 标记　｜　💻 单击 = 🔭 观测　右键 = ★ 标记</div>
+  <div class="status" id="status">
+    <span class="stat-counts" id="statusCounts"></span>
+    <span class="scopes" id="scopes" role="img" aria-label="剩余命数 3 / 3"></span>
+  </div>
+  <div class="teach hidden" id="teach"></div>
+
+  <div class="boardwrap"><div class="board" id="board"></div><svg class="board-reveal" id="boardReveal" aria-hidden="true"></svg></div>
+
+  <div class="actions" id="replayActions">
+    <button type="button" class="btn ghost" id="replay">↻ 重玩本关</button>
+  </div>
+
+  <div class="result" id="result"></div>
+
+  <div class="foot">
+    手机：<b>轻触</b>格子 = 观测（翻开看数字），<b>长按</b> = 标记 / 取消标记。电脑：<b>单击</b> = 观测，<b>右键</b> = 标记。<br>
+    带行列线索的关卡会在左侧与上方显示“连续星块”的长度；把所有安全格翻开、所有星星标出，就能看见这一关的星座。进度自动保存在本机浏览器里。
+  </div>
+</div>
+
+<!-- 结算 modal（通关 / 失败共用；遮罩挡住棋盘，避免误触） -->
+<div class="overlay" id="overlay" aria-hidden="true">
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalSub" tabindex="-1">
+    <h2 class="modal-title" id="modalTitle"></h2>
+    <p class="modal-sub" id="modalSub"></p>
+    <div class="const-slot" id="constSlot"></div>
+    <div class="modal-btns" id="modalBtns"></div>
+  </div>
+</div>
+

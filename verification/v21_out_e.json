@@ -1,0 +1,30 @@
+{
+ "results": [
+  {
+   "id": "E1",
+   "name": "六种进度态下 #skyCount == 实际通关数（#skyTotal == 50）",
+   "ok": true,
+   "detail": "0 关通关: #skyCount=0 (期望 0) #skyTotal=50 | 1 关通关: #skyCount=1 (期望 1) #skyTotal=50 | 7 关通关（前缀）: #skyCount=7 (期望 7) #skyTotal=50 | 25 关通关（前缀）: #skyCount=25 (期望 25) #skyTotal=50 | 49 关通关（前缀）: #skyCount=49 (期望 49) #skyTotal=50 | 50 关通关: #skyCount=50 (期望 50) #skyTotal=50"
+  },
+  {
+   "id": "E2",
+   "name": "未通关星座：无 gstar/gline/gnoise、无相邻星座名/跳转、无 fact",
+   "ok": true,
+   "detail": "选中 cassiopeia(仙后座)：gstar=0 gline=0 gnoise=0 data-jump=false sky-fact=false 其它星座名=[] 标题含未观测=true"
+  },
+  {
+   "id": "E3",
+   "name": "已通关星座：gstar/gline/gnoise == stars/lines/noise 且显示 fact",
+   "ok": true,
+   "detail": "crux: gstar=4/4 gline=2/2 gnoise=3/3 fact=true"
+  },
+  {
+   "id": "E4",
+   "name": "图鉴地图节点：未观测星座显示暗色名字（.lbl.off），无任何星图 SVG",
+   "ok": true,
+   "detail": "lbl.off=true gstar-in-map=false"
+  }
+ ],
+ "pass": 4,
+ "fail": 0
+}

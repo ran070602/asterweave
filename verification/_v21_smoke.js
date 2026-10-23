@@ -1,0 +1,20 @@
+'use strict';
+/* 桩冒烟测试：能否 boot、元素是否找到、首屏状态是否正常 */
+const { boot, makeStorage } = require('./v21_stub.js');
+const store = makeStorage();
+const g = boot({ storage: store });
+console.log('boot errors:', g.errors.length ? g.errors.slice(0, 5) : 'none');
+const q = s => g.doc.querySelector(s);
+console.log('body#?', !!g.doc.body);
+console.log('#board', !!q('#board'), '#lvtag', q('#lvtag') && q('#lvtag').textContent);
+console.log('#actHint', q('#actHint') && q('#actHint').textContent.slice(0, 60));
+console.log('#introOverlay.hidden', q('#introOverlay').hidden);
+console.log('cells', g.doc.querySelectorAll('#board .cell').length);
+console.log('scopes children', q('#scopes').childNodes.length);
+console.log('gameState', q('#board') && g.doc.body.dataset.gameState);
+console.log('lvgrid buttons', q('#lvGrid').childNodes.length);
+console.log('legal buttons:', q('#lvGrid').childNodes.map(b => b.disabled).slice(0, 6));
+console.log('storage', JSON.stringify(store._d).slice(0, 200));
+g.advance(5000);
+console.log('after advance errors:', g.errors.length ? g.errors.slice(0, 5) : 'none');
+console.log('#replayActions.hidden', q('#replayActions').hidden);
