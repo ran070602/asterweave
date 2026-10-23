@@ -162,8 +162,6 @@ function actCell(i, mode) {
 
 // ---------------- v19：意见箱（离线优先）----------------
 if (byId.introStart) { byId.introStart.dispatchEvent(mkEvent('click', { target: byId.introStart })); flush(0); }
-const FBKEY = 'asterweave.feedback.v1';
-const fbArch = () => { try { return JSON.parse(store[FBKEY] || '[]'); } catch (e) { return []; } };
 
 ok('顶栏有「意见」按钮', !!byId.fbBtn && (byId.fbBtn.textContent || '').includes('意见'), byId.fbBtn && byId.fbBtn.textContent);
 ok('意见箱初始隐藏', byId.fbOverlay.hidden === true);
@@ -172,9 +170,8 @@ byId.fbCtx.checked = true;            // 桩不反射 checked 属性，显式置
 byId.fbBtn.dispatchEvent(mkEvent('click', { target: byId.fbBtn }));
 flush(0);
 ok('点击后意见箱打开', byId.fbOverlay.hidden === false);
-ok('有隐私说明（只存在本机 / 不会自动上传）',
-   (byId.fbOverlay.innerHTML || '').includes('只存在你本机') || String(byId.fbOverlay.textContent || '').includes('只存在你本机') ||
-   html.includes('内容只存在你本机'), '隐私说明在 HTML 里');
+ok('有隐私说明（不保存任何内容 / 不会自动上传）',
+   html.includes('这里不保存任何内容') && html.includes('不会自动上传'), '隐私说明在 HTML 里');
 
 // 环境信息详情默认收起，点「查看」才弹轻量浮层
 ok('详情浮层默认收起（不占位置）', byId.fbPop.hidden === true);
@@ -195,17 +192,18 @@ byId.fbText.dispatchEvent(mkEvent('input', { target: byId.fbText }));
 flush(0);
 byId.fbCopy.dispatchEvent(mkEvent('click', { target: byId.fbCopy }));
 flush(0);
-const a1 = fbArch();
-ok('复制后写入本机留档', a1.length === 1 && String(a1[0].text).includes('第 3 关的行线索我看不懂'),
-   JSON.stringify(a1.map(x => String(x.text).slice(0, 18))));
 ok('复制后给出状态提示', String(byId.fbStatus.textContent || '').length > 0, byId.fbStatus.textContent);
-ok('留档条数已刷新', String(byId.fbCount.textContent) === String(a1.length), String(byId.fbCount.textContent));
+ok('已去掉「本机记录」UI（列表/计数/清空都不存在）',
+   !byId.fbList && !byId.fbCount && !byId.fbClear,
+   `fbList=${!!byId.fbList} fbCount=${!!byId.fbCount} fbClear=${!!byId.fbClear}`);
+ok('不落盘：没有任何 feedback 键写入 localStorage',
+   Object.keys(store).every(k => k.toLowerCase().indexOf('feedback') < 0), JSON.stringify(Object.keys(store)));
 
 // 导出（不抛异常即可；stub 无 Blob 时应走失败提示而不是崩）
 let exportOk = true;
 try { byId.fbSave.dispatchEvent(mkEvent('click', { target: byId.fbSave })); flush(0); } catch (e) { exportOk = false; }
 ok('导出按钮不会抛异常', exportOk);
-ok('导出也会留档', fbArch().length >= 1, String(fbArch().length));
+ok('导出后仍不落盘', Object.keys(store).every(k => k.toLowerCase().indexOf('feedback') < 0), JSON.stringify(Object.keys(store)));
 
 // 扫码提交：二维码必须是内联 data URI，邮箱防爬变形，mailto 链接存在
 byId.fbQrBtn.dispatchEvent(mkEvent('click', { target: byId.fbQrBtn }));
@@ -217,11 +215,7 @@ ok('邮箱做了防爬变形显示', String(byId.fbMailShow.textContent || '').i
 ok('邮件链接是 mailto:', String(byId.fbMailLink.attrs.href || '').indexOf('mailto:') === 0, String(byId.fbMailLink.attrs.href || '').slice(0, 40));
 ok('提示说明了"需要联网"', String(byId.fbOverlay.textContent || '').includes('联网') || html.includes('这一步需要联网'));
 
-// 清空本机记录
-byId.fbClear.dispatchEvent(mkEvent('click', { target: byId.fbClear }));
-flush(0);
-ok('清空本机记录生效', fbArch().length === 0);
-ok('清空不影响游戏进度（仍可玩）', state().status === 'playing', `status=${state().status}`);
+ok('意见箱不影响游戏进度（仍可玩）', state().status === 'playing', `status=${state().status}`);
 
 // 关闭：Esc 与点遮罩
 (win._h['keydown'] || []).forEach(function(fn){ fn(mkEvent('keydown', { key: 'Escape', target: win })); });

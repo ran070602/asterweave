@@ -597,11 +597,6 @@
   .fb-mailline{margin-top:8px;font-size:12px;color:#b9cbe6;display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center}
   .fb-mailline a{color:#cfe2ff}
   .fb-hint{margin:8px 0 0;font-size:11px;line-height:1.6;color:#7f93b0}
-  .fb-archive{margin-top:12px;border-top:1px solid rgba(126,180,255,.16);padding-top:10px}
-  .fb-arch-head{display:flex;align-items:center;justify-content:space-between;font-size:12px;color:#9fb4d0;margin-bottom:6px}
-  .fb-arch-list{display:flex;flex-direction:column;gap:6px;max-height:132px;overflow:auto}
-  .fb-arch-item{font-size:11px;line-height:1.5;color:#8fa6c5;background:rgba(8,13,28,.55);border-radius:8px;padding:6px 8px;
-    white-space:pre-wrap;word-break:break-all}
   .fb-status{margin:10px 0 0;font-size:11px;line-height:1.5;color:#8fd0a8;min-height:16px}
   .intro-overlay{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;
     padding:18px;background:rgba(4,7,16,.72);backdrop-filter:blur(2px)}
@@ -751,7 +746,7 @@
         <span class="fb-title" id="fbTitle">✉ 意见箱</span>
         <button type="button" class="fb-close" id="fbClose" aria-label="关闭">×</button>
       </div>
-      <p class="fb-note">玩下来哪里别扭、哪里卡住、哪里想不通？写下来就行。<b>内容只存在你本机</b>——点「复制」或「导出」才会离开浏览器，不会自动上传。</p>
+      <p class="fb-note">玩下来哪里别扭、哪里卡住、哪里想不通？写下来就行。<b>这里不保存任何内容</b>——只有你点「复制」或「导出」，文字才会离开浏览器，不会自动上传。</p>
       <textarea class="fb-text" id="fbText" placeholder="例如：第 3 关我卡了很久，不太会用行/列的连续块线索……"></textarea>
       <div class="fb-ctxline">
         <label class="fb-ctxlabel"><input type="checkbox" id="fbCtx" checked> 附带关卡与设备信息</label>
@@ -777,11 +772,6 @@
           <a class="mini" id="fbMailLink" href="#">用邮件 App 打开</a>
         </div>
         <p class="fb-hint" id="fbQrHint">手机扫码会打开邮件 App；这一步需要联网，也需要手机已配置邮箱。扫不出来就用「复制反馈」+ 上面的邮箱手动发。</p>
-      </div>
-      <div class="fb-archive">
-        <div class="fb-arch-head"><span>本机记录 <b id="fbCount">0</b> 条</span>
-          <button type="button" class="mini" id="fbClear">清空本机记录</button></div>
-        <div class="fb-arch-list" id="fbList"></div>
       </div>
       <p class="fb-status" id="fbStatus"></p>
     </div>
@@ -2974,7 +2964,6 @@ window.addEventListener('keydown', function(e){
 });
 
 // ===== 意见箱：离线优先（写在本机 → 复制 / 导出 / 扫码带出）=====
-const FB_KEY = 'asterweave.feedback.v1';
 const fbOverlay = document.getElementById('fbOverlay');
 const fbBtnEl = document.getElementById('fbBtn');
 const fbCloseEl = document.getElementById('fbClose');
@@ -2984,8 +2973,6 @@ const fbCtxViewEl = document.getElementById('fbCtxView');
 const fbStatusEl = document.getElementById('fbStatus');
 const fbQrBoxEl = document.getElementById('fbQrBox');
 const fbQrImgEl = document.getElementById('fbQrImg');
-const fbListEl = document.getElementById('fbList');
-const fbCountEl = document.getElementById('fbCount');
 let fbOpen = false;
 
 function fbDevice(){
@@ -3032,34 +3019,6 @@ function fbCompose(){
   return body + '\n\n———— 环境信息 ————\n' + (ctx.length ? ctx.join('\n') : '（未附带）') + '\n';
 }
 function fbSetStatus(msg){ if (fbStatusEl) fbStatusEl.textContent = msg || ''; }
-function fbLoad(){
-  try { const raw = window.localStorage.getItem(FB_KEY); const a = raw ? JSON.parse(raw) : []; return Array.isArray(a) ? a : []; }
-  catch (e) { return []; }
-}
-function fbPersist(a){
-  try { window.localStorage.setItem(FB_KEY, JSON.stringify(a.slice(0, 20))); } catch (e) {}
-}
-function fbArchive(text){
-  if (!text) return;
-  const a = fbLoad();
-  a.unshift({ t: Date.now(), text: String(text).slice(0, 2000) });
-  fbPersist(a);
-  fbRenderList();
-}
-function fbRenderList(){
-  if (!fbListEl || !fbCountEl) return;
-  const a = fbLoad();
-  fbCountEl.textContent = String(a.length);
-  fbListEl.innerHTML = '';
-  for (let i = 0; i < a.length; i++){
-    const d = document.createElement('div');
-    d.className = 'fb-arch-item';
-    let when = '';
-    try { when = new Date(a[i].t).toLocaleString(); } catch (e) { when = String(a[i].t); }
-    d.textContent = when + '\n' + String(a[i].text || '').split('\n').slice(0, 3).join('\n');
-    fbListEl.appendChild(d);
-  }
-}
 // 复制：优先 clipboard API，失败退回到 execCommand，再失败就把文本选中让玩家手动复制
 function fbCopyText(text, okMsg){
   function done(ok){
@@ -3104,7 +3063,6 @@ function fbOpenPanel(){
   fbOverlay.hidden = false;
   if (fbBtnEl) fbBtnEl.setAttribute('aria-expanded', 'true');
   fbRefreshCtx();
-  fbRenderList();
   fbSetStatus('');
   try { if (fbTextEl && fbTextEl.focus) fbTextEl.focus(); } catch (e) {}
 }
@@ -3156,14 +3114,11 @@ const fbPopXEl = document.getElementById('fbPopX');
 if (fbPopXEl) fbPopXEl.addEventListener('click', fbHidePop);
 const fbCopyEl = document.getElementById('fbCopy');
 if (fbCopyEl) fbCopyEl.addEventListener('click', function(){
-  const text = fbCompose();
-  fbArchive(text);
-  fbCopyText(text, '已复制（含环境信息），粘贴到微信 / QQ / 邮件里发给我就行');
+  fbCopyText(fbCompose(), '已复制，粘贴到微信 / QQ / 邮件里发给我就行');
 });
 const fbSaveEl = document.getElementById('fbSave');
 if (fbSaveEl) fbSaveEl.addEventListener('click', function(){
   const text = fbCompose();
-  fbArchive(text);
   fbSetStatus(fbDownload(text) ? '已导出 asterweave-feedback.txt，把它发给我就行' : '导出失败：请改用「复制反馈」');
 });
 const fbQrEl = document.getElementById('fbQrBtn');
@@ -3171,10 +3126,6 @@ if (fbQrEl) fbQrEl.addEventListener('click', fbShowQr);
 const fbCopyMailEl = document.getElementById('fbCopyMail');
 if (fbCopyMailEl) fbCopyMailEl.addEventListener('click', function(){
   fbCopyText(FEEDBACK.email || '', '邮箱已复制：' + (FEEDBACK.show || FEEDBACK.email || ''));
-});
-const fbClearEl = document.getElementById('fbClear');
-if (fbClearEl) fbClearEl.addEventListener('click', function(){
-  fbPersist([]); fbRenderList(); fbSetStatus('本机记录已清空（游戏进度不受影响）');
 });
 const fbTextElBound = document.getElementById('fbText');
 if (fbTextElBound) fbTextElBound.addEventListener('input', function(){ fbSetStatus(''); });
