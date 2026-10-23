@@ -356,30 +356,8 @@
     border:1px solid #2b3444;background:#141a23;
   }
   .result.show{display:block;position:fixed;left:8px;right:8px;
-    bottom:calc(8px + env(safe-area-inset-bottom));z-index:6;margin:0;padding-right:34px;
+    bottom:calc(8px + env(safe-area-inset-bottom));z-index:6;margin:0;
     background:#141a23;box-shadow:0 14px 36px rgba(0,0,0,.55)}
-  .result .rx{position:absolute;top:6px;right:6px;width:26px;height:26px;border-radius:50%;
-    border:1px solid #2c4666;background:#16294a;color:#dbeaff;font-size:15px;line-height:1;
-    display:flex;align-items:center;justify-content:center;cursor:pointer}
-  .modal .modal-cname{display:block;font-size:20px;font-weight:800;letter-spacing:.04em;color:#eaf3ff;margin-top:2px}
-  .modal .modal-cmeta{display:block;margin-top:4px;font-size:12px;color:#9fb4d0}
-  .result.win{background:#14251c;border-color:#2f6b46}
-  .result.lose{background:#2a1418;border-color:#7a2333}
-  .result .msg{font-size:14px;font-weight:800}
-  .result.win .msg{color:#8ff0b4}
-  .result.lose .msg{color:#ff9aab}
-  .result .result-btns{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
-  .result .result-btns .btn{min-height:44px}
-
-  /* 结算 modal：遮罩 + 卡片（竖直居中，竖屏自适应） */
-  .overlay{
-    position:fixed;inset:0;z-index:60;
-    display:flex;align-items:center;justify-content:center;
-    padding:18px;
-    background:rgba(6,9,14,.72);
-    opacity:0;visibility:hidden;pointer-events:none;
-    transition:opacity .16s ease, visibility .16s ease;
-  }
   .overlay.open{opacity:1;visibility:visible;pointer-events:auto}
   .modal{
     width:min(92vw,420px);max-height:82vh;overflow:auto;
@@ -565,6 +543,22 @@
     box-shadow:0 0 0 1px rgba(10,16,32,.6) inset,0 2px 10px rgba(20,50,110,.35)}
   .foot{margin:14px 4px 0;font-size:12px;line-height:1.6;color:#7b8aa3}
   .err{color:#ff9aab;font-size:14px;padding:12px}
+  /* ===== 通关弹窗：收紧排版，尽量不用滚动就能看全 ===== */
+  .overlay{padding:12px}
+  .modal{max-height:92vh;padding:14px 14px 12px}
+  .modal.win .modal-title{font-size:16px;margin:0 0 2px}
+  .modal.win .modal-sub{margin:0 0 8px;font-size:12px;line-height:1.45}
+  .modal .modal-cname{font-size:17px;margin-top:1px}
+  .modal .modal-cmeta{margin-top:2px;font-size:11.5px}
+  .modal.win .const-map{max-width:168px;margin:6px auto 0;border-radius:12px}
+  .modal.win .const-fact{margin:6px 2px 0;font-size:11.5px;line-height:1.45}
+  .modal.win .modal-btns{flex-direction:row;flex-wrap:wrap;gap:8px}
+  .modal.win .modal-btns .btn{width:auto;flex:1 1 auto;min-width:0;min-height:40px;font-size:13px;padding:0 10px}
+  .modal.win .const-tag{display:none}
+  @media (max-width:345px){
+    .modal.win .modal-btns .btn{font-size:12px;padding:0 7px}
+    .modal.win .const-map{max-width:148px}
+  }
 </style>
 </head>
 <body>
@@ -1668,16 +1662,6 @@ function buildConstPanel(theme, n, noise){
   panel.className = 'const-panel';
   panel.setAttribute('data-constellation', String(theme.id || ''));
 
-  const name = document.createElement('div');
-  name.className = 'const-name';
-  name.textContent = theme.name || '';
-  if (theme.nameEn){
-    const en = document.createElement('span');
-    en.textContent = theme.nameEn;
-    name.appendChild(en);
-  }
-  panel.appendChild(name);
-
   const map = document.createElement('div');
   map.className = 'const-map';
   map.innerHTML = constSvg(theme, n, noise);   // 用 innerHTML 建内联 SVG（无命名空间字面量）
@@ -1689,10 +1673,6 @@ function buildConstPanel(theme, n, noise){
     fact.textContent = theme.fact;
     panel.appendChild(fact);
   }
-  const tag = document.createElement('div');
-  tag.className = 'const-tag';
-  tag.textContent = '✦ 星座图鉴 +1';
-  panel.appendChild(tag);
   return panel;
 }
 
@@ -1819,7 +1799,6 @@ window.addEventListener('keydown', initAudio, true);
 
 // ===== 通关揭晓：把星座画在玩家自己的棋盘上 =====
 let revealTimers = [], winRevealPending = false, winRevealDone = false, revealSkipBound = false;
-let stripHidden = false;
 
 function prefersReduced(){
   return (typeof window.matchMedia === 'function') &&
@@ -1889,7 +1868,6 @@ function skipRevealKey(e){
   if (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape'){ finishBoardReveal(); }
 }
 function resetRevealVisuals(){
-  stripHidden = false;
   clearRevealTimers();
   unbindRevealSkip();
   winRevealPending = false;
@@ -2011,7 +1989,7 @@ function renderStrip(){
   const lost = S.status === 'lost';
   const showWin = won && winRevealDone && modalDismissed && !modalOpenNow;
   const showLose = lost && modalDismissed && !modalOpenNow;
-  if ((!showWin && !showLose) || stripHidden){
+  if (!showWin && !showLose){
     resultEl.className = 'result';
     resultEl.innerHTML = '';
     return;
@@ -2040,13 +2018,6 @@ function renderStrip(){
   if (won && !last) row.appendChild(mkBtn('下一关 →', 'btn primary', nextLevel));
   if (!won || last) row.appendChild(mkBtn('换个关卡', 'btn ghost', openPanel));
   resultEl.appendChild(row);
-  const rx = document.createElement('button');
-  rx.type = 'button';
-  rx.className = 'rx';
-  rx.setAttribute('aria-label', '收起结算条');
-  rx.textContent = '×';
-  rx.addEventListener('click', function(){ stripHidden = true; renderStrip(); });
-  resultEl.appendChild(rx);
 }
 
 refreshSoundBtn();
