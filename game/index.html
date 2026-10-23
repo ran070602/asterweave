@@ -184,25 +184,19 @@
   .board-reveal{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:visible}
   .board-reveal line{stroke:#8ab4ff;stroke-width:1.6;stroke-linecap:round;stroke-opacity:0;
     filter:drop-shadow(0 0 3px rgba(120,170,255,.5))}
-  .board-reveal line.draw{animation:boardLine .34s ease forwards}
-  @keyframes boardLine{from{stroke-opacity:.85;stroke-dashoffset:1}to{stroke-opacity:.7;stroke-dashoffset:0}}
+  .board-reveal line.draw{animation:boardLine .46s cubic-bezier(.3,.8,.4,1) forwards}
+  @keyframes boardLine{from{stroke-opacity:.9;stroke-dashoffset:1}to{stroke-opacity:.72;stroke-dashoffset:0}}
   .board.reveal-stage .cell.wonoise{opacity:.16;filter:grayscale(1) brightness(.7);
     transition:opacity .28s ease,filter .28s ease}
   .board.reveal-stage .cell.wonstar{opacity:.22;filter:brightness(.45);
     transition:opacity .2s ease,filter .2s ease}
   .board.reveal-stage .cell.wonstar.lit{opacity:1;filter:none;
-    animation:starLit .44s cubic-bezier(.2,.9,.3,1) both}
-  @keyframes starLit{0%{transform:scale(.5)}55%{transform:scale(1.24)}100%{transform:scale(1)}}
-  .winname{position:absolute;left:50%;top:50%;transform:translate(-50%,-38%);z-index:4;pointer-events:none;
-    width:92%;text-align:center;opacity:0;
-    transition:opacity .34s ease,transform .46s cubic-bezier(.2,.9,.3,1)}
-  .winname.show{opacity:1;transform:translate(-50%,-50%)}
-  .winname .nm{font-size:27px;font-weight:800;letter-spacing:.05em;color:#eaf3ff;
-    text-shadow:0 2px 20px rgba(6,12,28,.96),0 0 30px rgba(130,180,255,.62)}
-  .winname .en{display:block;margin-top:3px;font-size:12px;font-weight:700;letter-spacing:.2em;
-    color:#9fc3f0;text-transform:uppercase}
-  .winname .bs{display:block;margin-top:8px;font-size:12px;color:#c8d6ea}
-  .winname .tag{display:inline-block;margin-top:10px;padding:3px 11px;border-radius:999px;font-size:11px;
+    animation:starGlow .62s ease both}
+  @keyframes starGlow{
+    0%{box-shadow:0 0 0 rgba(140,190,255,0)}
+    60%{box-shadow:0 0 13px rgba(160,205,255,.5)}
+    100%{box-shadow:0 0 6px rgba(140,190,255,.28)}
+  }
     font-weight:800;color:#08111f;background:linear-gradient(180deg,#a9d8ff,#6fb3f0)}
   @media (prefers-reduced-motion: reduce){
     .board-reveal line,.board.reveal-stage .cell,.winname{transition:none;animation:none}
@@ -361,7 +355,14 @@
     margin:12px 2px 0;padding:12px;border-radius:12px;display:none;
     border:1px solid #2b3444;background:#141a23;
   }
-  .result.show{display:block}
+  .result.show{display:block;position:fixed;left:8px;right:8px;
+    bottom:calc(8px + env(safe-area-inset-bottom));z-index:6;margin:0;padding-right:34px;
+    background:#141a23;box-shadow:0 14px 36px rgba(0,0,0,.55)}
+  .result .rx{position:absolute;top:6px;right:6px;width:26px;height:26px;border-radius:50%;
+    border:1px solid #2c4666;background:#16294a;color:#dbeaff;font-size:15px;line-height:1;
+    display:flex;align-items:center;justify-content:center;cursor:pointer}
+  .modal .modal-cname{display:block;font-size:20px;font-weight:800;letter-spacing:.04em;color:#eaf3ff;margin-top:2px}
+  .modal .modal-cmeta{display:block;margin-top:4px;font-size:12px;color:#9fb4d0}
   .result.win{background:#14251c;border-color:#2f6b46}
   .result.lose{background:#2a1418;border-color:#7a2333}
   .result .msg{font-size:14px;font-weight:800}
@@ -678,7 +679,7 @@
   </div>
   <div class="teach hidden" id="teach"></div>
 
-  <div class="boardwrap"><div class="board" id="board"></div><svg class="board-reveal" id="boardReveal" aria-hidden="true"></svg><div class="winname" id="winName" aria-live="polite"></div></div>
+  <div class="boardwrap"><div class="board" id="board"></div><svg class="board-reveal" id="boardReveal" aria-hidden="true"></svg></div>
 
   <div class="actions" id="replayActions">
     <button type="button" class="btn ghost" id="replay">↻ 重玩本关</button>
@@ -970,7 +971,6 @@ const teachEl = document.getElementById('teach');
 const resultEl = document.getElementById('result');
 const boardWrapEl = document.querySelector('.boardwrap');
 const boardRevealEl = document.getElementById('boardReveal');
-const winNameEl = document.getElementById('winName');
 const soundBtnEl = document.getElementById('soundBtn');
 const nameEl = document.getElementById('lvName');
 const lvtagEl = document.getElementById('lvtag');
@@ -1701,10 +1701,29 @@ function buildModal(){
   const last = won && isLastLevel();
   modalEl.className = 'modal ' + (won ? 'win' : 'lose');
   if (won){
-    modalTitleEl.textContent = last ? '全部通关！' : '第 ' + (S.index + 1) + ' 关 · 通关！';
-    modalSubEl.textContent = last
-      ? '所有 ' + LEVELS.length + ' 关观测完成，可从右上角「关卡」面板重玩任意关。'
-      : '观测完成：所有安全格已翻开、全部星星已标记。';
+    const wt = (S.level && S.level.theme) ? S.level.theme : null;
+    let best = null;
+    for (let i = 0; i < ((wt && wt.stars) || []).length; i++){
+      const st = wt.stars[i];
+      const mag = (typeof st.mag === 'number' && isFinite(st.mag)) ? st.mag : 9;
+      if (!best || mag < best.mag) best = { mag: mag, st: st };
+    }
+    modalTitleEl.textContent = last ? '全部通关！' : '第 ' + (S.index + 1) + ' 关 · 观测成功';
+    modalSubEl.innerHTML = '';
+    if (wt){
+      const nm = document.createElement('span');
+      nm.className = 'modal-cname';
+      nm.textContent = wt.name + (wt.nameEn ? '  ' + wt.nameEn : '');
+      modalSubEl.appendChild(nm);
+      const meta = document.createElement('span');
+      meta.className = 'modal-cmeta';
+      meta.textContent = (best && best.st && best.st.name
+          ? '最亮星 ' + best.st.name + '（' + best.mag + ' 等） · ' : '')
+        + (last ? '全部 ' + LEVELS.length + ' 关观测完成' : '已收入星座图鉴');
+      modalSubEl.appendChild(meta);
+    } else {
+      modalSubEl.textContent = last ? '所有 ' + LEVELS.length + ' 关观测完成。' : '本关观测完成。';
+    }
   } else {
     modalTitleEl.textContent = '观测失败';
     modalSubEl.textContent = S.lastHitNoise
@@ -1722,15 +1741,25 @@ function buildModal(){
   modalBtnsEl.innerHTML = '';
   modalPrimaryBtn = null;
 
+  const canArchive = !!(won && theme && SKY.some(function(k){ return k.id === theme.id; }));
   if (won && !last){
+    if (canArchive) modalBtnsEl.appendChild(mkBtn('★ 图鉴详情', 'btn ghost', function(){
+      dismissModal();
+      skySelected = theme.id;
+      renderSkyDetail();
+    }));
     modalBtnsEl.appendChild(mkBtn('↻ 重来本关', 'btn again', replayLevel));
     modalPrimaryBtn = mkBtn('下一关 →', 'btn primary', nextLevel);
     modalBtnsEl.appendChild(modalPrimaryBtn);
   } else if (won && last){
+    if (canArchive) modalBtnsEl.appendChild(mkBtn('★ 图鉴详情', 'btn ghost', function(){
+      dismissModal();
+      skySelected = theme.id;
+      renderSkyDetail();
+    }));
     modalPrimaryBtn = mkBtn('↻ 重来本关', 'btn primary', replayLevel);
     modalBtnsEl.appendChild(modalPrimaryBtn);
-    // 最后一关：“下一关”位置改成禁用的「全部通关」，不是死按钮
-    modalBtnsEl.appendChild(mkBtn('全部通关', 'btn', null, true));
+    modalBtnsEl.appendChild(mkBtn('换个关卡', 'btn ghost', function(){ dismissModal(); openPanel(); }));
   } else {
     modalPrimaryBtn = mkBtn('↻ 重来本关', 'btn primary', replayLevel);
     modalBtnsEl.appendChild(modalPrimaryBtn);
@@ -1764,7 +1793,8 @@ function tone(freq, dur, delay, type, vol, freq2){
 }
 function sndDig(){ tone(520, 0.05, 0, 'sine', 0.022); }
 function sndMark(){ tone(760, 0.055, 0, 'square', 0.018); }
-function sndStar(k){ tone(660 + Math.min(k, 14) * 34, 0.1, 0, 'sine', 0.055); }
+function sndStars(){ tone(587.33, 0.5, 0, 'sine', 0.042); tone(880, 0.5, 0.02, 'sine', 0.032);
+  tone(1174.66, 0.62, 0.04, 'sine', 0.02); }
 function sndLine(k){ tone(880 + (k % 3) * 110, 0.1, 0, 'triangle', 0.034);
   tone(1320 + (k % 3) * 110, 0.1, 0.05, 'triangle', 0.022); }
 function sndWin(){ const seq = [523.25, 659.25, 783.99, 1046.5];
@@ -1789,6 +1819,7 @@ window.addEventListener('keydown', initAudio, true);
 
 // ===== 通关揭晓：把星座画在玩家自己的棋盘上 =====
 let revealTimers = [], winRevealPending = false, winRevealDone = false, revealSkipBound = false;
+let stripHidden = false;
 
 function prefersReduced(){
   return (typeof window.matchMedia === 'function') &&
@@ -1835,24 +1866,7 @@ function drawAllSegments(){
   }
   boardRevealEl.innerHTML = html;
 }
-function showWinName(theme){
-  if (!winNameEl) return;
-  if (!theme){ return; }
-  let best = null;
-  for (let i = 0; i < (theme.stars || []).length; i++){
-    const st = theme.stars[i];
-    const mag = (typeof st.mag === 'number' && isFinite(st.mag)) ? st.mag : 9;
-    if (!best || mag < best.mag) best = { mag: mag, st: st };
-  }
-  let html = '<span class="nm">' + escHtml(theme.name || '') + '</span>';
-  html += '<span class="en">' + escHtml(theme.nameEn || '') + '</span>';
-  if (best && best.st.name){
-    html += '<span class="bs">最亮星 ' + escHtml(best.st.name) + '（' + best.mag + ' 等）</span>';
-  }
-  html += '<span class="tag">✦ 星座图鉴 +1</span>';
-  winNameEl.innerHTML = html;
-  winNameEl.className = 'winname show';
-}
+
 function clearRevealTimers(){
   for (let i = 0; i < revealTimers.length; i++) clearTimeout(revealTimers[i]);
   revealTimers = [];
@@ -1875,13 +1889,13 @@ function skipRevealKey(e){
   if (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape'){ finishBoardReveal(); }
 }
 function resetRevealVisuals(){
+  stripHidden = false;
   clearRevealTimers();
   unbindRevealSkip();
   winRevealPending = false;
   winRevealDone = false;
   if (boardEl) boardEl.classList.remove('reveal-stage', 'reveal-flash');
   if (boardRevealEl) boardRevealEl.innerHTML = '';
-  if (winNameEl){ winNameEl.className = 'winname'; winNameEl.innerHTML = ''; }
 }
 
 // 揭晓总时长上限 ~3.2s（首次）/ ~1.5s（重玩或 reduced-motion 直接终态），随时可点击跳过
@@ -1893,23 +1907,22 @@ function startBoardReveal(fast){
   }
   boardEl.classList.add('reveal-stage');
   bindRevealSkip();
-  const n = S.n, step = fast ? 45 : 95;
-  const ordered = theme.stars.map(function(st, i){
-    return { st: st, mag: (typeof st.mag === 'number' && isFinite(st.mag)) ? st.mag : 3 };
-  }).sort(function(a, b){ return a.mag - b.mag; });
-  const t0 = 220;                                     // 先让杂星退场
-  for (let k = 0; k < ordered.length; k++){
+  const n = S.n;
+  // ① 杂星退场后，星座星一次性亮起（不再逐颗弹跳，避免"乱"），全程只发一声和弦
+  const t0 = fast ? 160 : 400;
+  for (let k = 0; k < theme.stars.length; k++){
     (function(k){
       revealTimers.push(setTimeout(function(){
-        const cell = cellEls[cellIndexOfStar(ordered[k].st, n)];
+        const cell = cellEls[cellIndexOfStar(theme.stars[k], n)];
         if (cell) cell.classList.add('lit');
-        sndStar(k);
-      }, t0 + k * step));
+        if (k === 0) sndStars();
+      }, t0 + k * (fast ? 12 : 30)));
     })(k);
   }
-  const afterStars = t0 + Math.max(0, ordered.length - 1) * step + (fast ? 110 : 200);
+  const starsDone = t0 + theme.stars.length * (fast ? 12 : 30) + (fast ? 300 : 620);
+  // ② 唯一的主戏：逐段连线（放慢、加长描边）
   const lines = Array.isArray(theme.lines) ? theme.lines : [];
-  const lineStep = fast ? 30 : 58;
+  const lineStep = fast ? 62 : 155;
   const wrapRect = boardWrapEl.getBoundingClientRect();
   const pts = starPoints(theme, n, wrapRect);
   boardRevealEl.setAttribute('viewBox', '0 0 ' + Math.round(wrapRect.width) + ' ' + Math.round(wrapRect.height));
@@ -1918,22 +1931,23 @@ function startBoardReveal(fast){
     const seg = lines[i], a = seg && pts[seg[0]], b = seg && pts[seg[1]];
     if (!a || !b) continue;
     html += '<line x1="' + a[0] + '" y1="' + a[1] + '" x2="' + b[0] + '" y2="' + b[1] +
-      '" stroke-dasharray="1" stroke-dashoffset="1" style="animation-delay:' + (drawn * lineStep) + 'ms"></line>';
+      '" stroke-dasharray="1" stroke-dashoffset="1" style="animation-delay:' +
+      ((starsDone - t0) + drawn * lineStep) + 'ms"></line>';
     (function(k){
-      revealTimers.push(setTimeout(function(){ sndLine(k); }, afterStars + k * lineStep));
+      revealTimers.push(setTimeout(function(){ sndLine(k); }, starsDone + k * lineStep));
     })(drawn);
     drawn++;
   }
   boardRevealEl.innerHTML = html;
   const segs = boardRevealEl.querySelectorAll('line');
   for (let i = 0; i < segs.length; i++) segs[i].classList.add('draw');
-  const afterLines = afterStars + drawn * lineStep + (fast ? 100 : 220);
   revealTimers.push(setTimeout(function(){
-    showWinName(theme);
     sndWin();
     try { if (navigator.vibrate) navigator.vibrate([12, 45, 12]); } catch (e) {}
-  }, afterLines));
-  revealTimers.push(setTimeout(function(){ finishBoardReveal(); }, afterLines + (fast ? 520 : 900)));
+  }, starsDone));
+  // ③ 连线画完 → 弹小弹窗（名字、星图、三个按钮都在弹窗里）
+  const end = starsDone + Math.max(0, drawn - 1) * lineStep + (fast ? 460 : 820);
+  revealTimers.push(setTimeout(function(){ finishBoardReveal(); }, end));
 }
 
 // 结算/跳过：直接把盘面定格在“星座已成形 + 名字已显示”
@@ -1942,20 +1956,17 @@ function finishBoardReveal(){
   unbindRevealSkip();
   winRevealPending = false;
   winRevealDone = true;
-  render();                        // 先画终局盘面（会清掉 lit）
+  render();                        // 画终局盘面；renderModal 会弹出结算小弹窗
   const theme = (S && S.level && S.level.theme) || null;
   if (theme && Array.isArray(theme.stars) && theme.stars.length){
     markAllStarsLit();
     drawAllSegments();
-    showWinName(theme);
   }
-  renderStrip();
 }
 
 function renderModal(){
-  // 通关不再用遮屏弹窗：揭晓在棋盘上完成，之后由底部结算条接管
-  // （最后一关例外：终局庆祝值得弹一次；揭晓播放期间先压住）
-  if (S && S.status === 'won' && !isLastLevel()){ closeModal(false); return; }
+  // 揭晓播放期间先不弹；揭晓结束（finishBoardReveal）后弹出结算小弹窗：
+  // 星座名 + 最亮星 + 星图 + 三个按钮都在弹窗里，不用下滑找按钮
   if (winFlashPending || winRevealPending){ closeModal(false); return; }
   const result = (S.status === 'won' || S.status === 'lost');
   if (!result || modalDismissed){ closeModal(false); return; }
@@ -1998,9 +2009,9 @@ function dismissModal(){
 function renderStrip(){
   const won = S.status === 'won';
   const lost = S.status === 'lost';
-  const showWin = won && winRevealDone && !modalOpenNow;
+  const showWin = won && winRevealDone && modalDismissed && !modalOpenNow;
   const showLose = lost && modalDismissed && !modalOpenNow;
-  if (!showWin && !showLose){
+  if ((!showWin && !showLose) || stripHidden){
     resultEl.className = 'result';
     resultEl.innerHTML = '';
     return;
@@ -2020,7 +2031,7 @@ function renderStrip(){
   row.className = 'result-btns';
   const theme = (S.level && S.level.theme) ? S.level.theme : null;
   if (won && theme && SKY.some(function(k){ return k.id === theme.id; })){
-    row.appendChild(mkBtn('★ 星座档案', 'btn ghost', function(){
+    row.appendChild(mkBtn('★ 图鉴详情', 'btn ghost', function(){
       skySelected = theme.id;
       renderSkyDetail();
     }));
@@ -2029,6 +2040,13 @@ function renderStrip(){
   if (won && !last) row.appendChild(mkBtn('下一关 →', 'btn primary', nextLevel));
   if (!won || last) row.appendChild(mkBtn('换个关卡', 'btn ghost', openPanel));
   resultEl.appendChild(row);
+  const rx = document.createElement('button');
+  rx.type = 'button';
+  rx.className = 'rx';
+  rx.setAttribute('aria-label', '收起结算条');
+  rx.textContent = '×';
+  rx.addEventListener('click', function(){ stripHidden = true; renderStrip(); });
+  resultEl.appendChild(rx);
 }
 
 refreshSoundBtn();
