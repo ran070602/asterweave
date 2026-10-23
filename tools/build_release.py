@@ -90,6 +90,10 @@ def main():
     subprocess.run([sys.executable, os.path.join(ROOT, "tools", "build_feedback.py")],
                    check=True, cwd=ROOT)
     fb = json.load(open(os.path.join(ROOT, "tools", "feedback_qr.json"), encoding="utf-8"))
+    # 星名专名表（没有专名的暗星保留编号）
+    subprocess.run([sys.executable, os.path.join(ROOT, "tools", "build_star_names.py")],
+                   check=True, cwd=ROOT)
+    proper = json.load(open(os.path.join(ROOT, "tools", "star_proper_names.json"), encoding="utf-8"))
     print(f"UI 外壳 {len(html)} 字节；关卡 {len(levels)} 关")
 
     # 1) 注入关卡块（只替换两个注释标记之间的内容）
@@ -139,6 +143,17 @@ def main():
                   f"{len(qr)//1024} KB）")
         else:
             print(f"意见箱注入：通过（邮箱 {fb.get('show') or fb.get('email')}；未使用二维码）")
+
+    # 1d) 注入星名专名表（海报标注优先用专名）
+    pr_block = ("/* PROPER_INJECT_START */\n"
+                "const PROPER_NAMES = " + json.dumps(proper, ensure_ascii=False) + ";\n"
+                "/* PROPER_INJECT_END */")
+    pr_pat = re.compile(r"/\* PROPER_INJECT_START \*/.*?/\* PROPER_INJECT_END \*/", re.S)
+    if not pr_pat.search(out_html):
+        fail.append("UI 外壳里找不到 PROPER_INJECT 标记")
+    else:
+        out_html = pr_pat.sub(lambda m: pr_block, out_html, count=1)
+        print("星名专名表注入：通过（%d 条专名，其余用编号）" % len(proper))
 
     # 2) 回读校验：注入后的 LEVELS 必须与 levels.json 完全一致
     m = re.search(r"/\* LEVELS_INJECT_START \*/\s*const LEVELS = (\[.*?\]);\s*/\* LEVELS_INJECT_END \*/",

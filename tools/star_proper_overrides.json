@@ -1,0 +1,10 @@
+{
+  "_comment": "星名专名纠正表：优先于 star_name_needed.json 生效。值为 null = 该星退回拜耳编号（不确定的专名宁可不显示）。键 = <关卡号>|<拜耳编号>。",
+  "_reviewed": "2026-10-23 由 lead 审阅 star_name_needed.json 已补的 64 条；子代理以 IAU WGSN Naked Eye Catalog(2025-05) + SIMBAD/DBpedia 逐条取证。",
+  "9|Mu Gem": "Tejat Posterior",
+  "_fix_9": "资料冲突：子代理查到现行 WGSN 目录写作 'Tejat'（NEC.csv μ Geminorum 2.87）；传统文献与维基条目名为 'Tejat Posterior'。本作取 'Tejat Posterior'——它与 η Gem 的 'Tejat Prior' 成对，语义无歧义（η Gem 本表已映射为 Propus）。若日后以 WGSN 口径为准，改这里即可。",
+  "43|Tau Pup": null,
+  "_drops": "Tau Pup 专名三方冲突（SIMBAD 有 Altaleban / Taleban / Rehla / Anazitisi，维基无对应条目），暂退回拜耳编号显示。",
+  "_restored": "Alpha Lup→Uridim、Theta Aql→Antinous、Beta Ser→Zhou 经子代理查证为现行 IAU 目录收录，已撤销此前的退回。",
+  "_catalog_notes": "另发现星表本身疑似问题（未改）：level 18 有两条 'Theta Aur' 同一天体重复；星等与 IAU Vmag 差 >0.3 的有 Alpha Aqr(3.84/2.94)、Beta Her(3.73/2.77)、Gamma Boo(2.68/3.02)、Alpha Her(3.48/2.78，该星本身是 2.7–4.0 的变星)。"
+}

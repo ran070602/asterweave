@@ -6,6 +6,9 @@
 __pycache__/
 *.pyc
 
+# 关卡/数据备份（各会话本地留存，不进仓库）
+tools/*.bak-*
+
 # 系统
 Thumbs.db
 desktop.ini

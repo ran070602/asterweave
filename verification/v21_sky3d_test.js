@@ -20,6 +20,14 @@ let clock = 0, timers = [], tid = 1;
 function setTimeoutStub(fn, ms) { const id = tid++; timers.push({ id, t: clock + (ms || 0), fn, seq: id }); return id; }
 function clearTimeoutStub(id) { timers = timers.filter(x => x.id !== id); }
 function rafStub(fn) { return setTimeoutStub(fn, 16); }
+// setInterval 桩：周期性重排定时器（游戏里用于 500ms 计时器）
+function setIntervalStub(fn, ms) {
+  const id = tid++;
+  const arm = function () { timers.push({ id: id, t: clock + (ms || 16), fn: function () { arm(); fn(); }, seq: id }); };
+  arm();
+  return id;
+}
+function clearIntervalStub(id) { timers = timers.filter(x => x.id !== id); }
 function flush(ms) {
   const target = clock + ms;
   for (;;) {
@@ -134,6 +142,7 @@ const win = {
   localStorage: { getItem: k => (k in store ? store[k] : null), setItem: (k, v) => { store[k] = String(v); }, removeItem: k => { delete store[k]; } },
   matchMedia: () => ({ matches: false, addEventListener() {}, addListener() {} }),
   setTimeout: setTimeoutStub, clearTimeout: clearTimeoutStub, requestAnimationFrame: rafStub,
+  setInterval: setIntervalStub, clearInterval: clearIntervalStub,
   addEventListener(t, fn) { (win._h[t] = win._h[t] || []).push(fn); },
   _h: {}, innerWidth: 390, innerHeight: 844, devicePixelRatio: 2,
   document: doc, Math, JSON, console, Set, Map, Array, Object, String, Number, Boolean, Date, Int16Array, Uint8Array, parseInt, parseFloat, isNaN, isFinite, Error, encodeURIComponent
@@ -197,9 +206,23 @@ ok('未观测时没有任何星座名字', (h.match(/class="lbl"/g) || []).lengt
 ok('未观测节点是暗色（op 上限 < 0.75）', Math.max.apply(null, nodes.map(n => n.op)) < 0.75, 'maxOp=' + Math.max.apply(null, nodes.map(n => n.op)));
 
 // 投影范围：全部落在 viewBox 200×120 内
-ok('所有节点都投影在可视区内',
-   nodes.every(n => Math.abs(n.x) <= 100 && Math.abs(n.y) <= 60),
-   'maxX=' + Math.max.apply(null, nodes.map(n => Math.abs(n.x))).toFixed(1) + ' maxY=' + Math.max.apply(null, nodes.map(n => Math.abs(n.y))).toFixed(1));
+// 节点坐标是"变换前"的（球心在原点），必须套上根变换 translate(100,60) scale(s) 再判断是否落在画布内
+const rootTf = (mapHtml().match(/<g class="sky-root" transform="([^"]+)"/) || [])[1] || '';
+const tm = rootTf.match(/translate\(([-\d.]+),([-\d.]+)\)\s*scale\(([\d.]+)\)/);
+ok('3D 根变换把球心平移到 viewBox 中心', !!tm && Math.abs(+tm[1] - 100) < 0.01 && Math.abs(+tm[2] - 60) < 0.01, rootTf);
+const tx = tm ? +tm[1] : 0, ty = tm ? +tm[2] : 0, tsc = tm ? +tm[3] : 1;
+const nodeXs = nodes.map(n => tx + n.x * tsc), nodeYs = nodes.map(n => ty + n.y * tsc);
+ok('所有节点都落在画布可视范围内（0–200 / 0–120）',
+   nodeXs.every(x => x >= 4 && x <= 196) && nodeYs.every(y => y >= 4 && y <= 116),
+   'x∈[' + Math.min.apply(null, nodeXs).toFixed(1) + ',' + Math.max.apply(null, nodeXs).toFixed(1) +
+   '] y∈[' + Math.min.apply(null, nodeYs).toFixed(1) + ',' + Math.max.apply(null, nodeYs).toFixed(1) + ']');
+const cx = nodeXs.reduce((a, b) => a + b, 0) / nodeXs.length;
+const cy = nodeYs.reduce((a, b) => a + b, 0) / nodeYs.length;
+ok('球体居中在画布中心（质心贴近 100,60）',
+   Math.abs(cx - 100) <= 22 && Math.abs(cy - 60) <= 18, '质心=(' + cx.toFixed(1) + ',' + cy.toFixed(1) + ')');
+ok('未观测节点是暗色且半径有限（球体不放大小到出界）',
+   Math.max.apply(null, nodes.map(n => n.op)) <= 0.75, 'maxOp=' + Math.max.apply(null, nodes.map(n => n.op)).toFixed(2));
+
 ok('深度线索：远侧不透明度明显低于近侧',
    Math.min.apply(null, nodes.map(n => n.op)) < Math.max.apply(null, nodes.map(n => n.op)) - 0.3,
    'min=' + Math.min.apply(null, nodes.map(n => n.op)).toFixed(2) + ' max=' + Math.max.apply(null, nodes.map(n => n.op)).toFixed(2));

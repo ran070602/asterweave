@@ -20,6 +20,14 @@ let clock = 0, timers = [], tid = 1;
 function setTimeoutStub(fn, ms) { const id = tid++; timers.push({ id, t: clock + (ms || 0), fn, seq: id }); return id; }
 function clearTimeoutStub(id) { timers = timers.filter(x => x.id !== id); }
 function rafStub(fn) { return setTimeoutStub(fn, 16); }
+// setInterval 桩：周期性重排定时器（游戏里用于 500ms 计时器）
+function setIntervalStub(fn, ms) {
+  const id = tid++;
+  const arm = function () { timers.push({ id: id, t: clock + (ms || 16), fn: function () { arm(); fn(); }, seq: id }); };
+  arm();
+  return id;
+}
+function clearIntervalStub(id) { timers = timers.filter(x => x.id !== id); }
 function flush(ms) {
   const target = clock + ms;
   for (;;) {
@@ -134,6 +142,7 @@ const win = {
   localStorage: { getItem: k => (k in store ? store[k] : null), setItem: (k, v) => { store[k] = String(v); }, removeItem: k => { delete store[k]; } },
   matchMedia: () => ({ matches: false, addEventListener() {}, addListener() {} }),
   setTimeout: setTimeoutStub, clearTimeout: clearTimeoutStub, requestAnimationFrame: rafStub,
+  setInterval: setIntervalStub, clearInterval: clearIntervalStub,
   addEventListener(t, fn) { (win._h[t] = win._h[t] || []).push(fn); },
   _h: {}, innerWidth: 390, innerHeight: 844, devicePixelRatio: 2,
   document: doc, Math, JSON, console, Set, Map, Array, Object, String, Number, Boolean, Date, Int16Array, Uint8Array, parseInt, parseFloat, isNaN, isFinite, Error, encodeURIComponent
@@ -163,6 +172,10 @@ function actCell(i, mode) {
 // ---------------- v20：星座详情「海报」----------------
 if (byId.introStart) { byId.introStart.dispatchEvent(mkEvent('click', { target: byId.introStart })); flush(0); }
 
+const SKY_ALL = (function(){
+  const m = html.match(/\/\* SKY_INJECT_START \*\/\s*const SKY = (\[[\s\S]*?\]);\s*\/\* SKY_INJECT_END \*\//);
+  return m ? JSON.parse(m[1]) : [];
+})();
 const SKY_IDS = (function(){
   const m = html.match(/\/\* SKY_INJECT_START \*\/\s*const SKY = (\[[\s\S]*?\]);\s*\/\* SKY_INJECT_END \*\//);
   return m ? JSON.parse(m[1]).map(function(x){ return x.id; }) : [];
@@ -272,6 +285,38 @@ for (let i = 0; i < ids.length; i++){
 ok('50 个星座的星名标注互不重叠', !overlapBad, overlapBad || 'no overlap');
 ok('标注都不侵入顶部标题带', !topBad, topBad || 'all below ' + TITLE_BOTTOM);
 ok('图形竖向跨度 ≥55%（星点跨度口径，图形框实际占 77%）', !sizeBad, sizeBad || 'ok');
+
+// ⑥ 专名表：有专名的星，海报上应当显示专名而不是拜耳编号
+const PROPER = (function(){
+  const m = html.match(/const PROPER_NAMES = (\{[\s\S]*?\});/);
+  try { return m ? JSON.parse(m[1]) : {}; } catch (e) { return {}; }
+})();
+const LEVELS_JSON = (function(){
+  const m = html.match(/\/\* LEVELS_INJECT_START \*\/\s*const LEVELS = (\[[\s\S]*?\]);\s*\/\* LEVELS_INJECT_END \*\//);
+  return m ? JSON.parse(m[1]) : [];
+})();
+const SKY_BY_LEVEL = {};
+SKY_ALL.forEach(function(s){ SKY_BY_LEVEL[s.level] = s; });
+let properBad = [], properChecked = 0;
+Object.keys(PROPER).forEach(function(k){
+  const parts = k.split('|');
+  const lvNo = +parts[0], des = parts.slice(1).join('|');
+  const lv = LEVELS_JSON[lvNo - 1];
+  const sky = SKY_BY_LEVEL[lvNo];
+  if (!lv || !sky) return;
+  const stars = (lv.theme && lv.theme.stars) || [];
+  const mine = stars.filter(function(s){ return String(s.en) === des; })[0];
+  if (!mine) return;
+  const top5 = stars.slice().sort(function(a, b){ return (a.mag || 9) - (b.mag || 9); }).slice(0, 5);
+  if (top5.indexOf(mine) < 0) return;                  // 不在标注范围内，跳过
+  properChecked++;
+  selectSky(sky.id);
+  const d2 = detail();
+  const labels2 = (d2.match(/class="p-label"[^>]*>([^<]*)</g) || []).map(function(s){ return s.replace(/.*>/, '').replace(/<$/, ''); });
+  if (labels2.indexOf(PROPER[k]) < 0 && labels2.indexOf(des) >= 0) properBad.push(sky.zh + ':' + des + '→' + PROPER[k]);
+});
+ok('海报标注使用专名（有专名时不会显示拜耳编号）',
+   properBad.length === 0, properChecked === 0 ? '暂无专名数据（跳过）' : ('检查 ' + properChecked + ' 颗，问题 ' + properBad.length + ' 个 ' + properBad.slice(0, 3).join(',')));
 
 ok('全页仍零 http(s) 外部引用', !/https?:\/\//.test(html), 'html 0 处');
 ok('全页无 <img>（海报是内联 SVG）', (html.match(/<img[^>]*>/g) || []).length === 0);

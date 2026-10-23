@@ -1,0 +1,1229 @@
+[
+ {
+  "level": 2,
+  "constellation": "天箭座",
+  "zh": "左旗一",
+  "en": "Gamma Sge",
+  "mag": 3.47
+ },
+ {
+  "level": 2,
+  "constellation": "天箭座",
+  "zh": "天箭座δ",
+  "en": "Delta Sge",
+  "mag": 3.68
+ },
+ {
+  "level": 2,
+  "constellation": "天箭座",
+  "zh": "天箭座ε",
+  "en": "Epsilon Sge",
+  "mag": 3.75
+ },
+ {
+  "level": 2,
+  "constellation": "天箭座",
+  "zh": "天箭座ζ",
+  "en": "Zeta Sge",
+  "mag": 5.0
+ },
+ {
+  "level": 4,
+  "constellation": "仙后座",
+  "zh": "策",
+  "en": "Gamma Cas",
+  "mag": 2.47
+ },
+ {
+  "level": 6,
+  "constellation": "天鹅座",
+  "zh": "天津二",
+  "en": "Delta Cyg",
+  "mag": 2.87,
+  "proper": "Fawaris",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 6,
+  "constellation": "天鹅座",
+  "zh": "天津六",
+  "en": "Tau Cyg",
+  "mag": 3.74
+ },
+ {
+  "level": 8,
+  "constellation": "摩羯座",
+  "zh": "牛宿一",
+  "en": "Beta Cap",
+  "mag": 3.05,
+  "proper": "Dabih",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 8,
+  "constellation": "摩羯座",
+  "zh": "牛宿二",
+  "en": "Alpha Cap",
+  "mag": 3.57,
+  "proper": "Algedi",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 8,
+  "constellation": "摩羯座",
+  "zh": "垒壁阵三",
+  "en": "Gamma Cap",
+  "mag": 3.69,
+  "proper": "Nashira",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 8,
+  "constellation": "摩羯座",
+  "zh": "摩羯ζ",
+  "en": "Zeta Cap",
+  "mag": 3.74
+ },
+ {
+  "level": 8,
+  "constellation": "摩羯座",
+  "zh": "垒壁阵二",
+  "en": "Theta Cap",
+  "mag": 4.07
+ },
+ {
+  "level": 9,
+  "constellation": "双子座",
+  "zh": "井宿一",
+  "en": "Mu Gem",
+  "mag": 2.87,
+  "proper": "Tejat",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 9,
+  "constellation": "双子座",
+  "zh": "井宿五",
+  "en": "Epsilon Gem",
+  "mag": 2.98,
+  "proper": "Mebsuta",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 9,
+  "constellation": "双子座",
+  "zh": "钺",
+  "en": "Eta Gem",
+  "mag": 3.28,
+  "proper": "Propus",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 11,
+  "constellation": "狮子座",
+  "zh": "轩辕九",
+  "en": "Epsilon Leo",
+  "mag": 2.98,
+  "proper": "Algenubi",
+  "src": "https://en.wikipedia.org/wiki/Algenubi"
+ },
+ {
+  "level": 12,
+  "constellation": "凤凰座",
+  "zh": "凤凰β",
+  "en": "Beta Phe",
+  "mag": 3.32
+ },
+ {
+  "level": 12,
+  "constellation": "凤凰座",
+  "zh": "凤凰γ",
+  "en": "Gamma Phe",
+  "mag": 3.41
+ },
+ {
+  "level": 12,
+  "constellation": "凤凰座",
+  "zh": "凤凰ε",
+  "en": "Epsilon Phe",
+  "mag": 3.88
+ },
+ {
+  "level": 12,
+  "constellation": "凤凰座",
+  "zh": "凤凰δ",
+  "en": "Delta Phe",
+  "mag": 3.93
+ },
+ {
+  "level": 12,
+  "constellation": "凤凰座",
+  "zh": "凤凰ζ",
+  "en": "Zeta Phe",
+  "mag": 3.94,
+  "proper": "Wurren",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 13,
+  "constellation": "室女座",
+  "zh": "角宿二",
+  "en": "Zeta Vir",
+  "mag": 3.38,
+  "proper": "Heze",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 13,
+  "constellation": "室女座",
+  "zh": "室女δ",
+  "en": "Delta Vir",
+  "mag": 3.38,
+  "proper": "Minelauva",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 14,
+  "constellation": "天鹤座",
+  "zh": "鹤二",
+  "en": "Beta Gru",
+  "mag": 2.11,
+  "proper": "Tiaki",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 14,
+  "constellation": "天鹤座",
+  "zh": "鹤五",
+  "en": "Epsilon Gru",
+  "mag": 3.49
+ },
+ {
+  "level": 14,
+  "constellation": "天鹤座",
+  "zh": "鹤九",
+  "en": "Iota Gru",
+  "mag": 3.9
+ },
+ {
+  "level": 15,
+  "constellation": "天琴座",
+  "zh": "天琴δ",
+  "en": "Delta Lyr",
+  "mag": 4.3
+ },
+ {
+  "level": 15,
+  "constellation": "天琴座",
+  "zh": "天琴κ",
+  "en": "Kappa Lyr",
+  "mag": 4.33
+ },
+ {
+  "level": 15,
+  "constellation": "天琴座",
+  "zh": "天琴ζ",
+  "en": "Zeta Lyr",
+  "mag": 4.34
+ },
+ {
+  "level": 16,
+  "constellation": "孔雀座",
+  "zh": "孔雀β",
+  "en": "Beta Pav",
+  "mag": 3.42
+ },
+ {
+  "level": 16,
+  "constellation": "孔雀座",
+  "zh": "孔雀δ",
+  "en": "Delta Pav",
+  "mag": 3.55
+ },
+ {
+  "level": 16,
+  "constellation": "孔雀座",
+  "zh": "孔雀η",
+  "en": "Eta Pav",
+  "mag": 3.61
+ },
+ {
+  "level": 16,
+  "constellation": "孔雀座",
+  "zh": "孔雀κ",
+  "en": "Kappa Pav",
+  "mag": 3.83
+ },
+ {
+  "level": 16,
+  "constellation": "孔雀座",
+  "zh": "孔雀ε",
+  "en": "Epsilon Pav",
+  "mag": 3.97
+ },
+ {
+  "level": 17,
+  "constellation": "仙王座",
+  "zh": "仙王γ",
+  "en": "Gamma Cep",
+  "mag": 3.21,
+  "proper": "Errai",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 17,
+  "constellation": "仙王座",
+  "zh": "仙王ζ",
+  "en": "Zeta Cep",
+  "mag": 3.35
+ },
+ {
+  "level": 17,
+  "constellation": "仙王座",
+  "zh": "仙王ι",
+  "en": "Iota Cep",
+  "mag": 3.52
+ },
+ {
+  "level": 17,
+  "constellation": "仙王座",
+  "zh": "仙王ξ",
+  "en": "Xi Cep",
+  "mag": 4.29,
+  "proper": "Kurhah",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 18,
+  "constellation": "御夫座",
+  "zh": "御夫θ",
+  "en": "Theta Aur",
+  "mag": 2.62,
+  "proper": "Mahasim",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 18,
+  "constellation": "御夫座",
+  "zh": "御夫ι",
+  "en": "Iota Aur",
+  "mag": 2.69,
+  "proper": "Hassaleh",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 18,
+  "constellation": "御夫座",
+  "zh": "五车四",
+  "en": "Theta Aur",
+  "mag": 2.99,
+  "proper": "Mahasim",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 20,
+  "constellation": "巨蟹座",
+  "zh": "柳宿二",
+  "en": "Delta Cnc",
+  "mag": 3.94,
+  "proper": "Asellus Australis",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 20,
+  "constellation": "巨蟹座",
+  "zh": "柳宿三",
+  "en": "Iota Cnc",
+  "mag": 4.02
+ },
+ {
+  "level": 20,
+  "constellation": "巨蟹座",
+  "zh": "巨蟹ζ",
+  "en": "Zeta Cnc",
+  "mag": 4.67,
+  "proper": "Tegmine",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 21,
+  "constellation": "船底座",
+  "zh": "船底ε",
+  "en": "Epsilon Car",
+  "mag": 1.86,
+  "proper": "Avior",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 21,
+  "constellation": "船底座",
+  "zh": "船底ι",
+  "en": "Iota Car",
+  "mag": 2.21,
+  "proper": "Aspidiske",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 21,
+  "constellation": "船底座",
+  "zh": "船底θ",
+  "en": "Theta Car",
+  "mag": 2.74
+ },
+ {
+  "level": 21,
+  "constellation": "船底座",
+  "zh": "船底υ",
+  "en": "Upsilon Car",
+  "mag": 2.97
+ },
+ {
+  "level": 22,
+  "constellation": "宝瓶座",
+  "zh": "宝瓶δ",
+  "en": "Delta Aqr",
+  "mag": 3.27,
+  "proper": "Skat",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 22,
+  "constellation": "宝瓶座",
+  "zh": "坟墓二",
+  "en": "Zeta Aqr",
+  "mag": 3.65
+ },
+ {
+  "level": 22,
+  "constellation": "宝瓶座",
+  "zh": "宝瓶λ",
+  "en": "Lambda Aqr",
+  "mag": 3.74
+ },
+ {
+  "level": 22,
+  "constellation": "宝瓶座",
+  "zh": "宝瓶α",
+  "en": "Alpha Aqr",
+  "mag": 3.84,
+  "proper": "Sadalmelik",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 23,
+  "constellation": "双鱼座",
+  "zh": "双鱼γ",
+  "en": "Gamma Psc",
+  "mag": 3.7
+ },
+ {
+  "level": 23,
+  "constellation": "双鱼座",
+  "zh": "双鱼ω",
+  "en": "Omega Psc",
+  "mag": 4.01
+ },
+ {
+  "level": 23,
+  "constellation": "双鱼座",
+  "zh": "双鱼ι",
+  "en": "Iota Psc",
+  "mag": 4.13
+ },
+ {
+  "level": 23,
+  "constellation": "双鱼座",
+  "zh": "双鱼ο",
+  "en": "Omicron Psc",
+  "mag": 4.26,
+  "proper": "Torcular",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 24,
+  "constellation": "半人马座",
+  "zh": "半人马γ",
+  "en": "Gamma Cen",
+  "mag": 2.17,
+  "proper": "Muhlifain",
+  "src": "https://en.wikipedia.org/wiki/Muhlifain"
+ },
+ {
+  "level": 24,
+  "constellation": "半人马座",
+  "zh": "半人马ε",
+  "en": "Epsilon Cen",
+  "mag": 2.3
+ },
+ {
+  "level": 24,
+  "constellation": "半人马座",
+  "zh": "半人马η",
+  "en": "Eta Cen",
+  "mag": 2.31
+ },
+ {
+  "level": 25,
+  "constellation": "蛇夫座",
+  "zh": "天江二",
+  "en": "Eta Oph",
+  "mag": 2.43,
+  "proper": "Sabik",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 25,
+  "constellation": "蛇夫座",
+  "zh": "天江一",
+  "en": "Zeta Oph",
+  "mag": 2.56
+ },
+ {
+  "level": 25,
+  "constellation": "蛇夫座",
+  "zh": "天市右垣九",
+  "en": "Delta Oph",
+  "mag": 2.73,
+  "proper": "Yed Prior",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 25,
+  "constellation": "蛇夫座",
+  "zh": "宗正一",
+  "en": "Beta Oph",
+  "mag": 2.76,
+  "proper": "Cebalrai",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 26,
+  "constellation": "长蛇座",
+  "zh": "长蛇γ",
+  "en": "Gamma Hya",
+  "mag": 2.99
+ },
+ {
+  "level": 26,
+  "constellation": "长蛇座",
+  "zh": "星宿六",
+  "en": "Nu Hya",
+  "mag": 3.11
+ },
+ {
+  "level": 26,
+  "constellation": "长蛇座",
+  "zh": "长蛇π",
+  "en": "Pi Hya",
+  "mag": 3.25
+ },
+ {
+  "level": 26,
+  "constellation": "长蛇座",
+  "zh": "柳宿一",
+  "en": "Epsilon Hya",
+  "mag": 3.38,
+  "proper": "Ashlesha",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 26,
+  "constellation": "长蛇座",
+  "zh": "星宿七",
+  "en": "Xi Hya",
+  "mag": 3.54
+ },
+ {
+  "level": 27,
+  "constellation": "天兔座",
+  "zh": "屏一",
+  "en": "Epsilon Lep",
+  "mag": 3.19
+ },
+ {
+  "level": 27,
+  "constellation": "天兔座",
+  "zh": "屏二",
+  "en": "Mu Lep",
+  "mag": 3.29
+ },
+ {
+  "level": 27,
+  "constellation": "天兔座",
+  "zh": "屏三",
+  "en": "Zeta Lep",
+  "mag": 3.55
+ },
+ {
+  "level": 27,
+  "constellation": "天兔座",
+  "zh": "厕三",
+  "en": "Gamma Lep",
+  "mag": 3.6
+ },
+ {
+  "level": 28,
+  "constellation": "牧夫座",
+  "zh": "招摇",
+  "en": "Gamma Boo",
+  "mag": 2.68,
+  "proper": "Seginus",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 28,
+  "constellation": "牧夫座",
+  "zh": "右摄提一",
+  "en": "Eta Boo",
+  "mag": 2.68,
+  "proper": "Muphrid",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 28,
+  "constellation": "牧夫座",
+  "zh": "牧夫δ",
+  "en": "Delta Boo",
+  "mag": 3.47
+ },
+ {
+  "level": 28,
+  "constellation": "牧夫座",
+  "zh": "牧夫θ",
+  "en": "Theta Boo",
+  "mag": 4.05
+ },
+ {
+  "level": 29,
+  "constellation": "天蝎座",
+  "zh": "尾宿一",
+  "en": "Theta Sco",
+  "mag": 1.86,
+  "proper": "Sargas",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 29,
+  "constellation": "天蝎座",
+  "zh": "尾宿二",
+  "en": "Epsilon Sco",
+  "mag": 2.29,
+  "proper": "Larawag",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 30,
+  "constellation": "天龙座",
+  "zh": "天龙η",
+  "en": "Eta Dra",
+  "mag": 2.73,
+  "proper": "Athebyne",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 30,
+  "constellation": "天龙座",
+  "zh": "天龙δ",
+  "en": "Delta Dra",
+  "mag": 3.07,
+  "proper": "Altais",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 30,
+  "constellation": "天龙座",
+  "zh": "天龙ζ",
+  "en": "Zeta Dra",
+  "mag": 3.17,
+  "proper": "Aldhibah",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 30,
+  "constellation": "天龙座",
+  "zh": "天龙ι",
+  "en": "Iota Dra",
+  "mag": 3.29,
+  "proper": "Edasich",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 31,
+  "constellation": "天鸽座",
+  "zh": "天鸽δ",
+  "en": "Delta Col",
+  "mag": 3.85
+ },
+ {
+  "level": 31,
+  "constellation": "天鸽座",
+  "zh": "天鸽ε",
+  "en": "Epsilon Col",
+  "mag": 3.87
+ },
+ {
+  "level": 31,
+  "constellation": "天鸽座",
+  "zh": "天鸽η",
+  "en": "Eta Col",
+  "mag": 3.96
+ },
+ {
+  "level": 31,
+  "constellation": "天鸽座",
+  "zh": "天鸽γ",
+  "en": "Gamma Col",
+  "mag": 4.36
+ },
+ {
+  "level": 32,
+  "constellation": "白羊座",
+  "zh": "白羊ο",
+  "en": "Omicron Ari",
+  "mag": 5.14
+ },
+ {
+  "level": 33,
+  "constellation": "武仙座",
+  "zh": "天棓一",
+  "en": "Epsilon Her",
+  "mag": 3.14
+ },
+ {
+  "level": 33,
+  "constellation": "武仙座",
+  "zh": "天纪三",
+  "en": "Eta Her",
+  "mag": 3.16
+ },
+ {
+  "level": 33,
+  "constellation": "武仙座",
+  "zh": "天棓二",
+  "en": "Delta Her",
+  "mag": 3.16,
+  "proper": "Sarin",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 33,
+  "constellation": "武仙座",
+  "zh": "天棓三",
+  "en": "Alpha Her",
+  "mag": 3.48,
+  "proper": "Rasalgethi",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 33,
+  "constellation": "武仙座",
+  "zh": "天棓四",
+  "en": "Beta Her",
+  "mag": 3.73,
+  "proper": "Kornephoros",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 34,
+  "constellation": "鲸鱼座",
+  "zh": "天仓四",
+  "en": "Gamma Cet",
+  "mag": 3.47,
+  "proper": "Kaffaljidhma",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 34,
+  "constellation": "鲸鱼座",
+  "zh": "鲸鱼τ",
+  "en": "Tau Cet",
+  "mag": 3.49
+ },
+ {
+  "level": 34,
+  "constellation": "鲸鱼座",
+  "zh": "鲸鱼ι",
+  "en": "Iota Cet",
+  "mag": 3.56
+ },
+ {
+  "level": 34,
+  "constellation": "鲸鱼座",
+  "zh": "鲸鱼θ",
+  "en": "Theta Cet",
+  "mag": 3.6
+ },
+ {
+  "level": 35,
+  "constellation": "麒麟座",
+  "zh": "麒麟β",
+  "en": "Beta Mon",
+  "mag": 3.74
+ },
+ {
+  "level": 35,
+  "constellation": "麒麟座",
+  "zh": "麒麟α",
+  "en": "Alpha Mon",
+  "mag": 3.94
+ },
+ {
+  "level": 35,
+  "constellation": "麒麟座",
+  "zh": "麒麟γ",
+  "en": "Gamma Mon",
+  "mag": 3.99
+ },
+ {
+  "level": 35,
+  "constellation": "麒麟座",
+  "zh": "麒麟θ",
+  "en": "Theta Mon",
+  "mag": 4.13
+ },
+ {
+  "level": 35,
+  "constellation": "麒麟座",
+  "zh": "麒麟δ",
+  "en": "Delta Mon",
+  "mag": 4.15
+ },
+ {
+  "level": 35,
+  "constellation": "麒麟座",
+  "zh": "麒麟ζ",
+  "en": "Zeta Mon",
+  "mag": 4.33
+ },
+ {
+  "level": 36,
+  "constellation": "英仙座",
+  "zh": "英仙ζ",
+  "en": "Zeta Per",
+  "mag": 2.85
+ },
+ {
+  "level": 36,
+  "constellation": "英仙座",
+  "zh": "英仙ε",
+  "en": "Epsilon Per",
+  "mag": 2.89
+ },
+ {
+  "level": 36,
+  "constellation": "英仙座",
+  "zh": "英仙γ",
+  "en": "Gamma Per",
+  "mag": 2.93
+ },
+ {
+  "level": 36,
+  "constellation": "英仙座",
+  "zh": "英仙δ",
+  "en": "Delta Per",
+  "mag": 3.01
+ },
+ {
+  "level": 37,
+  "constellation": "巨爵座",
+  "zh": "翼宿三",
+  "en": "Delta Crt",
+  "mag": 3.56
+ },
+ {
+  "level": 37,
+  "constellation": "巨爵座",
+  "zh": "翼宿二",
+  "en": "Gamma Crt",
+  "mag": 4.06
+ },
+ {
+  "level": 37,
+  "constellation": "巨爵座",
+  "zh": "翼宿七",
+  "en": "Theta Crt",
+  "mag": 4.7
+ },
+ {
+  "level": 37,
+  "constellation": "巨爵座",
+  "zh": "翼宿五",
+  "en": "Zeta Crt",
+  "mag": 4.71
+ },
+ {
+  "level": 37,
+  "constellation": "巨爵座",
+  "zh": "翼宿四",
+  "en": "Epsilon Crt",
+  "mag": 4.81
+ },
+ {
+  "level": 38,
+  "constellation": "乌鸦座",
+  "zh": "轸宿增四",
+  "en": "Epsilon Crv",
+  "mag": 3.02,
+  "proper": "Minkar",
+  "src": "https://en.wikipedia.org/wiki/Minkar"
+ },
+ {
+  "level": 40,
+  "constellation": "天鹰座",
+  "zh": "天鹰ζ",
+  "en": "Zeta Aql",
+  "mag": 2.99,
+  "proper": "Okab",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 40,
+  "constellation": "天鹰座",
+  "zh": "天鹰θ",
+  "en": "Theta Aql",
+  "mag": 3.23,
+  "proper": "Antinous",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 40,
+  "constellation": "天鹰座",
+  "zh": "天鹰δ",
+  "en": "Delta Aql",
+  "mag": 3.36
+ },
+ {
+  "level": 40,
+  "constellation": "天鹰座",
+  "zh": "天鹰λ",
+  "en": "Lambda Aql",
+  "mag": 3.44
+ },
+ {
+  "level": 40,
+  "constellation": "天鹰座",
+  "zh": "河鼓一",
+  "en": "Beta Aql",
+  "mag": 3.71,
+  "proper": "Alshain",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 41,
+  "constellation": "天猫座",
+  "zh": "轩辕九",
+  "en": "Alpha Lyn",
+  "mag": 3.14
+ },
+ {
+  "level": 41,
+  "constellation": "天猫座",
+  "zh": "天猫β",
+  "en": "Beta Lyn",
+  "mag": 3.53
+ },
+ {
+  "level": 41,
+  "constellation": "天猫座",
+  "zh": "天猫μ",
+  "en": "Mu Lyn",
+  "mag": 3.83
+ },
+ {
+  "level": 41,
+  "constellation": "天猫座",
+  "zh": "天猫ζ",
+  "en": "Zeta Lyn",
+  "mag": 3.97
+ },
+ {
+  "level": 41,
+  "constellation": "天猫座",
+  "zh": "天猫ψ",
+  "en": "Psi Lyn",
+  "mag": 4.39
+ },
+ {
+  "level": 42,
+  "constellation": "船帆座",
+  "zh": "天社一",
+  "en": "Gamma Vel",
+  "mag": 1.75,
+  "proper": "Regor",
+  "src": "https://en.wikipedia.org/wiki/Regor"
+ },
+ {
+  "level": 42,
+  "constellation": "船帆座",
+  "zh": "天社二",
+  "en": "Delta Vel",
+  "mag": 1.96,
+  "proper": "Alsephina",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 42,
+  "constellation": "船帆座",
+  "zh": "天社七",
+  "en": "Lambda Vel",
+  "mag": 2.21,
+  "proper": "Suhail",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 42,
+  "constellation": "船帆座",
+  "zh": "天社三",
+  "en": "Kappa Vel",
+  "mag": 2.47,
+  "proper": "Markeb",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 42,
+  "constellation": "船帆座",
+  "zh": "天社四",
+  "en": "Mu Vel",
+  "mag": 2.69
+ },
+ {
+  "level": 42,
+  "constellation": "船帆座",
+  "zh": "天社九",
+  "en": "Epsilon Vel",
+  "mag": 3.01
+ },
+ {
+  "level": 43,
+  "constellation": "船尾座",
+  "zh": "弧矢二",
+  "en": "Sigma Pup",
+  "mag": 2.25
+ },
+ {
+  "level": 43,
+  "constellation": "船尾座",
+  "zh": "弧矢四",
+  "en": "Pi Pup",
+  "mag": 2.71
+ },
+ {
+  "level": 43,
+  "constellation": "船尾座",
+  "zh": "弧矢三",
+  "en": "Rho Pup",
+  "mag": 2.83,
+  "proper": "Tureis",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 43,
+  "constellation": "船尾座",
+  "zh": "弧矢五",
+  "en": "Tau Pup",
+  "mag": 2.94
+ },
+ {
+  "level": 44,
+  "constellation": "人马座",
+  "zh": "箕宿三",
+  "en": "Epsilon Sgr",
+  "mag": 1.79,
+  "proper": "Kaus Australis",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 44,
+  "constellation": "人马座",
+  "zh": "斗宿六",
+  "en": "Zeta Sgr",
+  "mag": 2.6,
+  "proper": "Ascella",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 44,
+  "constellation": "人马座",
+  "zh": "箕宿二",
+  "en": "Delta Sgr",
+  "mag": 2.7,
+  "proper": "Kaus Media",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 44,
+  "constellation": "人马座",
+  "zh": "斗宿二",
+  "en": "Lambda Sgr",
+  "mag": 2.82,
+  "proper": "Kaus Borealis",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 44,
+  "constellation": "人马座",
+  "zh": "箕宿一",
+  "en": "Gamma Sgr",
+  "mag": 2.98,
+  "proper": "Alnasl",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 45,
+  "constellation": "巨蛇座",
+  "zh": "天市右垣七",
+  "en": "Alpha Ser",
+  "mag": 2.63,
+  "proper": "Unukalhai",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 45,
+  "constellation": "巨蛇座",
+  "zh": "巨蛇η",
+  "en": "Eta Ser",
+  "mag": 3.23
+ },
+ {
+  "level": 45,
+  "constellation": "巨蛇座",
+  "zh": "巨蛇ξ",
+  "en": "Xi Ser",
+  "mag": 3.54
+ },
+ {
+  "level": 45,
+  "constellation": "巨蛇座",
+  "zh": "巨蛇μ",
+  "en": "Mu Ser",
+  "mag": 3.54
+ },
+ {
+  "level": 45,
+  "constellation": "巨蛇座",
+  "zh": "巨蛇ι",
+  "en": "Iota Ser",
+  "mag": 3.58
+ },
+ {
+  "level": 45,
+  "constellation": "巨蛇座",
+  "zh": "天市右垣八",
+  "en": "Beta Ser",
+  "mag": 3.67,
+  "proper": "Zhou",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 46,
+  "constellation": "豺狼座",
+  "zh": "骑官十",
+  "en": "Alpha Lup",
+  "mag": 2.3,
+  "proper": "Uridim",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 46,
+  "constellation": "豺狼座",
+  "zh": "骑官四",
+  "en": "Beta Lup",
+  "mag": 2.68
+ },
+ {
+  "level": 46,
+  "constellation": "豺狼座",
+  "zh": "骑官一",
+  "en": "Gamma Lup",
+  "mag": 2.78
+ },
+ {
+  "level": 46,
+  "constellation": "豺狼座",
+  "zh": "骑官二",
+  "en": "Delta Lup",
+  "mag": 3.22
+ },
+ {
+  "level": 46,
+  "constellation": "豺狼座",
+  "zh": "骑官三",
+  "en": "Epsilon Lup",
+  "mag": 3.37
+ },
+ {
+  "level": 46,
+  "constellation": "豺狼座",
+  "zh": "骑官五",
+  "en": "Zeta Lup",
+  "mag": 3.41
+ },
+ {
+  "level": 48,
+  "constellation": "天秤座",
+  "zh": "氐宿二",
+  "en": "Sigma Lib",
+  "mag": 3.29,
+  "proper": "Brachium",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 48,
+  "constellation": "天秤座",
+  "zh": "氐宿三",
+  "en": "Gamma Lib",
+  "mag": 3.91,
+  "proper": "Zubenelhakrabi",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 48,
+  "constellation": "天秤座",
+  "zh": "天秤ι",
+  "en": "Iota Lib",
+  "mag": 4.54
+ },
+ {
+  "level": 48,
+  "constellation": "天秤座",
+  "zh": "天秤ν",
+  "en": "Nu Lib",
+  "mag": 5.19
+ },
+ {
+  "level": 49,
+  "constellation": "波江座",
+  "zh": "波江θ",
+  "en": "Theta Eri",
+  "mag": 2.9,
+  "proper": "Acamar",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 49,
+  "constellation": "波江座",
+  "zh": "波江γ",
+  "en": "Gamma Eri",
+  "mag": 2.95,
+  "proper": "Zaurak",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 49,
+  "constellation": "波江座",
+  "zh": "波江δ",
+  "en": "Delta Eri",
+  "mag": 3.54,
+  "proper": "Rana",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ },
+ {
+  "level": 49,
+  "constellation": "波江座",
+  "zh": "天园五",
+  "en": "Epsilon Eri",
+  "mag": 3.73,
+  "proper": "Ran",
+  "src": "https://exopla.net/star-names/database/naked-eye-catalog/"
+ }
+]

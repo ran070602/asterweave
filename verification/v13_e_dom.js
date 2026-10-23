@@ -56,6 +56,14 @@ let clock = 0, timers = [], tid = 1;
 function setTimeoutStub(fn, ms) { const id = tid++; timers.push({ id, t: clock + (ms || 0), fn, seq: id }); return id; }
 function clearTimeoutStub(id) { timers = timers.filter(x => x.id !== id); }
 function rafStub(fn) { return setTimeoutStub(fn, 16); }
+// setInterval 桩：周期性重排定时器（游戏里用于 500ms 计时器）
+function setIntervalStub(fn, ms) {
+  const id = tid++;
+  const arm = function () { timers.push({ id: id, t: clock + (ms || 16), fn: function () { arm(); fn(); }, seq: id }); };
+  arm();
+  return id;
+}
+function clearIntervalStub(id) { timers = timers.filter(x => x.id !== id); }
 function flush(ms) {
   const target = clock + ms;
   for (;;) {
@@ -158,6 +166,7 @@ function startSession(src, clearedLevels) {
     localStorage: { getItem: k => (k in store ? store[k] : null), setItem: (k, v) => { store[k] = String(v); }, removeItem: k => { delete store[k]; } },
     matchMedia: () => ({ matches: false, addEventListener() {}, addListener() {} }),
     setTimeout: setTimeoutStub, clearTimeout: clearTimeoutStub, requestAnimationFrame: rafStub,
+  setInterval: setIntervalStub, clearInterval: clearIntervalStub,
     addEventListener() {}, _h: {}, innerWidth: 390, innerHeight: 844, devicePixelRatio: 2, document: doc
   };
   SRC_KEYS.forEach(k => { w[k] = global[k]; });

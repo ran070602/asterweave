@@ -20,6 +20,14 @@ let clock = 0, timers = [], tid = 1;
 function setTimeoutStub(fn, ms) { const id = tid++; timers.push({ id, t: clock + (ms || 0), fn, seq: id }); return id; }
 function clearTimeoutStub(id) { timers = timers.filter(x => x.id !== id); }
 function rafStub(fn) { return setTimeoutStub(fn, 16); }
+// setInterval 桩：周期性重排定时器（游戏里用于 500ms 计时器）
+function setIntervalStub(fn, ms) {
+  const id = tid++;
+  const arm = function () { timers.push({ id: id, t: clock + (ms || 16), fn: function () { arm(); fn(); }, seq: id }); };
+  arm();
+  return id;
+}
+function clearIntervalStub(id) { timers = timers.filter(x => x.id !== id); }
 function flush(ms) {
   const target = clock + ms;
   for (;;) {
@@ -134,6 +142,7 @@ const win = {
   localStorage: { getItem: k => (k in store ? store[k] : null), setItem: (k, v) => { store[k] = String(v); }, removeItem: k => { delete store[k]; } },
   matchMedia: () => ({ matches: false, addEventListener() {}, addListener() {} }),
   setTimeout: setTimeoutStub, clearTimeout: clearTimeoutStub, requestAnimationFrame: rafStub,
+  setInterval: setIntervalStub, clearInterval: clearIntervalStub,
   addEventListener(t, fn) { (win._h[t] = win._h[t] || []).push(fn); },
   _h: {}, innerWidth: 390, innerHeight: 844, devicePixelRatio: 2,
   document: doc, Math, JSON, console, Set, Map, Array, Object, String, Number, Boolean, Date, Int16Array, Uint8Array, parseInt, parseFloat, isNaN, isFinite, Error, encodeURIComponent
@@ -176,8 +185,11 @@ ok('旧的 modeActions 容器已移除', !byId.modeActions);
 
 // ② 首次进入第 1 关弹出玩法说明，只弹一次
 ok('首屏弹出玩法说明', byId.introOverlay && byId.introOverlay.hidden === false, `hidden=${byId.introOverlay && byId.introOverlay.hidden}`);
-const lines = (html.match(/class="intro-line"/g) || []).length;
-ok('说明只有三句话', lines === 3, `intro-line 数=${lines}`);
+// 首屏说明已改版为「品牌卡 + 3 条步骤」：仍按"简短"核对（取 introOverlay 到下一个元素之间的片段）
+const introSeg = html.slice(html.indexOf('id="introOverlay"'), html.indexOf('id="lvtag"'));
+const steps = (introSeg.match(/<li>/g) || []).length;
+ok('首屏说明保持简短（3 条步骤）', steps === 3, `li 数=${steps}`);
+ok('首屏说明带「开始观测」入口', introSeg.indexOf('id="introStart"') >= 0);
 const introSrc = html.slice(html.indexOf('id="introOverlay"'), html.indexOf('id="introStart"'));
 ok('说明含关键操作（轻触/长按/单击/右键）',
    introSrc.includes('轻触') && introSrc.includes('长按') && introSrc.includes('单击') && introSrc.includes('右键') && !introSrc.includes('双击'));
