@@ -557,6 +557,39 @@
   .sky-locked{font-size:13px;color:#8fa6c6;line-height:1.7}
 
   #replayActions[hidden]{display:none}
+  /* ===== 意见箱 ===== */
+  .fb-overlay{position:fixed;inset:0;z-index:70;display:flex;align-items:center;justify-content:center;
+    padding:16px;background:rgba(4,7,16,.74);backdrop-filter:blur(2px);overflow:auto}
+  .fb-overlay[hidden]{display:none}
+  .fb-card{width:100%;max-width:360px;max-height:88vh;overflow:auto;padding:16px;border:1px solid rgba(126,180,255,.32);
+    border-radius:16px;background:linear-gradient(180deg,rgba(20,30,58,.98),rgba(10,16,34,.98));
+    box-shadow:0 18px 50px rgba(0,0,0,.55)}
+  .fb-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+  .fb-title{font-size:16px;font-weight:800;color:#eaf2ff}
+  .fb-close{background:none;border:0;color:#8ba0bd;font-size:20px;line-height:1;cursor:pointer;padding:2px 6px;border-radius:8px}
+  .fb-note{margin:0 0 10px;font-size:12px;line-height:1.6;color:#9fb4d0}
+  .fb-note b{color:#cfe2ff}
+  .fb-text{width:100%;box-sizing:border-box;min-height:88px;resize:vertical;padding:10px;border-radius:12px;
+    border:1px solid rgba(126,180,255,.3);background:rgba(8,13,28,.85);color:#e6eefc;font-size:13px;line-height:1.6;
+    font-family:inherit}
+  .fb-text::placeholder{color:#5f7396}
+  .fb-ctxline{display:flex;align-items:center;gap:8px;margin:10px 0 6px;font-size:12px;color:#9fb4d0}
+  .fb-ctx{margin:0 0 10px;padding:8px 10px;border-radius:10px;background:rgba(8,13,28,.6);
+    border:1px dashed rgba(126,180,255,.22);color:#8fa6c5;font-size:11px;line-height:1.55;white-space:pre-wrap;word-break:break-all}
+  .fb-rows{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px}
+  .fb-rows .btn{flex:1 1 auto;min-width:104px;margin:0}
+  .fb-qr{margin-top:10px;padding:10px;border-radius:12px;background:rgba(8,13,28,.6);border:1px solid rgba(126,180,255,.2);text-align:center}
+  .fb-qr[hidden]{display:none}
+  .fb-qrimg{width:168px;height:168px;image-rendering:pixelated;background:#fff;border-radius:10px;padding:6px}
+  .fb-mailline{margin-top:8px;font-size:12px;color:#b9cbe6;display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center}
+  .fb-mailline a{color:#cfe2ff}
+  .fb-hint{margin:8px 0 0;font-size:11px;line-height:1.6;color:#7f93b0}
+  .fb-archive{margin-top:12px;border-top:1px solid rgba(126,180,255,.16);padding-top:10px}
+  .fb-arch-head{display:flex;align-items:center;justify-content:space-between;font-size:12px;color:#9fb4d0;margin-bottom:6px}
+  .fb-arch-list{display:flex;flex-direction:column;gap:6px;max-height:132px;overflow:auto}
+  .fb-arch-item{font-size:11px;line-height:1.5;color:#8fa6c5;background:rgba(8,13,28,.55);border-radius:8px;padding:6px 8px;
+    white-space:pre-wrap;word-break:break-all}
+  .fb-status{margin:10px 0 0;font-size:11px;line-height:1.5;color:#8fd0a8;min-height:16px}
   .intro-overlay{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;
     padding:18px;background:rgba(4,7,16,.72);backdrop-filter:blur(2px)}
   .intro-overlay[hidden]{display:none}
@@ -595,6 +628,7 @@
   <div class="top">
     <div class="title">星织<span class="who" id="lvName"></span></div>
     <div class="top-actions">
+      <button type="button" class="lvbtn" id="fbBtn" aria-expanded="false" aria-controls="fbOverlay">✉ 意见</button>
       <button type="button" class="lvbtn" id="skyBtn" aria-expanded="false" aria-controls="skyPanel"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6.3 14.5 10 8.3l4.3 3.5 1.2-6.2"/><circle cx="6.3" cy="14.5" r="1.5" fill="currentColor" stroke="none"/><circle cx="10" cy="8.3" r="1.5" fill="currentColor" stroke="none"/><circle cx="14.3" cy="11.8" r="1.5" fill="currentColor" stroke="none"/><circle cx="15.5" cy="5.6" r="1.5" fill="currentColor" stroke="none"/></svg>图鉴</button>
       <button type="button" class="lvbtn" id="ruleBtn" aria-haspopup="dialog"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 2.5h6.4l3.6 3.6v11.4a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1v-14a1 1 0 0 1 1-1z"/><path d="M11.9 2.6v3.6h3.6"/><path d="M10 8.7l.95 2.05 2.05.95-2.05.95L10 14.7l-.95-2.05L7 11.7l2.05-.95z" fill="currentColor" stroke="none"/></svg>规则</button>
       <button type="button" class="lvbtn" id="lvBtn" aria-expanded="false" aria-controls="levelPanel">关卡 <b id="lvBtnNum">1</b>/<b id="lvBtnTotal">1</b> ▾</button>
@@ -695,6 +729,38 @@
       <p class="intro-line">手机：<b>轻触</b>观测、<b>长按</b>标记；电脑：<b>单击</b>观测、<b>右键</b>标记。</p>
       <p class="intro-line">数字 = 它周围 8 格里有几颗星（0 会连锁翻开）。</p>
       <button type="button" class="btn primary" id="introStart">开始观测</button>
+    </div>
+  </div>
+
+  <div class="fb-overlay" id="fbOverlay" hidden>
+    <div class="fb-card" role="dialog" aria-modal="true" aria-labelledby="fbTitle">
+      <div class="fb-head">
+        <span class="fb-title" id="fbTitle">✉ 意见箱</span>
+        <button type="button" class="fb-close" id="fbClose" aria-label="关闭">×</button>
+      </div>
+      <p class="fb-note">玩下来哪里别扭、哪里卡住、哪里想不通？写下来就行。<b>内容只存在你本机</b>——点「复制」或「导出」才会离开浏览器，不会自动上传。</p>
+      <textarea class="fb-text" id="fbText" placeholder="例如：第 3 关我卡了很久，不太会用行/列的连续块线索……"></textarea>
+      <label class="fb-ctxline"><input type="checkbox" id="fbCtx" checked> 附带关卡与设备信息（方便定位问题）</label>
+      <pre class="fb-ctx" id="fbCtxView"></pre>
+      <div class="fb-rows">
+        <button type="button" class="btn primary" id="fbCopy">📋 复制反馈</button>
+        <button type="button" class="btn ghost" id="fbSave">⬇ 导出 feedback.txt</button>
+        <button type="button" class="btn ghost" id="fbQrBtn">📱 扫码提交</button>
+      </div>
+      <div class="fb-qr" id="fbQrBox" hidden>
+        <img class="fb-qrimg" id="fbQrImg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="扫码发邮件给开发者">
+        <div class="fb-mailline">邮箱：<b id="fbMailShow">—</b>
+          <button type="button" class="mini" id="fbCopyMail">复制邮箱</button>
+          <a class="mini" id="fbMailLink" href="#">用邮件 App 打开</a>
+        </div>
+        <p class="fb-hint" id="fbQrHint">手机扫码会打开邮件 App；这一步需要联网，也需要手机已配置邮箱。扫不出来就用「复制反馈」+ 上面的邮箱手动发。</p>
+      </div>
+      <div class="fb-archive">
+        <div class="fb-arch-head"><span>本机记录 <b id="fbCount">0</b> 条</span>
+          <button type="button" class="mini" id="fbClear">清空本机记录</button></div>
+        <div class="fb-arch-list" id="fbList"></div>
+      </div>
+      <p class="fb-status" id="fbStatus"></p>
     </div>
   </div>
 
@@ -23161,6 +23227,10 @@ let flashing = false;
 
 // ---------- 进度记忆：localStorage 不可用时静默降级为内存进度，绝不弹错 ----------
 const STORAGE_KEY = 'leixian.migong.progress.v1';
+/* FEEDBACK_INJECT_START */
+const FEEDBACK = {"email": "2677732924@qq.com", "show": "2677732924 [at] qq [dot] com", "mailto": "mailto:2677732924@qq.com?subject=%E6%98%9F%E7%BB%87%20Asterweave%20%E8%AF%95%E7%8E%A9%E5%8F%8D%E9%A6%88&body=%E5%85%B3%E5%8D%A1%EF%BC%9A%0A%E9%97%AE%E9%A2%98%EF%BC%9A%0A", "qr": "data:image/png;base64,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", "version": "v2.2", "subject": "星织 Asterweave 试玩反馈", "form_url": "", "form_qr": "", "modules": 49};
+/* FEEDBACK_INJECT_END */
+
 let progress = { v: 1, cleared: {}, last: 0, devUnlock: false, devSkyLit: false, introSeen: false, sound: true, volume: 0.85 };
 let storageOK = true;
 
@@ -24987,6 +25057,7 @@ if (constModalEl) constModalEl.addEventListener('click', function(e){
 
 window.addEventListener('keydown', function(e){
   if (e.key === 'Escape' || e.key === 'Esc'){
+    if (typeof fbOverlay !== 'undefined' && fbOverlay && fbOverlay.hidden === false){ fbClosePanel(); return; }
     if (modalOpenNow){ dismissModal(); return; }   // Esc 收起结算，结算条保留入口
     if (volPopEl && !volPopEl.hidden){ closeVolPop(); return; }
     if (ruleModalEl && ruleModalEl.className.indexOf('open') >= 0){ closeRules(); return; }
@@ -24996,6 +25067,192 @@ window.addEventListener('keydown', function(e){
     if (panelOpen) closePanel();
   }
 });
+
+// ===== 意见箱：离线优先（写在本机 → 复制 / 导出 / 扫码带出）=====
+const FB_KEY = 'asterweave.feedback.v1';
+const fbOverlay = document.getElementById('fbOverlay');
+const fbBtnEl = document.getElementById('fbBtn');
+const fbCloseEl = document.getElementById('fbClose');
+const fbTextEl = document.getElementById('fbText');
+const fbCtxEl = document.getElementById('fbCtx');
+const fbCtxViewEl = document.getElementById('fbCtxView');
+const fbStatusEl = document.getElementById('fbStatus');
+const fbQrBoxEl = document.getElementById('fbQrBox');
+const fbQrImgEl = document.getElementById('fbQrImg');
+const fbListEl = document.getElementById('fbList');
+const fbCountEl = document.getElementById('fbCount');
+let fbOpen = false;
+
+function fbDevice(){
+  try { if (window.matchMedia && window.matchMedia('(hover: none)').matches) return '触摸屏（手机/平板）'; } catch (e) {}
+  return '鼠标 + 键盘';
+}
+function fbContextLines(){
+  let g = {};
+  try { g = JSON.parse(document.body.dataset.gameState || '{}'); } catch (e) {}
+  const lv = (S && S.level) || null;
+  const total = g.totalLevels || (Array.isArray(LEVELS) ? LEVELS.length : 0);
+  const out = [];
+  out.push('版本：' + (FEEDBACK.version || 'dev'));
+  out.push('关卡：第 ' + (g.levelId || 1) + '/' + total + ' 关' + ((lv && lv.name) ? '（' + lv.name + '）' : ''));
+  out.push('盘面：' + (g.size || '?') + '×' + (g.size || '?') + '　雷 ' + (g.mines || '?') +
+           '　已翻开 ' + (g.revealed || 0) + '/' + (g.totalSafe || '?') +
+           '　命数 ' + (g.lives || '?') + '　状态 ' + (g.status || '?'));
+  out.push('设备：' + fbDevice());
+  try { out.push('浏览器：' + String(navigator.userAgent || '').slice(0, 110)); } catch (e) {}
+  try { out.push('视口：' + (window.innerWidth || 0) + '×' + (window.innerHeight || 0)); } catch (e) {}
+  return out;
+}
+// 复选框是否勾选：优先读属性，若环境未把 checked 属性反射成属性值，则回读 HTML 属性兜底
+function fbCtxOn(){
+  if (!fbCtxEl) return false;
+  if (fbCtxEl.checked === true) return true;
+  if (fbCtxEl.checked === false) return false;
+  try {
+    if (fbCtxEl.hasAttribute && fbCtxEl.hasAttribute('checked')) return true;
+    if (fbCtxEl.getAttribute && fbCtxEl.getAttribute('checked') !== null) return true;
+  } catch (e) {}
+  return false;
+}
+function fbRefreshCtx(){
+  if (!fbCtxViewEl) return;
+  fbCtxViewEl.textContent = fbCtxOn() ? fbContextLines().join('\n') : '（不附带环境信息）';
+}
+function fbCompose(){
+  const text = String((fbTextEl && fbTextEl.value) || '').trim();
+  const body = text || '（未填写文字，只提交下面的环境信息）';
+  const ctx = fbCtxOn() ? fbContextLines() : [];
+  return body + '\n\n———— 环境信息 ————\n' + (ctx.length ? ctx.join('\n') : '（未附带）') + '\n';
+}
+function fbSetStatus(msg){ if (fbStatusEl) fbStatusEl.textContent = msg || ''; }
+function fbLoad(){
+  try { const raw = window.localStorage.getItem(FB_KEY); const a = raw ? JSON.parse(raw) : []; return Array.isArray(a) ? a : []; }
+  catch (e) { return []; }
+}
+function fbPersist(a){
+  try { window.localStorage.setItem(FB_KEY, JSON.stringify(a.slice(0, 20))); } catch (e) {}
+}
+function fbArchive(text){
+  if (!text) return;
+  const a = fbLoad();
+  a.unshift({ t: Date.now(), text: String(text).slice(0, 2000) });
+  fbPersist(a);
+  fbRenderList();
+}
+function fbRenderList(){
+  if (!fbListEl || !fbCountEl) return;
+  const a = fbLoad();
+  fbCountEl.textContent = String(a.length);
+  fbListEl.innerHTML = '';
+  for (let i = 0; i < a.length; i++){
+    const d = document.createElement('div');
+    d.className = 'fb-arch-item';
+    let when = '';
+    try { when = new Date(a[i].t).toLocaleString(); } catch (e) { when = String(a[i].t); }
+    d.textContent = when + '\n' + String(a[i].text || '').split('\n').slice(0, 3).join('\n');
+    fbListEl.appendChild(d);
+  }
+}
+// 复制：优先 clipboard API，失败退回到 execCommand，再失败就把文本选中让玩家手动复制
+function fbCopyText(text, okMsg){
+  function done(ok){
+    fbSetStatus(ok ? (okMsg || '已复制到剪贴板') : '浏览器不允许自动复制：文本已为你选中，请按 Ctrl/⌘+C 手动复制');
+    if (!ok && fbTextEl && fbTextEl.select) { try { fbTextEl.focus(); fbTextEl.select(); } catch (e) {} }
+  }
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(function(){ done(true); }, function(){ done(fbLegacyCopy(text)); });
+      return;
+    }
+  } catch (e) {}
+  done(fbLegacyCopy(text));
+}
+function fbLegacyCopy(text){
+  try {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', 'readonly');
+    ta.style.position = 'fixed'; ta.style.left = '-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    const ok = document.execCommand ? document.execCommand('copy') : false;
+    document.body.removeChild(ta);
+    return !!ok;
+  } catch (e) { return false; }
+}
+function fbDownload(text){
+  try {
+    const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'asterweave-feedback.txt';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function(){ try { URL.revokeObjectURL(url); } catch (e) {} }, 1500);
+    return true;
+  } catch (e) { return false; }
+}
+function fbOpenPanel(){
+  if (!fbOverlay) return;
+  fbOpen = true;
+  fbOverlay.hidden = false;
+  if (fbBtnEl) fbBtnEl.setAttribute('aria-expanded', 'true');
+  fbRefreshCtx();
+  fbRenderList();
+  fbSetStatus('');
+  try { if (fbTextEl && fbTextEl.focus) fbTextEl.focus(); } catch (e) {}
+}
+function fbClosePanel(){
+  if (!fbOverlay) return;
+  fbOpen = false;
+  fbOverlay.hidden = true;
+  if (fbQrBoxEl) fbQrBoxEl.hidden = true;
+  if (fbBtnEl) fbBtnEl.setAttribute('aria-expanded', 'false');
+}
+function fbShowQr(){
+  if (!fbQrBoxEl) return;
+  const on = fbQrBoxEl.hidden;
+  fbQrBoxEl.hidden = !on;
+  if (!on) return;
+  if (fbQrImgEl){
+    const src = FEEDBACK.qr || '';
+    if (src) fbQrImgEl.setAttribute('src', src);
+    else fbQrImgEl.setAttribute('alt', '（未配置二维码）');
+  }
+  const mail = document.getElementById('fbMailShow');
+  if (mail) mail.textContent = FEEDBACK.show || FEEDBACK.email || '—';
+  const link = document.getElementById('fbMailLink');
+  if (link && FEEDBACK.mailto) link.setAttribute('href', FEEDBACK.mailto);
+  fbSetStatus('扫码后在手机的邮件 App 里点发送（这一步需要联网）。');
+}
+
+if (fbBtnEl) fbBtnEl.addEventListener('click', function(){ if (fbOpen) fbClosePanel(); else fbOpenPanel(); });
+if (fbCloseEl) fbCloseEl.addEventListener('click', fbClosePanel);
+if (fbOverlay) fbOverlay.addEventListener('click', function(e){ if (e.target === fbOverlay) fbClosePanel(); });
+if (fbCtxEl) fbCtxEl.addEventListener('change', fbRefreshCtx);
+const fbCopyEl = document.getElementById('fbCopy');
+if (fbCopyEl) fbCopyEl.addEventListener('click', function(){
+  const text = fbCompose();
+  fbArchive(text);
+  fbCopyText(text, '已复制（含环境信息），粘贴到微信 / QQ / 邮件里发给我就行');
+});
+const fbSaveEl = document.getElementById('fbSave');
+if (fbSaveEl) fbSaveEl.addEventListener('click', function(){
+  const text = fbCompose();
+  fbArchive(text);
+  fbSetStatus(fbDownload(text) ? '已导出 asterweave-feedback.txt，把它发给我就行' : '导出失败：请改用「复制反馈」');
+});
+const fbQrEl = document.getElementById('fbQrBtn');
+if (fbQrEl) fbQrEl.addEventListener('click', fbShowQr);
+const fbCopyMailEl = document.getElementById('fbCopyMail');
+if (fbCopyMailEl) fbCopyMailEl.addEventListener('click', function(){
+  fbCopyText(FEEDBACK.email || '', '邮箱已复制：' + (FEEDBACK.show || FEEDBACK.email || ''));
+});
+const fbClearEl = document.getElementById('fbClear');
+if (fbClearEl) fbClearEl.addEventListener('click', function(){
+  fbPersist([]); fbRenderList(); fbSetStatus('本机记录已清空（游戏进度不受影响）');
+});
+const fbTextElBound = document.getElementById('fbText');
+if (fbTextElBound) fbTextElBound.addEventListener('input', function(){ fbSetStatus(''); });
 
 if (Array.isArray(LEVELS) && LEVELS.length){
   loadProgress();

@@ -1,0 +1,7 @@
+{
+  "email": "2677732924@qq.com",
+  "subject": "星织 Asterweave 试玩反馈",
+  "version": "v2.2",
+  "formUrl": "",
+  "_comment": "formUrl 留空则只生成邮箱二维码；填上你的表单/问卷链接（如 https://jinshuju.net/f/xxxx），重新构建会额外生成一张表单二维码。邮箱会显示在页面上（做了防爬变形，但 GitHub Pages 是公开页面，地址仍属公开信息）。"
+}

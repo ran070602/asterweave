@@ -86,6 +86,10 @@ def main():
     html = open(UI, encoding="utf-8").read()
     levels = json.load(open(LEVELS, encoding="utf-8"))
     sky = json.load(open(SKY, encoding="utf-8"))
+    # 意见箱：先离线生成二维码（内联 data URI），再读取配置注入
+    subprocess.run([sys.executable, os.path.join(ROOT, "tools", "build_feedback.py")],
+                   check=True, cwd=ROOT)
+    fb = json.load(open(os.path.join(ROOT, "tools", "feedback_qr.json"), encoding="utf-8"))
     print(f"UI 外壳 {len(html)} 字节；关卡 {len(levels)} 关")
 
     # 1) 注入关卡块（只替换两个注释标记之间的内容）
@@ -118,6 +122,21 @@ def main():
         else:
             print("图鉴数据注入：通过（%d 个星座）" % len(sky))
 
+    # 1c) 注入意见箱（邮箱 / 内联二维码；二维码是 data URI，不产生外部引用）
+    fb_block = ("/* FEEDBACK_INJECT_START */\n"
+                "const FEEDBACK = " + json.dumps(fb, ensure_ascii=False) + ";\n"
+                "/* FEEDBACK_INJECT_END */")
+    fb_pat = re.compile(r"/\* FEEDBACK_INJECT_START \*/.*?/\* FEEDBACK_INJECT_END \*/", re.S)
+    if not fb_pat.search(out_html):
+        fail.append("UI 外壳里找不到 FEEDBACK_INJECT 标记")
+    else:
+        out_html = fb_pat.sub(lambda m: fb_block, out_html, count=1)
+        if "data:image/png;base64," not in fb.get("qr", ""):
+            fail.append("意见箱二维码不是内联 data URI")
+        else:
+            print(f"意见箱注入：通过（邮箱二维码 {fb.get('modules', '?')}×{fb.get('modules', '?')} 模块，"
+                  f"内联 {len(fb['qr'])//1024} KB）")
+
     # 2) 回读校验：注入后的 LEVELS 必须与 levels.json 完全一致
     m = re.search(r"/\* LEVELS_INJECT_START \*/\s*const LEVELS = (\[.*?\]);\s*/\* LEVELS_INJECT_END \*/",
                   out_html, re.S)
@@ -127,12 +146,20 @@ def main():
         print("注入回读校验：通过")
 
     # 3) 离线自包含校验
+    #    意见箱配置块里可能出现邮箱/表单 URL（那是数据，不是资源引用），先剔除再扫；
+    #    <img> 只允许内联 data URI。
+    scan = fb_pat.sub("", out_html) if "fb_pat" in dir() else out_html
     hits = [p for p in ("http://", "https://", "fetch(", "XMLHttpRequest", "WebSocket",
-                        "<img", "<link", "import(") if p in out_html]
+                        "<link", "import(") if p in scan]
     if hits:
         fail.append(f"存在外部引用 {hits}")
-    else:
-        print("离线自包含校验：通过（零外部引用）")
+    bad_img = [m.group(0)[:60] for m in re.finditer(r"<img[^>]*>", out_html)
+               if 'src="data:' not in m.group(0)]
+    if bad_img:
+        fail.append(f"存在非内联 <img>：{bad_img}")
+    n_img = len(re.findall(r"<img[^>]*>", out_html))
+    if not fail:
+        print(f"离线自包含校验：通过（零外部引用；{n_img} 个 <img> 均为内联 data URI）")
 
     # 4) 脚本语法校验（node --check）
     scripts = re.findall(r"<script>(.*?)</script>", out_html, re.S)
