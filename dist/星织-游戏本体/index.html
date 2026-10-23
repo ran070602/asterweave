@@ -82,6 +82,17 @@
   .lvbtn.sndoff .ico .wave{display:none}
   .lvbtn.sndoff .ico .offmark{display:block}
   .lvbtn.sndoff{color:#7f8ea6}
+  .lvbtn.vol-1 .ico .w2,.lvbtn.vol-1 .ico .w3{display:none}
+  .lvbtn.vol-2 .ico .w3{display:none}
+  .top-actions{position:relative}
+  .volpop{position:absolute;right:0;top:calc(100% + 6px);z-index:30;width:186px;padding:10px;
+    border-radius:12px;border:1px solid #2c3d58;background:#131b2a;box-shadow:0 14px 32px rgba(0,0,0,.55)}
+  .volpop[hidden]{display:none}
+  .volpop .vol-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
+  .volpop .vol-mute{min-height:30px;padding:0 10px;border-radius:8px;border:1px solid #2b3444;
+    background:#16294a;color:#dbeaff;font:inherit;font-size:12px;font-weight:800;cursor:pointer}
+  .volpop .vol-pct{font-size:12px;font-weight:700;color:#8fc3ff;font-variant-numeric:tabular-nums}
+  .volpop input[type=range]{width:100%;height:26px;accent-color:#8fc3ff;cursor:pointer}
   .lvbtn[aria-expanded="true"]{background:#1f3a63;border-color:#4b7fbd;color:#e4f0ff}
 
   .panel{
@@ -587,7 +598,11 @@
       <button type="button" class="lvbtn" id="skyBtn" aria-expanded="false" aria-controls="skyPanel"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6.3 14.5 10 8.3l4.3 3.5 1.2-6.2"/><circle cx="6.3" cy="14.5" r="1.5" fill="currentColor" stroke="none"/><circle cx="10" cy="8.3" r="1.5" fill="currentColor" stroke="none"/><circle cx="14.3" cy="11.8" r="1.5" fill="currentColor" stroke="none"/><circle cx="15.5" cy="5.6" r="1.5" fill="currentColor" stroke="none"/></svg>图鉴</button>
       <button type="button" class="lvbtn" id="ruleBtn" aria-haspopup="dialog"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 2.5h6.4l3.6 3.6v11.4a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1v-14a1 1 0 0 1 1-1z"/><path d="M11.9 2.6v3.6h3.6"/><path d="M10 8.7l.95 2.05 2.05.95-2.05.95L10 14.7l-.95-2.05L7 11.7l2.05-.95z" fill="currentColor" stroke="none"/></svg>规则</button>
       <button type="button" class="lvbtn" id="lvBtn" aria-expanded="false" aria-controls="levelPanel">关卡 <b id="lvBtnNum">1</b>/<b id="lvBtnTotal">1</b> ▾</button>
-      <button type="button" class="lvbtn icononly" id="soundBtn" aria-pressed="true" aria-label="音效开关" title="音效开关"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h2.6L10 5.2v9.6L6.9 12H4z"/><path class="wave" d="M12.6 7.7a3.4 3.4 0 0 1 0 4.6"/><path class="wave" d="M14.9 5.5a6.5 6.5 0 0 1 0 9"/><path class="offmark" d="M3.8 3.8l12.4 12.4"/></svg></button>
+      <button type="button" class="lvbtn icononly" id="soundBtn" aria-pressed="true" aria-label="音效开关" title="音效开关"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h2.6L10 5.2v9.6L6.9 12H4z"/><path class="wave w1" d="M12.5 8.1a2.7 2.7 0 0 1 0 3.8"/><path class="wave w2" d="M14.4 6.3a5.1 5.1 0 0 1 0 7.4"/><path class="wave w3" d="M16.2 4.6a7.5 7.5 0 0 1 0 10.8"/><path class="offmark" d="M3.8 3.8l12.4 12.4"/></svg></button>
+      <div class="volpop" id="volPop" hidden role="dialog" aria-label="音量调节">
+        <div class="vol-head"><button type="button" class="vol-mute" id="volMute">静音</button><span class="vol-pct" id="volPct">70%</span></div>
+        <input type="range" id="volRange" min="0" max="100" step="5" value="70" aria-label="音量">
+      </div>
     </div>
   </div>
 
@@ -659,7 +674,7 @@
             <li><b>教学节奏</b>：第 1 关只给扫雷数字（纯教学），第 2 关起才引入行列线索。</li>
           </ol>
 
-          <p class="note">提示：翻开的数字是「周围有几颗星」，不是「周围有几颗杂星」——杂星与星座星在推理上完全等价。顶部 🔊 图标可随时开关音效。</p>
+          <p class="note">提示：翻开的数字是「周围有几颗星」，不是「周围有几颗杂星」——杂星与星座星在推理上完全等价。顶部 🔊 图标点开可调音量（图标会随音量变化，可一键静音）。</p>
         </div>
       </div>
     </div>
@@ -23146,7 +23161,7 @@ let flashing = false;
 
 // ---------- 进度记忆：localStorage 不可用时静默降级为内存进度，绝不弹错 ----------
 const STORAGE_KEY = 'leixian.migong.progress.v1';
-let progress = { v: 1, cleared: {}, last: 0, devUnlock: false, devSkyLit: false, introSeen: false, sound: true };
+let progress = { v: 1, cleared: {}, last: 0, devUnlock: false, devSkyLit: false, introSeen: false, sound: true, volume: 0.7 };
 let storageOK = true;
 
 function loadProgress(){
@@ -23170,6 +23185,7 @@ function loadProgress(){
       devUnlock: saved.devUnlock === true,
       devSkyLit: saved.devSkyLit === true,
       sound: saved.sound !== false,
+      volume: (typeof saved.volume === 'number') ? saved.volume : 0.7,
       introSeen: saved.introSeen === true
     };
   } catch (e) {
@@ -23883,8 +23899,13 @@ function buildModal(){
 }
 
 // ===== 音效：WebAudio 合成，零外部文件 =====
-let audioCtx = null;
+let audioCtx = null, noiseBuf = null;
 function soundEnabled(){ return progress.sound !== false; }
+function masterVol(){
+  if (!soundEnabled()) return 0;
+  const v = (typeof progress.volume === 'number') ? progress.volume : 0.7;
+  return Math.max(0, Math.min(1, v));
+}
 function initAudio(){
   if (audioCtx) return;
   const AC = window.AudioContext || window.webkitAudioContext;
@@ -23892,43 +23913,112 @@ function initAudio(){
   try { audioCtx = new AC(); } catch (e) { audioCtx = null; }
 }
 function tone(freq, dur, delay, type, vol, freq2){
-  if (!soundEnabled() || !audioCtx) return;
+  const mv = masterVol();
+  if (!mv || !audioCtx) return;
   try {
     const t0 = audioCtx.currentTime + (delay || 0);
     const osc = audioCtx.createOscillator(), g = audioCtx.createGain();
+    const v = Math.max(0.0002, (vol || 0.05) * mv);
     osc.type = type || 'sine';
     osc.frequency.setValueAtTime(freq, t0);
     if (freq2) osc.frequency.exponentialRampToValueAtTime(freq2, t0 + dur);
     g.gain.setValueAtTime(0.0001, t0);
-    g.gain.exponentialRampToValueAtTime(vol || 0.05, t0 + 0.01);
+    g.gain.exponentialRampToValueAtTime(v, t0 + 0.01);
     g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
     osc.connect(g); g.connect(audioCtx.destination);
     osc.start(t0); osc.stop(t0 + dur + 0.02);
   } catch (e) {}
 }
-function sndDig(){ tone(520, 0.05, 0, 'sine', 0.022); }
-function sndMark(){ tone(760, 0.055, 0, 'square', 0.018); }
-function sndStars(){ tone(587.33, 0.5, 0, 'sine', 0.042); tone(880, 0.5, 0.02, 'sine', 0.032);
-  tone(1174.66, 0.62, 0.04, 'sine', 0.02); }
-function sndLine(k){ tone(880 + (k % 3) * 110, 0.1, 0, 'triangle', 0.034);
-  tone(1320 + (k % 3) * 110, 0.1, 0.05, 'triangle', 0.022); }
+
+// 低通白噪声：给“闷响/顿音”提供质感（不再是刺耳的锯齿扫频）
+function noiseHit(dur, delay, vol, cutoff){
+  const mv = masterVol();
+  if (!mv || !audioCtx) return;
+  try {
+    if (!noiseBuf){
+      const len = Math.floor(audioCtx.sampleRate * 0.4);
+      noiseBuf = audioCtx.createBuffer(1, len, audioCtx.sampleRate);
+      const data = noiseBuf.getChannelData(0);
+      for (let i = 0; i < len; i++) data[i] = Math.random() * 2 - 1;
+    }
+    const t0 = audioCtx.currentTime + (delay || 0);
+    const src = audioCtx.createBufferSource();
+    src.buffer = noiseBuf;
+    const lp = audioCtx.createBiquadFilter();
+    lp.type = 'lowpass';
+    lp.frequency.value = cutoff || 380;
+    lp.Q.value = 0.6;
+    const g = audioCtx.createGain();
+    const v = Math.max(0.0002, (vol || 0.2) * mv);
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.exponentialRampToValueAtTime(v, t0 + 0.008);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    src.connect(lp); lp.connect(g); g.connect(audioCtx.destination);
+    src.start(t0); src.stop(t0 + dur + 0.02);
+  } catch (e) {}
+}
+function sndDig(){ tone(560, 0.06, 0, 'sine', 0.06); }
+function sndMark(){ tone(780, 0.06, 0, 'triangle', 0.05); }
+function sndStars(){ tone(587.33, 0.5, 0, 'sine', 0.10); tone(880, 0.5, 0.02, 'sine', 0.075);
+  tone(1174.66, 0.62, 0.04, 'sine', 0.05); }
+function sndLine(k){ tone(880 + (k % 3) * 110, 0.1, 0, 'triangle', 0.075);
+  tone(1320 + (k % 3) * 110, 0.1, 0.05, 'triangle', 0.05); }
 function sndWin(){ const seq = [523.25, 659.25, 783.99, 1046.5];
-  for (let i = 0; i < seq.length; i++) tone(seq[i], 0.5, i * 0.1, 'sine', 0.058); }
-function sndFail(){ tone(320, 0.5, 0, 'sawtooth', 0.05, 90); }
+  for (let i = 0; i < seq.length; i++) tone(seq[i], 0.5, i * 0.1, 'sine', 0.13); }
+// 踩雷：低频“咚”+ 一记闷噪声，像一个沉闷的撞击（原先的锯齿扫频听着像放屁，已替换）
+function sndFail(){
+  noiseHit(0.13, 0, 0.22, 340);
+  tone(165, 0.20, 0, 'sine', 0.34, 72);
+  tone(98, 0.30, 0.01, 'sine', 0.22, 60);
+}
+const volPopEl = document.getElementById('volPop');
+const volRangeEl = document.getElementById('volRange');
+const volPctEl = document.getElementById('volPct');
+const volMuteEl = document.getElementById('volMute');
+
 function refreshSoundBtn(){
   if (!soundBtnEl) return;
   const on = soundEnabled();
-  soundBtnEl.className = 'lvbtn icononly' + (on ? '' : ' sndoff');
-  soundBtnEl.setAttribute('aria-pressed', on ? 'true' : 'false');
-  soundBtnEl.setAttribute('title', on ? '音效：开（点击关闭）' : '音效：关（点击开启）');
+  const v = (typeof progress.volume === 'number') ? progress.volume : 0.7;
+  const lvl = (!on || v <= 0.001) ? 0 : (v < 0.34 ? 1 : (v < 0.67 ? 2 : 3));
+  let cls = 'lvbtn icononly';
+  cls += lvl === 0 ? ' sndoff' : (' vol-' + lvl);
+  soundBtnEl.className = cls;
+  soundBtnEl.setAttribute('aria-pressed', lvl > 0 ? 'true' : 'false');
+  soundBtnEl.setAttribute('title',
+    lvl === 0 ? '静音（点击调音量）' : '音量 ' + Math.round(v * 100) + '%（点击调节）');
+  if (volRangeEl) volRangeEl.value = String(Math.round(v * 100));
+  if (volPctEl) volPctEl.textContent = lvl === 0 ? '静音' : Math.round(v * 100) + '%';
+  if (volMuteEl) volMuteEl.textContent = on ? '静音' : '开启音效';
+}
+function setVolume(v, feedback){
+  v = Math.max(0, Math.min(1, v));
+  progress.volume = v;
+  if (v > 0 && progress.sound === false) progress.sound = true;   // 往上调即视为开启
+  saveProgress();
+  refreshSoundBtn();
+  if (feedback && v > 0){ initAudio(); tone(880, 0.08, 0, 'sine', 0.05); }
 }
 function setSound(on){
   progress.sound = !!on;
   saveProgress();
   refreshSoundBtn();
-  if (on){ initAudio(); tone(880, 0.08, 0, 'sine', 0.05); }
+  if (on){ initAudio(); setVolume(progress.volume > 0 ? progress.volume : 0.7, true); }
 }
-if (soundBtnEl) soundBtnEl.addEventListener('click', function(){ setSound(!soundEnabled()); });
+function openVolPop(){ if (!volPopEl) return; refreshSoundBtn(); volPopEl.hidden = false; }
+function closeVolPop(){ if (volPopEl) volPopEl.hidden = true; }
+function toggleVolPop(){ if (volPopEl) { if (volPopEl.hidden) openVolPop(); else closeVolPop(); } }
+
+if (soundBtnEl) soundBtnEl.addEventListener('click', function(){ initAudio(); toggleVolPop(); });
+if (volRangeEl) volRangeEl.addEventListener('input', function(){ setVolume(Number(volRangeEl.value) / 100, false); });
+if (volRangeEl) volRangeEl.addEventListener('change', function(){ initAudio(); setVolume(Number(volRangeEl.value) / 100, true); });
+if (volMuteEl) volMuteEl.addEventListener('click', function(){ setSound(!soundEnabled()); });
+document.addEventListener('pointerdown', function(e){
+  if (!volPopEl || volPopEl.hidden) return;
+  const t = e.target;
+  if (t && t.closest && (t.closest('#volPop') || t.closest('#soundBtn'))) return;
+  closeVolPop();
+});
 window.addEventListener('pointerdown', initAudio, true);
 window.addEventListener('keydown', initAudio, true);
 
@@ -24897,6 +24987,7 @@ if (constModalEl) constModalEl.addEventListener('click', function(e){
 window.addEventListener('keydown', function(e){
   if (e.key === 'Escape' || e.key === 'Esc'){
     if (modalOpenNow){ dismissModal(); return; }   // Esc 收起结算，结算条保留入口
+    if (volPopEl && !volPopEl.hidden){ closeVolPop(); return; }
     if (ruleModalEl && ruleModalEl.className.indexOf('open') >= 0){ closeRules(); return; }
     const cm = document.getElementById('constModal');
     if (cm && cm.className.indexOf('open') >= 0){ skySelected = null; renderSkyDetail(); return; }
