@@ -724,11 +724,25 @@
   .endless-stats{margin:10px 0 0;font-size:12.5px;line-height:1.65;color:#c2d1e6;text-align:center}
   .endless-stats b{color:#eaf3ff}
   @media (prefers-reduced-motion: reduce){ .runtoast.show{animation:none;opacity:1} }
+  /* ===== 主页 / 模式选择 ===== */
+  .homebtn{flex:0 0 auto}
+  .intro-hint{margin:0 0 6px;text-align:center;font-size:12px;line-height:1.5;color:#9fb4d0}
+  .intro-hint b{color:#dbeaff}
+  .modecard{display:block;width:100%;margin:9px 0 0;padding:11px 13px;border-radius:14px;text-align:left;
+    border:1px solid rgba(126,180,255,.34);cursor:pointer;font:inherit;color:#eaf2ff;
+    background:linear-gradient(180deg,rgba(30,48,86,.92),rgba(16,26,50,.92));
+    box-shadow:0 8px 22px rgba(0,0,0,.32)}
+  .modecard:active{transform:scale(.985)}
+  .modecard.primary{border-color:rgba(63,156,102,.75);
+    background:linear-gradient(180deg,rgba(34,84,56,.95),rgba(20,50,34,.95))}
+  .modecard-t{display:block;font-size:15px;font-weight:800;letter-spacing:.02em}
+  .modecard-sub{display:block;margin-top:3px;font-size:11.5px;line-height:1.45;color:#9fb4d0}
 </style>
 </head>
 <body>
 <div class="app">
   <div class="top">
+    <button type="button" class="lvbtn icononly homebtn" id="homeBtn" aria-label="主页 / 模式" title="主页 / 模式"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8.6 10 3.4l6.5 5.2V16a.9.9 0 0 1-.9.9H4.4a.9.9 0 0 1-.9-.9z"/><path d="M7.9 16.9v-4.6h4.2v4.6"/></svg></button>
     <div class="title">星织<span class="who" id="lvName"></span></div>
     <div class="top-actions">
       <button type="button" class="lvbtn" id="fbBtn" aria-expanded="false" aria-controls="fbOverlay">✉ 意见</button>
@@ -842,17 +856,16 @@
         <div class="intro-en">ASTERWEAVE</div>
       </div>
       <p class="intro-tag">扫雷 × 数织 · 用标记拼出你的真实星座</p>
-      <ul class="intro-steps">
-        <li>翻开所有<b>安全格</b>，再把夜空里所有<b>星</b>标出来 —— 这一关就通了。</li>
-        <li>数字 = 它周围 8 格里有几颗星；上方 / 左侧数字 = 这一行 / 列「连续几颗星」。</li>
-        <li>手机：<b>轻触</b>观测、<b>长按</b>标记　·　电脑：<b>单击</b>观测、<b>右键</b>标记。</li>
-      </ul>
-      <button type="button" class="btn primary" id="introStart">开始观测</button>
-      <button type="button" class="btn again" id="introEndless">♾ 无尽冲分 · 约 2 分钟一局</button>
+      <p class="intro-hint">翻开所有<b>安全格</b> + 标出所有<b>星</b> → 揭晓真实星座</p>
+      <button type="button" class="modecard primary" id="homeResume" hidden><span class="modecard-t">▶ 继续当前进度</span><span class="modecard-sub" id="homeResumeSub"></span></button>
+      <button type="button" class="modecard" id="homeCampaign"><span class="modecard-t">⚔ 闯关模式</span><span class="modecard-sub" id="homeCampaignSub"></span></button>
+      <button type="button" class="modecard" id="homeEndless"><span class="modecard-t" id="homeEndlessTitle">♾ 无尽冲分</span><span class="modecard-sub" id="homeEndlessSub"></span></button>
       <button type="button" class="btn ghost" id="introRestart" hidden>从第 1 关开始</button>
       <div class="intro-foot">
         <button type="button" class="intro-chip" id="introSky">✦ 图鉴 <b id="introSkyNum">0</b>/<b id="introSkyTotal">50</b></button>
         <button type="button" class="intro-chip" id="introSound">🔊 音效开</button>
+        <button type="button" class="intro-chip" id="introRules">？规则</button>
+        <button type="button" class="intro-chip" id="introFb">✉ 意见</button>
       </div>
     </div>
   </div>
@@ -1307,15 +1320,20 @@ function introLitCount(){
   for (let i = 0; i < SKY.length; i++){ if (skyIsOn(SKY[i])) lit++; }
   return lit;
 }
+function boardTouched(){
+  if (!S) return false;
+  const total = S.revealedSafe ? S.revealedSafe.length : 0;
+  for (let i = 0; i < total; i++){
+    if (S.revealedSafe[i] || S.revealedMine[i] || S.flagged[i]) return true;
+  }
+  return false;
+}
+function homeRunLive(){ return runMode === 'endless' && run && !run.over; }
+function homePlaying(){ return homeRunLive() || (runMode === 'campaign' && boardTouched()); }
+
 function refreshIntro(){
-  const goBtn = document.getElementById('introStart');
   const againBtn = document.getElementById('introRestart');
   const hasSave = introHasSave();
-  if (goBtn){
-    goBtn.textContent = hasSave
-      ? ('继续第 ' + Math.min(frontier() + 1, LEVELS.length) + ' 关')
-      : '开始观测';
-  }
   if (againBtn) againBtn.hidden = !hasSave;
   const num = document.getElementById('introSkyNum');
   const tot = document.getElementById('introSkyTotal');
@@ -1323,21 +1341,56 @@ function refreshIntro(){
   if (tot) tot.textContent = String(SKY.length);
   const sb = document.getElementById('introSound');
   if (sb) sb.textContent = soundEnabled() ? '🔊 音效开' : '🔇 音效关';
+
+  const live = homeRunLive();
+  const res = document.getElementById('homeResume');
+  if (res){
+    res.hidden = !homePlaying();
+    const sub = document.getElementById('homeResumeSub');
+    if (sub) sub.textContent = live
+      ? ('无尽 · 第 ' + run.boardNo + ' 题 · 分数 ' + runScore())
+      : ('闯关 · 第 ' + Math.min(frontier() + 1, LEVELS.length) + ' 关');
+  }
+  const cs = document.getElementById('homeCampaignSub');
+  if (cs) cs.textContent = hasSave
+    ? ('继续第 ' + Math.min(frontier() + 1, LEVELS.length) + ' 关 · 共 ' + LEVELS.length + ' 关')
+    : (LEVELS.length + ' 关手工星座 · 从第 1 关开始');
+  const et = document.getElementById('homeEndlessTitle');
+  const es = document.getElementById('homeEndlessSub');
+  const st = endlessStats();
+  if (et) et.textContent = live ? '♾ 继续本轮' : (homePlaying() ? '♾ 开始新的一轮' : '♾ 无尽冲分');
+  if (es) es.textContent = live
+    ? ('当前分数 ' + runScore() + ' · 第 ' + run.boardNo + ' 题')
+    : ('约 2 分钟一局 · 最高分 ' + (st.best || 0));
 }
-function showIntro(){
+let homeOpen = false, homePausedClock = false;
+function openHome(pause){
   const el = document.getElementById('introOverlay');
   if (!el) return;
   refreshIntro();
   el.hidden = false;
-  const btn = document.getElementById('introStart');
-  if (btn){ try { btn.focus(); } catch (e) {} }
+  homeOpen = true;
+  if (pause){
+    homePausedClock = !!timeStart && !timeStop;
+    if (homePausedClock) stopClock();
+    if (homeRunLive()) runClockPause();
+  } else {
+    homePausedClock = false;
+  }
 }
-
-function hideIntro(goFirst){
+function closeHome(){
   const el = document.getElementById('introOverlay');
   if (el) el.hidden = true;
-  progress.introSeen = true;      // 只弹一次
-  saveProgress();
+  homeOpen = false;
+  if (homePausedClock && timeStart && timeStop) timeStop = 0;   // 恢复闯关计时
+  homePausedClock = false;
+  if (homeRunLive()) runClockResume();
+  if (!progress.introSeen){ progress.introSeen = true; saveProgress(); }
+}
+function showIntro(){ openHome(false); }
+
+function hideIntro(goFirst){
+  closeHome();
   if (goFirst) startLevel(0);     // 「从第 1 关开始」
 }
 
@@ -1755,8 +1808,10 @@ function checkWin(){
 function act(i, mode){
   if (mode === MODE_DIG || mode === MODE_FLAG) currentMode = mode;
   if (!S || S.status !== 'playing') return;
-  startClock();                               // 第一次操作开始计时
-  refreshTimerChip();
+  if (timeIsTimed()){                         // 只有关卡模式计时；无限模式不启动
+    startClock();                             // 第一次操作开始计时
+    refreshTimerChip();
+  }
   if (S.revealedSafe[i] || S.revealedMine[i]) return;
   if (mode === MODE_FLAG){
     S.flagged[i] = S.flagged[i] ? 0 : 1;   // 插旗可取消
@@ -2174,6 +2229,10 @@ function buildEndlessEnd(){
     closeModal(false);
     leaveEndless();
   }));
+  modalBtnsEl.appendChild(mkBtn('☰ 回到主页', 'btn ghost', function(){
+    closeModal(false);
+    openHome(false);
+  }));
 }
 
 function buildModal(){
@@ -2317,6 +2376,7 @@ function timeUp(){
   render();
 }
 function tickClock(){
+  if (!timeIsTimed()) return;                 // 无限模式不判负
   if (!S || S.status !== 'playing' || !timeStart) return;
   const target = levelTargetSec(S.level);
   refreshTimerChip();
@@ -3642,7 +3702,13 @@ function closeSky(){
 if (skyEls.btn) skyEls.btn.addEventListener('click', function(){ skyOpen ? closeSky() : openSky(); });
 if (skyEls.litBtn) skyEls.litBtn.addEventListener('click', toggleSkyLit);
 if (endRunBtn) endRunBtn.addEventListener('click', function(){
-  if (runMode === 'endless' && run && !run.over) endEndlessRun('quit');
+  if (runMode !== 'endless' || !run) return;
+  if (run.over){                       // 已结束但弹窗被点空白关掉 → 重新打开结束页
+    modalDismissed = false; modalSignature = '';
+    render();
+    return;
+  }
+  endEndlessRun('quit');
 });
 if (skyEls.close) skyEls.close.addEventListener('click', closeSky);
 if (skyEls.filters) skyEls.filters.addEventListener('click', function(e){
@@ -3886,6 +3952,7 @@ window.addEventListener('keydown', function(e){
     if (typeof fbFloatEl !== 'undefined' && fbFloatEl && fbFloatEl.hidden === false){ fbFloatClose(); return; }
     if (typeof fbOverlay !== 'undefined' && fbOverlay && fbOverlay.hidden === false){ fbClosePanel(); return; }
     if (modalOpenNow){ dismissModal(); return; }   // Esc 收起结算，结算条保留入口
+    if (homeOpen){ closeHome(); return; }
     if (volPopEl && !volPopEl.hidden){ closeVolPop(); return; }
     if (ruleModalEl && ruleModalEl.className.indexOf('open') >= 0){ closeRules(); return; }
     const cm = document.getElementById('constModal');
@@ -4070,18 +4137,40 @@ if (Array.isArray(LEVELS) && LEVELS.length){
   startLevel(idx0);
   // 入场页：首次打开必显示（不论停在哪一关）；之后再进来直接进棋盘
   if (!progress.introSeen) showIntro();
-  const ib = document.getElementById('introStart');
-  if (ib) ib.addEventListener('click', function(){ initAudio(); sndStart(); hideIntro(false); });
-  const ien = document.getElementById('introEndless');
-  if (ien) ien.addEventListener('click', function(){ initAudio(); sndStart(); hideIntro(false); startEndlessRun(); });
+  const ires = document.getElementById('homeResume');
+  if (ires) ires.addEventListener('click', function(){ initAudio(); sndStart(); closeHome(); });
+  const icamp = document.getElementById('homeCampaign');
+  if (icamp) icamp.addEventListener('click', function(){
+    initAudio(); sndStart();
+    if (runMode === 'endless'){
+      if (run && !run.over) endEndlessRun('quit');   // 切换即结算本轮（分数入账）
+      closeHome();
+      leaveEndless();
+    } else {
+      closeHome();                                    // 已在闯关 → 继续
+    }
+  });
+  const iend = document.getElementById('homeEndless');
+  if (iend) iend.addEventListener('click', function(){
+    initAudio(); sndStart();
+    if (homeRunLive()){ closeHome(); return; }        // 继续本轮
+    closeHome();
+    startEndlessRun();                                // 新的一轮
+  });
   const ire = document.getElementById('introRestart');
   if (ire) ire.addEventListener('click', function(){ initAudio(); sndStart(); hideIntro(true); });
   const isk = document.getElementById('introSky');
-  if (isk) isk.addEventListener('click', function(){ hideIntro(false); openSky(); });
+  if (isk) isk.addEventListener('click', function(){ closeHome(); openSky(); });
   const isd = document.getElementById('introSound');
   if (isd) isd.addEventListener('click', function(){ initAudio(); setSound(!soundEnabled()); refreshIntro(); });
+  const iru = document.getElementById('introRules');
+  if (iru) iru.addEventListener('click', function(){ closeHome(); if (ruleBtnEl) ruleBtnEl.click(); });
+  const ifb = document.getElementById('introFb');
+  if (ifb) ifb.addEventListener('click', function(){ closeHome(); const b = document.getElementById('fbBtn'); if (b) b.click(); });
+  const ihome = document.getElementById('homeBtn');
+  if (ihome) ihome.addEventListener('click', function(){ initAudio(); openHome(true); });
   const io = document.getElementById('introOverlay');
-  if (io) io.addEventListener('click', function(e){ if (e.target === io) hideIntro(false); });
+  if (io) io.addEventListener('click', function(e){ if (e.target === io) closeHome(); });
 } else {
   boardEl.innerHTML = '<p class="err">关卡数据缺失。</p>';
 }

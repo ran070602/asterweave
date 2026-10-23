@@ -169,3 +169,9 @@ python tools/sync_docs_tables.py   # 文档关卡表同步（幂等，--dry 可�
   - `aria-label` 同步为"剩余 m:ss / 已超时 m:ss"（未开始为"本关目标时间"）。
   - 实测（用 `Date.now` 快进模拟）：未操作 `[目标 1:55] timer idle`；起步 `[⏱ 1:54]`；剩 39 秒 `[⏱ 0:39]`；剩 8 秒 `[⏱ 0:07] timer danger`；超时 7 秒 `[⏱ 超时 +0:07] timer over`＋aria"已超时 0:07"；零 JS 报错。
   - 注意：另一会话新增了 `runMode === 'endless'`（无限模式）与 `run.boardNo`，`lvtag` 的赋值被包进了 `if (!(runMode === 'endless' && run))`；本次改动已适配该结构。
+
+- **v10.1 交叉修复（关卡模式 vs 无限模式）**：另一会话新增「无限模式」（
+unMode/
+un.boardNo/startEndlessRun）并已给 	imeIsTimed()、
+ecordBestTime() 加了 
+unMode === 'endless' 护栏；但 ct() 里的 startClock() 与 	ickClock() 的严格限时判负**漏了护栏**，会导致「无限模式 + 严格限时」被关卡目标时间判负。已修：ct() 仅在 	imeIsTimed() 时起表，	ickClock() 开头直接 if (!timeIsTimed()) return;。回归验证：关卡模式计时/达标/严格超时全部正常，无限模式不启动计时。
