@@ -86,3 +86,11 @@ python tools/sync_docs_tables.py   # 文档关卡表同步（幂等，--dry 可�
   2. 弹窗排版收紧：**高度 616px → 340px**；四个视口（含 492×496 的极小可视高度）实测 `noInnerScroll=true`、`fitsViewport=true`、3 个按钮排成**一行**且全部落在视口内；
   3. **结算条删除右上角「×」**：原先点 × 之后「下一关 / 重来」就再也没有入口（用户体验缺陷）。现在结算条固定贴底、入口常驻；实测 `rxCount=0`、`position=fixed`、按钮 3 个（★ 图鉴详情 / ↻ 重来本关 / 下一关 →）。
 - 教训：凡是"给用户一个关闭入口"的按钮，都要先问一句"关掉之后主流程入口还在不在"。
+
+- **v4 事故与修复（弹窗不再居中）**：用户反馈"通关弹窗要在屏幕中间弹出"。
+  根因：v3 里我用非贪婪正则删 `.result .rx` 样式 —— 正则 `  \.result \.rx\{[\s\S]*?\n  \}\n` 的结束条件与该规则的实际写法不匹配，于是**一路吞到后面第一个 `\n  }`**，把 `.modal .modal-cname/.modal-cmeta`、`.result.win/.lose/.msg/.result-btns`、以及**整条 `.overlay{position:fixed;inset:0;display:flex;align-items:center…}` 基础规则**一并删掉。没有 `.overlay` 的定位，弹窗就退回页面流、落在页面底部（要滚动才看得到）。同一次删除还留下一个孤立 `}`，造成 CSS 花括号 333/334 不配平。
+  修复：从 `git show dc6bcbe~1:game/index.html` 取回被误删的整段原文补上；删除孤立 `}`；追加 `.overlay{top:0;left:0;right:0;bottom:0;padding:12px}` 作为不支持 `inset` 的浏览器保险。
+  复验：`overlay=fixed, align=center`；页面滚到底（`scrollY=183`）时弹窗 `top=177/bottom=535`、**中心偏移 6px**、完全在视口内 = true；底部条背景恢复 `rgb(20,37,28)`、`.result-btns` = flex、3 按钮、无 ×。
+- **两条硬教训**：
+  1. **不要用 `[\s\S]*?\n  }` 这类"到下一个收尾大括号"的正则删 CSS/JS**——中间夹着的规则会被一起吃掉。删规则要用唯一锚点或明确的起止行。
+  2. **CSS 改动后必须跑花括号配平审计**（本次新增 `audit_braces.py`）；"是否在视口内"要用**严格判据**（`top>=0 && bottom<=innerHeight`）。v3 时的 `fitsViewport` 只检查了高度和 `top>=-1`，所以弹窗掉到页面底部时仍报 true —— **这个弱判据让 bug 从我眼皮底下溜了过去**。
