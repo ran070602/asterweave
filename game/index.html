@@ -74,6 +74,8 @@
     cursor:pointer;touch-action:manipulation;white-space:nowrap;
   }
   .lvbtn b{color:#8fc3ff;font-variant-numeric:tabular-nums}
+  /* 按钮内联图标：与文字同一视觉重量（描边 1.5，18px） */
+  .lvbtn .ico{width:18px;height:18px;display:inline-block;vertical-align:-3.5px;margin-right:5px}
   .lvbtn[aria-expanded="true"]{background:#1f3a63;border-color:#4b7fbd;color:#e4f0ff}
 
   .panel{
@@ -535,8 +537,8 @@
   <div class="top">
     <div class="title">星织<span class="who" id="lvName"></span></div>
     <div class="top-actions">
-      <button type="button" class="lvbtn" id="skyBtn" aria-expanded="false" aria-controls="skyPanel">✦ 图鉴</button>
-      <button type="button" class="lvbtn" id="ruleBtn" aria-haspopup="dialog">？规则</button>
+      <button type="button" class="lvbtn" id="skyBtn" aria-expanded="false" aria-controls="skyPanel"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6.3 14.5 10 8.3l4.3 3.5 1.2-6.2"/><circle cx="6.3" cy="14.5" r="1.5" fill="currentColor" stroke="none"/><circle cx="10" cy="8.3" r="1.5" fill="currentColor" stroke="none"/><circle cx="14.3" cy="11.8" r="1.5" fill="currentColor" stroke="none"/><circle cx="15.5" cy="5.6" r="1.5" fill="currentColor" stroke="none"/></svg>图鉴</button>
+      <button type="button" class="lvbtn" id="ruleBtn" aria-haspopup="dialog"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 2.5h6.4l3.6 3.6v11.4a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1v-14a1 1 0 0 1 1-1z"/><path d="M11.9 2.6v3.6h3.6"/><path d="M10 8.7l.95 2.05 2.05.95-2.05.95L10 14.7l-.95-2.05L7 11.7l2.05-.95z" fill="currentColor" stroke="none"/></svg>规则</button>
       <button type="button" class="lvbtn" id="lvBtn" aria-expanded="false" aria-controls="levelPanel">关卡 <b id="lvBtnNum">1</b>/<b id="lvBtnTotal">1</b> ▾</button>
     </div>
   </div>
@@ -599,7 +601,7 @@
           <div class="sec">通关与图鉴</div>
           <ol>
             <li>翻开全部安全格 + 标出全部星 → 揭晓本关对应的<b>真实星座</b>，并在图鉴里点亮它。</li>
-            <li><b>✦ 图鉴</b>：按真实天球位置摆放星座（横轴赤经 0–24 时、纵轴赤纬 ±90°）。可按季节筛选、滚轮或双指缩放、按住拖动；点星座看详情（赤经赤纬、面积排名、最亮星、相邻星座可互相跳转）。</li>
+            <li><b>图鉴</b>（顶部星座连线图标）：按真实天球位置摆放星座（横轴赤经 0–24 时、纵轴赤纬 ±90°）。可按季节筛选、滚轮或双指缩放、按住拖动；点星座看详情（赤经赤纬、面积排名、最亮星、相邻星座可互相跳转）。</li>
             <li>未观测的星座只显示暗色名字，观测过的会亮起并闪烁。</li>
           </ol>
 
