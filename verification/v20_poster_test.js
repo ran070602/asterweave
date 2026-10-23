@@ -235,6 +235,44 @@ ok('猎户座最佳观赏 = 1 月', detail().indexOf('最佳观赏：<b>1 月</b
 selectSky('crux');
 ok('南十字座最佳观赏 = 5 月', detail().indexOf('最佳观赏：<b>5 月</b>') >= 0, (detail().match(/最佳观赏：<b>([^<]*)<\/b>/) || [])[1]);
 
+// ⑤ v2.6 版式硬断言：标题带不侵入、图形占比、标注不重叠
+function posterParts(html2){
+  const svg = html2.slice(html2.indexOf('<svg class="sky-poster-svg"'));
+  const labels = [];
+  const re = /<text class="p-label" x="([\d.]+)" y="([\d.]+)" text-anchor="(\w+)">([^<]*)<\/text>/g;
+  let m;
+  while ((m = re.exec(svg))){
+    const w = m[4].length * 6.7 + 8, h = 15;
+    const x = +m[1], y = +m[2];
+    labels.push({ txt: m[4], x: (m[3] === 'end' ? x - w : x), y: y - h + 4, w: w, h: h });
+  }
+  const ys = [];
+  const rc = /<circle class="p-star" cx="([\d.]+)" cy="([\d.]+)"/g;
+  let c2;
+  while ((c2 = rc.exec(svg))) ys.push(+c2[2]);
+  return { labels: labels, starTop: ys.length ? Math.min.apply(null, ys) : -1, starBottom: ys.length ? Math.max.apply(null, ys) : -1 };
+}
+const TITLE_BOTTOM = 74;
+let overlapBad = '', topBad = '', sizeBad = '';
+for (let i = 0; i < ids.length; i++){
+  selectSky(ids[i]);
+  const p = posterParts(detail());
+  for (let a = 0; a < p.labels.length; a++){
+    for (let b = a + 1; b < p.labels.length; b++){
+      const A = p.labels[a], B = p.labels[b];
+      if (!(A.x + A.w < B.x || A.x > B.x + B.w || A.y + A.h < B.y || A.y > B.y + B.h)){
+        if (!overlapBad) overlapBad = ids[i] + ': ' + A.txt + ' × ' + B.txt;
+      }
+    }
+  }
+  if (p.labels.some(l => l.y < TITLE_BOTTOM) && !topBad) topBad = ids[i];
+  const span = p.starBottom - p.starTop;
+  if (span < 380 * 0.55 && !sizeBad) sizeBad = ids[i] + ' span=' + span.toFixed(0);
+}
+ok('50 个星座的星名标注互不重叠', !overlapBad, overlapBad || 'no overlap');
+ok('标注都不侵入顶部标题带', !topBad, topBad || 'all below ' + TITLE_BOTTOM);
+ok('图形竖向跨度 ≥55%（星点跨度口径，图形框实际占 77%）', !sizeBad, sizeBad || 'ok');
+
 ok('全页仍零 http(s) 外部引用', !/https?:\/\//.test(html), 'html 0 处');
 ok('全页无 <img>（海报是内联 SVG）', (html.match(/<img[^>]*>/g) || []).length === 0);
 

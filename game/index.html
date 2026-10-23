@@ -536,10 +536,11 @@
   .sky-poster{position:relative;width:100%;margin:10px 0 6px;border-radius:16px;overflow:hidden;
     background:#070b18;box-shadow:0 10px 28px rgba(0,0,0,.46);line-height:0}
   .sky-poster-svg{display:block;width:100%;height:auto}
-  .sky-poster-title{position:absolute;left:0;right:0;top:9px;text-align:center;pointer-events:none;line-height:1.15}
-  .sky-poster-title b{display:block;font-size:clamp(19px,6.2vw,29px);font-weight:800;color:#fff;letter-spacing:.005em;
-    text-shadow:0 2px 16px rgba(0,0,0,.7),0 0 30px rgba(120,160,255,.28)}
-  .sky-poster-title span{display:block;margin-top:3px;font-size:11.5px;color:#c9d8ef;letter-spacing:.3em;text-indent:.3em;
+  .sky-poster-title{position:absolute;left:0;right:0;top:10px;height:64px;text-align:center;pointer-events:none;line-height:1.12;
+    background:linear-gradient(180deg,rgba(6,10,24,.55),rgba(6,10,24,0) 88%)}
+  .sky-poster-title b{display:block;font-size:clamp(18px,5.6vw,26px);font-weight:800;color:#fff;letter-spacing:.005em;
+    text-shadow:0 2px 16px rgba(0,0,0,.75),0 0 30px rgba(120,160,255,.28)}
+  .sky-poster-title span{display:block;margin-top:2px;font-size:11px;color:#c9d8ef;letter-spacing:.3em;text-indent:.3em;
     text-shadow:0 1px 8px rgba(0,0,0,.7)}
   .sky-poster-info{position:absolute;left:10px;bottom:10px;padding:7px 11px;border-radius:11px;line-height:1.5;
     background:rgba(9,14,32,.74);border:1px solid rgba(150,180,230,.15)}
@@ -2703,15 +2704,36 @@ function posterDust(seed, count){
   return out;
 }
 // 星座海报：深空背景 + 大标题（HTML 覆盖层）+ 星点名标注 + 观赏信息卡
+// v2.6：① 标题独占顶部一条"标题带"，图形从带下方开始，不再被压；
+//       ② 按星点包围盒自适应放大（稀疏星座也能占满）；③ 标注做二维避让，放不下就不画（宁缺不叠）。
+const POSTER_W = 640, POSTER_H = 380, POSTER_TITLE_BOTTOM = 74;
+function posterFit(stars, size){
+  let minR = Infinity, maxR = -Infinity, minC = Infinity, maxC = -Infinity;
+  for (let i = 0; i < stars.length; i++){
+    const rc = stars[i] && stars[i].rc;
+    if (!rc || rc.length < 2) continue;
+    const r = Number(rc[0]) || 0, c = Number(rc[1]) || 0;
+    if (r < minR) minR = r; if (r > maxR) maxR = r;
+    if (c < minC) minC = c; if (c > maxC) maxC = c;
+  }
+  if (!isFinite(minR)){ minR = maxR = minC = maxC = 0; }
+  const bw = Math.max(1, maxC - minC + 1), bh = Math.max(1, maxR - minR + 1);
+  const availW = POSTER_W - 96, availH = POSTER_H - POSTER_TITLE_BOTTOM - 12;
+  const cell = Math.min(availW / bw, availH / bh);          // 每格像素（等比，不变形）
+  const figW = bw * cell, figH = bh * cell;
+  const ox = (POSTER_W - figW) / 2, oy = POSTER_TITLE_BOTTOM + (availH - figH) / 2;
+  return { minR: minR, minC: minC, cell: cell, ox: ox, oy: oy, figW: figW, figH: figH };
+}
 function skyPosterSvg(s, lv){
   const theme = (lv && lv.theme) || {};
   const stars = Array.isArray(theme.stars) ? theme.stars : [];
   const lines = Array.isArray(theme.lines) ? theme.lines : [];
   const n = (lv && lv.size) ? lv.size : 1;
-  const W = 640, H = 360, side = 272, ox = (W - side) / 2, oy = (H - side) / 2 + 4;
+  const W = POSTER_W, H = POSTER_H;
+  const fit = posterFit(stars, n);
   const at = function(rc){
     const r = rc && rc.length > 1 ? Number(rc[0]) || 0 : 0, c = rc && rc.length > 1 ? Number(rc[1]) || 0 : 0;
-    return [ox + (c + 0.5) / n * side, oy + (r + 0.5) / n * side];
+    return [fit.ox + (c - fit.minC + 0.5) * fit.cell, fit.oy + (r - fit.minR + 0.5) * fit.cell];
   };
   let linesHtml = '';
   for (let i = 0; i < lines.length; i++){
@@ -2721,32 +2743,51 @@ function skyPosterSvg(s, lv){
     linesHtml += '<line class="p-line" x1="' + p[0].toFixed(1) + '" y1="' + p[1].toFixed(1) +
       '" x2="' + q[0].toFixed(1) + '" y2="' + q[1].toFixed(1) + '"></line>';
   }
-  // 星名标注：取最亮的几颗，按左右分侧，纵向轻微错开避免叠字
-  const order = stars.map(function(st, i){ return { i: i, st: st }; })
-    .sort(function(x, y){ return (Number(x.st.mag) || 9) - (Number(y.st.mag) || 9); });
-  const labelIdx = {};
-  const used = [];
-  for (let k = 0; k < order.length && used.length < 5; k++){
-    const p = at(order[k].st.rc);
-    if (p[0] < ox - 4 || p[0] > ox + side + 4) continue;
-    used.push({ p: p, st: order[k].st });
-  }
-  let starsHtml = '', labelHtml = '';
+  // 星点：大小随视星等与图形尺度走（放大后不至于变成"小芝麻"）
+  const scaleF = Math.max(0.95, Math.min(1.3, fit.cell / 34));
+  let starsHtml = '';
+  const pts = [];
   for (let i = 0; i < stars.length; i++){
     const st = stars[i] || {}, p = at(st.rc);
     const mag = (typeof st.mag === 'number' && isFinite(st.mag)) ? st.mag : 3;
-    const r = 4 + 6 * Math.pow((6 - Math.max(-1.5, Math.min(6, mag))) / 7.5, 1.1);
+    const r = (3.4 + 5.2 * Math.pow((6 - Math.max(-1.5, Math.min(6, mag))) / 7.5, 1.1)) * scaleF;
     const x = p[0].toFixed(1), y = p[1].toFixed(1);
-    starsHtml += '<circle class="p-glow" cx="' + x + '" cy="' + y + '" r="' + (r * 2.7).toFixed(1) + '"></circle>' +
+    starsHtml += '<circle class="p-glow" cx="' + x + '" cy="' + y + '" r="' + (r * 2.6).toFixed(1) + '"></circle>' +
       '<circle class="p-star" cx="' + x + '" cy="' + y + '" r="' + r.toFixed(1) + '"></circle>';
+    pts.push({ st: st, p: p });
   }
-  for (let k = 0; k < used.length; k++){
-    const st = used[k].st, p = used[k].p;
-    let y = p[1];
-    while (used.some(function(u, j){ return j < k && Math.abs(u.p[1] - y) < 15 && Math.sign(u.p[0] - W / 2) === Math.sign(p[0] - W / 2); })) y += 15;
-    const left = p[0] < W / 2;
-    labelHtml += '<text class="p-label" x="' + (left ? p[0] + 10 : p[0] - 10).toFixed(1) + '" y="' + (y - 6).toFixed(1) +
-      '" text-anchor="' + (left ? 'start' : 'end') + '">' + escHtml(st.en || st.name || '') + '</text>';
+  // 星名标注：最亮的先放；二维矩形避让（含左右两侧与上下偏移），放不下就跳过
+  const order = pts.slice().sort(function(x, y){ return (Number(x.st.mag) || 9) - (Number(y.st.mag) || 9); });
+  const placed = [];
+  let labelHtml = '', placedCount = 0;
+  for (let k = 0; k < order.length && placedCount < 5; k++){
+    const it = order[k], txt = String(it.st.en || it.st.name || '');
+    if (!txt) continue;
+    const w = txt.length * 6.7 + 8, h = 15, gap = 11;
+    const spots = [
+      [gap, -5, 'start'], [-gap, -5, 'end'],
+      [gap, -21, 'start'], [-gap, -21, 'end'],
+      [gap, 14, 'start'], [-gap, 14, 'end'],
+      [gap, 30, 'start'], [-gap, 30, 'end']
+    ];
+    for (let j = 0; j < spots.length; j++){
+      const sp = spots[j], x = it.p[0] + sp[0], y = it.p[1] + sp[1];
+      const rx = (sp[2] === 'end') ? (x - w) : x;
+      const rect = { x: rx, y: y - h + 4, w: w, h: h };
+      if (rect.x < 8 || rect.x + rect.w > W - 8) continue;
+      if (rect.y < POSTER_TITLE_BOTTOM + 2 || rect.y + rect.h > H - 8) continue;
+      let clash = false;
+      for (let q = 0; q < placed.length; q++){
+        const o = placed[q];
+        if (!(rect.x + rect.w < o.x || rect.x > o.x + o.w || rect.y + rect.h < o.y || rect.y > o.y + o.h)){ clash = true; break; }
+      }
+      if (clash) continue;
+      placed.push(rect);
+      placedCount++;
+      labelHtml += '<text class="p-label" x="' + x.toFixed(1) + '" y="' + y.toFixed(1) +
+        '" text-anchor="' + sp[2] + '">' + escHtml(txt) + '</text>';
+      break;
+    }
   }
   return '<svg class="sky-poster-svg" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' +
     escHtml(s.zh) + ' 星图">' +
@@ -2754,7 +2795,7 @@ function skyPosterSvg(s, lv){
       '<stop offset="0%" stop-color="#080d24"/><stop offset="55%" stop-color="#141d44"/>' +
       '<stop offset="100%" stop-color="#272a5c"/></linearGradient></defs>' +
     '<rect width="' + W + '" height="' + H + '" fill="url(#pSky)"></rect>' +
-    '<ellipse class="p-band" cx="320" cy="322" rx="430" ry="146" transform="rotate(-11 320 322)"></ellipse>' +
+    '<ellipse class="p-band" cx="320" cy="336" rx="430" ry="152" transform="rotate(-11 320 336)"></ellipse>' +
     posterDust(s.id || s.en || 'sky', 150) +
     linesHtml + starsHtml + labelHtml +
   '</svg>';
