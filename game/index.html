@@ -6,6 +6,7 @@
 <title>星织 Asterweave · 10 关</title>
 <style>
   *{box-sizing:border-box}
+  [hidden]{display:none !important}   /* 作者样式里的 display 会打败 UA 的 [hidden]，这里兜底 */
   html,body{margin:0;padding:0}
   html{background:#05070f}
   body{
@@ -735,7 +736,9 @@
   .modecard:active{transform:scale(.985)}
   .modecard.primary{border-color:rgba(63,156,102,.75);
     background:linear-gradient(180deg,rgba(34,84,56,.95),rgba(20,50,34,.95))}
-  .modecard-t{display:block;font-size:15px;font-weight:800;letter-spacing:.02em}
+  .modecard-t{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:800;letter-spacing:.02em}
+  .modecard-t .mico{width:17px;height:17px;flex:0 0 auto;color:#8fc3ff}
+  .modecard.primary .modecard-t .mico{color:#eafff3}
   .modecard-sub{display:block;margin-top:3px;font-size:11.5px;line-height:1.45;color:#9fb4d0}
 </style>
 </head>
@@ -857,9 +860,9 @@
       </div>
       <p class="intro-tag">扫雷 × 数织 · 用标记拼出你的真实星座</p>
       <p class="intro-hint">翻开所有<b>安全格</b> + 标出所有<b>星</b> → 揭晓真实星座</p>
-      <button type="button" class="modecard primary" id="homeResume" hidden><span class="modecard-t">▶ 继续当前进度</span><span class="modecard-sub" id="homeResumeSub"></span></button>
-      <button type="button" class="modecard" id="homeCampaign"><span class="modecard-t">⚔ 闯关模式</span><span class="modecard-sub" id="homeCampaignSub"></span></button>
-      <button type="button" class="modecard" id="homeEndless"><span class="modecard-t" id="homeEndlessTitle">♾ 无尽冲分</span><span class="modecard-sub" id="homeEndlessSub"></span></button>
+      <button type="button" class="modecard primary" id="homeResume" hidden><span class="modecard-t"><svg class="mico" viewBox="0 0 20 20" fill="currentColor" stroke="none"><path d="M6.6 4.4 15 10l-8.4 5.6z"/></svg>继续当前进度</span><span class="modecard-sub" id="homeResumeSub"></span></button>
+      <button type="button" class="modecard" id="homeCampaign"><span class="modecard-t"><svg class="mico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3.2" y="3.2" width="13.6" height="13.6" rx="2.2"/><path d="M3.2 7.9h13.6M3.2 12.1h13.6M7.9 3.2v13.6M12.1 3.2v13.6"/></svg>闯关模式</span><span class="modecard-sub" id="homeCampaignSub"></span></button>
+      <button type="button" class="modecard" id="homeEndless"><span class="modecard-t"><svg class="mico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6.4 6.6c2 0 2.9 2 3.6 3.4.7 1.4 1.6 3.4 3.6 3.4a2.9 2.9 0 0 0 0-5.8c-2 0-2.9 2-3.6 3.4-.7 1.4-1.6 3.4-3.6 3.4a2.9 2.9 0 0 1 0-5.8z"/></svg><span id="homeEndlessLabel">无尽冲分</span></span><span class="modecard-sub" id="homeEndlessSub"></span></button>
       <button type="button" class="btn ghost" id="introRestart" hidden>从第 1 关开始</button>
       <div class="intro-foot">
         <button type="button" class="intro-chip" id="introSky">✦ 图鉴 <b id="introSkyNum">0</b>/<b id="introSkyTotal">50</b></button>
@@ -1320,14 +1323,7 @@ function introLitCount(){
   for (let i = 0; i < SKY.length; i++){ if (skyIsOn(SKY[i])) lit++; }
   return lit;
 }
-function boardTouched(){
-  if (!S) return false;
-  const total = S.revealedSafe ? S.revealedSafe.length : 0;
-  for (let i = 0; i < total; i++){
-    if (S.revealedSafe[i] || S.revealedMine[i] || S.flagged[i]) return true;
-  }
-  return false;
-}
+function boardTouched(){ return !!(S && S.acted); }   // 只认玩家自己的操作，开局赠送的自动翻开不算
 function homeRunLive(){ return runMode === 'endless' && run && !run.over; }
 function homePlaying(){ return homeRunLive() || (runMode === 'campaign' && boardTouched()); }
 
@@ -1355,10 +1351,10 @@ function refreshIntro(){
   if (cs) cs.textContent = hasSave
     ? ('继续第 ' + Math.min(frontier() + 1, LEVELS.length) + ' 关 · 共 ' + LEVELS.length + ' 关')
     : (LEVELS.length + ' 关手工星座 · 从第 1 关开始');
-  const et = document.getElementById('homeEndlessTitle');
+  const et = document.getElementById('homeEndlessLabel');
   const es = document.getElementById('homeEndlessSub');
   const st = endlessStats();
-  if (et) et.textContent = live ? '♾ 继续本轮' : (homePlaying() ? '♾ 开始新的一轮' : '♾ 无尽冲分');
+  if (et) et.textContent = live ? '继续本轮' : (homePlaying() ? '开始新的一轮' : '无尽冲分');
   if (es) es.textContent = live
     ? ('当前分数 ' + runScore() + ' · 第 ' + run.boardNo + ' 题')
     : ('约 2 分钟一局 · 最高分 ' + (st.best || 0));
@@ -1659,6 +1655,7 @@ function startBoard(rawIndex, overrideLevel, endless){
 
   S = {
     endless: !!endless,
+    acted: false,
     index: index,
     level: level,
     n: n,
@@ -1813,6 +1810,7 @@ function act(i, mode){
     refreshTimerChip();
   }
   if (S.revealedSafe[i] || S.revealedMine[i]) return;
+  S.acted = true;                          // 玩家真的操作过（开局赠送的自动翻开不算）
   if (mode === MODE_FLAG){
     S.flagged[i] = S.flagged[i] ? 0 : 1;   // 插旗可取消
     S.fxFlag = i;                          // 特效：抖动 + 星形弹出
