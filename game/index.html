@@ -700,6 +700,25 @@
     color:#dbeaff;font:inherit;font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap}
   .intro-chip b{color:#8fc3ff;font-variant-numeric:tabular-nums}
   .intro-chip:active{transform:scale(.97)}
+  /* ===== 无尽冲分 ===== */
+  .runtoast{position:fixed;left:50%;top:16%;transform:translate(-50%,-6px);z-index:36;pointer-events:none;
+    padding:7px 14px;border-radius:999px;border:1px solid rgba(140,190,255,.45);
+    background:linear-gradient(180deg,rgba(38,62,116,.94),rgba(18,28,54,.94));
+    color:#eaf3ff;font-size:14px;font-weight:800;letter-spacing:.02em;
+    box-shadow:0 10px 28px rgba(0,0,0,.5);opacity:0}
+  .runtoast.show{animation:runToast 1.15s ease forwards}
+  @keyframes runToast{
+    0%{opacity:0;transform:translate(-50%,4px) scale(.92)}
+    18%{opacity:1;transform:translate(-50%,0) scale(1)}
+    70%{opacity:1}
+    100%{opacity:0;transform:translate(-50%,-14px) scale(1)}
+  }
+  .endless-score{font-size:34px;font-weight:800;color:#eaf3ff;text-align:center;letter-spacing:.04em;
+    margin:2px 0 2px;font-variant-numeric:tabular-nums}
+  .endless-label{text-align:center;font-size:11px;font-weight:800;letter-spacing:.3em;color:#8fc3ff;margin-bottom:8px}
+  .endless-stats{margin:10px 0 0;font-size:12.5px;line-height:1.65;color:#c2d1e6;text-align:center}
+  .endless-stats b{color:#eaf3ff}
+  @media (prefers-reduced-motion: reduce){ .runtoast.show{animation:none;opacity:1} }
 </style>
 </head>
 <body>
@@ -710,6 +729,7 @@
       <button type="button" class="lvbtn" id="fbBtn" aria-expanded="false" aria-controls="fbOverlay">✉ 意见</button>
       <button type="button" class="lvbtn" id="skyBtn" aria-expanded="false" aria-controls="skyPanel"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6.3 14.5 10 8.3l4.3 3.5 1.2-6.2"/><circle cx="6.3" cy="14.5" r="1.5" fill="currentColor" stroke="none"/><circle cx="10" cy="8.3" r="1.5" fill="currentColor" stroke="none"/><circle cx="14.3" cy="11.8" r="1.5" fill="currentColor" stroke="none"/><circle cx="15.5" cy="5.6" r="1.5" fill="currentColor" stroke="none"/></svg>图鉴</button>
       <button type="button" class="lvbtn" id="ruleBtn" aria-haspopup="dialog"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 2.5h6.4l3.6 3.6v11.4a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1v-14a1 1 0 0 1 1-1z"/><path d="M11.9 2.6v3.6h3.6"/><path d="M10 8.7l.95 2.05 2.05.95-2.05.95L10 14.7l-.95-2.05L7 11.7l2.05-.95z" fill="currentColor" stroke="none"/></svg>规则</button>
+      <button type="button" class="lvbtn" id="endRunBtn" hidden>■ 结束本轮</button>
       <button type="button" class="lvbtn" id="lvBtn" aria-expanded="false" aria-controls="levelPanel">关卡 <b id="lvBtnNum">1</b>/<b id="lvBtnTotal">1</b> ▾</button>
       <button type="button" class="lvbtn icononly" id="soundBtn" aria-pressed="true" aria-label="音效开关" title="音效开关"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h2.6L10 5.2v9.6L6.9 12H4z"/><path class="wave w1" d="M12.5 8.1a2.7 2.7 0 0 1 0 3.8"/><path class="wave w2" d="M14.4 6.3a5.1 5.1 0 0 1 0 7.4"/><path class="wave w3" d="M16.2 4.6a7.5 7.5 0 0 1 0 10.8"/><path class="offmark" d="M3.8 3.8l12.4 12.4"/></svg></button>
       <div class="volpop" id="volPop" hidden role="dialog" aria-label="音量调节">
@@ -823,6 +843,7 @@
         <li>手机：<b>轻触</b>观测、<b>长按</b>标记　·　电脑：<b>单击</b>观测、<b>右键</b>标记。</li>
       </ul>
       <button type="button" class="btn primary" id="introStart">开始观测</button>
+      <button type="button" class="btn again" id="introEndless">♾ 无尽冲分 · 约 2 分钟一局</button>
       <button type="button" class="btn ghost" id="introRestart" hidden>从第 1 关开始</button>
       <div class="intro-foot">
         <button type="button" class="intro-chip" id="introSky">✦ 图鉴 <b id="introSkyNum">0</b>/<b id="introSkyTotal">50</b></button>
@@ -1177,6 +1198,7 @@ const nameEl = document.getElementById('lvName');
 const lvtagEl = document.getElementById('lvtag');
 const replayBtn = document.getElementById('replay');
 const lvBtn = document.getElementById('lvBtn');
+const endRunBtn = document.getElementById('endRunBtn');
 const lvBtnNum = document.getElementById('lvBtnNum');
 const lvBtnTotal = document.getElementById('lvBtnTotal');
 const levelPanel = document.getElementById('levelPanel');
@@ -1217,11 +1239,15 @@ let flashing = false;
 
 // ---------- 进度记忆：localStorage 不可用时静默降级为内存进度，绝不弹错 ----------
 const STORAGE_KEY = 'leixian.migong.progress.v1';
+/* PROPER_INJECT_START */
+const PROPER_NAMES = {};
+/* PROPER_INJECT_END */
+
 /* FEEDBACK_INJECT_START */
 const FEEDBACK = { "email": "", "show": "", "mailto": "", "qr": "", "version": "", "subject": "", "form_url": "", "form_qr": "" };
 /* FEEDBACK_INJECT_END */
 
-let progress = { v: 1, cleared: {}, last: 0, devUnlock: false, devSkyLit: false, introSeen: false, sound: true, volume: 0.85, sky3d: true, strictTime: false, best: {}, timeOk: {} };
+let progress = { v: 1, cleared: {}, last: 0, devUnlock: false, devSkyLit: false, introSeen: false, sound: true, volume: 0.85, sky3d: true, strictTime: false, best: {}, timeOk: {}, endless: { best: 0, bestStreak: 0, fastestMs: null, runs: 0 } };
 let storageOK = true;
 
 function loadProgress(){
@@ -1246,6 +1272,7 @@ function loadProgress(){
       devSkyLit: saved.devSkyLit === true,
       sound: saved.sound !== false,
       volume: (typeof saved.volume === 'number') ? saved.volume : 0.85,
+      endless: (saved.endless && typeof saved.endless === 'object') ? saved.endless : { best: 0, bestStreak: 0, fastestMs: null, runs: 0 },
       strictTime: saved.strictTime === true,
       best: (saved.best && typeof saved.best === 'object') ? saved.best : {},
       timeOk: (saved.timeOk && typeof saved.timeOk === 'object') ? saved.timeOk : {},
@@ -1364,7 +1391,145 @@ function runsFromMines(mineSet, n, byRow, k){
   return runs;
 }
 
+// ===== 无尽冲分模式 =====
+const ENDLESS_START_LIVES = 1;    // 开局望远镜
+const ENDLESS_LIFE_EVERY = 3;     // 每通关 N 题 +1 架
+const ENDLESS_MAX_LIVES = 3;      // 上限（与 HUD 的三个槽位一致）
+const ENDLESS_DIFF_RAMP = 0.14;   // 每题的难度目标增幅（0=最简单，1=最难）
+let runMode = 'campaign';         // 'campaign' | 'endless'
+let run = null;                   // 无尽本轮状态
+
+function endlessStats(){
+  if (!progress.endless || typeof progress.endless !== 'object'){
+    progress.endless = { best: 0, bestStreak: 0, fastestMs: null, runs: 0 };
+  }
+  return progress.endless;
+}
+// 难度递进抽题：难度目标随题号上升，在目标附近随机挑题，并避开最近用过的题
+function endlessPickLevel(boardNo){
+  const total = LEVELS.length;
+  if (total <= 1) return 0;
+  const target = Math.min(1, boardNo * ENDLESS_DIFF_RAMP);
+  const scored = [];
+  for (let i = 0; i < total; i++){
+    const diff = i / (total - 1);
+    scored.push({ i: i, d: Math.abs(diff - target) + Math.random() * 0.06 });
+  }
+  scored.sort(function(a, b){ return a.d - b.d; });
+  const recent = (run && run.recent) ? run.recent : [];
+  for (let k = 0; k < scored.length; k++){
+    if (recent.indexOf(scored[k].i) < 0) return scored[k].i;
+  }
+  return scored[0].i;
+}
+function runElapsedMs(){
+  if (!run) return 0;
+  return run.activeMs + (run.activeSince ? (Date.now() - run.activeSince) : 0);
+}
+function runClockPause(){
+  if (run && run.activeSince){ run.activeMs += Date.now() - run.activeSince; run.activeSince = 0; }
+}
+function runClockResume(){ if (run && !run.activeSince) run.activeSince = Date.now(); }
+function runScore(){
+  if (!run) return 0;
+  return Math.max(0, run.score + run.lives * 200 - Math.round(runElapsedMs() / 1000) * 2);
+}
+function refreshModeUi(){
+  const endless = runMode === 'endless';
+  if (lvBtn) lvBtn.hidden = endless;
+  if (endRunBtn) endRunBtn.hidden = !endless;
+  document.body.dataset.runMode = endless ? 'endless' : 'campaign';
+}
+function showRunToast(text){
+  let el = document.getElementById('runToast');
+  if (!el){
+    el = document.createElement('div');
+    el.id = 'runToast';
+    el.className = 'runtoast';
+    document.body.appendChild(el);
+  }
+  el.textContent = text;
+  el.classList.remove('show');
+  void el.offsetWidth;
+  el.classList.add('show');
+}
+function startEndlessRun(){
+  runMode = 'endless';
+  run = {
+    boardNo: 0, cleared: 0, streak: 0, bestStreak: 0, lives: ENDLESS_START_LIVES,
+    score: 0, activeMs: 0, activeSince: 0, recent: [], fastestMs: null, over: false, boardStartMs: 0
+  };
+  endlessStats().runs += 1;
+  saveProgress();
+  refreshModeUi();
+  startEndlessBoard();
+}
+function startEndlessBoard(){
+  if (!run || run.over) return;
+  run.boardNo += 1;
+  const idx = endlessPickLevel(run.boardNo - 1);
+  run.recent.push(idx);
+  if (run.recent.length > 8) run.recent.shift();
+  startBoard(idx, null, true);
+  run.boardStartMs = runElapsedMs();
+  runClockResume();
+  render();
+}
+function endlessBoardCleared(){
+  if (!run || run.over) return;
+  const ms = Math.max(0, runElapsedMs() - run.boardStartMs);
+  if (run.fastestMs == null || ms < run.fastestMs) run.fastestMs = ms;
+  run.cleared += 1;
+  run.streak += 1;
+  if (run.streak > run.bestStreak) run.bestStreak = run.streak;
+  const gain = 100 + 25 * Math.min(run.streak, 20);
+  run.score += gain;
+  runClockPause();
+  let extra = '';
+  if (run.cleared % ENDLESS_LIFE_EVERY === 0 && run.lives < ENDLESS_MAX_LIVES){
+    run.lives += 1;
+    extra = ' · 望远镜 +1';
+  }
+  showRunToast('第 ' + run.streak + ' 连 · +' + gain + extra);
+  saveProgress();
+}
+function endlessMistake(){
+  if (!run || run.over) return false;   // 返回 true 表示本轮结束
+  run.lives -= 1;
+  run.streak = 0;
+  if (run.lives <= 0){ run.lives = 0; endEndlessRun('mistake'); return true; }
+  showRunToast('望远镜 −1 · 剩 ' + run.lives + ' 架');
+  saveProgress();
+  return false;
+}
+function endEndlessRun(reason){
+  if (!run || run.over) return;
+  run.over = true;
+  runClockPause();
+  const st = endlessStats();
+  const sc = runScore();
+  run.score = sc;
+  run.reason = reason || 'mistake';
+  if (sc > st.best) st.best = sc;
+  if (run.bestStreak > st.bestStreak) st.bestStreak = run.bestStreak;
+  if (run.fastestMs != null && (st.fastestMs == null || run.fastestMs < st.fastestMs)) st.fastestMs = run.fastestMs;
+  saveProgress();
+  if (S) S.status = 'lost';
+  modalDismissed = false; modalSignature = '';
+  render();
+}
+function leaveEndless(){
+  runMode = 'campaign';
+  run = null;
+  modalDismissed = true; modalSignature = '';
+  closeModal(false);
+  refreshModeUi();
+  startLevel(startIndex());
+}
 function startLevel(rawIndex){
+  startBoard(rawIndex, null, false);
+}
+function startBoard(rawIndex, overrideLevel, endless){
   resetClock();
   if (S) S.timeUp = false;
   resetRevealVisuals();
@@ -1373,8 +1538,8 @@ function startLevel(rawIndex){
     boardEl.innerHTML = '<p class="err">关卡数据缺失。</p>';
     return;
   }
-  const index = clampIndex(rawIndex);
-  const level = LEVELS[index];
+  const index = overrideLevel ? clampIndex(rawIndex) : clampIndex(rawIndex);
+  const level = overrideLevel || LEVELS[index];
   const n = level.size;
   const mineSet = new Set();
   const mines = Array.isArray(level.mines) ? level.mines : [];
@@ -1430,9 +1595,12 @@ function startLevel(rawIndex){
       ? level.colRuns[c] : runsFromMines(mineSet, n, false, c);
   }
 
-  const lives = (typeof level.lives === 'number' && level.lives > 0) ? Math.floor(level.lives) : 3;
+  const lives = endless
+    ? Math.max(1, run ? run.lives : ENDLESS_START_LIVES)
+    : ((typeof level.lives === 'number' && level.lives > 0) ? Math.floor(level.lives) : 3);
 
   S = {
+    endless: !!endless,
     index: index,
     level: level,
     n: n,
@@ -1444,7 +1612,7 @@ function startLevel(rawIndex){
     rowRuns: rowRuns,
     colRuns: colRuns,
     lives: lives,
-    livesMax: lives,
+    livesMax: endless ? ENDLESS_MAX_LIVES : lives,
     totalSafe: total - mineSet.size,
     revealedSafe: new Uint8Array(total),
     revealedMine: new Uint8Array(total),
@@ -1457,8 +1625,10 @@ function startLevel(rawIndex){
   lastShownLives = -1;
   flashing = false;
   scopesEl.className = 'scopes';
-  progress.last = index;
-  saveProgress();
+  if (!endless){
+    progress.last = index;
+    saveProgress();
+  }
 
   buildBoard();
 
@@ -1560,6 +1730,14 @@ function checkWin(){
   }
   const alreadyCleared = isCleared(S.index);   // 重玩已通关的关卡 → 揭晓走快速版
   S.status = 'won';
+  if (S.endless){
+    endlessBoardCleared();                     // 连击 / 分数 / 望远镜补给（含暂停本轮计时）
+    winRevealDone = false;
+    winRevealPending = true;
+    render();
+    startBoardReveal(true);                    // 无尽：快速揭晓，不弹结算弹窗
+    return;
+  }
   stopClock();                                 // 计时停止
   recordBestTime();
   markCleared(S.index);
@@ -1590,6 +1768,12 @@ function act(i, mode){
     S.lastHitNoise = !!S.noiseSet.has(i);  // 只记录“踩到的这一颗”是不是杂星（不泄露其它）
     S.fxHit = i;                           // 特效：抖动（starHit 已含抖动）
     sndFail();
+    if (S.endless){
+      const over = endlessMistake();
+      S.lives = run ? run.lives : 0;
+      if (!over){ render(); }
+      return;
+    }
     S.lives -= 1;
     if (S.lives <= 0){ S.lives = 0; S.status = 'lost'; render(); return; }
     checkWin();
@@ -1700,14 +1884,27 @@ function render(){
   refreshTimerChip();
   renderScopes();
 
-  const teach = (typeof S.level.teach === 'string') ? S.level.teach : '';
+  if (runMode === 'endless' && run){
+    lvtagEl.textContent = '♾ 第 ' + run.boardNo + ' 题 · ' + S.n + '×' + S.n +
+      ' · 连击 ' + run.streak + ' · ⏱ ' + fmtClock(Math.round(runElapsedMs() / 1000)) +
+      ' · 分数 ' + runScore();
+  }
+  let teach = (typeof S.level.teach === 'string') ? S.level.teach : '';
+  if (runMode === 'endless' && run && run.boardNo > 1) teach = '';
   teachEl.textContent = teach;
   teachEl.className = teach ? 'teach' : 'teach hidden';
 
-  if (replayActionsEl) replayActionsEl.hidden = (S.status !== 'playing');   // 结算时只留 modal/结算条里的那一个
-  nameEl.textContent = S.level.name ? (' · ' + S.level.name) : '';
-  lvtagEl.textContent = '第 ' + (S.index + 1) + ' / ' + LEVELS.length + ' 关 · ' +
-    S.n + '×' + S.n + (S.level.showRuns ? ' · 含行列线索' : ' · 仅邻域数字');
+  if (replayActionsEl) replayActionsEl.hidden = (runMode === 'endless') || (S.status !== 'playing');   // 无尽无‘本关’概念；结算时只留 modal/结算条里的那一个
+  if (runMode === 'endless'){
+    const tn = (S.level && S.level.theme && S.level.theme.name) ? S.level.theme.name : '';
+    nameEl.textContent = tn ? (' · ' + tn) : '';
+  } else {
+    nameEl.textContent = S.level.name ? (' · ' + S.level.name) : '';
+  }
+  if (!(runMode === 'endless' && run)){
+    lvtagEl.textContent = '第 ' + (S.index + 1) + ' / ' + LEVELS.length + ' 关 · ' +
+      S.n + '×' + S.n + (S.level.showRuns ? ' · 含行列线索' : ' · 仅邻域数字');
+  }
 
   applyCellFx();
 
@@ -1927,7 +2124,54 @@ function buildConstPanel(theme, n, noise){
   return panel;
 }
 
+function buildEndlessEnd(){
+  const st = endlessStats();
+  modalEl.className = 'modal win';
+  modalTitleEl.textContent = '本轮结束';
+  modalSubEl.innerHTML = '';
+  if (constSlotEl){
+    const lab = document.createElement('div');
+    lab.className = 'endless-label';
+    lab.textContent = 'SCORE';
+    const sc = document.createElement('div');
+    sc.className = 'endless-score';
+    sc.textContent = String(run ? run.score : 0);
+    const stats = document.createElement('div');
+    stats.className = 'endless-stats';
+    const secs = Math.round((run ? runElapsedMs() : 0) / 1000);
+    const fast = (run && run.fastestMs != null) ? (run.fastestMs / 1000).toFixed(1) + ' 秒' : '—';
+    stats.innerHTML = '本轮第 <b>' + (run ? run.boardNo : 0) + '</b> 题 · 通关 <b>' + (run ? run.cleared : 0) +
+      '</b> 题<br>最长连击 <b>' + (run ? run.bestStreak : 0) + '</b> · 最快一题 <b>' + fast + '</b><br>本轮用时 <b>' +
+      fmtClock(secs) + '</b> · 最高分 <b>' + (st.best || 0) + '</b> · 最长连击记录 <b>' + (st.bestStreak || 0) + '</b>' +
+      (run && run.reason === 'quit' ? '<br><span style="color:#9fb4d0">（你主动结束了本轮）</span>' : '');
+    const tip = document.createElement('div');
+    tip.className = 'endless-stats';
+    tip.style.color = '#9fb4d0';
+    tip.textContent = '规则：开局 1 架望远镜，每通关 ' + ENDLESS_LIFE_EVERY + ' 题 +1 架（上限 ' + ENDLESS_MAX_LIVES + '）；失误 −1 架，0 架时再失误即结束。';
+    const clearBtn = mkBtn('↻ 清除最高分', 'btn ghost', function(){
+      const s2 = endlessStats(); s2.best = 0; s2.bestStreak = 0; s2.fastestMs = null; saveProgress();
+      modalSignature = ''; modalDismissed = false; render();
+    });
+    const slot = document.createElement('div');
+    slot.appendChild(lab); slot.appendChild(sc); slot.appendChild(stats); slot.appendChild(tip);
+    constSlotEl.innerHTML = '';
+    constSlotEl.appendChild(slot);
+    constSlotEl.appendChild(clearBtn);
+  }
+  modalBtnsEl.innerHTML = '';
+  modalPrimaryBtn = mkBtn('♾ 再来一轮', 'btn primary', function(){
+    closeModal(false);
+    startEndlessRun();
+  });
+  modalBtnsEl.appendChild(modalPrimaryBtn);
+  modalBtnsEl.appendChild(mkBtn('← 回到闯关', 'btn again', function(){
+    closeModal(false);
+    leaveEndless();
+  }));
+}
+
 function buildModal(){
+  if (runMode === 'endless' && run && run.over){ buildEndlessEnd(); return; }
   const won = S.status === 'won';
   const last = won && isLastLevel();
   modalEl.className = 'modal ' + (won ? 'win' : 'lose');
@@ -2026,7 +2270,7 @@ function fmtClock(sec){
   sec = Math.max(0, Math.floor(sec));
   return Math.floor(sec / 60) + ':' + ('0' + (sec % 60)).slice(-2);
 }
-function timeIsTimed(){ return !!S && (S.index + 1) >= TIMED_FROM; }
+function timeIsTimed(){ if (runMode === 'endless') return false; return !!S && (S.index + 1) >= TIMED_FROM; }
 function timeElapsedSec(){
   if (!timeStart) return 0;
   return ((timeStop || Date.now()) - timeStart) / 1000;
@@ -2060,6 +2304,7 @@ function tickClock(){
 setInterval(tickClock, 500);
 
 function recordBestTime(){
+  if (runMode === 'endless') return;
   if (!S || !timeStart) return;
   const el = Math.round(timeElapsedSec());
   const key = String(S.index);
@@ -2353,6 +2598,13 @@ function finishBoardReveal(){
   winRevealPending = false;
   winRevealDone = true;
   if (boardEl) boardEl.classList.remove('reveal-flash');   // 闪一下即止，弹窗时不再残留动画类
+  if (S && S.endless && run && !run.over){
+    const th = (S.level && S.level.theme) || null;
+    if (th && Array.isArray(th.stars) && th.stars.length){ markAllStarsLit(); drawAllSegments(); }
+    render();
+    setTimeout(function(){ if (run && !run.over) startEndlessBoard(); }, 900);   // 自动进下一题
+    return;
+  }
   render();                        // 画终局盘面；renderModal 会弹出结算小弹窗
   const theme = (S && S.level && S.level.theme) || null;
   if (theme && Array.isArray(theme.stars) && theme.stars.length){
@@ -2362,12 +2614,15 @@ function finishBoardReveal(){
 }
 
 function renderModal(){
+  if (runMode === 'endless' && !(run && run.over)){ closeModal(false); return; }
   // 揭晓播放期间先不弹；揭晓结束（finishBoardReveal）后弹出结算小弹窗：
   // 星座名 + 最亮星 + 星图 + 三个按钮都在弹窗里，不用下滑找按钮
   if (winRevealPending){ closeModal(false); return; }   // 揭晓动画播完前不弹结算弹窗
   const result = (S.status === 'won' || S.status === 'lost');
   if (!result || modalDismissed){ closeModal(false); return; }
-  const sig = S.status + '|' + S.index + '|' + LEVELS.length;
+  const sig = (runMode === 'endless')
+    ? ('endless|' + (run ? (run.over ? 'over' : 'live') + '|' + run.boardNo : 'none'))
+    : (S.status + '|' + S.index + '|' + LEVELS.length);
   if (modalSignature !== sig){ modalSignature = sig; buildModal(); }
   if (!modalOpenNow){
     modalOpenNow = true;
@@ -2404,6 +2659,7 @@ function dismissModal(){
 
 // 底部结算条：仅在 modal 被 Esc/遮罩收起后出现，避免“关了就没入口”
 function renderStrip(){
+  if (runMode === 'endless'){ resultEl.className = 'result'; resultEl.innerHTML = ''; return; }
   const won = S.status === 'won';
   const lost = S.status === 'lost';
   const showWin = won && winRevealDone && modalDismissed && !modalOpenNow;
@@ -2715,9 +2971,13 @@ function skySelect(id){
 function skyTransform(){
   return 'translate(' + skyView.x.toFixed(2) + ',' + skyView.y.toFixed(2) + ') scale(' + skyView.s.toFixed(3) + ')';
 }
+function sky3dTransform(){
+  // 3D：投影以球心为原点，这里把它平移到 viewBox 中心（200×120 → 100,60），缩放也围绕球心
+  return 'translate(100,60) scale(' + skyView.s.toFixed(3) + ')';
+}
 function skyApplyView(){
   const root = skyEls.map && skyEls.map.querySelector('.sky-root');
-  if (root) root.setAttribute('transform', skyTransform());
+  if (root) root.setAttribute('transform', skyMode3d ? sky3dTransform() : skyTransform());
 }
 function skyClampView(){
   skyView.s = Math.max(0.7, Math.min(4, skyView.s));
@@ -2795,7 +3055,7 @@ let skyMode3d = true;
 let skySpin = { yaw: 0.95, pitch: 0.36 };
 let skySpinRAF = 0, skySpinLast = 0, skySpinAcc = 0, skySpinHold = 0;
 let sky3dDrag = null;
-const SKY3D_R = 38, SKY3D_CAM = 3.1;
+const SKY3D_R = 36, SKY3D_CAM = 3.1;   // 半径 36：透视最大放大 1.48× → 最大 ±53.3，居中后落在 200×120 画布内
 const SKY3D_COLOR = { '春季': '#7fd8a0', '夏季': '#ffd45e', '秋季': '#ff9f6e', '冬季': '#8fc6ff' };
 // 银河北极（RA 12h51m / Dec +27.13°）→ 用它生成银道大圆（近似）
 const SKY3D_GAL_POLE = [12.857, 27.13];
@@ -2916,7 +3176,7 @@ function renderSkyMap3d(){
     nodes += '</g>';
   }
   skyEls.map.innerHTML = defs +
-    '<g class="sky-root" transform="' + skyTransform() + '">' +
+    '<g class="sky-root" transform="' + sky3dTransform() + '">' +
       '<ellipse cx="0" cy="0" rx="62" ry="58" fill="url(#sky3dGlow)"></ellipse>' +
       '<g class="sky3d-back">' + back + mwBack.back + '</g>' +
       mwBack.front + mwFront.back + mwFront.front +
@@ -3162,7 +3422,10 @@ function skyPosterSvg(s, lv){
   const placed = [];
   let labelHtml = '', placedCount = 0;
   for (let k = 0; k < order.length && placedCount < 5; k++){
-    const it = order[k], txt = String(it.st.en || it.st.name || '');
+    const it = order[k];
+    // 标注优先用 IAU 专名（如 Tejat Posterior），没有则用拜耳编号（如 Mu Gem）
+    const pk = (lv && lv.id != null ? lv.id : '') + '|' + String(it.st.en || '');
+    const txt = String(PROPER_NAMES[pk] || it.st.en || it.st.name || '');
     if (!txt) continue;
     const w = txt.length * 6.7 + 8, h = 15, gap = 11;
     const spots = [
@@ -3357,6 +3620,9 @@ function closeSky(){
 
 if (skyEls.btn) skyEls.btn.addEventListener('click', function(){ skyOpen ? closeSky() : openSky(); });
 if (skyEls.litBtn) skyEls.litBtn.addEventListener('click', toggleSkyLit);
+if (endRunBtn) endRunBtn.addEventListener('click', function(){
+  if (runMode === 'endless' && run && !run.over) endEndlessRun('quit');
+});
 if (skyEls.close) skyEls.close.addEventListener('click', closeSky);
 if (skyEls.filters) skyEls.filters.addEventListener('click', function(e){
   const b = e.target.closest('[data-season]');
@@ -3785,6 +4051,8 @@ if (Array.isArray(LEVELS) && LEVELS.length){
   if (!progress.introSeen) showIntro();
   const ib = document.getElementById('introStart');
   if (ib) ib.addEventListener('click', function(){ initAudio(); sndStart(); hideIntro(false); });
+  const ien = document.getElementById('introEndless');
+  if (ien) ien.addEventListener('click', function(){ initAudio(); sndStart(); hideIntro(false); startEndlessRun(); });
   const ire = document.getElementById('introRestart');
   if (ire) ire.addEventListener('click', function(){ initAudio(); sndStart(); hideIntro(true); });
   const isk = document.getElementById('introSky');

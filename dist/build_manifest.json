@@ -1,15 +1,15 @@
 {
   "ui_source": "game\\index.html",
-  "ui_sha256": "9c9fac74754e3b21163cb39d58984ba0e9f1c631d1cdcce3bda2b2a4dce04bc1",
+  "ui_sha256": "f1d13908a743ff173216afbee0081bf920b256cc807bc6d0b67da1e14519dd0c",
   "levels_source": "tools\\levels.json",
   "levels_sha256": "7fdc6e1126e24f1145c39d8da6f14d71c229fa53fc49c0a40955851a05c32a63",
   "level_count": 50,
   "build_output": "dist\\星织-游戏本体\\index.html",
-  "build_sha256": "e3caef0018d3e6eb632fb525789a248395434095bc9f5f82012c48d0180b59d4",
+  "build_sha256": "f7bf906164b031372c468371b98ecd0b6ce55967050212ea8bb54fc6378bec47",
   "zip": "星织-游戏本体.zip",
-  "zip_sha256": "34f9df78e764cd5795b852b12a9f9619baafeb315237cbe989df795479ecf151",
-  "zip_bytes": 79487,
-  "html_bytes": 472361,
+  "zip_sha256": "4302ee0ffdf24b9f3ca8ef5b66da1870286ebcf82d58d7869e4d91f2e4df4148",
+  "zip_bytes": 83252,
+  "html_bytes": 484906,
   "zip_root_entries": [
     "index.html",
     "README.txt"
