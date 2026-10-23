@@ -26,10 +26,10 @@
     "noise": 5,
     "mines": 9,
     "ok": true,
-    "probes": 14,
-    "runs": 3,
+    "probes": 16,
+    "runs": 9,
     "nb_only": false,
-    "iso": 0,
+    "iso": 1,
     "zr": 28,
     "isEmpty": [
       0,

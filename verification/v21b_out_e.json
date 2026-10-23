@@ -1,0 +1,38 @@
+{
+ "states": [
+  "{}",
+  "{1}",
+  "{1,21}",
+  "前21",
+  "前49",
+  "全部50"
+ ],
+ "results": [
+  {
+   "id": "E1",
+   "name": "六种进度态下 #skyCount == 实际通关数（{}、{1}、{1,21}、前21、前49、全部50）",
+   "ok": true,
+   "detail": "{}: #skyCount=0 (期望 0) #skyTotal=50 #clearedCount=0/50 | {1}: #skyCount=1 (期望 1) #skyTotal=50 #clearedCount=1/50 | {1,21}: #skyCount=2 (期望 2) #skyTotal=50 #clearedCount=2/50 | 前21: #skyCount=21 (期望 21) #skyTotal=50 #clearedCount=21/50 | 前49: #skyCount=49 (期望 49) #skyTotal=50 #clearedCount=49/50 | 全部50: #skyCount=50 (期望 50) #skyTotal=50 #clearedCount=50/50"
+  },
+  {
+   "id": "E2",
+   "name": "未通关星座（全部 48 个）不泄露：无 gstar/gline/gnoise、无跳转/fact、不显示别的星座名",
+   "ok": true,
+   "detail": "未通关=48 泄露=0 标题异常=0 "
+  },
+  {
+   "id": "E3",
+   "name": "已通关星座：gstar/gline/gnoise == stars/lines/noise 且显示 fact",
+   "ok": true,
+   "detail": "crux: gstar=4/4 gline=2/2 gnoise=3/3 fact=true | capricornus: gstar=9/9 gline=10/10 gnoise=6/6 fact=true"
+  },
+  {
+   "id": "E4",
+   "name": "图鉴地图：未观测节点为暗色名字（.lbl.off），地图内无星图元素",
+   "ok": true,
+   "detail": "lbl.off=true 星图元素=false"
+  }
+ ],
+ "pass": 4,
+ "fail": 0
+}

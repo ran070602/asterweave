@@ -199,13 +199,13 @@ dismissModal();
 const tLose = stripTexts();
 ok('失败结算条出现（modal 收起后）', tLose.length > 0, JSON.stringify(tLose));
 ok('失败结算条含「重来本关」', tLose.some(t => t.includes('重来本关')), JSON.stringify(tLose));
-ok('失败结算条不含「结算」按钮', !tLose.some(t => t.trim() === '结算'), JSON.stringify(tLose));
+ok('失败结算条不含回看按钮（无「图鉴详情」）', !tLose.some(t => t.includes('图鉴详情')), JSON.stringify(tLose));
 
 
 console.log('DEBUG byId.result 存在:', !!byId.result, '| class:', byId.result && byId.result.className, '| children:', byId.result && (byId.result.children||[]).length);
 console.log('DEBUG modalOpenNow/modalDismissed 不可见；overlay class:', byId.overlay && byId.overlay.className);
 console.log('DEBUG result.innerHTML 长度:', String(byId.result && byId.result.innerHTML || '').length);
-// ---- B. 通关：结算条仍保留「结算」（用来回看星座）----
+// ---- B. 通关：结算条保留「★ 图鉴详情」（用来回看星座）----
 // 重开本关
 const replayBtn = byId.replay;
 byId.replayActions && byId.replayActions.dispatchEvent ? null : null;
@@ -220,7 +220,7 @@ flush(1200);
 ok('按通关序列执行后 status=won', state().status === 'won', `status=${state().status} revealed=${state().revealed}/${state().totalSafe} flagged=${state().flagged}`);
 dismissModal();
 const tWin = stripTexts();
-ok('通关结算条含「结算」按钮', tWin.some(t => t.trim() === '结算'), JSON.stringify(tWin));
+ok('通关结算条含「★ 图鉴详情」按钮', tWin.some(t => t.includes('图鉴详情')), JSON.stringify(tWin));
 ok('通关结算条含「下一关」', tWin.some(t => t.includes('下一关')), JSON.stringify(tWin));
 
 const pass = R.filter(x => x.pass === true).length;

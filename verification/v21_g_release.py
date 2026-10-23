@@ -7,10 +7,23 @@ F = lambda p: os.path.join(ROOT, p)
 sha = lambda b: hashlib.sha256(b).hexdigest()
 fails, notes = [], []
 
-DIST = open(F("dist/星织-游戏本体/index.html"), "rb").read()
-ROOT_HTML = open(F("index.html"), "rb").read()
-ZIP = F("星织-游戏本体.zip")
-MAN = json.load(open(F("dist/build_manifest.json"), encoding="utf-8"))
+# BASE=frozen 时全部读冻结副本（自洽基线）；默认 live
+BASE = os.environ.get("V21_BASE", "live")
+FB = "verification/frozen_v21b/"
+P = dict(
+    dist=(FB + "dist_index.html") if BASE == "frozen" else "dist/星织-游戏本体/index.html",
+    root=(FB + "root_index.html") if BASE == "frozen" else "index.html",
+    zip=(FB + "release.zip") if BASE == "frozen" else "星织-游戏本体.zip",
+    man=(FB + "build_manifest.json") if BASE == "frozen" else "dist/build_manifest.json",
+    game=(FB + "game_index.html") if BASE == "frozen" else "game/index.html",
+    levels=(FB + "levels.json") if BASE == "frozen" else "tools/levels.json",
+)
+print("G 基线 =", BASE, "（V21_BASE=%s）" % BASE)
+
+DIST = open(F(P["dist"]), "rb").read()
+ROOT_HTML = open(F(P["root"]), "rb").read()
+ZIP = F(P["zip"])
+MAN = json.load(open(F(P["man"]), encoding="utf-8"))
 html_txt = DIST.decode("utf-8")
 
 # --- 1) ZIP 结构 ---
@@ -58,7 +71,7 @@ os.remove(tmp)
 # --- 5) manifest 对账 ---
 sv = lambda p: sha(open(F(p), "rb").read())
 expect = {
-    "ui_sha256": sv("game/index.html"), "levels_sha256": sv("tools/levels.json"),
+    "ui_sha256": sv(P["game"]), "levels_sha256": sv(P["levels"]),
     "build_sha256": sha(DIST), "zip_sha256": sha(open(ZIP, "rb").read()),
     "zip_bytes": os.path.getsize(ZIP), "html_bytes": len(DIST), "level_count": 50,
 }

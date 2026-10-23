@@ -1,0 +1,48 @@
+{
+ "results": [
+  {
+   "id": "F1",
+   "name": "静态：renderModal 在 winFlashPending/winRevealPending 期间提前返回；checkWin 顺序为 置 won → 挂起揭晓 → render → 播放",
+   "ok": true,
+   "detail": "guard@L24083 ordered=true reduced-motion 直落终态=true"
+  },
+  {
+   "id": "F2",
+   "name": "静态：点亮星座用 .reveal-stage + wonstar.lit{animation:starGlow}（「闪一下」由 starGlow 实现）",
+   "ok": true,
+   "detail": "starGlow=true"
+  },
+  {
+   "id": "F3",
+   "name": "静态：winFlashPending 从未被赋 true；.reveal-flash 类从未被 JS 添加（两处死代码）",
+   "ok": true,
+   "detail": "winFlashPending=true 赋值=false reveal-flash 被添加=false（CSS 里定义了 winStarFlash 但不可达）"
+  },
+  {
+   "id": "F4",
+   "name": "运行时：制胜瞬间不弹 modal（先点亮星座闪一下），星座点亮后延迟约 2s 才弹窗",
+   "ok": true,
+   "detail": "制胜瞬间 status=won modalOpen=false stage=true lit=0 | 首次点亮=490ms 连线注入=5ms（CSS animation-delay 生效）弹窗=2115ms"
+  },
+  {
+   "id": "F5",
+   "name": "运行时：重玩已通关关走快速版（弹窗明显早于首通）",
+   "ok": true,
+   "detail": "重玩弹窗=1030ms vs 首通=2115ms"
+  },
+  {
+   "id": "F6",
+   "name": "运行时：prefers-reduced-motion 下直接落终态（弹窗 0ms，连线立即齐全）",
+   "ok": true,
+   "detail": "reduced: 制胜瞬间 modalOpen=true 弹窗=5ms 连线齐=5ms vs 首通=2115ms"
+  },
+  {
+   "id": "F7",
+   "name": "运行时：揭晓播放中按键/点击可立即跳过到结算",
+   "ok": true,
+   "detail": "跳过前 modalOpen=false 跳过后=true"
+  }
+ ],
+ "pass": 7,
+ "fail": 0
+}

@@ -436,8 +436,8 @@
   }
 
   /* 通关：星座点亮后整体闪一下（再弹结算弹窗） */
-  .board.reveal-flash .cell.wonstar{animation:winStarFlash .85s ease-out both}
-  .board.reveal-flash .cell.wonoise{animation:winStarFlashDim .85s ease-out both}
+  .board.reveal-flash .cell.wonstar{animation:winStarFlash .34s ease-out both}
+  .board.reveal-flash .cell.wonoise{animation:winStarFlashDim .34s ease-out both}
   @keyframes winStarFlash{0%{filter:none;transform:scale(1)}
     30%{filter:brightness(2.5) drop-shadow(0 0 7px #9ad0ff);transform:scale(1.13)}
     60%{filter:brightness(1.5) drop-shadow(0 0 4px #9ad0ff);transform:scale(1.04)}
@@ -1020,7 +1020,6 @@ let resetArmed = false;
 let modalDismissed = false;  // 按 Esc / 点遮罩收起后，改由底部结算条保留入口
 let modalOpenNow = false;
 let modalSignature = '';     // 内容未变就不重建，避免每次 render 抢焦点
-let winFlashPending = false; // 通关：先在棋盘上点亮星座并闪一下，再弹结算弹窗
 let modalPrimaryBtn = null;  // 打开时把焦点放到主按钮
 let lastFocusEl = null;
 let lastShownLives = -1;     // 用于爱心受击动画
@@ -1894,7 +1893,7 @@ function resetRevealVisuals(){
   if (boardRevealEl) boardRevealEl.innerHTML = '';
 }
 
-// 揭晓总时长上限 ~3.2s（首次）/ ~1.5s（重玩或 reduced-motion 直接终态），随时可点击跳过
+// 揭晓总时长 ~1.4s（首次）/ ~0.7s（重玩或 reduced-motion 直接终态），随时可点击跳过
 function startBoardReveal(fast){
   const theme = (S && S.level && S.level.theme) || null;
   if (!boardEl || !boardWrapEl || !theme || !Array.isArray(theme.stars) || !theme.stars.length || prefersReduced()){
@@ -1905,20 +1904,20 @@ function startBoardReveal(fast){
   bindRevealSkip();
   const n = S.n;
   // ① 杂星退场后，星座星一次性亮起（不再逐颗弹跳，避免"乱"），全程只发一声和弦
-  const t0 = fast ? 160 : 400;
+  const t0 = fast ? 120 : 200;
   for (let k = 0; k < theme.stars.length; k++){
     (function(k){
       revealTimers.push(setTimeout(function(){
         const cell = cellEls[cellIndexOfStar(theme.stars[k], n)];
         if (cell) cell.classList.add('lit');
         if (k === 0) sndStars();
-      }, t0 + k * (fast ? 12 : 30)));
+      }, t0 + k * (fast ? 10 : 18)));
     })(k);
   }
-  const starsDone = t0 + theme.stars.length * (fast ? 12 : 30) + (fast ? 300 : 620);
+  const starsDone = t0 + theme.stars.length * (fast ? 10 : 18) + (fast ? 140 : 240);
   // ② 唯一的主戏：逐段连线（放慢、加长描边）
   const lines = Array.isArray(theme.lines) ? theme.lines : [];
-  const lineStep = fast ? 62 : 155;
+  const lineStep = fast ? 42 : 88;
   const wrapRect = boardWrapEl.getBoundingClientRect();
   const pts = starPoints(theme, n, wrapRect);
   boardRevealEl.setAttribute('viewBox', '0 0 ' + Math.round(wrapRect.width) + ' ' + Math.round(wrapRect.height));
@@ -1942,7 +1941,12 @@ function startBoardReveal(fast){
     try { if (navigator.vibrate) navigator.vibrate([12, 45, 12]); } catch (e) {}
   }, starsDone));
   // ③ 连线画完 → 弹小弹窗（名字、星图、三个按钮都在弹窗里）
-  const end = starsDone + Math.max(0, drawn - 1) * lineStep + (fast ? 460 : 820);
+  // ③ 连线画完 → 星座整体闪一下 → 再弹结算小弹窗
+  const flashAt = starsDone + Math.max(0, drawn - 1) * lineStep + (fast ? 60 : 120);
+  revealTimers.push(setTimeout(function(){
+    if (boardEl) boardEl.classList.add('reveal-flash');
+  }, flashAt));
+  const end = flashAt + (fast ? 220 : 380);
   revealTimers.push(setTimeout(function(){ finishBoardReveal(); }, end));
 }
 
@@ -1952,6 +1956,7 @@ function finishBoardReveal(){
   unbindRevealSkip();
   winRevealPending = false;
   winRevealDone = true;
+  if (boardEl) boardEl.classList.remove('reveal-flash');   // 闪一下即止，弹窗时不再残留动画类
   render();                        // 画终局盘面；renderModal 会弹出结算小弹窗
   const theme = (S && S.level && S.level.theme) || null;
   if (theme && Array.isArray(theme.stars) && theme.stars.length){
@@ -1963,7 +1968,7 @@ function finishBoardReveal(){
 function renderModal(){
   // 揭晓播放期间先不弹；揭晓结束（finishBoardReveal）后弹出结算小弹窗：
   // 星座名 + 最亮星 + 星图 + 三个按钮都在弹窗里，不用下滑找按钮
-  if (winFlashPending || winRevealPending){ closeModal(false); return; }
+  if (winRevealPending){ closeModal(false); return; }   // 揭晓动画播完前不弹结算弹窗
   const result = (S.status === 'won' || S.status === 'lost');
   if (!result || modalDismissed){ closeModal(false); return; }
   const sig = S.status + '|' + S.index + '|' + LEVELS.length;

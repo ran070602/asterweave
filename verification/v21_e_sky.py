@@ -3,7 +3,7 @@
 import json, os, re
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-HTML = open(os.path.join(ROOT, "verification/frozen_v21/dist_index.html"), encoding="utf-8").read()
+HTML = open(os.environ.get("V21_HTML") or os.path.join(ROOT, "verification/frozen_v21b/dist_index.html"), encoding="utf-8").read()
 
 def embedded(name):
     a = HTML.index("/* %s_INJECT_START */" % name)

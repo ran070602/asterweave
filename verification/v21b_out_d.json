@@ -1,0 +1,126 @@
+{
+ "results": [
+  {
+   "id": "D1",
+   "name": "50 关全部玩到 status=won 且揭晓图计数正确",
+   "ok": true,
+   "detail": "50/50 关通过，lit=stars, boardLines=lines, wonoise=noise, gstar/gline/gnoise 全等，modal 均打开"
+  },
+  {
+   "id": "D2a",
+   "name": "📱触摸轻触 = 即时观测",
+   "ok": true,
+   "detail": "revealed 11 -> 15（未推进时钟）"
+  },
+  {
+   "id": "D2b",
+   "name": "触摸长按 ~380ms = 标记；抬起不再观测",
+   "ok": true,
+   "detail": "200ms时flagged=false 400ms时flagged=true 抬起后revealed=false lives=3->3"
+  },
+  {
+   "id": "D2c",
+   "name": "长按雷位 = 标记且不扣命",
+   "ok": true,
+   "detail": "mineFlagged=true lives=3->3"
+  },
+  {
+   "id": "D2d",
+   "name": "💻鼠标左键单击 = 即时观测",
+   "ok": true,
+   "detail": "revealed 15 -> 16"
+  },
+  {
+   "id": "D2e",
+   "name": "鼠标右键 = 标记（不观测）",
+   "ok": true,
+   "detail": "flagged 2 -> 3, revealed=false"
+  },
+  {
+   "id": "D2f",
+   "name": "双击不产生标记（鼠标）",
+   "ok": true,
+   "detail": "两次左键后 flagged=0"
+  },
+  {
+   "id": "D2f2",
+   "name": "两次轻触不产生标记（触摸）",
+   "ok": true,
+   "detail": "两次轻触后 flagged=0"
+  },
+  {
+   "id": "D2g",
+   "name": "源码无 DBL_MS / lastMouse / 棋盘 dblclick 监听",
+   "ok": true,
+   "detail": "DBL_MS=0 lastMouse=0 boardDblclick=false"
+  },
+  {
+   "id": "D3a",
+   "name": "#actHint 在棋盘正上方且紧跟「第 N/50 关」行",
+   "ok": true,
+   "detail": "staticIndex lvtag=334 actHint=336 board=360, sameParent=true"
+  },
+  {
+   "id": "D3b",
+   "name": "#actHint 文案含 轻触/长按/单击/右键 且不含「双击」",
+   "ok": true,
+   "detail": "📱 轻触 = 🔭 观测　长按 = ★ 标记　｜　💻 单击 = 🔭 观测　右键 = ★ 标记"
+  },
+  {
+   "id": "D3c",
+   "name": "首次进入第1关弹一次说明（3句），关闭写 introSeen，重置后不再弹",
+   "ok": true,
+   "detail": "首屏=true 关闭后hidden=true introSeen=true 二次启动弹=false 重置后弹=false 说明句数=3"
+  },
+  {
+   "id": "D3d",
+   "name": "失败：结算条无「结算」按钮（只有重来/换关）；常驻重玩按钮隐藏",
+   "ok": true,
+   "detail": "status=lost lives=0 常驻重玩hidden=true 结算条按钮=[\"↻ 重来本关\",\"换个关卡\"]"
+  },
+  {
+   "id": "D3e",
+   "name": "通关：结算条保留「下一关」；常驻重玩按钮隐藏",
+   "ok": true,
+   "detail": "常驻重玩hidden=true modal按钮=[\"★ 图鉴详情\",\"↻ 重来本关\",\"下一关 →\"] 结算条按钮=[\"★ 图鉴详情\",\"↻ 重来本关\",\"下一关 →\"]"
+  },
+  {
+   "id": "D3f",
+   "name": "游戏进行中常驻「↻ 重玩本关」可见",
+   "ok": true,
+   "detail": "hidden=false label=↻ 重玩本关"
+  },
+  {
+   "id": "D3g",
+   "name": "全库无任何按钮文案为「结算」",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "id": "D4a",
+   "name": "「全部解锁」一次点击即生效（50 关全可用）",
+   "ok": true,
+   "detail": "click 前可用=1 后可用=50"
+  },
+  {
+   "id": "D4b",
+   "name": "dataset.gameState 字段齐全",
+   "ok": true,
+   "detail": "level,levelId,size,revealed,totalSafe,flagged,mines,lives,status,mode,totalLevels,clearedLevels,noise"
+  },
+  {
+   "id": "D4c",
+   "name": "status!=won 时 DOM 不泄露雷位（含杂星）",
+   "ok": true,
+   "detail": "异常class=0 杂星SVG=0 boardReveal空=true 结算区空=true 图鉴modal空=true"
+  },
+  {
+   "id": "D4d",
+   "name": "踩雷后只亮被踩的那 1 颗，其余雷位仍不泄露",
+   "ok": true,
+   "detail": "hit=1 won-leak=0 被踩格是雷=true"
+  }
+ ],
+ "pass": 20,
+ "fail": 0
+}

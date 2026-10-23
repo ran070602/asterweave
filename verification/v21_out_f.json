@@ -4,7 +4,7 @@
    "id": "F1",
    "name": "静态：renderModal 在 winFlashPending/winRevealPending 期间提前返回；checkWin 顺序为 置 won → 挂起揭晓 → render → 播放",
    "ok": true,
-   "detail": "guard@L24065 ordered=true reduced-motion 直落终态=true"
+   "detail": "guard@L24083 ordered=true reduced-motion 直落终态=true"
   },
   {
    "id": "F2",
