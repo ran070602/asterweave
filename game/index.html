@@ -485,6 +485,22 @@
   .sky-sector{fill:rgba(120,170,255,.10);stroke:rgba(140,190,255,.34);stroke-width:.5;stroke-dasharray:3 2}
   .sky-vignette{pointer-events:none}
   .sky-map{touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}
+  .sky-modes{display:flex;gap:6px;margin-left:auto;margin-right:6px}
+  .sky-modes .mini{padding:0 9px;font-size:11.5px}
+  .sky-modes .mini.on{background:#1d2c46;border-color:#3d5680;color:#dce7f7}
+  /* 3D 天球 */
+  .sky3d-g{fill:none;stroke:#7fa6e0;stroke-width:.35;stroke-opacity:.5}
+  .sky3d-back .sky3d-g,.sky3d-back .sky3d-eq{stroke-opacity:.16}
+  .sky3d-eq{fill:none;stroke:#9fc0ff;stroke-width:.8;stroke-opacity:.72}
+  .sky3d-mw{fill:none;stroke:#6f7fc4;stroke-linecap:round}
+  .sky3d-node{cursor:pointer}
+  .sky3d-node .dot{stroke:none}
+  .sky3d-node .halo{stroke:none;opacity:.2}
+  .sky3d-node .hit{fill:transparent}
+  .sky3d-node .lbl{font-size:5.6px;fill:#e8f0ff;paint-order:stroke;stroke:rgba(4,8,18,.82);stroke-width:1.4px;
+    stroke-linejoin:round;text-anchor:middle;pointer-events:none}
+  .sky3d-node.off .lbl{display:none}
+  .sky3d-node.sel .dot{stroke:#fff;stroke-width:.7}
   .sky-map.dragging{cursor:grabbing}
   .skynode .halo{fill:#8fc4ff;opacity:.16}
   .skynode.on .dot{animation:skyTwinkle 3.6s ease-in-out infinite}
@@ -694,14 +710,18 @@
   <section class="panel sky-panel" id="skyPanel" hidden aria-label="星座图鉴">
     <div class="sky-head">
       <span class="panel-title">星座图鉴 <b id="skyCount">0</b>/<b id="skyTotal">0</b></span>
+      <span class="sky-modes" role="group" aria-label="图鉴视图">
+        <button type="button" class="mini" id="skyMode3d" aria-pressed="true">3D 天球</button>
+        <button type="button" class="mini" id="skyMode2d" aria-pressed="false">2D 投影</button>
+      </span>
       <button type="button" class="mini" id="skyCloseBtn">关闭</button>
     </div>
     <div class="sky-filters" id="skyFilters" role="group" aria-label="按季节筛选"></div>
     <div class="sky-tools">
       <button type="button" class="mini" id="skyLitBtn" aria-pressed="false">🔆 一键点亮（预览）</button>
     </div>
-    <div class="sky-wrap"><svg class="sky-map" id="skyMap" viewBox="0 0 200 120" role="img" aria-label="天球投影星图"></svg></div>
-    <div class="sky-hint" id="skyHint">横轴 = 赤经（0–24 时）· 纵轴 = 赤纬（+90° 到 −90°）· 亮 = 已观测　·　按住拖动可平移 · 滚轮/双指缩放 · 双击复位</div>
+    <div class="sky-wrap"><svg class="sky-map" id="skyMap" viewBox="0 0 200 120" role="img" aria-label="3D 天球星图"></svg></div>
+    <div class="sky-hint" id="skyHint">3D 天球 · 拖动 = 转动天球 · 滚轮/双指 = 缩放 · 双击复位 · 点星座看详情</div>
     <div class="sky-detail" id="skyDetail" hidden></div>
   </section>
 
@@ -738,7 +758,7 @@
           <div class="sec">通关与图鉴</div>
           <ol>
             <li>翻开全部安全格 + 标出全部星 → 揭晓本关对应的<b>真实星座</b>，并在图鉴里点亮它。</li>
-            <li><b>图鉴</b>（顶部星座连线图标）：按真实天球位置摆放星座（横轴赤经 0–24 时、纵轴赤纬 ±90°）。可按季节筛选、滚轮或双指缩放、按住拖动；点星座看详情（赤经赤纬、面积排名、最亮星、相邻星座可互相跳转）。</li>
+            <li><b>图鉴</b>（顶部星座连线图标）：默认是 <b>3D 天球</b>——按真实赤经/赤纬把星座摆在一颗可以转的球面上（天赤道环 + 银道带）。<b>拖动</b>转动天球、<b>滚轮/双指</b>缩放、<b>双击</b>复位；也可切到「2D 投影」看平面星图。点星座看详情（海报、赤经赤纬、面积排名、最亮星、可见半球与最佳观赏月份、相邻星座可互相跳转）。</li>
             <li>未观测的星座只显示暗色名字，观测过的会亮起并闪烁。</li>
           </ol>
 
@@ -1161,7 +1181,7 @@ const STORAGE_KEY = 'leixian.migong.progress.v1';
 const FEEDBACK = { "email": "", "show": "", "mailto": "", "qr": "", "version": "", "subject": "", "form_url": "", "form_qr": "" };
 /* FEEDBACK_INJECT_END */
 
-let progress = { v: 1, cleared: {}, last: 0, devUnlock: false, devSkyLit: false, introSeen: false, sound: true, volume: 0.85 };
+let progress = { v: 1, cleared: {}, last: 0, devUnlock: false, devSkyLit: false, introSeen: false, sound: true, volume: 0.85, sky3d: true };
 let storageOK = true;
 
 function loadProgress(){
@@ -1186,7 +1206,8 @@ function loadProgress(){
       devSkyLit: saved.devSkyLit === true,
       sound: saved.sound !== false,
       volume: (typeof saved.volume === 'number') ? saved.volume : 0.85,
-      introSeen: saved.introSeen === true
+      introSeen: saved.introSeen === true,
+      sky3d: saved.sky3d !== false
     };
   } catch (e) {
     storageOK = false;          // 本地文件或隐私模式下存储被禁用：静默降级
@@ -1242,6 +1263,7 @@ function markCleared(i){
   refreshLevelGrid();
   refreshUnlockBtn();
   refreshSkyBadge();
+  refreshSkyModeBtns();
 }
 
 function startIndex(){
@@ -2571,6 +2593,22 @@ function skyAnimateTo(target){
 }
 // 聚焦到某个季节的赤经板块（放大 + 居中）
 function skyFocusBands(bands){
+  if (skyMode3d){
+    // 3D：把该季节赤经带的中点转到正面中心（yaw = π/2 − α）
+    if (!bands || !bands.length) return;
+    let midH = 0, wsum = 0;
+    for (let i = 0; i < bands.length; i++){
+      const a = bands[i][0], b = bands[i][1], w = ((b - a) + 24) % 24 || 1;
+      midH += (((a + w / 2) % 24)) * w; wsum += w;
+    }
+    const mid = (wsum ? midH / wsum : 0) * Math.PI / 12;
+    let target = Math.PI / 2 - mid;
+    // 取与当前朝向最近的等价角，避免绕远路
+    while (target - skySpin.yaw > Math.PI) target -= Math.PI * 2;
+    while (skySpin.yaw - target > Math.PI) target += Math.PI * 2;
+    sky3dSpinTo(target);
+    return;
+  }
   if (!bands || bands.length !== 1){
     skyAnimateTo({ s: 1, x: 0, y: 0 });
     return;
@@ -2584,8 +2622,203 @@ function skyFocusBands(bands){
   skyAnimateTo({ s: ns, x: 100 - cx * ns, y: 60 - 60 * ns });
 }
 
+// ===== 图鉴 3D 天球：真实赤经/赤纬 → 旋转 → 透视投影（纯 SVG，无任何 3D 库）=====
+let skyMode3d = true;
+let skySpin = { yaw: 0.95, pitch: 0.36 };
+let skySpinRAF = 0, skySpinLast = 0, skySpinAcc = 0, skySpinHold = 0;
+let sky3dDrag = null;
+const SKY3D_R = 38, SKY3D_CAM = 3.1;
+const SKY3D_COLOR = { '春季': '#7fd8a0', '夏季': '#ffd45e', '秋季': '#ff9f6e', '冬季': '#8fc6ff' };
+// 银河北极（RA 12h51m / Dec +27.13°）→ 用它生成银道大圆（近似）
+const SKY3D_GAL_POLE = [12.857, 27.13];
+
+function sky3dVec(ra, dec){
+  const a = (Number(ra) || 0) * Math.PI / 12, d = (Number(dec) || 0) * Math.PI / 180;
+  const cd = Math.cos(d);
+  return [cd * Math.cos(a), cd * Math.sin(a), Math.sin(d)];
+}
+function sky3dRot(v, yaw, pitch){
+  const cy = Math.cos(yaw), sy = Math.sin(yaw);
+  const x1 = v[0] * cy - v[1] * sy, y1 = v[0] * sy + v[1] * cy, z1 = v[2];
+  const cp = Math.cos(pitch), sp = Math.sin(pitch);
+  return [x1, y1 * cp - z1 * sp, y1 * sp + z1 * cp];
+}
+function sky3dProj(v, yaw, pitch){
+  const r = sky3dRot(v, yaw, pitch);
+  const k = SKY3D_CAM / (SKY3D_CAM - r[2]);      // 透视：r[2] 越接近相机越大
+  return { x: r[0] * SKY3D_R * k, y: -r[1] * SKY3D_R * k, z: r[2] };
+}
+// 把一串球面点按"近/远"切成折线：远侧画得暗，近侧画得亮（营造球体感）
+function sky3dSplit(vecs, yaw, pitch, cls, extra){
+  let front = '', back = '', run = [], runZ = 1;
+  const flush = function(){
+    if (run.length > 1){
+      let pts = '';
+      for (let i = 0; i < run.length; i++) pts += run[i][0].toFixed(1) + ',' + run[i][1].toFixed(1) + ' ';
+      const el = '<polyline class="' + cls + '"' + (extra || '') + ' points="' + pts.trim() + '"></polyline>';
+      if (runZ >= 0) front += el; else back += el;
+    }
+    run = [];
+  };
+  for (let i = 0; i < vecs.length; i++){
+    const p = sky3dProj(vecs[i], yaw, pitch);
+    const zs = p.z >= 0 ? 1 : -1;
+    if (run.length && zs !== runZ) flush();
+    runZ = zs; run.push([p.x, p.y]);
+  }
+  flush();
+  return { front: front, back: back };
+}
+function sky3dGreatCircle(raPole, decPole, steps){
+  const p = sky3dVec(raPole, decPole);
+  const helper = Math.abs(p[0]) < 0.9 ? [1, 0, 0] : [0, 1, 0];
+  const cross = function(u, v){ return [u[1] * v[2] - u[2] * v[1], u[2] * v[0] - u[0] * v[2], u[0] * v[1] - u[1] * v[0]]; };
+  const norm = function(u){ const n = Math.hypot(u[0], u[1], u[2]) || 1; return [u[0] / n, u[1] / n, u[2] / n]; };
+  const u = norm(cross(p, helper)), v = cross(p, u);
+  const out = [];
+  for (let i = 0; i <= steps; i++){
+    const t = i / steps * Math.PI * 2, c = Math.cos(t), sn = Math.sin(t);
+    out.push([u[0] * c + v[0] * sn, u[1] * c + v[1] * sn, u[2] * c + v[2] * sn]);
+  }
+  return out;
+}
+function renderSkyMap3d(){
+  const yaw = skySpin.yaw, pitch = skySpin.pitch;
+  const defs = '<defs>' +
+    '<radialGradient id="skyVig" cx="50%" cy="45%" r="72%">' +
+      '<stop offset="58%" stop-color="#000" stop-opacity="0"></stop>' +
+      '<stop offset="100%" stop-color="#000" stop-opacity=".55"></stop>' +
+    '</radialGradient>' +
+    '<radialGradient id="sky3dGlow" cx="42%" cy="38%" r="60%">' +
+      '<stop offset="0%" stop-color="#2a3f7a" stop-opacity=".5"></stop>' +
+      '<stop offset="100%" stop-color="#0a1024" stop-opacity="0"></stop>' +
+    '</radialGradient>' +
+  '</defs>';
+  // 确定性星尘
+  let dust = '', seed = 20261023;
+  function rnd(){ seed = (seed * 1103515245 + 12345) % 2147483648; return seed / 2147483648; }
+  for (let i = 0; i < 70; i++){
+    dust += '<circle cx="' + (rnd() * 200).toFixed(1) + '" cy="' + (rnd() * 120).toFixed(1) +
+      '" r="' + (0.2 + rnd() * 0.5).toFixed(2) + '" fill="#cfe0ff" opacity="' + (0.10 + rnd() * 0.35).toFixed(2) + '"></circle>';
+  }
+  // 网格：赤纬圈（含天赤道）+ 赤经经线
+  let back = '', front = '';
+  for (let dec = -60; dec <= 60; dec += 30){
+    const vs = [];
+    for (let ra = 0; ra <= 24.001; ra += 0.75) vs.push(sky3dVec(ra, dec));
+    const r = sky3dSplit(vs, yaw, pitch, dec === 0 ? 'sky3d-eq' : 'sky3d-g');
+    back += r.back; front += r.front;
+  }
+  for (let ra = 0; ra < 24; ra += 2){
+    const vs = [];
+    for (let dec = -90; dec <= 90.001; dec += 15) vs.push(sky3dVec(ra, dec));
+    const r = sky3dSplit(vs, yaw, pitch, 'sky3d-g');
+    back += r.back; front += r.front;
+  }
+  // 银道大圆（两条描边模拟"带"）
+  const mwBack = sky3dSplit(sky3dGreatCircle(SKY3D_GAL_POLE[0], SKY3D_GAL_POLE[1], 96), yaw, pitch, 'sky3d-mw', ' stroke-width="9" stroke-opacity=".07"');
+  const mwFront = sky3dSplit(sky3dGreatCircle(SKY3D_GAL_POLE[0], SKY3D_GAL_POLE[1], 96), yaw, pitch, 'sky3d-mw', ' stroke-width="4" stroke-opacity=".11"');
+  // 星座节点：远 → 近排序（画家算法），近侧更大更亮，且只有近侧显示名字
+  const items = [];
+  for (let i = 0; i < SKY.length; i++){
+    const s = SKY[i];
+    if (skyFilter !== '全部' && s.season !== skyFilter) continue;
+    items.push({ s: s, on: skyIsOn(s), p: sky3dProj(sky3dVec(s.ra, s.dec), yaw, pitch) });
+  }
+  items.sort(function(a, b){ return a.p.z - b.p.z; });
+  let nodes = '', nearLabels = 0;
+  for (let i = 0; i < items.length; i++){
+    const s = items[i].s, on = items[i].on, p = items[i].p;
+    const depth = (p.z + 1) / 2;                       // 0 = 最远，1 = 最近
+    const op = (0.3 + depth * 0.7) * (on ? 1 : 0.55);   // 未观测更暗（不泄露且一眼可辨）
+    const sizeK = 0.7 + depth * 0.55;
+    const r = (on ? (1.5 + 0.9 * (1 - Math.min(1, s.areaRank / 88))) : 1.05) * sizeK;
+    const col = on ? (SKY3D_COLOR[s.season] || '#cfe0ff') : '#6b7896';
+    const cls = 'sky3d-node' + (on ? ' on' : ' off') + (skySelected === s.id ? ' sel' : '');
+    nodes += '<g class="' + cls + '" data-sky="' + skyEsc(s.id) + '" role="button" tabindex="0" opacity="' + op.toFixed(2) +
+      '" aria-label="' + skyEsc(s.zh) + (on ? '，已观测' : '，未观测') + '">' +
+      '<circle class="hit" cx="' + p.x.toFixed(1) + '" cy="' + p.y.toFixed(1) + '" r="6"></circle>';
+    if (on) nodes += '<circle class="halo" cx="' + p.x.toFixed(1) + '" cy="' + p.y.toFixed(1) + '" r="' + (r * 2.5).toFixed(2) + '" fill="' + col + '"></circle>';
+    nodes += '<circle class="dot" cx="' + p.x.toFixed(1) + '" cy="' + p.y.toFixed(1) + '" r="' + r.toFixed(2) + '" fill="' + col + '"></circle>';
+    if (on && p.z > 0.12){                             // 只给正面半球显示名字
+      const ly = p.y + (p.y < -26 ? -4.4 : 6.4);
+      nodes += '<text class="lbl" x="' + p.x.toFixed(1) + '" y="' + ly.toFixed(1) + '">' + skyEsc(s.zh.replace('座', '')) + '</text>';
+      nearLabels++;
+    }
+    nodes += '</g>';
+  }
+  skyEls.map.innerHTML = defs +
+    '<g class="sky-root" transform="' + skyTransform() + '">' +
+      '<ellipse cx="0" cy="0" rx="62" ry="58" fill="url(#sky3dGlow)"></ellipse>' +
+      '<g class="sky3d-back">' + back + mwBack.back + '</g>' +
+      mwBack.front + mwFront.back + mwFront.front +
+      dust + '<g class="sky3d-nodes">' + nodes + '</g>' +
+      '<g class="sky3d-front">' + front + '</g>' +
+    '</g>' +
+    '<rect class="sky-vignette" x="0" y="0" width="200" height="120" fill="url(#skyVig)" pointer-events="none"></rect>';
+  window.__sky3d = { yaw: yaw, pitch: pitch, nodes: items.length, labels: nearLabels };
+}
+function sky3dAutoOn(){ return skyOpen && skyMode3d && !prefersReduced() && skySpinHold <= 0; }
+function sky3dTick(ts){
+  if (!skyOpen || !skyMode3d){ skySpinRAF = 0; return; }
+  if (typeof requestAnimationFrame === 'function') skySpinRAF = requestAnimationFrame(sky3dTick);
+  // 有的环境（含自动化桩）回调不带时间戳：缺失时按 ~16ms/帧估算，避免 dt 变 NaN 把 yaw 算坏
+  const now = (typeof ts === 'number' && isFinite(ts)) ? ts : (skySpinLast ? skySpinLast + 16 : 16);
+  const last = skySpinLast || now;
+  skySpinLast = now;
+  const dt = Math.max(0, Math.min(90, now - last));
+  if (skySpinHold > 0) skySpinHold = Math.max(0, skySpinHold - dt);
+  if (!sky3dAutoOn()) return;
+  skySpinAcc += dt;
+  if (skySpinAcc < 40) return;                         // ≈25fps，省电
+  const step = skySpinAcc; skySpinAcc = 0;
+  skySpin.yaw += step * 0.00016;                       // 约 1.6°/秒
+  renderSkyMap();
+}
+function sky3dSpinTo(target){
+  if (!isFinite(target)) return;
+  if (typeof requestAnimationFrame !== 'function'){ skySpin.yaw = target; renderSkyMap(); return; }
+  sky3dStop();
+  const from = skySpin.yaw, dur = 420;
+  let t0 = 0;
+  function step(ts){
+    const nt = (typeof ts === 'number' && isFinite(ts)) ? ts : ((t0 || 0) + 24);
+    if (!t0) t0 = nt;
+    const k = Math.min(1, (nt - t0) / dur), e = 1 - Math.pow(1 - k, 3);
+    skySpin.yaw = from + (target - from) * e;
+    renderSkyMap();
+    if (k < 1 && skyOpen && skyMode3d) requestAnimationFrame(step);
+    else { skySpinHold = 2400; sky3dStart(); }
+  }
+  requestAnimationFrame(step);
+}
+function sky3dStart(){
+  if (skySpinRAF) return;
+  skySpinLast = 0; skySpinAcc = 0; skySpinHold = 900;
+  if (typeof requestAnimationFrame === 'function') skySpinRAF = requestAnimationFrame(sky3dTick);
+}
+function sky3dStop(){
+  if (skySpinRAF && typeof cancelAnimationFrame === 'function'){ try { cancelAnimationFrame(skySpinRAF); } catch (e) {} }
+  skySpinRAF = 0;
+}
+function refreshSkyModeBtns(){
+  const a = document.getElementById('skyMode3d'), b = document.getElementById('skyMode2d');
+  if (a){ a.className = 'mini' + (skyMode3d ? ' on' : ''); a.setAttribute('aria-pressed', skyMode3d ? 'true' : 'false'); }
+  if (b){ b.className = 'mini' + (skyMode3d ? '' : ' on'); b.setAttribute('aria-pressed', skyMode3d ? 'false' : 'true'); }
+}
+function setSkyMode(three){
+  skyMode3d = !!three;
+  progress.sky3d = skyMode3d;
+  saveProgress();
+  refreshSkyModeBtns();
+  skyView = { s: 1, x: 0, y: 0 };
+  renderSky();
+  if (skyMode3d) sky3dStart(); else sky3dStop();
+}
+
 function renderSkyMap(){
   if (!skyEls.map) return;
+  if (skyMode3d){ renderSkyMap3d(); return; }
   const defs = '<defs>' +
     '<radialGradient id="skyMw" cx="50%" cy="50%" r="62%">' +
       '<stop offset="0%" stop-color="#41609c" stop-opacity=".26"></stop>' +
@@ -2884,12 +3117,18 @@ function renderSkyDetail(){
 }
 
 function skyHintText(){
-  if (skyFilter === '全部'){
-    return '全天总览 · 亮字 = 已观测（会闪烁），暗字 = 未观测 · 按住拖动可平移 · 滚轮/双指缩放 · 双击复位';
-  }
-  const bands = SKY_BANDS[skyFilter] || [];
+  const bands = (skyFilter !== '全部') ? (SKY_BANDS[skyFilter] || []) : [];
   const range = bands.map(function(b){ return b[0] + '–' + b[1] + ' 时'; }).join(' 与 ');
-  return skyFilter + '星空 = 赤经 ' + range + ' · 其它季节的星座已隐藏 · 按住拖动可平移 · 滚轮/双指缩放';
+  if (skyMode3d){
+    const core = '3D 天球 · 拖动 = 转动天球 · 滚轮/双指 = 缩放 · 双击复位 · 点星座看详情';
+    return (skyFilter === '全部')
+      ? ('全天总览 · ' + core + ' · 亮＝已观测（正面才显示名字）')
+      : (skyFilter + '星空 = 赤经 ' + range + ' · 其它季节已隐藏 · ' + core);
+  }
+  if (skyFilter === '全部'){
+    return '2D 投影 · 横轴 = 赤经（0–24 时）· 纵轴 = 赤纬（+90°→−90°）· 亮字 = 已观测 · 按住拖动可平移 · 滚轮/双指缩放 · 双击复位';
+  }
+  return '2D 投影 · ' + skyFilter + '星空 = 赤经 ' + range + ' · 其它季节的星座已隐藏 · 按住拖动可平移 · 滚轮/双指缩放';
 }
 
 function renderSky(){
@@ -2926,16 +3165,20 @@ function toggleSkyLit(){
 function openSky(){
   if (!skyEls.panel) return;
   skyOpen = true;
+  skyMode3d = (progress.sky3d !== false);      // 记住上次选择（默认 3D）
   skyView = { s: 1, x: 0, y: 0 };
   skySelected = null;
+  refreshSkyModeBtns();
   refreshSkyLitBtn();
   skyEls.panel.hidden = false;
   skyEls.panel.className = 'panel sky-panel open';
   if (skyEls.btn) skyEls.btn.setAttribute('aria-expanded', 'true');
   renderSky();
+  if (skyMode3d) sky3dStart();
 }
 function closeSky(){
   if (!skyEls.panel) return;
+  sky3dStop();
   skySelected = null;
   renderSkyDetail();
   skyOpen = false;
@@ -2959,6 +3202,11 @@ if (skyEls.filters) skyEls.filters.addEventListener('click', function(e){
   renderSky();
   skyFocusBands(SKY_BANDS[skyFilter]);
 });
+const skyMode3dBtn = document.getElementById('skyMode3d');
+if (skyMode3dBtn) skyMode3dBtn.addEventListener('click', function(){ setSkyMode(true); });
+const skyMode2dBtn = document.getElementById('skyMode2d');
+if (skyMode2dBtn) skyMode2dBtn.addEventListener('click', function(){ setSkyMode(false); });
+
 if (skyEls.map) skyEls.map.addEventListener('keydown', function(e){
   if (e.key !== 'Enter' && e.key !== ' ' && e.key !== 'Spacebar') return;
   const node = e.target && e.target.closest ? e.target.closest('[data-sky]') : null;
@@ -2990,6 +3238,19 @@ if (skyEls.map){
   skyEls.map.addEventListener('pointerdown', function(e){
     skyPointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
     try { skyEls.map.setPointerCapture(e.pointerId); } catch (_) {}
+    if (skyMode3d){                                   // 3D：按住拖动 = 转动天球；拖动期间暂停自转
+      skySpinHold = 4000;
+      if (skyPointers.size === 1){
+        skyDownNode = (e.target && e.target.closest) ? e.target.closest('[data-sky]') : null;
+        sky3dDrag = { x: e.clientX, y: e.clientY, yaw: skySpin.yaw, pitch: skySpin.pitch, moved: false };
+      } else if (skyPointers.size === 2){
+        const pts2 = Array.from(skyPointers.values());
+        skyPinch = { d: Math.hypot(pts2[0].x - pts2[1].x, pts2[0].y - pts2[1].y), view: { s: skyView.s } };
+        sky3dDrag = null;
+      }
+      skyEls.map.classList.add('dragging');
+      return;
+    }
     if (skyPointers.size === 1){
       skyDownPt = { x: e.clientX, y: e.clientY };
       skyMoved = false;
@@ -3011,6 +3272,28 @@ if (skyEls.map){
     if (!skyPointers.has(e.pointerId)) return;
     skyPointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
 
+    if (skyMode3d){
+      if (skyPointers.size >= 2 && skyPinch){
+        const p2 = Array.from(skyPointers.values()).slice(0, 2);
+        const d2 = Math.hypot(p2[0].x - p2[1].x, p2[0].y - p2[1].y);
+        skyView.s = Math.max(0.75, Math.min(2.6, skyPinch.view.s * (d2 / Math.max(1, skyPinch.d))));
+        skyApplyView();
+        e.preventDefault();
+        return;
+      }
+      if (sky3dDrag){
+        const dx = e.clientX - sky3dDrag.x, dy = e.clientY - sky3dDrag.y;
+        if (Math.hypot(dx, dy) > 6) sky3dDrag.moved = true;
+        if (sky3dDrag.moved){
+          skySpin.yaw = sky3dDrag.yaw + dx * 0.0062;
+          skySpin.pitch = Math.max(-1.45, Math.min(1.45, sky3dDrag.pitch + dy * 0.0062));
+          skyMoved = true;
+          renderSkyMap();
+          e.preventDefault();
+        }
+      }
+      return;
+    }
     if (skyPointers.size >= 2 && skyPinch){
       const pts = Array.from(skyPointers.values()).slice(0, 2);
       const d = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
@@ -3047,6 +3330,16 @@ if (skyEls.map){
     if (skyPointers.size < 2) skyPinch = null;
     if (skyPointers.size === 0){
       skyEls.map.classList.remove('dragging');
+      if (skyMode3d){                                 // 3D：没拖动才算点选；松手 2.4 秒后恢复自转
+        if (wasSingle && sky3dDrag && !sky3dDrag.moved && skyDownNode){
+          skySelect(skyDownNode.getAttribute('data-sky'));
+        }
+        sky3dDrag = null;
+        skyDownNode = null;
+        skyMoved = false;
+        skySpinHold = 2400;
+        return;
+      }
       // 单击（本次手势未拖动）→ 选中；pointer capture 会让 click.target 变成 SVG 根节点，
       // 所以这里用按下时记录的节点判定，不依赖 click。
       if (wasSingle && !skyMoved && skyDownNode){
@@ -3063,11 +3356,23 @@ if (skyEls.map){
 
   skyEls.map.addEventListener('wheel', function(e){
     e.preventDefault();
+    if (skyMode3d){
+      skyView.s = Math.max(0.75, Math.min(2.6, skyView.s * Math.exp(-e.deltaY * 0.0014)));
+      skyApplyView();
+      return;
+    }
     const v = vbox(e);
     skyZoomAt(Math.exp(-e.deltaY * 0.0016), v.x, v.y);
   }, { passive: false });
 
   skyEls.map.addEventListener('dblclick', function(){
+    if (skyMode3d){
+      skySpin.yaw = 0.95; skySpin.pitch = 0.36;
+      skyView = { s: 1, x: 0, y: 0 };
+      skyApplyView();
+      renderSkyMap();
+      return;
+    }
     skyAnimateTo({ s: 1, x: 0, y: 0 });
   });
 }
@@ -3302,6 +3607,8 @@ if (Array.isArray(LEVELS) && LEVELS.length){
   buildLevelGrid();
   refreshUnlockBtn();
   refreshSkyBadge();
+  skyMode3d = (progress.sky3d !== false);     // 默认 3D 天球（记住上次选择）
+  refreshSkyModeBtns();
   const idx0 = startIndex();
   startLevel(idx0);
   if (!progress.introSeen && idx0 === 0) showIntro();
