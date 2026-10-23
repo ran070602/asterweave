@@ -176,10 +176,18 @@ ok('有隐私说明（只存在本机 / 不会自动上传）',
    (byId.fbOverlay.innerHTML || '').includes('只存在你本机') || String(byId.fbOverlay.textContent || '').includes('只存在你本机') ||
    html.includes('内容只存在你本机'), '隐私说明在 HTML 里');
 
-// 环境信息（自动附带当前关卡/设备）
+// 环境信息详情默认收起，点「查看」才弹轻量浮层
+ok('详情浮层默认收起（不占位置）', byId.fbPop.hidden === true);
+ok('有「查看」入口', !!byId.fbCtxMore && String(byId.fbCtxMore.textContent).includes('查看'), byId.fbCtxMore && byId.fbCtxMore.textContent);
+byId.fbCtxMore.dispatchEvent(mkEvent('click', { target: byId.fbCtxMore }));
+flush(0);
+ok('点「查看」后浮层展开', byId.fbPop.hidden === false);
 const ctxText = String(byId.fbCtxView.textContent || '');
-ok('环境信息含当前关卡', ctxText.includes('关卡') && (ctxText.includes('第 1') || ctxText.includes('1/50')), ctxText.split('\n')[0] || '');
-ok('环境信息含设备与版本', ctxText.includes('设备') && ctxText.includes('版本'), ctxText.replace(/\n/g, ' | ').slice(0, 120));
+ok('浮层里含当前关卡', ctxText.includes('关卡') && (ctxText.includes('第 1') || ctxText.includes('1/50')), ctxText.split('\n')[0] || '');
+ok('浮层里含设备与版本', ctxText.includes('设备') && ctxText.includes('版本'), ctxText.replace(/\n/g, ' | ').slice(0, 120));
+byId.fbPopX.dispatchEvent(mkEvent('click', { target: byId.fbPopX }));
+flush(0);
+ok('浮层可收起', byId.fbPop.hidden === true);
 
 // 写入反馈 → 复制 → 本机留档
 byId.fbText.value = '第 3 关的行线索我看不懂';
