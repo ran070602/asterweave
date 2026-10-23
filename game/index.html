@@ -527,6 +527,32 @@
     padding:18px}
   .const-modal[hidden]{display:none}
   .const-modal-mask{position:absolute;inset:0;background:rgba(3,6,14,.72)}
+  /* ===== 星座详情：左上角缩略图 + 主视觉海报 ===== */
+  .sky-detail-head{display:flex;gap:10px;align-items:flex-start;margin-bottom:2px}
+  .sky-thumb{flex:0 0 92px;width:92px}
+  .sky-thumb .const-map{max-width:92px;margin:0;border-radius:10px}
+  .sky-head-main{flex:1 1 auto;min-width:0}
+  .sky-head-main .sky-meta{margin-top:6px}
+  .sky-poster{position:relative;width:100%;margin:10px 0 6px;border-radius:16px;overflow:hidden;
+    background:#070b18;box-shadow:0 10px 28px rgba(0,0,0,.46);line-height:0}
+  .sky-poster-svg{display:block;width:100%;height:auto}
+  .sky-poster-title{position:absolute;left:0;right:0;top:9px;text-align:center;pointer-events:none;line-height:1.15}
+  .sky-poster-title b{display:block;font-size:clamp(19px,6.2vw,29px);font-weight:800;color:#fff;letter-spacing:.005em;
+    text-shadow:0 2px 16px rgba(0,0,0,.7),0 0 30px rgba(120,160,255,.28)}
+  .sky-poster-title span{display:block;margin-top:3px;font-size:11.5px;color:#c9d8ef;letter-spacing:.3em;text-indent:.3em;
+    text-shadow:0 1px 8px rgba(0,0,0,.7)}
+  .sky-poster-info{position:absolute;left:10px;bottom:10px;padding:7px 11px;border-radius:11px;line-height:1.5;
+    background:rgba(9,14,32,.74);border:1px solid rgba(150,180,230,.15)}
+  .sky-poster-info div{font-size:11.5px;color:#dce7f7}
+  .sky-poster-info div + div{margin-top:2px}
+  .sky-poster-info b{color:#fff}
+  .sky-poster svg .p-dust{fill:#e2ebff}
+  .sky-poster svg .p-band{fill:#2b4179;opacity:.26}
+  .sky-poster svg .p-line{stroke:#a6c4ff;stroke-width:1.5;stroke-opacity:.6;stroke-linecap:round}
+  .sky-poster svg .p-glow{fill:#ffeaa0;opacity:.2}
+  .sky-poster svg .p-star{fill:#ffd45e}
+  .sky-poster svg .p-label{fill:#eaf1ff;font-size:12px;font-weight:700;
+    paint-order:stroke;stroke:rgba(4,8,18,.8);stroke-width:2.8px;stroke-linejoin:round}
   .const-modal-card{position:relative;width:100%;max-width:420px;max-height:84vh;overflow-y:auto;
     -webkit-overflow-scrolling:touch;border-radius:16px;border:1px solid rgba(120,150,210,.28);
     background:linear-gradient(180deg,rgba(21,29,46,.98),rgba(10,14,24,.98));
@@ -2653,6 +2679,94 @@ function renderSkyFilters(){
   }).join('');
 }
 
+// 最佳观赏月份：午夜上中天 ⟺ 太阳赤经 = 目标赤经 + 12h；太阳赤经每 2h ≈ 1 个月、0h ≈ 3/21；
+// 观星习惯上的"最佳月"比午夜上中天再晚约 1.5 个月（傍晚就已高悬）。
+function bestViewMonth(ra){
+  const t = ((Number(ra) || 0) + 12) % 24;
+  const fromMar = t / 2 + 1.5;
+  return (((Math.round(3 + fromMar) - 1) % 12) + 12) % 12 + 1;
+}
+// 可见半球：按赤纬粗分（|dec| < 20° 视为南北半球都能看到）
+function visibleHemisphere(dec){
+  const d = Number(dec) || 0;
+  if (d >= 20) return '北半球';
+  if (d <= -20) return '南半球';
+  return '南北半球都可看';
+}
+function posterDust(seed, count){
+  const rnd = rngFrom(seedFrom(seed));
+  let out = '';
+  for (let i = 0; i < count; i++){
+    out += '<circle class="p-dust" cx="' + (rnd() * 640).toFixed(1) + '" cy="' + (rnd() * 360).toFixed(1) +
+      '" r="' + (0.5 + rnd() * 1.2).toFixed(2) + '" opacity="' + (0.22 + rnd() * 0.62).toFixed(2) + '"></circle>';
+  }
+  return out;
+}
+// 星座海报：深空背景 + 大标题（HTML 覆盖层）+ 星点名标注 + 观赏信息卡
+function skyPosterSvg(s, lv){
+  const theme = (lv && lv.theme) || {};
+  const stars = Array.isArray(theme.stars) ? theme.stars : [];
+  const lines = Array.isArray(theme.lines) ? theme.lines : [];
+  const n = (lv && lv.size) ? lv.size : 1;
+  const W = 640, H = 360, side = 272, ox = (W - side) / 2, oy = (H - side) / 2 + 4;
+  const at = function(rc){
+    const r = rc && rc.length > 1 ? Number(rc[0]) || 0 : 0, c = rc && rc.length > 1 ? Number(rc[1]) || 0 : 0;
+    return [ox + (c + 0.5) / n * side, oy + (r + 0.5) / n * side];
+  };
+  let linesHtml = '';
+  for (let i = 0; i < lines.length; i++){
+    const seg = lines[i], a = seg && stars[seg[0]], b = seg && stars[seg[1]];
+    if (!a || !b) continue;
+    const p = at(a.rc), q = at(b.rc);
+    linesHtml += '<line class="p-line" x1="' + p[0].toFixed(1) + '" y1="' + p[1].toFixed(1) +
+      '" x2="' + q[0].toFixed(1) + '" y2="' + q[1].toFixed(1) + '"></line>';
+  }
+  // 星名标注：取最亮的几颗，按左右分侧，纵向轻微错开避免叠字
+  const order = stars.map(function(st, i){ return { i: i, st: st }; })
+    .sort(function(x, y){ return (Number(x.st.mag) || 9) - (Number(y.st.mag) || 9); });
+  const labelIdx = {};
+  const used = [];
+  for (let k = 0; k < order.length && used.length < 5; k++){
+    const p = at(order[k].st.rc);
+    if (p[0] < ox - 4 || p[0] > ox + side + 4) continue;
+    used.push({ p: p, st: order[k].st });
+  }
+  let starsHtml = '', labelHtml = '';
+  for (let i = 0; i < stars.length; i++){
+    const st = stars[i] || {}, p = at(st.rc);
+    const mag = (typeof st.mag === 'number' && isFinite(st.mag)) ? st.mag : 3;
+    const r = 4 + 6 * Math.pow((6 - Math.max(-1.5, Math.min(6, mag))) / 7.5, 1.1);
+    const x = p[0].toFixed(1), y = p[1].toFixed(1);
+    starsHtml += '<circle class="p-glow" cx="' + x + '" cy="' + y + '" r="' + (r * 2.7).toFixed(1) + '"></circle>' +
+      '<circle class="p-star" cx="' + x + '" cy="' + y + '" r="' + r.toFixed(1) + '"></circle>';
+  }
+  for (let k = 0; k < used.length; k++){
+    const st = used[k].st, p = used[k].p;
+    let y = p[1];
+    while (used.some(function(u, j){ return j < k && Math.abs(u.p[1] - y) < 15 && Math.sign(u.p[0] - W / 2) === Math.sign(p[0] - W / 2); })) y += 15;
+    const left = p[0] < W / 2;
+    labelHtml += '<text class="p-label" x="' + (left ? p[0] + 10 : p[0] - 10).toFixed(1) + '" y="' + (y - 6).toFixed(1) +
+      '" text-anchor="' + (left ? 'start' : 'end') + '">' + escHtml(st.en || st.name || '') + '</text>';
+  }
+  return '<svg class="sky-poster-svg" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' +
+    escHtml(s.zh) + ' 星图">' +
+    '<defs><linearGradient id="pSky" x1="0" y1="0" x2="0" y2="1">' +
+      '<stop offset="0%" stop-color="#080d24"/><stop offset="55%" stop-color="#141d44"/>' +
+      '<stop offset="100%" stop-color="#272a5c"/></linearGradient></defs>' +
+    '<rect width="' + W + '" height="' + H + '" fill="url(#pSky)"></rect>' +
+    '<ellipse class="p-band" cx="320" cy="322" rx="430" ry="146" transform="rotate(-11 320 322)"></ellipse>' +
+    posterDust(s.id || s.en || 'sky', 150) +
+    linesHtml + starsHtml + labelHtml +
+  '</svg>';
+}
+function skyPosterHtml(s, lv){
+  return '<div class="sky-poster">' + skyPosterSvg(s, lv) +
+    '<div class="sky-poster-title"><b>' + skyEsc(s.en) + '</b><span>' + skyEsc(s.zh) + '</span></div>' +
+    '<div class="sky-poster-info"><div>可见：<b>' + visibleHemisphere(s.dec) + '</b></div>' +
+      '<div>最佳观赏：<b>' + bestViewMonth(s.ra) + ' 月</b></div></div>' +
+  '</div>';
+}
+
 function skyDetailHtml(){
   if (!skySelected) return '';
   const s = SKY.find(function(x){ return x.id === skySelected; });
@@ -2679,17 +2793,23 @@ function skyDetailHtml(){
       (unlocked ? '' : (known ? '（未观测）' : '')) + '</button>';
   }).join('');
   const starMap = (lv && lv.theme) ? constSvg(lv.theme, lv.size, lv.noise) : '';
+  const poster = (lv && lv.theme) ? skyPosterHtml(s, lv) : '';
   return '<div class="sky-card">' +
-      '<h3>' + skyEsc(s.zh) + ' <span class="sub">' + skyEsc(s.en) + ' · ' + skyEsc(s.abbr) + '</span></h3>' +
-      '<div class="sub">第 ' + s.level + ' 关 · 已观测' + closeBtnGap + '</div>' +
-      '<dl class="sky-meta">' +
-        '<dt>中心坐标</dt><dd>赤经 ' + s.raText + '，赤纬 ' + s.decText + '</dd>' +
-        '<dt>天区</dt><dd>' + s.zone + ' · ' + s.season + '星空</dd>' +
-        '<dt>面积</dt><dd>全天第 ' + s.areaRank + ' 大</dd>' +
-        '<dt>最亮星</dt><dd>' + skyEsc(s.brightest.zh) + '（' + skyEsc(s.brightest.en) +
-          '，' + s.brightest.mag + ' 等）</dd>' +
-      '</dl>' +
-      '<div class="sky-map-slot">' + starMap + '</div>' +
+      '<div class="sky-detail-head">' +
+        '<div class="sky-thumb">' + starMap + '</div>' +
+        '<div class="sky-head-main">' +
+          '<h3>' + skyEsc(s.zh) + ' <span class="sub">' + skyEsc(s.en) + ' · ' + skyEsc(s.abbr) + '</span></h3>' +
+          '<div class="sub">第 ' + s.level + ' 关 · 已观测' + closeBtnGap + '</div>' +
+          '<dl class="sky-meta">' +
+            '<dt>中心坐标</dt><dd>赤经 ' + s.raText + '，赤纬 ' + s.decText + '</dd>' +
+            '<dt>天区</dt><dd>' + s.zone + ' · ' + s.season + '星空</dd>' +
+            '<dt>面积</dt><dd>全天第 ' + s.areaRank + ' 大</dd>' +
+            '<dt>最亮星</dt><dd>' + skyEsc(s.brightest.zh) + '（' + skyEsc(s.brightest.en) +
+              '，' + s.brightest.mag + ' 等）</dd>' +
+          '</dl>' +
+        '</div>' +
+      '</div>' +
+      poster +
       ((lv && lv.theme && lv.theme.fact) ? '<p class="sky-fact">' + skyEsc(lv.theme.fact) + '</p>' : '') +
       '<div class="sky-neigh">' + nb + '</div>' +
     '</div>';
