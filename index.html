@@ -197,9 +197,8 @@
     60%{box-shadow:0 0 13px rgba(160,205,255,.5)}
     100%{box-shadow:0 0 6px rgba(140,190,255,.28)}
   }
-    font-weight:800;color:#08111f;background:linear-gradient(180deg,#a9d8ff,#6fb3f0)}
   @media (prefers-reduced-motion: reduce){
-    .board-reveal line,.board.reveal-stage .cell,.winname{transition:none;animation:none}
+    .board-reveal line,.board.reveal-stage .cell{transition:none;animation:none}
     .board-reveal line{stroke-opacity:.7}
   }
   /* 棋盘 = 观测窗：半透明夜空 + 细边框 + 内发光 */
@@ -358,6 +357,25 @@
   .result.show{display:block;position:fixed;left:8px;right:8px;
     bottom:calc(8px + env(safe-area-inset-bottom));z-index:6;margin:0;
     background:#141a23;box-shadow:0 14px 36px rgba(0,0,0,.55)}
+  .modal .modal-cname{display:block;font-size:20px;font-weight:800;letter-spacing:.04em;color:#eaf3ff;margin-top:2px}
+  .modal .modal-cmeta{display:block;margin-top:4px;font-size:12px;color:#9fb4d0}
+  .result.win{background:#14251c;border-color:#2f6b46}
+  .result.lose{background:#2a1418;border-color:#7a2333}
+  .result .msg{font-size:14px;font-weight:800}
+  .result.win .msg{color:#8ff0b4}
+  .result.lose .msg{color:#ff9aab}
+  .result .result-btns{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+  .result .result-btns .btn{min-height:44px}
+
+  /* 结算 modal：遮罩 + 卡片（竖直居中，竖屏自适应） */
+  .overlay{
+    position:fixed;inset:0;z-index:60;
+    display:flex;align-items:center;justify-content:center;
+    padding:18px;
+    background:rgba(6,9,14,.72);
+    opacity:0;visibility:hidden;pointer-events:none;
+    transition:opacity .16s ease, visibility .16s ease;
+  }
   .overlay.open{opacity:1;visibility:visible;pointer-events:auto}
   .modal{
     width:min(92vw,420px);max-height:82vh;overflow:auto;
@@ -544,7 +562,7 @@
   .foot{margin:14px 4px 0;font-size:12px;line-height:1.6;color:#7b8aa3}
   .err{color:#ff9aab;font-size:14px;padding:12px}
   /* ===== 通关弹窗：收紧排版，尽量不用滚动就能看全 ===== */
-  .overlay{padding:12px}
+  .overlay{top:0;left:0;right:0;bottom:0;padding:12px}
   .modal{max-height:92vh;padding:14px 14px 12px}
   .modal.win .modal-title{font-size:16px;margin:0 0 2px}
   .modal.win .modal-sub{margin:0 0 8px;font-size:12px;line-height:1.45}
