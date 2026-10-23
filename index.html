@@ -83,7 +83,12 @@
   .lvbtn.sndoff .ico .offmark{display:block}
   .lvbtn.sndoff{color:#7f8ea6}
   .status .timer{margin-left:auto;font-variant-numeric:tabular-nums;font-weight:800;color:#8fc3ff;font-size:12px}
-  .status .timer.over{color:#ffb27a}
+  .status .timer.idle{color:#7f8ea6;font-weight:700}
+  .status .timer.warn{color:#ffd479}
+  .status .timer.danger{color:#ff8a7a;animation:timerPulse 1s ease-in-out infinite}
+  .status .timer.over{color:#ff8a7a}
+  @keyframes timerPulse{0%,100%{opacity:1}50%{opacity:.5}}
+  @media (prefers-reduced-motion: reduce){ .status .timer.danger{animation:none} }
   .status .timer[hidden]{display:none}
   .lvtime{margin-top:2px}
   .lvtime .panel-title{font-size:12px;color:#9fb4d0}
@@ -816,7 +821,7 @@
           </ol>
 
           <button type="button" class="mini" id="replayIntro" style="margin-top:10px">↻ 重看入场页</button>
-          <p class="note">提示：翻开的数字是「周围有几颗星」，不是「周围有几颗杂星」——杂星与星座星在推理上完全等价。<br>⏱ <b>计时挑战</b>：第 11 关起每关有目标时间，达标会在关卡面板留下 ⏱ 标记；<b>默认超时不失败</b>，想更紧张可在「关卡」面板打开「严格限时」。顶部 🔊 图标点开可调音量（图标会随音量变化，可一键静音）。</p>
+          <p class="note">提示：翻开的数字是「周围有几颗星」，不是「周围有几颗杂星」——杂星与星座星在推理上完全等价。<br>⏱ <b>计时挑战</b>：第 11 关起每关有目标时间（关卡信息行会显示），<b>从你第一次翻开格子开始倒计时</b>，状态栏显示剩余时间（剩余 20% 变黄、最后 10 秒变红）；达标会在关卡面板留下 ⏱ 标记。<b>默认超时不失败</b>（超时后显示「超时 +x」继续玩），想更紧张可在「关卡」面板打开「严格限时」。顶部 🔊 图标点开可调音量（图标会随音量变化，可一键静音）。</p>
         </div>
       </div>
     </div>
@@ -23983,7 +23988,8 @@ function render(){
   }
   if (!(runMode === 'endless' && run)){
     lvtagEl.textContent = '第 ' + (S.index + 1) + ' / ' + LEVELS.length + ' 关 · ' +
-      S.n + '×' + S.n + (S.level.showRuns ? ' · 含行列线索' : ' · 仅邻域数字');
+      S.n + '×' + S.n + (S.level.showRuns ? ' · 含行列线索' : ' · 仅邻域数字') +
+      (timeIsTimed() ? ' · 目标 ' + fmtClock(levelTargetSec(S.level)) : '');
   }
 
   applyCellFx();
@@ -24361,11 +24367,26 @@ function resetClock(){ timeStart = 0; timeStop = 0; }
 
 function refreshTimerChip(){
   if (!timerChipEl) return;
-  if (!S || !timeIsTimed() || S.status !== 'playing' || !timeStart){ timerChipEl.hidden = true; return; }
-  const target = levelTargetSec(S.level), el = timeElapsedSec();
+  if (!S || !timeIsTimed() || S.status !== 'playing'){ timerChipEl.hidden = true; return; }
+  const target = levelTargetSec(S.level);
   timerChipEl.hidden = false;
-  timerChipEl.textContent = '⏱ ' + fmtClock(el) + ' / ' + fmtClock(target);
-  timerChipEl.className = 'timer' + (el > target ? ' over' : '');
+  if (!timeStart){
+    // 还没开始操作：只显示目标，不倒计时（避免“还没动就在掉时间”的压力）
+    timerChipEl.className = 'timer idle';
+    timerChipEl.textContent = '目标 ' + fmtClock(target);
+    timerChipEl.setAttribute('aria-label', '本关目标时间 ' + fmtClock(target));
+    return;
+  }
+  const left = target - timeElapsedSec();
+  if (left >= 0){
+    timerChipEl.className = 'timer' + (left <= 10 ? ' danger' : (left <= Math.max(20, target * 0.2) ? ' warn' : ''));
+    timerChipEl.textContent = '⏱ ' + fmtClock(left);
+    timerChipEl.setAttribute('aria-label', '剩余 ' + fmtClock(left));
+  } else {
+    timerChipEl.className = 'timer over';
+    timerChipEl.textContent = '⏱ 超时 +' + fmtClock(-left);
+    timerChipEl.setAttribute('aria-label', '已超时 ' + fmtClock(-left));
+  }
 }
 function timeUp(){
   if (!S || S.status !== 'playing') return;
