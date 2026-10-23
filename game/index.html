@@ -578,25 +578,27 @@
   .fb-ctxlabel{display:flex;align-items:center;gap:7px;cursor:pointer}
   .fb-more{background:none;border:0;padding:2px 4px;color:#8ab4ff;font-size:12px;cursor:pointer;border-radius:6px}
   .fb-more:hover{color:#cfe2ff;background:rgba(126,180,255,.12)}
-  .fb-popwrap{position:relative}
-  .fb-pop{position:absolute;right:0;top:6px;z-index:5;width:100%;max-width:308px;padding:9px 10px;border-radius:12px;
-    background:linear-gradient(180deg,rgba(28,40,72,.99),rgba(14,21,42,.99));border:1px solid rgba(126,180,255,.34);
-    box-shadow:0 12px 30px rgba(0,0,0,.5)}
-  .fb-pop[hidden]{display:none}
-  .fb-pop-head{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:11.5px;color:#cfe2ff;
-    margin-bottom:6px}
-  .fb-pop-x{background:none;border:0;color:#8ba0bd;font-size:16px;line-height:1;cursor:pointer;padding:0 3px}
+  /* 详情 / 邮箱：屏幕中央的小 modal（不再向下展开，避免视角跟着下移） */
+  .fb-float{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;padding:18px;
+    background:rgba(4,7,16,.58)}
+  .fb-float[hidden]{display:none}
+  .fb-float-card{width:100%;max-width:316px;padding:13px 14px 12px;border-radius:14px;
+    background:linear-gradient(180deg,rgba(22,32,60,.99),rgba(11,17,36,.99));
+    border:1px solid rgba(126,180,255,.16);box-shadow:0 16px 40px rgba(0,0,0,.5)}
+  .fb-float-head{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12.5px;
+    font-weight:700;color:#cfe2ff;margin-bottom:8px}
+  .fb-float-x{background:none;border:0;color:#8ba0bd;font-size:16px;line-height:1;cursor:pointer;padding:0 3px}
+  .fb-float-body{font-size:11.5px;color:#9fb4d0}
+  .fb-float-card .btn{width:100%;margin-top:10px}
+  .fb-mail-addr{margin:0 0 8px;font-size:13px;font-weight:700;color:#eaf2ff;word-break:break-all;
+    letter-spacing:.01em;user-select:all}
+  .fb-mail-acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
   .fb-pop-body{margin:0;font-size:11px;line-height:1.6;color:#9fb4d0;white-space:pre-wrap;word-break:break-all;
     max-height:154px;overflow:auto;font-family:inherit}
   .fb-pop-note{margin:7px 0 0;font-size:10.5px;line-height:1.5;color:#7b8aa3}
   .fb-rows{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px}
   .fb-rows .btn{flex:1 1 auto;min-width:104px;margin:0}
-  .fb-qr{margin-top:10px;padding:10px;border-radius:12px;background:rgba(8,13,28,.6);border:1px solid rgba(126,180,255,.2);text-align:center}
-  .fb-qr[hidden]{display:none}
-  .fb-qrimg{width:168px;height:168px;image-rendering:pixelated;background:#fff;border-radius:10px;padding:6px}
-  .fb-mailline{margin-top:8px;font-size:12px;color:#b9cbe6;display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center}
-  .fb-mailline a{color:#cfe2ff}
-  .fb-hint{margin:8px 0 0;font-size:11px;line-height:1.6;color:#7f93b0}
+  .fb-mail-acts a{color:#cfe2ff}
   .fb-status{margin:10px 0 0;font-size:11px;line-height:1.5;color:#8fd0a8;min-height:16px}
   .intro-overlay{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;
     padding:18px;background:rgba(4,7,16,.72);backdrop-filter:blur(2px)}
@@ -750,30 +752,37 @@
       <textarea class="fb-text" id="fbText" placeholder="例如：第 3 关我卡了很久，不太会用行/列的连续块线索……"></textarea>
       <div class="fb-ctxline">
         <label class="fb-ctxlabel"><input type="checkbox" id="fbCtx" checked> 附带关卡与设备信息</label>
-        <button type="button" class="fb-more" id="fbCtxMore" aria-expanded="false" aria-controls="fbPop">查看 ▾</button>
-      </div>
-      <div class="fb-popwrap">
-        <div class="fb-pop" id="fbPop" hidden role="dialog" aria-label="会附带的信息">
-          <div class="fb-pop-head"><span>点「复制 / 导出」时会附带这些</span>
-            <button type="button" class="fb-pop-x" id="fbPopX" aria-label="收起">×</button></div>
-          <pre class="fb-pop-body" id="fbCtxView"></pre>
-          <p class="fb-pop-note">只在你点「复制」或「导出」时一起带出；不会自动上传。</p>
-        </div>
+        <button type="button" class="fb-more" id="fbCtxMore" aria-expanded="false" aria-controls="fbFloat">查看</button>
       </div>
       <div class="fb-rows">
         <button type="button" class="btn primary" id="fbCopy">📋 复制反馈</button>
         <button type="button" class="btn ghost" id="fbSave">⬇ 导出 feedback.txt</button>
-        <button type="button" class="btn ghost" id="fbQrBtn">📱 扫码提交</button>
-      </div>
-      <div class="fb-qr" id="fbQrBox" hidden>
-        <img class="fb-qrimg" id="fbQrImg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="扫码发邮件给开发者">
-        <div class="fb-mailline">邮箱：<b id="fbMailShow">—</b>
-          <button type="button" class="mini" id="fbCopyMail">复制邮箱</button>
-          <a class="mini" id="fbMailLink" href="#">用邮件 App 打开</a>
-        </div>
-        <p class="fb-hint" id="fbQrHint">手机扫码会打开邮件 App；这一步需要联网，也需要手机已配置邮箱。扫不出来就用「复制反馈」+ 上面的邮箱手动发。</p>
+        <button type="button" class="btn ghost" id="fbMailBtn">✉ 查看作者邮箱</button>
       </div>
       <p class="fb-status" id="fbStatus"></p>
+    </div>
+    <div class="fb-float" id="fbFloat" hidden>
+      <div class="fb-float-card" role="dialog" aria-modal="true" aria-labelledby="fbFloatTitle">
+        <div class="fb-float-head">
+          <span id="fbFloatTitle">—</span>
+          <button type="button" class="fb-float-x" id="fbFloatX" aria-label="关闭">×</button>
+        </div>
+        <div class="fb-float-body">
+          <div id="fbFloatInfo" hidden>
+            <pre class="fb-pop-body" id="fbCtxView"></pre>
+            <p class="fb-pop-note">只在你点「复制」或「导出」时一起带出；不会自动上传。</p>
+          </div>
+          <div id="fbFloatMail" hidden>
+            <p class="fb-mail-addr" id="fbMailAddr">—</p>
+            <p class="fb-pop-note">把「复制反馈」的内容粘进邮件发给我就行；也可以点下面用邮件 App 打开（需要手机/电脑已配置邮箱 App）。</p>
+            <div class="fb-mail-acts">
+              <button type="button" class="mini" id="fbCopyMail">复制邮箱</button>
+              <a class="mini" id="fbMailLink" href="#">用邮件 App 打开</a>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn ghost" id="fbFloatOk">知道了</button>
+      </div>
     </div>
   </div>
 
@@ -2952,6 +2961,7 @@ if (constModalEl) constModalEl.addEventListener('click', function(e){
 
 window.addEventListener('keydown', function(e){
   if (e.key === 'Escape' || e.key === 'Esc'){
+    if (typeof fbFloatEl !== 'undefined' && fbFloatEl && fbFloatEl.hidden === false){ fbFloatClose(); return; }
     if (typeof fbOverlay !== 'undefined' && fbOverlay && fbOverlay.hidden === false){ fbClosePanel(); return; }
     if (modalOpenNow){ dismissModal(); return; }   // Esc 收起结算，结算条保留入口
     if (volPopEl && !volPopEl.hidden){ closeVolPop(); return; }
@@ -2971,8 +2981,6 @@ const fbTextEl = document.getElementById('fbText');
 const fbCtxEl = document.getElementById('fbCtx');
 const fbCtxViewEl = document.getElementById('fbCtxView');
 const fbStatusEl = document.getElementById('fbStatus');
-const fbQrBoxEl = document.getElementById('fbQrBox');
-const fbQrImgEl = document.getElementById('fbQrImg');
 let fbOpen = false;
 
 function fbDevice(){
@@ -3070,48 +3078,51 @@ function fbClosePanel(){
   if (!fbOverlay) return;
   fbOpen = false;
   fbOverlay.hidden = true;
-  if (fbQrBoxEl) fbQrBoxEl.hidden = true;
-  if (typeof fbHidePop === 'function') fbHidePop();
+  if (typeof fbFloatClose === 'function') fbFloatClose();
   if (fbBtnEl) fbBtnEl.setAttribute('aria-expanded', 'false');
 }
-function fbShowQr(){
-  if (!fbQrBoxEl) return;
-  const on = fbQrBoxEl.hidden;
-  fbQrBoxEl.hidden = !on;
-  if (!on) return;
-  if (fbQrImgEl){
-    const src = FEEDBACK.qr || '';
-    if (src) fbQrImgEl.setAttribute('src', src);
-    else fbQrImgEl.setAttribute('alt', '（未配置二维码）');
-  }
-  const mail = document.getElementById('fbMailShow');
-  if (mail) mail.textContent = FEEDBACK.show || FEEDBACK.email || '—';
-  const link = document.getElementById('fbMailLink');
-  if (link && FEEDBACK.mailto) link.setAttribute('href', FEEDBACK.mailto);
-  fbSetStatus('扫码后在手机的邮件 App 里点发送（这一步需要联网）。');
-}
-
 if (fbBtnEl) fbBtnEl.addEventListener('click', function(){ if (fbOpen) fbClosePanel(); else fbOpenPanel(); });
 if (fbCloseEl) fbCloseEl.addEventListener('click', fbClosePanel);
 if (fbOverlay) fbOverlay.addEventListener('click', function(e){ if (e.target === fbOverlay) fbClosePanel(); });
 if (fbCtxEl) fbCtxEl.addEventListener('change', fbRefreshCtx);
-// 详情默认收起：点标签旁的「查看」弹一层轻量浮层
-const fbPopEl = document.getElementById('fbPop');
+// 详情 / 邮箱：共用屏幕中央的小 modal（点「查看」或「查看作者邮箱」打开）
+const fbFloatEl = document.getElementById('fbFloat');
+const fbFloatTitleEl = document.getElementById('fbFloatTitle');
+const fbFloatInfoEl = document.getElementById('fbFloatInfo');
+const fbFloatMailEl = document.getElementById('fbFloatMail');
+const fbMailAddrEl = document.getElementById('fbMailAddr');
 const fbMoreEl = document.getElementById('fbCtxMore');
-function fbHidePop(){
-  if (fbPopEl) fbPopEl.hidden = true;
+function fbFloatOpen(kind){
+  if (!fbFloatEl) return;
+  const info = (kind === 'info');
+  if (fbFloatInfoEl) fbFloatInfoEl.hidden = !info;
+  if (fbFloatMailEl) fbFloatMailEl.hidden = info;
+  if (fbFloatTitleEl) fbFloatTitleEl.textContent = info ? '会附带这些信息' : '作者邮箱';
+  if (info){
+    fbRefreshCtx();
+  } else {
+    if (fbMailAddrEl) fbMailAddrEl.textContent = FEEDBACK.email || '（未配置邮箱）';
+    const link = document.getElementById('fbMailLink');
+    if (link && FEEDBACK.mailto) link.setAttribute('href', FEEDBACK.mailto);
+  }
+  fbFloatEl.hidden = false;
+  if (fbMoreEl) fbMoreEl.setAttribute('aria-expanded', info ? 'true' : 'false');
+}
+function fbFloatClose(){
+  if (fbFloatEl) fbFloatEl.hidden = true;
   if (fbMoreEl) fbMoreEl.setAttribute('aria-expanded', 'false');
 }
-function fbTogglePop(){
-  if (!fbPopEl) return;
-  const show = fbPopEl.hidden;
-  if (show) fbRefreshCtx();
-  fbPopEl.hidden = !show;
-  if (fbMoreEl) fbMoreEl.setAttribute('aria-expanded', show ? 'true' : 'false');
-}
-if (fbMoreEl) fbMoreEl.addEventListener('click', fbTogglePop);
-const fbPopXEl = document.getElementById('fbPopX');
-if (fbPopXEl) fbPopXEl.addEventListener('click', fbHidePop);
+if (fbMoreEl) fbMoreEl.addEventListener('click', function(){
+  if (fbFloatEl && fbFloatEl.hidden === false && fbFloatInfoEl && fbFloatInfoEl.hidden === false){ fbFloatClose(); return; }
+  fbFloatOpen('info');
+});
+const fbMailBtnEl = document.getElementById('fbMailBtn');
+if (fbMailBtnEl) fbMailBtnEl.addEventListener('click', function(){ fbFloatOpen('mail'); });
+const fbFloatXEl = document.getElementById('fbFloatX');
+if (fbFloatXEl) fbFloatXEl.addEventListener('click', fbFloatClose);
+const fbFloatOkEl = document.getElementById('fbFloatOk');
+if (fbFloatOkEl) fbFloatOkEl.addEventListener('click', fbFloatClose);
+if (fbFloatEl) fbFloatEl.addEventListener('click', function(e){ if (e.target === fbFloatEl) fbFloatClose(); });
 const fbCopyEl = document.getElementById('fbCopy');
 if (fbCopyEl) fbCopyEl.addEventListener('click', function(){
   fbCopyText(fbCompose(), '已复制，粘贴到微信 / QQ / 邮件里发给我就行');
@@ -3121,8 +3132,6 @@ if (fbSaveEl) fbSaveEl.addEventListener('click', function(){
   const text = fbCompose();
   fbSetStatus(fbDownload(text) ? '已导出 asterweave-feedback.txt，把它发给我就行' : '导出失败：请改用「复制反馈」');
 });
-const fbQrEl = document.getElementById('fbQrBtn');
-if (fbQrEl) fbQrEl.addEventListener('click', fbShowQr);
 const fbCopyMailEl = document.getElementById('fbCopyMail');
 if (fbCopyMailEl) fbCopyMailEl.addEventListener('click', function(){
   fbCopyText(FEEDBACK.email || '', '邮箱已复制：' + (FEEDBACK.show || FEEDBACK.email || ''));

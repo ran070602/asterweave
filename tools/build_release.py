@@ -131,11 +131,14 @@ def main():
         fail.append("UI 外壳里找不到 FEEDBACK_INJECT 标记")
     else:
         out_html = fb_pat.sub(lambda m: fb_block, out_html, count=1)
-        if "data:image/png;base64," not in fb.get("qr", ""):
+        qr = fb.get("qr", "")
+        if qr and "data:image/png;base64," not in qr:
             fail.append("意见箱二维码不是内联 data URI")
+        elif qr:
+            print(f"意见箱注入：通过（内联二维码 {fb.get('modules', '?')}×{fb.get('modules', '?')} 模块，"
+                  f"{len(qr)//1024} KB）")
         else:
-            print(f"意见箱注入：通过（邮箱二维码 {fb.get('modules', '?')}×{fb.get('modules', '?')} 模块，"
-                  f"内联 {len(fb['qr'])//1024} KB）")
+            print(f"意见箱注入：通过（邮箱 {fb.get('show') or fb.get('email')}；未使用二维码）")
 
     # 2) 回读校验：注入后的 LEVELS 必须与 levels.json 完全一致
     m = re.search(r"/\* LEVELS_INJECT_START \*/\s*const LEVELS = (\[.*?\]);\s*/\* LEVELS_INJECT_END \*/",

@@ -38,11 +38,14 @@ def main():
     if not email:
         print("!! feedback.json 里没有 email"); sys.exit(1)
 
-    # 邮件正文模板尽量短，二维码才不糊；正文由页面「复制反馈」带出
+    # 邮件正文模板尽量短；正文由页面「复制反馈」带出
     body = "关卡：\n问题：\n"
     mailto = ("mailto:" + email + "?subject=" + urllib.parse.quote(subject) +
               "&body=" + urllib.parse.quote(body))
-    qr, modules = qr_data_uri(mailto)
+    # v2.3：界面已移除「扫码提交」（QQ/微信扫码器不认 mailto: 协议），二维码默认不再生成。
+    # 需要时用 `python tools/build_feedback.py --qr` 重新开启，产物仍是内联 data URI。
+    want_qr = ("--qr" in sys.argv)
+    qr, modules = (qr_data_uri(mailto) if want_qr else ("", 0))
     out = {
         "email": email,
         "show": obfuscate(email),
@@ -54,15 +57,18 @@ def main():
         "form_qr": "",
         "modules": modules,
     }
-    if form_url:
+    if form_url and want_qr:
         fqr, fmod = qr_data_uri(form_url)
         out["form_qr"] = fqr
         out["form_modules"] = fmod
         print(f"表单二维码：{fmod}×{fmod} 模块")
     json.dump(out, open(OUT, "w", encoding="utf-8"), ensure_ascii=False)
-    print(f"意见箱配置已生成：邮箱 {email}｜邮件二维码 {modules}×{modules} 模块｜"
-          f"内联 data URI {len(qr)//1024} KB")
-    print("  （二维码为内联 PNG，不产生任何外部引用）")
+    if want_qr:
+        print(f"意见箱配置已生成：邮箱 {email}｜邮件二维码 {modules}×{modules} 模块｜"
+              f"内联 data URI {len(qr)//1024} KB（内联 PNG，不产生外部引用）")
+    else:
+        print(f"意见箱配置已生成：邮箱 {email}｜未生成二维码（界面已改为「查看作者邮箱」；"
+              f"如需二维码请加 --qr）")
 
 
 if __name__ == "__main__":

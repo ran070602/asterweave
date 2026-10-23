@@ -160,64 +160,69 @@ function actCell(i, mode) {
   flush(0);
 }
 
-// ---------------- v19：意见箱（离线优先）----------------
+// ---------------- v19（v2.3）：意见箱（离线优先 / 居中 modal / 无扫码）----------------
 if (byId.introStart) { byId.introStart.dispatchEvent(mkEvent('click', { target: byId.introStart })); flush(0); }
 
 ok('顶栏有「意见」按钮', !!byId.fbBtn && (byId.fbBtn.textContent || '').includes('意见'), byId.fbBtn && byId.fbBtn.textContent);
 ok('意见箱初始隐藏', byId.fbOverlay.hidden === true);
+ok('详情/邮箱 modal 初始隐藏', byId.fbFloat.hidden === true);
+ok('隐私说明（不保存任何内容 / 不会自动上传）',
+   html.includes('这里不保存任何内容') && html.includes('不会自动上传'), '隐私说明在 HTML 里');
 
-byId.fbCtx.checked = true;            // 桩不反射 checked 属性，显式置位（浏览器里由 checked 属性自动成立）
+byId.fbCtx.checked = true;
 byId.fbBtn.dispatchEvent(mkEvent('click', { target: byId.fbBtn }));
 flush(0);
 ok('点击后意见箱打开', byId.fbOverlay.hidden === false);
-ok('有隐私说明（不保存任何内容 / 不会自动上传）',
-   html.includes('这里不保存任何内容') && html.includes('不会自动上传'), '隐私说明在 HTML 里');
 
-// 环境信息详情默认收起，点「查看」才弹轻量浮层
-ok('详情浮层默认收起（不占位置）', byId.fbPop.hidden === true);
+// ① 「查看」→ 屏幕中间弹 modal（不再向下展开）
 ok('有「查看」入口', !!byId.fbCtxMore && String(byId.fbCtxMore.textContent).includes('查看'), byId.fbCtxMore && byId.fbCtxMore.textContent);
+ok('未点开前 modal 仍隐藏（不占位置）', byId.fbFloat.hidden === true);
 byId.fbCtxMore.dispatchEvent(mkEvent('click', { target: byId.fbCtxMore }));
 flush(0);
-ok('点「查看」后浮层展开', byId.fbPop.hidden === false);
+ok('点「查看」弹出居中 modal', byId.fbFloat.hidden === false);
+ok('modal 标题是「会附带这些信息」', String(byId.fbFloatTitle.textContent).includes('会附带这些信息'), byId.fbFloatTitle.textContent);
 const ctxText = String(byId.fbCtxView.textContent || '');
-ok('浮层里含当前关卡', ctxText.includes('关卡') && (ctxText.includes('第 1') || ctxText.includes('1/50')), ctxText.split('\n')[0] || '');
-ok('浮层里含设备与版本', ctxText.includes('设备') && ctxText.includes('版本'), ctxText.replace(/\n/g, ' | ').slice(0, 120));
-byId.fbPopX.dispatchEvent(mkEvent('click', { target: byId.fbPopX }));
+ok('modal 里含当前关卡', ctxText.includes('关卡') && ctxText.includes('第 1'), ctxText.split('\n')[1] || '');
+ok('modal 里含设备与版本', ctxText.includes('设备') && ctxText.includes('版本'), ctxText.replace(/\n/g, ' | ').slice(0, 120));
+ok('modal 是固定定位在屏幕中央（不是内联下拉）',
+   /\.fb-float\{[^}]*position:fixed/.test(html) && /\.fb-float\{[^}]*align-items:center/.test(html), 'CSS 断言');
+byId.fbFloatOk.dispatchEvent(mkEvent('click', { target: byId.fbFloatOk }));
 flush(0);
-ok('浮层可收起', byId.fbPop.hidden === true);
+ok('「知道了」关闭 modal', byId.fbFloat.hidden === true);
 
-// 写入反馈 → 复制 → 本机留档
+// ② 第三个按钮 = 查看作者邮箱（已无扫码）
+ok('第三个按钮是「✉ 查看作者邮箱」', !!byId.fbMailBtn && String(byId.fbMailBtn.textContent).includes('查看作者邮箱'), byId.fbMailBtn && byId.fbMailBtn.textContent);
+ok('已无「扫码提交」按钮与二维码图', !byId.fbQrBtn && !byId.fbQrImg && !byId.fbQrBox);
+byId.fbMailBtn.dispatchEvent(mkEvent('click', { target: byId.fbMailBtn }));
+flush(0);
+ok('点「查看作者邮箱」打开 modal', byId.fbFloat.hidden === false);
+ok('modal 标题是「作者邮箱」', String(byId.fbFloatTitle.textContent).includes('作者邮箱'), byId.fbFloatTitle.textContent);
+ok('显示真实邮箱地址', String(byId.fbMailAddr.textContent).includes('@') && String(byId.fbMailAddr.textContent).includes('.'), byId.fbMailAddr.textContent);
+ok('邮件链接是 mailto:', String(byId.fbMailLink.attrs.href || '').indexOf('mailto:') === 0, String(byId.fbMailLink.attrs.href || '').slice(0, 42));
+byId.fbCopyMail.dispatchEvent(mkEvent('click', { target: byId.fbCopyMail }));
+flush(0);
+ok('「复制邮箱」给出提示', String(byId.fbStatus.textContent || '').includes('邮箱') || String(byId.fbStatus.textContent || '').length > 0, byId.fbStatus.textContent);
+(win._h['keydown'] || []).forEach(function(fn){ fn(mkEvent('keydown', { key: 'Escape', target: win })); });
+flush(0);
+ok('Esc 先关 modal（意见箱仍开着）', byId.fbFloat.hidden === true && byId.fbOverlay.hidden === false,
+   `float=${byId.fbFloat.hidden} overlay=${byId.fbOverlay.hidden}`);
+
+// ③ 复制：不落盘
 byId.fbText.value = '第 3 关的行线索我看不懂';
 byId.fbText.dispatchEvent(mkEvent('input', { target: byId.fbText }));
-flush(0);
 byId.fbCopy.dispatchEvent(mkEvent('click', { target: byId.fbCopy }));
 flush(0);
 ok('复制后给出状态提示', String(byId.fbStatus.textContent || '').length > 0, byId.fbStatus.textContent);
-ok('已去掉「本机记录」UI（列表/计数/清空都不存在）',
-   !byId.fbList && !byId.fbCount && !byId.fbClear,
-   `fbList=${!!byId.fbList} fbCount=${!!byId.fbCount} fbClear=${!!byId.fbClear}`);
 ok('不落盘：没有任何 feedback 键写入 localStorage',
    Object.keys(store).every(k => k.toLowerCase().indexOf('feedback') < 0), JSON.stringify(Object.keys(store)));
-
-// 导出（不抛异常即可；stub 无 Blob 时应走失败提示而不是崩）
+ok('已去掉「本机记录」UI', !byId.fbList && !byId.fbCount && !byId.fbClear);
 let exportOk = true;
 try { byId.fbSave.dispatchEvent(mkEvent('click', { target: byId.fbSave })); flush(0); } catch (e) { exportOk = false; }
-ok('导出按钮不会抛异常', exportOk);
-ok('导出后仍不落盘', Object.keys(store).every(k => k.toLowerCase().indexOf('feedback') < 0), JSON.stringify(Object.keys(store)));
-
-// 扫码提交：二维码必须是内联 data URI，邮箱防爬变形，mailto 链接存在
-byId.fbQrBtn.dispatchEvent(mkEvent('click', { target: byId.fbQrBtn }));
-flush(0);
-ok('扫码区展开', byId.fbQrBox.hidden === false);
-const qrSrc = String(byId.fbQrImg.attrs.src || '');
-ok('二维码是内联 data URI（PNG）', qrSrc.indexOf('data:image/png;base64,') === 0, qrSrc.slice(0, 30));
-ok('邮箱做了防爬变形显示', String(byId.fbMailShow.textContent || '').includes('[at]'), byId.fbMailShow.textContent);
-ok('邮件链接是 mailto:', String(byId.fbMailLink.attrs.href || '').indexOf('mailto:') === 0, String(byId.fbMailLink.attrs.href || '').slice(0, 40));
-ok('提示说明了"需要联网"', String(byId.fbOverlay.textContent || '').includes('联网') || html.includes('这一步需要联网'));
-
+ok('导出按钮不抛异常且不落盘',
+   exportOk && Object.keys(store).every(k => k.toLowerCase().indexOf('feedback') < 0), JSON.stringify(Object.keys(store)));
 ok('意见箱不影响游戏进度（仍可玩）', state().status === 'playing', `status=${state().status}`);
 
-// 关闭：Esc 与点遮罩
+// ④ 关闭
 (win._h['keydown'] || []).forEach(function(fn){ fn(mkEvent('keydown', { key: 'Escape', target: win })); });
 flush(0);
 ok('Esc 关闭意见箱', byId.fbOverlay.hidden === true);
@@ -225,10 +230,11 @@ byId.fbBtn.dispatchEvent(mkEvent('click', { target: byId.fbBtn })); flush(0);
 byId.fbOverlay.dispatchEvent(mkEvent('click', { target: byId.fbOverlay })); flush(0);
 ok('点遮罩关闭意见箱', byId.fbOverlay.hidden === true);
 
-// 全文零外部引用（二维码与邮箱都不构成外部资源引用）
+// ⑤ 离线自包含
 ok('全页无 http(s) 外部引用', !/https?:\/\//.test(html), 'html 里 0 处 http(s)://');
-ok('页面里的 <img> 全部是内联 data URI',
-   (html.match(/<img[^>]*>/g) || []).every(t => t.indexOf('src="data:') >= 0));
+ok('页面里没有外部 <img>（二维码已移除）',
+   (html.match(/<img[^>]*>/g) || []).every(t => t.indexOf('src="data:') >= 0),
+   `img 数=${(html.match(/<img[^>]*>/g) || []).length}`);
 
 const pass = R.filter(x => x.pass === true).length;
 const fail = R.filter(x => x.pass === false);

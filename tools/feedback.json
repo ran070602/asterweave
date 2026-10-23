@@ -3,5 +3,5 @@
   "subject": "星织 Asterweave 试玩反馈",
   "version": "v2.2",
   "formUrl": "",
-  "_comment": "formUrl 留空则只生成邮箱二维码；填上你的表单/问卷链接（如 https://jinshuju.net/f/xxxx），重新构建会额外生成一张表单二维码。邮箱会显示在页面上（做了防爬变形，但 GitHub Pages 是公开页面，地址仍属公开信息）。"
+  "_comment": "v2.3：界面已移除「扫码提交」（QQ/微信扫码器不认 mailto: 协议），改为「查看作者邮箱」按钮，因此默认不再生成二维码；需要时用 `python tools/build_feedback.py --qr` 重新开启。formUrl 仍保留：填上表单链接后（配合 --qr）可生成表单二维码备用。邮箱会显示在页面上（真实地址 + mailto 链接），GitHub Pages 是公开页面，属公开信息。"
 }
