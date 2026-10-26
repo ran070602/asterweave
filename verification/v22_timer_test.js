@@ -254,6 +254,13 @@ ok('达标关卡带金色 ⏱（timeok + timed）',
    hasCls(11, 'timeok') && hasCls(11, 'timed'), gridCls(11));
 closePanel2();
 
+// ⑥b 重玩已通关的关卡不再限时（c0cce5d）
+byId.replay.dispatchEvent(mkEvent('click', { target: byId.replay })); flush(20);
+tapCell(firstDig('11')); flush(20);
+ok('重玩已通关的第 11 关不再限时（计时条隐藏）', byId.timerChip.hidden === true,
+   'hidden=' + byId.timerChip.hidden + ' text=' + JSON.stringify(byId.timerChip.textContent));
+ok('但关卡面板仍标出它是限时关卡（timed）', hasCls(11, 'timed'), gridCls(11));
+
 // ⑦ 新需求：第 11 关起「所有」关卡都带 ⏱，包括未解锁的
 byId.unlockBtn.dispatchEvent(mkEvent('click', { target: byId.unlockBtn })); flush(20);   // 先收回解锁（恢复锁）
 let untimedBad = [], lockedTimedBad = [];
