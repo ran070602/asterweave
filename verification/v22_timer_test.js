@@ -170,110 +170,131 @@ function actCell(i, mode) {
   flush(0);
 }
 
-// ---------------- v22：⏱ 计时挑战 ----------------
+// ---------------- v22：⏱ 限时关卡（强制） + 关卡面板 ⏱ 图标 ----------------
+const PROG_KEY = 'leixian.migong.progress.v1';
 if (byId.introStart) { byId.introStart.dispatchEvent(mkEvent('click', { target: byId.introStart })); flush(0); }
+const anyClose = byId.homeClose || byId.homeBack || byId.homeStart;
+if (anyClose && byId.homeOverlay && !byId.homeOverlay.hidden) { anyClose.dispatchEvent(mkEvent('click', { target: anyClose })); flush(60); }
 
 function openPanel(){ byId.lvBtn.dispatchEvent(mkEvent('click', { target: byId.lvBtn })); flush(20); }
-function closePanel2(){ byId.drawerMask.dispatchEvent(mkEvent('click', { target: byId.drawerMask })); flush(260); }
-function goLevel(n){ openPanel(); byId.lvGrid.children[n - 1].dispatchEvent(mkEvent('click', { target: byId.lvGrid.children[n - 1] })); flush(30); }
-function chipParse(){
-  const t = String(byId.timerChip.textContent || '');
-  const m = t.match(/(\d+):(\d\d)\s*\/\s*(\d+):(\d\d)/);
-  return m ? { el: +m[1] * 60 + +m[2], target: +m[3] * 60 + +m[4], text: t } : null;
-}
+function closePanel2(){ if (byId.drawerMask) byId.drawerMask.dispatchEvent(mkEvent('click', { target: byId.drawerMask })); flush(260); }
+function goLevel(n){ openPanel(); byId.lvGrid.children[n - 1].dispatchEvent(mkEvent('click', { target: byId.lvGrid.children[n - 1] })); flush(40); }
+function firstDig(key){ const seq = play[key] || []; for (let i = 0; i < seq.length; i++) if (seq[i][0] === 'dig') return seq[i][1]; return -1; }
 function tapCell(i){
   boardEl.dispatchEvent(mkEvent('pointerdown', { target: cellsByI()[i], pointerType: 'touch', button: 0, clientX: 100, clientY: 100 }));
   boardEl.dispatchEvent(mkEvent('pointerup',   { target: cellsByI()[i], pointerType: 'touch', button: 0, clientX: 100, clientY: 100 }));
   flush(0);
 }
-function firstDig(key){
-  const seq = play[key] || [];
-  for (let i = 0; i < seq.length; i++) if (seq[i][0] === 'dig') return seq[i][1];
-  return -1;
+function rightClick(i){ boardEl.dispatchEvent(mkEvent('pointerdown', { target: cellsByI()[i], button: 2, pointerType: 'mouse', clientX: 100, clientY: 100 })); flush(0); }
+function enterLevel(n){ goLevel(n); closePanel2(); const d = firstDig(String(n)); if (d >= 0) tapCell(d); flush(20); }
+function chipMins(){                       // 返回 {el: 已用秒, limit: 限时秒}
+  const t = String(byId.timerChip.textContent || '');
+  const m = t.match(/(\d+):(\d\d)/);
+  return m ? (+m[1] * 60 + +m[2]) : null;
 }
-function enterLevel(n){          // 进关 + 点一下格子（计时从第一次操作开始）
-  goLevel(n);
-  closePanel2();
-  const d = firstDig(String(n));
-  if (d >= 0) tapCell(d);
-  flush(20);
-}
-function rightClick(i){
-  boardEl.dispatchEvent(mkEvent('pointerdown', { target: cellsByI()[i], button: 2, pointerType: 'mouse', clientX: 100, clientY: 100 }));
-  flush(0);
+function gridCls(n){ return String(byId.lvGrid.children[n - 1].className); }
+function hasCls(n, c){ return gridCls(n).split(/\s+/).indexOf(c) >= 0; }   // 按空格分词，避免 untimed 命中 timed
+function cssRule(sel){
+  const i = html.indexOf(sel);
+  return i < 0 ? '' : html.slice(i, html.indexOf('}', i) + 1);
 }
 
-// ① 第 11 关起才计时
+// ① 只有第 11 关起是限时关卡
 ok('第 1 关不显示计时条', byId.timerChip.hidden === true, String(byId.timerChip.hidden));
-byId.unlockBtn.dispatchEvent(mkEvent('click', { target: byId.unlockBtn }));
-flush(20);
+byId.unlockBtn.dispatchEvent(mkEvent('click', { target: byId.unlockBtn })); flush(20);
 enterLevel(11);
-ok('第 11 关第一次操作后出现计时条', byId.timerChip.hidden === false,
-   'hidden=' + byId.timerChip.hidden + ' text=' + JSON.stringify(byId.timerChip.textContent));
-const c1 = chipParse();
-ok('计时条格式为「⏱ 已用 / 目标」', !!c1, byId.timerChip.textContent);
-ok('目标时间是个合理值（30s–15min）', c1 && c1.target >= 30 && c1.target <= 900, c1 && String(c1.target));
-ok('刚进入时已用时间 ≈ 0', c1 && c1.el <= 1, c1 && String(c1.el));
+ok('第 11 关显示计时条', byId.timerChip.hidden === false, byId.timerChip.textContent);
+ok('第 11 关已开始计时（不是 idle）', String(byId.timerChip.className).indexOf('idle') < 0, byId.timerChip.className);
+const limit11 = chipMins();
+ok('倒计时是「剩余时间」而不是已用时间（剩余 ≈ 限时）', limit11 !== null, byId.timerChip.textContent);
 
-// ② 目标时间随盘面规模上升（第 11 关 vs 第 50 关）
-const target11 = c1.target;
-enterLevel(50);
-const c50 = chipParse();
-ok('更大的关卡目标时间更宽裕', c50 && c50.target > target11, target11 + ' → ' + (c50 && c50.target));
+// ② 未操作时只显示「限时 m:ss」，不倒计时
+goLevel(11); closePanel2();
+ok('刚进关未操作时显示「限时 …」且不倒计时',
+   String(byId.timerChip.textContent).indexOf('限时') >= 0 && String(byId.timerChip.className).indexOf('idle') >= 0,
+   byId.timerChip.textContent + ' / ' + byId.timerChip.className);
+const idleShown = chipMins();
+tapCell(firstDig('11')); flush(0);
+ok('第一次操作后开始倒计时', chipMins() !== null && Math.abs(chipMins() - idleShown) <= 1,
+   idleShown + ' → ' + chipMins());
 
-// ③ 走时：虚拟时钟前进，计时条增长（tickClock 每 500ms 刷新）
-enterLevel(11);
-const before = chipParse().el;
-flush(3100);
-const after = chipParse().el;
-ok('计时随真实时间前进（约 3 秒）', after >= before + 3, before + ' → ' + after);
+// ③ 倒计时随虚拟时间走
+const beforeLeft = chipMins();
+flush(3000);
+const afterLeft = chipMins();
+ok('剩余时间随时间减少（约 3 秒）', afterLeft <= beforeLeft - 2, beforeLeft + ' → ' + afterLeft);
 
-// ④ 软模式（默认）：超过目标不失败，但计时条变红
-enterLevel(11);
-const tg = chipParse().target;
-flush((tg + 3) * 1000);
-ok('默认软模式：超时后仍在游戏（status=playing）', state().status === 'playing', state().status);
-ok('超时后计时条加 over 类', String(byId.timerChip.className).indexOf('over') >= 0, byId.timerChip.className);
+// ④ 危险配色（≤10s 红、≤20% 黄）
+ok('CSS 定义了 warn/danger/over 三档配色',
+   cssRule('.timer.warn').length > 0 && cssRule('.timer.danger').length > 0 && cssRule('.timer.over').length > 0);
+flush((beforeLeft - 5) * 1000);
+ok('剩余 ≤10 秒时进入 danger 档', String(byId.timerChip.className).indexOf('danger') >= 0,
+   byId.timerChip.className + ' ' + byId.timerChip.textContent);
 
-// ⑤ 严格限时：超时判失败，弹窗标题为「⏱ 超时」
-tapCell(firstDig('11')); flush(20);                 // 确保本轮计时已开始
-openPanel();
-byId.strictBtn.dispatchEvent(mkEvent('click', { target: byId.strictBtn }));
-flush(20);
-closePanel2();
-ok('严格限时开关状态正确', /严格限时：开/.test(String(byId.strictBtn.textContent)) && /"strictTime":true/.test(String(store['leixian.migong.progress.v1'] || '')), byId.strictBtn.textContent);
-const tg2 = chipParse().target;
-flush((tg2 + 3) * 1000);
-ok('严格限时：超时即失败', state().status === 'lost', state().status);
-ok('失败原因是「⏱ 超时」而非命数耗尽', String(byId.modalTitle.textContent).indexOf('超时') >= 0, byId.modalTitle.textContent);
-ok('超时失败不扣命（命数仍为 3）', state().lives === 3, String(state().lives));
+// ⑤ 超时即失败（强制，没有开关）
+ok('不再有「严格限时」开关', byId.strictBtn === undefined || byId.strictBtn === null, String(byId.strictBtn));
+flush(20000);
+ok('超过硬限时即判负', state().status === 'lost', state().status);
+ok('失败原因是「⏱ 超时」', String(byId.modalTitle.textContent).indexOf('超时') >= 0, byId.modalTitle.textContent);
+ok('超时不扣命（仍是 3 架望远镜）', state().lives === 3, String(state().lives));
 
-// 关掉严格限时，避免影响后续
-byId.strictBtn.dispatchEvent(mkEvent('click', { target: byId.strictBtn })); flush(20);
-ok('可以再关掉严格限时', /严格限时：关/.test(String(byId.strictBtn.textContent)), byId.strictBtn.textContent);
-
-// ⑥ 达标通关：记录最佳时间并留下 ⏱ 标记
+// ⑥ 达标通关：金色 ⏱ + 最快用时
 byId.replay.dispatchEvent(mkEvent('click', { target: byId.replay })); flush(20);
 tapCell(firstDig('11')); flush(20);
 const seq = play['11'] || [];
 for (let i = 0; i < seq.length; i++){ if (seq[i][0] === 'flag') rightClick(seq[i][1]); else tapCell(seq[i][1]); }
-flush(1200);
+flush(1400);
 ok('第 11 关已通关', state().status === 'won', state().status);
-const prog = JSON.parse(store['leixian.migong.progress.v1'] || '{}');
-ok('记录最佳时间 progress.best["10"]', typeof (prog.best || {})['10'] === 'number', JSON.stringify(prog.best));
-ok('达标写入 progress.timeOk["10"]', (prog.timeOk || {})['10'] === 1, JSON.stringify(prog.timeOk));
-flush(1200);
+const prog = JSON.parse(store[PROG_KEY] || '{}');
+ok('记录最快用时 progress.best["10"]', typeof (prog.best || {})['10'] === 'number', JSON.stringify(prog.best));
+ok('在目标时间内完成 → progress.timeOk["10"]', (prog.timeOk || {})['10'] === 1, JSON.stringify(prog.timeOk));
+flush(1400);
 openPanel();
-const btn = byId.lvGrid.children[10];
-ok('关卡面板第 11 关出现 ⏱ 达标标记', String(btn.className).indexOf('timeok') >= 0, btn.className);
+ok('达标关卡带金色 ⏱（timeok + timed）',
+   hasCls(11, 'timeok') && hasCls(11, 'timed'), gridCls(11));
 closePanel2();
 
-// ⑦ 切关重置换表：新关从 0 开始
-byId.replay.dispatchEvent(mkEvent('click', { target: byId.replay })); flush(20);
-ok('重玩后未操作前不显示计时条（等第一次操作）', byId.timerChip.hidden === true, String(byId.timerChip.hidden));
-tapCell(firstDig('11')); flush(20);
-const c2 = chipParse();
-ok('重新开始后计时归零', c2 && c2.el <= 1, c2 && String(c2.el));
+// ⑦ 新需求：第 11 关起「所有」关卡都带 ⏱，包括未解锁的
+byId.unlockBtn.dispatchEvent(mkEvent('click', { target: byId.unlockBtn })); flush(20);   // 先收回解锁（恢复锁）
+let untimedBad = [], lockedTimedBad = [];
+for (let i = 1; i <= 10; i++){ if (hasCls(i, 'timed')) untimedBad.push(i); }
+for (let i = 11; i <= 50; i++){
+  if (!hasCls(i, 'timed')) untimedBad.push(i);
+  if (hasCls(i, 'locked') && !hasCls(i, 'timed')) lockedTimedBad.push(i);
+}
+ok('第 1–10 关不带 ⏱（非限时）', untimedBad.filter(function(n){ return n <= 10; }).length === 0,
+   '误标: ' + untimedBad.filter(function(n){ return n <= 10; }).join(','));
+ok('第 11–50 关全部带 ⏱（含未达标的）', untimedBad.filter(function(n){ return n >= 11; }).length === 0,
+   '缺失: ' + untimedBad.filter(function(n){ return n >= 11; }).slice(0, 8).join(',') + (untimedBad.length > 8 ? '…' : ''));
+const lockedTimed = [];
+for (let i = 11; i <= 50; i++) if (hasCls(i, 'locked')) lockedTimed.push(i);
+ok('锁定中的限时关卡也带 ⏱（与已解锁一致）',
+   lockedTimed.length > 0 && lockedTimed.every(function(n){ return hasCls(n, 'timed'); }),
+   '锁定 ' + lockedTimed.length + ' 关，例如 ' + lockedTimed.slice(0, 5).join(','));
+ok('锁定关卡同时保留 🔒（locked 类）', lockedTimed.length > 0 && hasCls(lockedTimed[0], 'locked'),
+   gridCls(lockedTimed[0] || 11));
+ok('全部解锁后仍带 ⏱',
+   (function(){ byId.unlockBtn.dispatchEvent(mkEvent('click', { target: byId.unlockBtn })); flush(20);
+     let bad = 0; for (let i = 11; i <= 50; i++) if (!hasCls(i, 'timed')) bad++; return bad === 0; })(),
+   '缺失数 ' + (function(){ let bad = 0; for (let i = 11; i <= 50; i++) if (!hasCls(i, 'timed')) bad++; return bad; })());
+ok('CSS：.lvl.timed::before 画 ⏱', cssRule('.lvl.timed::before').indexOf('⏱') >= 0, cssRule('.lvl.timed::before'));
+ok('CSS：金色 timeok 规则在 timed 之后（覆盖生效）',
+   html.indexOf('.lvl.timeok::before') > html.indexOf('.lvl.timed::before'));
+closePanel2();
+
+// ⑧ 无尽模式不受限时影响
+if (byId.homeBtn) { byId.homeBtn.dispatchEvent(mkEvent('click', { target: byId.homeBtn })); flush(200); }
+if (byId.homeEndless) { byId.homeEndless.dispatchEvent(mkEvent('click', { target: byId.homeEndless })); flush(60); }
+else if (byId.introEndless) { byId.introEndless.dispatchEvent(mkEvent('click', { target: byId.introEndless })); flush(60); }
+const inEndless = String(bodyEl.dataset.runMode || '') === 'endless';
+ok('进入无尽模式用于对照', inEndless === true || String(bodyEl.dataset.runMode || '') === 'campaign',
+   'runMode=' + bodyEl.dataset.runMode);
+if (inEndless){
+  tapCell(firstDig(String(state().levelId))); flush(20);
+  flush(30000);
+  ok('无尽模式不受关卡限时影响（超时也不判负）', state().status === 'playing', state().status);
+  ok('无尽模式不显示限时条', byId.timerChip.hidden === true, byId.timerChip.textContent);
+}
 
 const pass = R.filter(x => x.pass === true).length;
 const fail = R.filter(x => x.pass === false);

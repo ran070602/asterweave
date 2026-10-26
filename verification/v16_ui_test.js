@@ -183,23 +183,36 @@ ok('提示文案含手机与电脑两套操作', (byId.actHint.textContent || ''
 ok('提示容器 class 是 acthint（醒目样式生效）', (byId.actHint.className || '').includes('acthint'), byId.actHint.className);
 ok('旧的 modeActions 容器已移除', !byId.modeActions);
 
-// ② 首次进入第 1 关弹出玩法说明，只弹一次
-ok('首屏弹出玩法说明', byId.introOverlay && byId.introOverlay.hidden === false, `hidden=${byId.introOverlay && byId.introOverlay.hidden}`);
-// 首屏说明已改版为「品牌卡 + 3 条步骤」：仍按"简短"核对（取 introOverlay 到下一个元素之间的片段）
+// ② 首屏主页（v8：品牌 + 模式卡；原「三句话说明」并入其中）
+ok('首屏弹出主页', byId.introOverlay && byId.introOverlay.hidden === false, `hidden=${byId.introOverlay && byId.introOverlay.hidden}`);
 const introSeg = html.slice(html.indexOf('id="introOverlay"'), html.indexOf('id="lvtag"'));
-const steps = (introSeg.match(/<li>/g) || []).length;
-ok('首屏说明保持简短（3 条步骤）', steps === 3, `li 数=${steps}`);
-ok('首屏说明带「开始观测」入口', introSeg.indexOf('id="introStart"') >= 0);
-const introSrc = html.slice(html.indexOf('id="introOverlay"'), html.indexOf('id="introStart"'));
-ok('说明含关键操作（轻触/长按/单击/右键）',
-   introSrc.includes('轻触') && introSrc.includes('长按') && introSrc.includes('单击') && introSrc.includes('右键') && !introSrc.includes('双击'));
-// 点「开始观测」关闭
-byId.introStart.dispatchEvent(mkEvent('click', { target: byId.introStart }));
+ok('主页有品牌与一句定位', introSeg.includes('ASTERWEAVE') && introSeg.includes('扫雷') && introSeg.includes('数织'));
+ok('主页含「翻开安全格 + 标出所有星」的玩法要点', introSeg.includes('安全格') && introSeg.includes('标出所有'));
+ok('主页提供两种模式入口（闯关 / 无尽）',
+   introSeg.indexOf('id="homeCampaign"') >= 0 && introSeg.indexOf('id="homeEndless"') >= 0);
+ok('主页提供「继续当前进度」入口（首次无存档时隐藏）',
+   introSeg.indexOf('id="homeResume"') >= 0 && byId.homeResume.hidden === true, `hidden=${byId.homeResume && byId.homeResume.hidden}`);
+ok('顶栏有常驻主页入口（游戏中可当暂停菜单）', !!byId.homeBtn);
+// 一次点击即可开始
+byId.homeCampaign.dispatchEvent(mkEvent('click', { target: byId.homeCampaign }));
 flush(0);
-ok('点「开始观测」后说明关闭', byId.introOverlay.hidden === true);
+ok('点「闯关模式」一次即关闭主页并进入棋盘',
+   byId.introOverlay.hidden === true && state().status === 'playing', `hidden=${byId.introOverlay.hidden} status=${state().status}`);
 let saved = null;
 try { saved = JSON.parse(store['leixian.migong.progress.v1'] || store['xingzhi.progress.v1'] || 'null'); } catch (e) {}
-ok('已读标记已写入本地存储', !!saved && saved.introSeen === true, JSON.stringify(saved && { introSeen: saved.introSeen }));
+ok('已读标记已写入本地存储（老玩家不再自动弹）', !!saved && saved.introSeen === true, JSON.stringify(saved && { introSeen: saved.introSeen }));
+// 顶栏入口再次打开主页（此时作为暂停菜单）；「继续当前进度」只在棋盘已动过时出现
+const safeDig = (play['1'] || []).filter(a => a[0] === 'dig')[0][1];
+boardEl.dispatchEvent(mkEvent('pointerdown', { target: cellsByI()[safeDig], pointerType: 'touch', button: 0, clientX: 100, clientY: 100 }));
+boardEl.dispatchEvent(mkEvent('pointerup',   { target: cellsByI()[safeDig], pointerType: 'touch', button: 0, clientX: 100, clientY: 100 }));
+flush(0);
+byId.homeBtn.dispatchEvent(mkEvent('click', { target: byId.homeBtn }));
+flush(0);
+ok('游戏中点顶栏入口可再打开主页', byId.introOverlay.hidden === false);
+ok('棋盘已动过时出现「继续当前进度」', byId.homeResume.hidden === false, `hidden=${byId.homeResume && byId.homeResume.hidden}`);
+byId.homeResume.dispatchEvent(mkEvent('click', { target: byId.homeResume }));
+flush(0);
+ok('点「继续当前进度」回到棋盘', byId.introOverlay.hidden === true && state().status === 'playing', state().status);
 
 // ③ 失败后底部不再出现第二个「重玩本关」
 ok('游戏进行中：常驻重玩按钮可见', byId.replayActions.hidden !== true, `hidden=${byId.replayActions.hidden}`);

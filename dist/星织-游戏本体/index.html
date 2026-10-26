@@ -94,7 +94,9 @@
   .lvtime{margin-top:2px}
   .lvtime .panel-title{font-size:12px;color:#9fb4d0}
   .lvtime .panel-title b{color:#8fc3ff}
-  .lvl.timeok::before{content:"⏱";position:absolute;top:2px;left:5px;font-size:9px;opacity:.95}
+  /* 限时关卡（第 11 关起）一律带 ⏱ 提示，含未解锁的关卡；达标后由下面的 timeok 规则覆盖成金色 */
+  .lvl.timed::before{content:"⏱";position:absolute;top:2px;left:5px;font-size:9px;opacity:.4;color:#c2d1e6}
+  .lvl.timeok::before{content:"⏱";position:absolute;top:2px;left:5px;font-size:9px;opacity:.95;color:#ffd166}
   .lvbtn.vol-1 .ico .w2,.lvbtn.vol-1 .ico .w3{display:none}
   .lvbtn.vol-2 .ico .w3{display:none}
   .top-actions{position:relative}
@@ -769,10 +771,10 @@
       <button type="button" class="mini" id="resetBtn">重置进度</button>
     </div>
     <div class="panel-head lvtime">
-      <span class="panel-title">⏱ <b>第 11 关起为限时关卡</b>，超时即失败（⏱ 金标 = 在目标时间内完成）</span>
+      <span class="panel-title">⏱ <b>第 11 关起为限时关卡</b>（未解锁的关也带 ⏱），超时即失败；<b>金色</b> ⏱ = 已在目标时间内完成</span>
     </div>
     <div class="lvgrid" id="lvGrid"></div>
-    <div class="panel-hint">✓ 已通关　·　高亮 = 当前关卡　·　🔒 未解锁（通关上一关后解锁）<br>⏱ = 已在目标时间内观测完成　·　想直接玩后面的关？点「全部解锁」（给评审/开发用，不影响进度记录）</div>
+    <div class="panel-hint">✓ 已通关　·　高亮 = 当前关卡　·　🔒 未解锁（通关上一关后解锁）<br>⏱ = <b>限时关卡</b>（第 11 关起每关都有，未解锁的也标出）　·　<b>金色 ⏱</b> = 已在目标时间内观测完成　·　想直接玩后面的关？点「全部解锁」（给评审/开发用，不影响进度记录）</div>
   </section>
 
   <section class="panel sky-panel" id="skyPanel" hidden aria-label="星座图鉴">
@@ -23631,16 +23633,15 @@ function endlessBoardCleared(){
 }
 function endlessMistake(){
   if (!run || run.over) return false;   // 返回 true 表示本轮结束
-  // 约定：望远镜只是"还能承受几次失误"。只有**在 0 架时再失误**才结束本轮。
+  // 约定：望远镜数 = 还能承受的失误次数。用掉最后一架即结束本轮（1 架 → 只能失误 1 次）。
+  run.lives -= 1;
+  run.streak = 0;
   if (run.lives <= 0){
+    run.lives = 0;
     endEndlessRun('mistake');
     return true;
   }
-  run.lives -= 1;
-  run.streak = 0;
-  showRunToast(run.lives > 0
-    ? ('望远镜 −1 · 剩 ' + run.lives + ' 架')
-    : '望远镜已用尽 · 再失误就结束');
+  showRunToast('望远镜 −1 · 剩 ' + run.lives + ' 架');
   saveProgress();
   return false;
 }
@@ -24435,7 +24436,11 @@ function fmtClock(sec){
   sec = Math.max(0, Math.floor(sec));
   return Math.floor(sec / 60) + ':' + ('0' + (sec % 60)).slice(-2);
 }
-function timeIsTimed(){ if (runMode === 'endless') return false; return !!S && (S.index + 1) >= TIMED_FROM; }
+function timeIsTimed(){
+  if (runMode === 'endless') return false;
+  if (!S || (S.index + 1) < TIMED_FROM) return false;
+  return !isCleared(S.index);                 // 重玩已通关的关卡不限时（首次挑战才限时）
+}
 function timeElapsedSec(){
   if (!timeStart) return 0;
   return ((timeStop || Date.now()) - timeStart) / 1000;
@@ -24899,6 +24904,8 @@ function refreshLevelGrid(){
     else if (!unlocked){ cls += ' locked'; label += '，未解锁'; }
     else if (i === f && progress.devUnlock !== true){ cls += ' current'; label += '，当前关卡'; }
     if (playing) cls += ' playing';
+    if (i + 1 >= TIMED_FROM) cls += ' timed';      // 限时关卡一律带 ⏱（含未解锁的关卡，与已解锁的保持一致）
+    else cls += ' untimed';                        // 非限时关卡（显式标记，便于测试与样式区分）
     if (progress.timeOk && progress.timeOk[String(i)]) cls += ' timeok';   // ⏱ 达标标记
     if (b.className !== cls) b.className = cls;
     b.disabled = !(unlocked || cleared);

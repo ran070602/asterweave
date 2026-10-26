@@ -207,11 +207,12 @@ function nthMine(n){                     // 第 n 颗尚未被观测过的雷（
   return -1;
 }
 
-// ① 入场页 → 无尽
-ok('首次打开显示入场页', byId.introOverlay.hidden === false);
-ok('入场页有无尽入口', !!byId.introEndless && String(byId.introEndless.textContent).indexOf('无尽') >= 0,
-   byId.introEndless && byId.introEndless.textContent);
-byId.introEndless.dispatchEvent(mkEvent('click', { target: byId.introEndless }));
+// ① 主页 → 无尽
+ok('首次打开显示主页', byId.introOverlay.hidden === false);
+const endlessBtnTxt = String((byId.homeEndlessLabel && byId.homeEndlessLabel.textContent) || '') +
+                      String((byId.homeEndless && byId.homeEndless.innerHTML) || '');
+ok('主页有无尽入口', !!byId.homeEndless && endlessBtnTxt.indexOf('无尽') >= 0, endlessBtnTxt.slice(0, 60));
+byId.homeEndless.dispatchEvent(mkEvent('click', { target: byId.homeEndless }));
 flush(60);
 ok('进入无尽模式（runMode=endless）', runMode() === 'endless', runMode());
 ok('无尽下隐藏「关卡」按钮、显示「结束本轮」', byId.lvBtn.hidden === true && byId.endRunBtn.hidden === false,
