@@ -54,6 +54,9 @@ powershell -NoProfile -File tools\coord\coord.ps1 push     # 推到自己的 ses
 - 协调状态（锁 + 租约）放在 **`.git\asterweave-coord\`**，也就是 git 公共目录里，**所有 worktree 共享同一份**——
   所以各 worktree 之间仍然能互相看见、互相避让，不会各说各话。
 - `tools\coord\` 是仓库里的 tracked 文件，新 worktree 自动就有，不用额外拷贝。
+- **协调器按「脚本自己所在的工作区」定位仓库**：你调用哪个目录下的 `coord.ps1`，它就操作那个工作区，
+  不受当前所在目录影响。若当前目录属于另一个工作区，`status` 会明确提示，避免误操作。
+  需要显式指定时用 `-RepoRoot <路径>`。
 
 ### 还没上 worktree 时（所有人共用 D:\Asterweave）
 
