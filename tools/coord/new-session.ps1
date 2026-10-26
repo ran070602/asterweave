@@ -60,7 +60,11 @@ $CommonRaw = [string](@($rawCommon | Where-Object { "$_" -ne '' }) | Select-Obje
 if (-not $CommonRaw) { $CommonRaw = Join-Path $Repo '.git' }
 $StateDir = Join-Path ([string]$CommonRaw) 'asterweave-coord'
 
-$Parent = Split-Path -Parent $Repo
+# 会话工作区统一放在「主工作区」的旁边，而不是当前仓库的旁边：
+# 否则从会话工作区里再开会话，会套娃成 Asterweave-sessions\Asterweave-sessions。
+$MainWorktree = Split-Path -Parent $CommonRaw
+if (-not $MainWorktree -or -not (Test-Path -LiteralPath $MainWorktree)) { $MainWorktree = $Repo }
+$Parent = Split-Path -Parent $MainWorktree
 if (-not $Root) { $Root = Join-Path $Parent 'Asterweave-sessions' }
 
 function Test-WorktreeRegistered {

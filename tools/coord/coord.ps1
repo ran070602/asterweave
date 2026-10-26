@@ -33,15 +33,39 @@ try { [Console]::OutputEncoding = [Text.Encoding]::UTF8 } catch { }
 
 $Utf8NoBom = New-Object System.Text.UTF8Encoding($false)
 
+# 默认认「脚本自己所在的那个工作区」：tools\coord\coord.ps1 往上两级。
+# 这样在 worktree 里运行它自己的副本时，操作的一定是那个 worktree；
+# 不会因为当前目录恰好在主仓库，就悄悄变成操作主仓库。
 function Get-RepoRootPath {
   param([string]$Override)
   if ($Override) {
-    if (-not (Test-Path -LiteralPath (Join-Path $Override '.git'))) { throw "指定的 RepoRoot 不是 git 仓库：$Override" }
+    if (-not (Test-Path -LiteralPath (Join-Path $Override '.git'))) { throw ("指定的 RepoRoot 不是 git 仓库：" + $Override) }
     return (Resolve-Path -LiteralPath $Override).Path
+  }
+  if ($PSScriptRoot) {
+    $fromScript = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
+    if ($fromScript -and (Test-Path -LiteralPath (Join-Path $fromScript '.git'))) {
+      return (Resolve-Path -LiteralPath $fromScript).Path
+    }
   }
   $r = & git rev-parse --show-toplevel 2>&1
   if ($LASTEXITCODE -ne 0 -or -not $r) { throw '当前目录不在 git 仓库内（或 git 不可用）' }
   return ((($r | Select-Object -First 1) -replace '/', '\'))
+}
+
+# 当前目录所在的仓库根（可能和脚本所在的不是同一个）。只用于提示，避免操作错仓库。
+function Get-CwdRepoRoot {
+  try {
+    $old = $ErrorActionPreference
+    $ErrorActionPreference = 'Continue'
+    $c = & git rev-parse --show-toplevel 2>&1
+    $code = $LASTEXITCODE
+    $ErrorActionPreference = $old
+    if ($code -ne 0) { return $null }
+    $p = [string](@($c | Where-Object { "$_" -ne '' }) | Select-Object -First 1)
+    if (-not $p) { return $null }
+    return (Resolve-Path -LiteralPath $p).Path
+  } catch { return $null }
 }
 
 $Repo      = Get-RepoRootPath -Override $RepoRoot
@@ -285,6 +309,10 @@ function Show-Status {
   Write-Host ''
   Write-Host '=== Asterweave 协调状态 ===' -ForegroundColor Cyan
   Write-Host ("仓库   : " + $Repo)
+  $cwdRepo = Get-CwdRepoRoot
+  if ($cwdRepo -and ($cwdRepo -ine $Repo)) {
+    Write-Host ("注意   : 当前目录属于另一个工作区 " + $cwdRepo + "；本命令操作的是上面那个仓库。") -ForegroundColor Yellow
+  }
   Write-Host ("分支   : " + $div.Branch + "  ->  " + $div.Upstream)
   Write-Host ("HEAD   : " + $head)
   $color = 'Gray'
