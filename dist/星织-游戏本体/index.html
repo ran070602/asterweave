@@ -848,7 +848,6 @@
             <li><b>教学节奏</b>：第 1 关只给扫雷数字（纯教学），第 2 关起才引入行列线索。</li>
           </ol>
 
-          <button type="button" class="mini" id="replayIntro" style="margin-top:10px">↻ 重看入场页</button>
           <p class="note">提示：翻开的数字是「周围有几颗星」，不是「周围有几颗杂星」——杂星与星座星在推理上完全等价。<br>⏱ <b>限时关卡</b>：<b>第 11 关起每关都有时间限制，超时即判定失败</b>。限时从你<b>第一次翻开格子</b>开始倒计时，状态栏显示剩余时间（剩余 20% 变黄、最后 10 秒变红）。每关另有一个更紧的「目标时间」：在目标时间内完成，关卡面板会留下 ⏱ 金色标记。顶部 🔊 图标点开可调音量（图标会随音量变化，可一键静音）。</p>
         </div>
       </div>
@@ -4197,8 +4196,7 @@ function closeRules(){
     if (ruleModalEl.className.indexOf('open') < 0) ruleModalEl.hidden = true;
   }, 200);
 }
-const replayIntroEl = document.getElementById('replayIntro');
-if (replayIntroEl) replayIntroEl.addEventListener('click', function(){ closeRules(); showIntro(); });
+// 「重看入场页」按钮已删除（2026-10-26 用户：与菜单重复——菜单现在每次打开网址都会弹，无需再留入口）
 const ruleBtnEl = document.getElementById('ruleBtn');
 if (ruleBtnEl) ruleBtnEl.addEventListener('click', openRules);
 const ruleCloseEl = document.getElementById('ruleClose');
