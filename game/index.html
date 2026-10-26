@@ -1359,14 +1359,14 @@ const ENDLESS_MAX_LIVES = 3;      // 上限（与 HUD 的三个槽位一致）
 // 分档抽题：按盘面尺寸分 4 档，每档一把"抽卡袋"（抽完不放回，抽空才重洗）
 // 档位随题号推进（带 ±1 波动，保证越打越大但每题仍有随机性）；限时系数逐档放宽（大盘给的比例更接近目标线）
 const ENDLESS_TIERS = [
-  { key: 'A', sizes: [6, 7, 8], k: 0.75, label: '小盘' },
-  { key: 'B', sizes: [9],       k: 0.80, label: '中盘' },
-  { key: 'C', sizes: [10],      k: 0.85, label: '大盘' },
-  { key: 'D', sizes: [11],      k: 0.90, label: '超大' },
+  { key: 'A', sizes: [6, 7, 8], k: 0.85, label: '小盘' },
+  { key: 'B', sizes: [9],       k: 0.90, label: '中盘' },
+  { key: 'C', sizes: [10],      k: 0.95, label: '大盘' },
+  { key: 'D', sizes: [11],      k: 1.00, label: '超大' },
 ];
 const ENDLESS_SCHEDULE = [0, 0, 1, 1, 1, 2, 2, 2, 2];   // 题号 1..9 的基准档；第 10 题起一律 D
 const ENDLESS_TIME_MIN = 25;      // 每题限时下限（秒）
-const ENDLESS_TIME_MAX = 180;     // 每题限时上限（秒）
+const ENDLESS_TIME_MAX = 210;     // 每题限时上限（秒）
 let runMode = 'campaign';         // 'campaign' | 'endless'
 let run = null;                   // 无尽本轮状态
 
