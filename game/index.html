@@ -3937,7 +3937,7 @@ function closeRules(){
     if (ruleModalEl.className.indexOf('open') < 0) ruleModalEl.hidden = true;
   }, 200);
 }
-// 「重看入场页」按钮已删除（2026-10-26 用户：与菜单重复——菜单现在每次打开网址都会弹，无需再留入口）
+// 规则弹窗末尾的回看入口按钮已删除（2026-10-26 用户：与菜单重复——菜单现在每次打开网址都会弹，无需再留入口）
 const ruleBtnEl = document.getElementById('ruleBtn');
 if (ruleBtnEl) ruleBtnEl.addEventListener('click', openRules);
 const ruleCloseEl = document.getElementById('ruleClose');
