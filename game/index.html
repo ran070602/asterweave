@@ -1840,7 +1840,7 @@ function act(i, mode){
     if (S.endless){
       const over = endlessMistake();
       S.lives = run ? run.lives : 0;
-      if (!over){ render(); }
+      render();                              // 结束后也要重绘：endEndlessRun 内部那次用的是旧命数
       return;
     }
     S.lives -= 1;
