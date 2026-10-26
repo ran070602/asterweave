@@ -724,11 +724,11 @@
     background:linear-gradient(180deg,rgba(38,62,116,.94),rgba(18,28,54,.94));
     color:#eaf3ff;font-size:14px;font-weight:800;letter-spacing:.02em;
     box-shadow:0 10px 28px rgba(0,0,0,.5);opacity:0}
-  .runtoast.show{animation:runToast 1.15s ease forwards}
+  .runtoast.show{animation:runToast 3s ease forwards}
   @keyframes runToast{
     0%{opacity:0;transform:translate(-50%,4px) scale(.92)}
-    18%{opacity:1;transform:translate(-50%,0) scale(1)}
-    70%{opacity:1}
+    12%{opacity:1;transform:translate(-50%,0) scale(1)}
+    86%{opacity:1}
     100%{opacity:0;transform:translate(-50%,-14px) scale(1)}
   }
   .endless-score{font-size:34px;font-weight:800;color:#eaf3ff;text-align:center;letter-spacing:.04em;
@@ -1360,14 +1360,14 @@ const ENDLESS_MAX_LIVES = 3;      // 上限（与 HUD 的三个槽位一致）
 // 分档抽题：按盘面尺寸分 4 档，每档一把"抽卡袋"（抽完不放回，抽空才重洗）
 // 档位随题号推进（带 ±1 波动，保证越打越大但每题仍有随机性）；限时系数逐档放宽（大盘给的比例更接近目标线）
 const ENDLESS_TIERS = [
-  { key: 'A', sizes: [6, 7, 8], k: 0.70, label: '小盘' },
-  { key: 'B', sizes: [9],       k: 0.75, label: '中盘' },
-  { key: 'C', sizes: [10],      k: 0.80, label: '大盘' },
-  { key: 'D', sizes: [11],      k: 0.85, label: '超大' },
+  { key: 'A', sizes: [6, 7, 8], k: 0.75, label: '小盘' },
+  { key: 'B', sizes: [9],       k: 0.80, label: '中盘' },
+  { key: 'C', sizes: [10],      k: 0.85, label: '大盘' },
+  { key: 'D', sizes: [11],      k: 0.90, label: '超大' },
 ];
 const ENDLESS_SCHEDULE = [0, 0, 1, 1, 1, 2, 2, 2, 2];   // 题号 1..9 的基准档；第 10 题起一律 D
 const ENDLESS_TIME_MIN = 25;      // 每题限时下限（秒）
-const ENDLESS_TIME_MAX = 150;     // 每题限时上限（秒）
+const ENDLESS_TIME_MAX = 180;     // 每题限时上限（秒）
 let runMode = 'campaign';         // 'campaign' | 'endless'
 let run = null;                   // 无尽本轮状态
 
@@ -1444,8 +1444,11 @@ function runClockResume(){ if (run && !run.activeSince) run.activeSince = Date.n
 // 进行中的分数：只增不减（开局 0）。时间与命数的奖惩都放到结算一次算。
 function runScore(){ return run ? run.score : 0; }
 // 结算总分 = 通关得分 + 剩余望远镜奖励
-function runFinalScore(){ return run ? (run.score + run.lives * 200) : 0; }
-function runTimeBonusNote(){ return '每架望远镜 +200'; }
+// 只有「通关换来的」望远镜才计分：开局赠送的 ENDLESS_START_LIVES 架不算分，
+// 这样什么都不做就结束本轮 = 0 分（用户 2026-10-26 指出的计分 bug）。
+function endlessEarnedLives(){ return run ? Math.max(0, run.lives - ENDLESS_START_LIVES) : 0; }
+function runFinalScore(){ return run ? (run.score + endlessEarnedLives() * 200) : 0; }
+function runTimeBonusNote(){ return '每多留 1 架望远镜 +200'; }
 function refreshModeUi(){
   const endless = runMode === 'endless';
   if (lvBtn) lvBtn.hidden = endless;
@@ -1547,7 +1550,7 @@ function endEndlessRun(reason){
   const st = endlessStats();
   const sc = runFinalScore();
   run.base = run.score;                 // 通关得分
-  run.lifeBonus = run.lives * 200;      // 望远镜奖励
+  run.lifeBonus = endlessEarnedLives() * 200;   // 望远镜奖励（开局赠送的不计分）
   run.final = sc;
   run.reason = reason || 'mistake';
   if (sc > st.best) st.best = sc;
@@ -2187,7 +2190,8 @@ function buildEndlessEnd(){
     const br = document.createElement('div');
     br.className = 'endless-stats';
     br.style.marginTop = '2px';
-    br.innerHTML = '通关得分 <b>' + base + '</b> ＋ 望远镜奖励 <b>' + lifeBonus + '</b>（' + (run ? run.lives : 0) + ' 架 × 200）';
+    const earned = run ? Math.max(0, run.lives - ENDLESS_START_LIVES) : 0;
+    br.innerHTML = '通关得分 <b>' + base + '</b> ＋ 望远镜奖励 <b>' + lifeBonus + '</b>（多得 ' + earned + ' 架 × 200）';
     const stats = document.createElement('div');
     stats.className = 'endless-stats';
     const secs = Math.round((run ? runElapsedMs() : 0) / 1000);
@@ -2201,17 +2205,11 @@ function buildEndlessEnd(){
     tip.style.color = '#9fb4d0';
     tip.textContent = '规则：开局 ' + ENDLESS_START_LIVES + ' 架望远镜，每通关 ' + ENDLESS_LIFE_EVERY + ' 题 +1 架（上限 ' +
       ENDLESS_MAX_LIVES + '）；失误 −1 架，用尽最后一架即结束本轮。' +
-      '题目随机抽取（小盘→中盘→大盘→超大，同一档内不重复），每题限时（目标时间 × 0.70~0.85），' +
-      '超时扣 1 架并跳过本题。进行中的分数只增不减，结算时才计入时间与望远镜奖励。';
-    const clearBtn = mkBtn('↻ 清除最高分', 'btn ghost', function(){
-      const s2 = endlessStats(); s2.best = 0; s2.bestStreak = 0; s2.fastestMs = null; saveProgress();
-      modalSignature = ''; modalDismissed = false; render();
-    });
+      '超时扣 1 架并跳过本题。';
     const slot = document.createElement('div');
     slot.appendChild(lab); slot.appendChild(sc); slot.appendChild(br); slot.appendChild(stats); slot.appendChild(tip);
     constSlotEl.innerHTML = '';
     constSlotEl.appendChild(slot);
-    constSlotEl.appendChild(clearBtn);
   }
   modalBtnsEl.innerHTML = '';
   modalPrimaryBtn = mkBtn('♾ 再来一轮', 'btn primary', function(){
