@@ -97,13 +97,19 @@ def main():
     print(f"UI 外壳 {len(html)} 字节；关卡 {len(levels)} 关")
 
     # 1) 注入关卡块（只替换两个注释标记之间的内容）
-    block = ("/* LEVELS_INJECT_START */\n"
-             "const LEVELS = " + json.dumps(levels, ensure_ascii=False, indent=2) + ";\n"
-             "/* LEVELS_INJECT_END */")
+    #    关卡数据改为紧凑编码（位图 + 常量池），运行期由 game/index.html 里的
+    #    expandLevelsPacked() 展开；编码/解码等价性由 tools/compact_levels.py verify 保证。
+    sys.path.insert(0, os.path.join(ROOT, "tools"))
+    import compact_levels
+    import compact_sky
+    import json as _json
+    block = compact_levels.build_block(levels)
     pat = re.compile(r"/\* LEVELS_INJECT_START \*/.*?/\* LEVELS_INJECT_END \*/", re.S)
     if not pat.search(html):
         print("!! UI 外壳里找不到 LEVELS_INJECT 标记"); sys.exit(1)
     out_html = pat.sub(lambda m: block, html, count=1)
+    print("关卡块（紧凑编码 CONST + LEVELS_PACKED）：%d 字节（旧缩进 JSON 为 %d 字节）"
+          % (len(block.encode("utf-8")), len(compact_levels.legacy_block(levels).encode("utf-8"))))
     # 标题里的关数由数据决定
     out_html = _retitle(out_html, len(levels))
     # 闸门：按钮监听必须在顶层（曾被误插进 resetBtn 回调）
@@ -111,20 +117,41 @@ def main():
     if bad_bind:
         fail.append("按钮监听写进了别的回调里: " + ", ".join(bad_bind))
 
+    # 1a2) 注入无尽题库（紧凑块，与关卡共享常量池）
+    bank_path = os.path.join(ROOT, "tools", "endless_bank_packed.json")
+    if os.path.exists(bank_path):
+        _b = _json.load(open(bank_path, encoding="utf-8"))
+        bank_block = ("/* BANK_INJECT_START */\n"
+                      "const BANK_CONST_EXTRA = " + compact_levels.js_literal(_b["extra"]) + ";\n"
+                      "const BANK_PACKED = " + compact_levels.js_literal(_b["packed"]) + ";\n"
+                      "/* BANK_INJECT_END */")
+        bank_pat = re.compile(r"/\* BANK_INJECT_START \*/.*?/\* BANK_INJECT_END \*/", re.S)
+        if not bank_pat.search(out_html):
+            fail.append("UI 外壳里找不到 BANK_INJECT 标记")
+        else:
+            out_html = bank_pat.sub(lambda _m: bank_block, out_html, count=1)
+            print("无尽题库块：%d 题｜%d 字节（常量池复用关卡 %d 条 + extras %d 条）"
+                  % (len(_b["packed"]), len(bank_block.encode("utf-8")),
+                     len(_b["poolSize"]) if isinstance(_b.get("poolSize"), list) else 0,
+                     len(_b["extra"])))
+
     # 1b) 注入图鉴数据
-    sky_block = ("/* SKY_INJECT_START */\n"
-                 "const SKY = " + json.dumps(sky, ensure_ascii=False, indent=2) + ";\n"
-                 "/* SKY_INJECT_END */")
-    sky_pat = re.compile(r"/\* SKY_INJECT_START \*/.*?/\* SKY_INJECT_END \*/", re.S)
+    #     也是紧凑编码：数据只存 id/中英拉丁缩写/赤经赤纬/面积排名/最亮星/相邻星座槽位；
+    #     raText、decText、season、zone、level、neighbors 的 id/level/zh、inGameNeighbors
+    #     全部在 game/index.html 的 expandSkyPacked() 里现算（level 由 LEVELS 反查，
+    #     levels.json 改了运行期自动同步）。等价性由 tools/compact_sky.py verify 保证。
+    try:
+        sky_block = compact_sky.build_block(sky, levels)
+    except Exception as exc:                       # noqa: BLE001 —— 构建期任何编码异常都必须让构建失败
+        print("!! 图鉴紧凑编码失败：" + repr(exc))
+        sys.exit(1)
+    sky_pat = compact_sky.BLOCK_RE
     if not sky_pat.search(out_html):
         fail.append("UI 外壳里找不到 SKY_INJECT 标记")
     else:
         out_html = sky_pat.sub(lambda m: sky_block, out_html, count=1)
-        m2 = re.search(r"/\* SKY_INJECT_START \*/\s*const SKY = (\[.*?\]);\s*/\* SKY_INJECT_END \*/", out_html, re.S)
-        if not m2 or json.loads(m2.group(1)) != sky:
-            fail.append("SKY 注入回读不一致")
-        else:
-            print("图鉴数据注入：通过（%d 个星座）" % len(sky))
+        print("图鉴块（紧凑编码 SKY_NB_EXTRA + SKY_PACKED）：%d 字节（旧缩进 JSON 为 %d 字节）"
+              % (len(sky_block.encode("utf-8")), len(compact_sky.legacy_block(sky).encode("utf-8"))))
 
     # 1c) 注入意见箱（邮箱 / 内联二维码；二维码是 data URI，不产生外部引用）
     fb_block = ("/* FEEDBACK_INJECT_START */\n"
@@ -155,13 +182,101 @@ def main():
         out_html = pr_pat.sub(lambda m: pr_block, out_html, count=1)
         print("星名专名表注入：通过（%d 条专名，其余用编号）" % len(proper))
 
-    # 2) 回读校验：注入后的 LEVELS 必须与 levels.json 完全一致
-    m = re.search(r"/\* LEVELS_INJECT_START \*/\s*const LEVELS = (\[.*?\]);\s*/\* LEVELS_INJECT_END \*/",
-                  out_html, re.S)
-    if not m or json.loads(m.group(1)) != levels:
-        fail.append("注入回读不一致")
+    # 1z) 题库回读校验：从注入后的 HTML 取回 BANK 块 → 用「关卡池 + extras」展开 →
+    #     与 tools/endless_bank_full.json（应用同一套传统星名）逐字段比较
+    bm = re.search(r"/\* BANK_INJECT_START \*/(.*?)/\* BANK_INJECT_END \*/", out_html, re.S)
+    if bm:
+        try:
+            txt = bm.group(1)
+            extra_txt = re.search(r"BANK_CONST_EXTRA\s*=\s*(\[.*?\]);", txt, re.S).group(1)
+            pack_txt = re.search(r"BANK_PACKED\s*=\s*(\[.*?\]);", txt, re.S).group(1)
+            _bc = _json.loads(extra_txt)
+            _bp = _json.loads(pack_txt)
+            _lm = compact_levels.BLOCK_RE.search(out_html)
+            _const, _ = compact_levels.decode_block(_lm.group(0)) if _lm else ([], [])
+            _pool = list(_const) + list(_bc)
+            _bank_back = compact_levels.unpack(_pool, _bp)
+            _bank_src = _json.load(open(os.path.join(ROOT, "tools", "endless_bank_full.json"),
+                                        encoding="utf-8"))
+            sys.path.insert(0, os.path.join(ROOT, "tools"))
+            from star_proper_zh import PROPER
+            bank_bad = []
+            for a, b in zip(_bank_src, _bank_back):
+                for s in (a.get("theme") or {}).get("stars") or []:
+                    nm = PROPER.get(s.get("en"))
+                    if nm:
+                        s["name"] = nm
+                n = a["size"]
+                # runs_from_mines 收的是**扁平格号**（i = r*n + c），不是 (r,c) 元组
+                mine_set = {r * n + c for r, c in a["mines"]}
+                b2 = dict(b)
+                b2["rowRuns"] = [compact_levels.runs_from_mines(mine_set, n, True, r) for r in range(n)]
+                b2["colRuns"] = [compact_levels.runs_from_mines(mine_set, n, False, c) for c in range(n)]
+                compact_levels.deep_eq(a, b2, "bank[%s]" % a["id"], bank_bad)
+            if bank_bad or len(_bank_back) != len(_bank_src):
+                fail.append("题库块回读校验失败：%s" % (bank_bad[:3] or "条数 %d≠%d"
+                            % (len(_bank_back), len(_bank_src))))
+            else:
+                print("无尽题库块回读校验：通过（%d 题逐字段等价）" % len(_bank_back))
+        except Exception as e:
+            fail.append("题库块回读校验异常：%s: %s" % (type(e).__name__, e))
+
+    # 2) 回读校验：从**注入后的 HTML** 里取回紧凑块 → JSON 回读 → 按运行期同一套规则展开
+    #    → 与 levels.json 逐字段等价（rowRuns/colRuns 不在数据里，按 startBoard 的现算规则补上后比较）
+    expanded = None
+    lm = compact_levels.BLOCK_RE.search(out_html)
+    if not lm:
+        fail.append("注入后的 HTML 里找不到 LEVELS_INJECT 块")
     else:
-        print("注入回读校验：通过")
+        try:
+            _const, _packed = compact_levels.decode_block(lm.group(0))
+            expanded = compact_levels.unpack(_const, _packed)
+        except Exception as exc:                   # noqa: BLE001 —— 构建期任何解码异常都必须让构建失败
+            fail.append("紧凑关卡块回读失败：" + repr(exc))
+    if expanded is not None:
+        if len(expanded) != len(levels):
+            fail.append("紧凑关卡块关数不一致：%d != %d" % (len(expanded), len(levels)))
+        deep_bad = []
+        for a, b in zip(levels, expanded):
+            n = b["size"]
+            mine_set = set()
+            for r, c in b["mines"]:
+                mine_set.add(r * n + c)
+            for r, c in b["noise"]:
+                mine_set.add(r * n + c)
+            b2 = dict(b)
+            b2["rowRuns"] = [compact_levels.runs_from_mines(mine_set, n, True, r) for r in range(n)]
+            b2["colRuns"] = [compact_levels.runs_from_mines(mine_set, n, False, c) for c in range(n)]
+            compact_levels.deep_eq(a, b2, "level[%s]" % a["id"], deep_bad)
+        if deep_bad:
+            fail.append("紧凑关卡块展开后与 levels.json 不等：" + "; ".join(deep_bad[:6]))
+        else:
+            print("紧凑关卡块回读校验：通过（%d 关逐字段等价；rowRuns/colRuns 按现算规则补全）"
+                  % len(expanded))
+
+    # 2b) 回读校验：图鉴块 → JSON 回读 → 按 expandSkyPacked() 的同一套规则展开
+    #     → 与 sky.json 逐字段等价（raText/decText/season/zone/level/相邻关系全是现算的）
+    sky_expanded = None
+    sm = compact_sky.BLOCK_RE.search(out_html)
+    if not sm:
+        fail.append("注入后的 HTML 里找不到 SKY_INJECT 块")
+    else:
+        try:
+            _extra, _packed = compact_sky.decode_block(sm.group(0))
+            sky_expanded = compact_sky.unpack(_extra, _packed, levels)
+        except Exception as exc:                   # noqa: BLE001
+            fail.append("紧凑图鉴块回读失败：" + repr(exc))
+    if sky_expanded is not None:
+        if len(sky_expanded) != len(sky):
+            fail.append("紧凑图鉴块条数不一致：%d != %d" % (len(sky_expanded), len(sky)))
+        sky_bad = []
+        for a, b in zip(sky, sky_expanded):
+            compact_sky.deep_eq(a, b, "sky[%s]" % a["id"], sky_bad)
+        if sky_bad:
+            fail.append("紧凑图鉴块展开后与 sky.json 不等：" + "; ".join(sky_bad[:6]))
+        else:
+            print("紧凑图鉴块回读校验：通过（%d 条星座逐字段等价；raText/decText/season/zone/"
+                  "level/相邻关系现算）" % len(sky_expanded))
 
     # 3) 离线自包含校验
     #    意见箱配置块里可能出现邮箱/表单 URL（那是数据，不是资源引用），先剔除再扫；
@@ -264,6 +379,9 @@ def main():
         "levels_source": os.path.relpath(LEVELS, ROOT),
         "levels_sha256": sha256_file(LEVELS),
         "level_count": len(levels),
+        "sky_source": os.path.relpath(SKY, ROOT),
+        "sky_sha256": sha256_file(SKY),
+        "sky_count": len(sky),
         "build_output": os.path.relpath(out_path, ROOT),
         "build_sha256": sha256_file(out_path),
         "zip": os.path.relpath(ZIP_PATH, ROOT),
@@ -271,7 +389,7 @@ def main():
         "zip_bytes": os.path.getsize(ZIP_PATH),
         "html_bytes": os.path.getsize(out_path),
         "zip_root_entries": names,
-        "checks": {"levels_roundtrip": True, "offline_selfcontained": True,
+        "checks": {"levels_roundtrip": True, "sky_roundtrip": True, "offline_selfcontained": True,
                    "node_syntax": node_ok, "clue_selfconsistent": True,
                    "zip_root_index": True},
     }

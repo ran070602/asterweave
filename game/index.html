@@ -960,262 +960,157 @@
 (function(){
 'use strict';
 
-/* LEVELS_INJECT_START */
-const LEVELS = [
-  {
-    "id": 1,
-    "name": "第 1 关 · 学会看数字",
-    "size": 6,
-    "mines": [
-      [
-        0,
-        3
-      ],
-      [
-        1,
-        0
-      ],
-      [
-        2,
-        2
-      ],
-      [
-        2,
-        4
-      ],
-      [
-        3,
-        4
-      ],
-      [
-        4,
-        4
-      ]
-    ],
-    "showRuns": false,
-    "rowRuns": [
-      [
-        1
-      ],
-      [
-        1
-      ],
-      [
-        1,
-        1
-      ],
-      [
-        1
-      ],
-      [
-        1
-      ],
-      []
-    ],
-    "colRuns": [
-      [
-        1
-      ],
-      [],
-      [
-        1
-      ],
-      [
-        1
-      ],
-      [
-        3
-      ],
-      []
-    ],
-    "opening": [
-      4,
-      0
-    ],
-    "lives": 3,
-    "teach": "点开的数字 = 它周围 8 格里有几颗雷。目标：翻开所有安全格，同时把所有雷插旗。",
-    "technique": "single-point"
-  },
-  {
-    "id": 2,
-    "name": "第 2 关 · 左边和上面的数字",
-    "size": 6,
-    "mines": [
-      [
-        0,
-        0
-      ],
-      [
-        0,
-        4
-      ],
-      [
-        1,
-        0
-      ],
-      [
-        2,
-        2
-      ],
-      [
-        4,
-        5
-      ],
-      [
-        5,
-        1
-      ],
-      [
-        5,
-        4
-      ]
-    ],
-    "showRuns": true,
-    "rowRuns": [
-      [
-        1,
-        1
-      ],
-      [
-        1
-      ],
-      [
-        1
-      ],
-      [],
-      [
-        1
-      ],
-      [
-        1,
-        1
-      ]
-    ],
-    "colRuns": [
-      [
-        2
-      ],
-      [
-        1
-      ],
-      [
-        1
-      ],
-      [],
-      [
-        1,
-        1
-      ],
-      [
-        1
-      ]
-    ],
-    "opening": [
-      2,
-      4
-    ],
-    "lives": 3,
-    "teach": "点开的数字还是「周围几颗雷」。另外：左边和上面的数字 = 这一行/列里连续雷块的长度（例如 2 1 = 两个连着的雷、隔开、再一个雷）。",
-    "technique": "line-runs"
-  },
-  {
-    "id": 3,
-    "name": "第 3 关 · 只能靠连续块",
-    "size": 7,
-    "mines": [
-      [
-        0,
-        1
-      ],
-      [
-        0,
-        5
-      ],
-      [
-        2,
-        4
-      ],
-      [
-        3,
-        1
-      ],
-      [
-        3,
-        4
-      ],
-      [
-        3,
-        5
-      ],
-      [
-        4,
-        3
-      ],
-      [
-        4,
-        5
-      ],
-      [
-        6,
-        1
-      ]
-    ],
-    "showRuns": true,
-    "rowRuns": [
-      [
-        1,
-        1
-      ],
-      [],
-      [
-        1
-      ],
-      [
-        1,
-        2
-      ],
-      [
-        1,
-        1
-      ],
-      [],
-      [
-        1
-      ]
-    ],
-    "colRuns": [
-      [],
-      [
-        1,
-        1,
-        1
-      ],
-      [],
-      [
-        1
-      ],
-      [
-        2
-      ],
-      [
-        1,
-        2
-      ],
-      []
-    ],
-    "opening": [
-      6,
-      4
-    ],
-    "lives": 3,
-    "teach": "",
-    "technique": "runs-critical"
+// ---------- 紧凑关卡数据：运行期展开（构建期由 tools/compact_levels.py 编码） ----------
+// 注入块里是两条紧凑数据：
+//   CONST         —— 星座公共元数据（中文名/英文名/说明/星名星等/连线），88 关各自星座只存一份
+//   LEVELS_PACKED —— 每关只存 size / 雷位图 / 杂星位图 / 开局格 / 文案 / 星座下标 / 星点在盘面的格子
+// mines / noise 是 n*n 位图的 base64：行优先 i = r*n + c，每字节高位优先，末字节补 0。
+// 展开时按行优先升序取格子 —— 与 levels.json 里既有的顺序一致（tools/compact_levels.py verify 已断言）。
+function bitsToCells(b64, n){
+  const raw = atob(b64), total = n * n, out = [];
+  for (let i = 0; i < total; i++){
+    if (raw.charCodeAt(i >> 3) & (1 << (7 - (i & 7)))) out.push([Math.floor(i / n), i % n]);
   }
+  return out;
+}
+// 星色规则来自生成器（tools/fit_constellation_levels.py:464-465、tools/gen_difficulty_first.py:416-417）：
+//   参宿四 / 心宿二 → warm；参宿七 / 天津四 → cool；其余 → neutral。
+// 所以 tint 不必进数据，按中文星名推导即与 levels.json 里的值完全一致（verify 已逐关断言）。
+function tintFromName(zh){
+  return (zh === '参宿四' || zh === '心宿二') ? 'warm'
+       : ((zh === '参宿七' || zh === '天津四') ? 'cool' : 'neutral');
+}
+function expandLevelPacked(p, pool){
+  const c = (pool || CONST)[p[12]], n = p[2];
+  const stars = [];
+  for (let k = 0; k < p[13].length; k++){
+    const s = p[13][k], m = c[4][s[0]];
+    stars.push({ name: m[0], en: m[1], rc: [s[1], s[2]], mag: m[2], tint: tintFromName(m[0]) });
+  }
+  const lines = [];
+  for (let k = 0; k < c[5].length; k++) lines.push([c[5][k][0], c[5][k][1]]);
+  const lv = {
+    id: p[0], name: p[1], size: n,
+    mines: bitsToCells(p[3], n), noise: bitsToCells(p[4], n),
+    showRuns: !!p[10],
+    opening: [p[5], p[6]],
+    lives: p[7], teach: p[8], technique: p[9],
+    theme: { id: c[0], name: c[1], nameEn: c[2], fact: c[3], stars: stars, lines: lines }
+  };
+  // timeK 缺失存 null：这里不写该字段，保持"字段缺失"语义与旧数据一致
+  if (typeof p[11] === 'number') lv.timeK = p[11];
+  return lv;
+}
+function expandLevelsPacked(list, pool){
+  const out = [];
+  if (!list) return out;
+  for (let i = 0; i < list.length; i++) out.push(expandLevelPacked(list[i], pool));
+  return out;
+}
+/* LEVELS_INJECT_START */
+const CONST = [
+  ["crux","南十字座","Crux","南十字座是南半球最有名的星座，四颗亮星组成一个十字；它的长轴延长约 4.5 倍就指向南天极。",[["十字架二","Acrux",0.77],["十字架三","Mimosa",1.25],["十字架一","Gacrux",1.59],["十字架四","Imai",2.79]],[[0,2],[1,3]]],
+  ["sagitta","天箭座","Sagitta","天箭座是全天第三小的星座，四颗星排成一支箭，位于银河之中。",[["左旗一","Gamma Sge",3.47],["天箭座δ","Delta Sge",3.68],["天箭座ε","Epsilon Sge",3.75],["天箭座ζ","Zeta Sge",5.0]],[[0,1],[1,2],[2,3]]],
+  ["ursa-minor","小熊座","Ursa Minor","小熊座最末端是北极星，它几乎不动，是辨认方向的基准。",[["北极星","Polaris",1.98],["小熊γ","Pherkad",3.05],["小熊β","Kochab",2.08],["小熊ζ","Zeta UMi",4.29],["小熊ε","Epsilon UMi",4.21],["小熊δ","Delta UMi",4.36],["小熊η","Eta UMi",4.95]],[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,1]]]
+];
+const LEVELS_PACKED = [
+  [1,"第 1 关 · 南十字座",6,"CCyCgBA=","ACCAgBA=",0,1,3,"黑格是夜空里的星。数字 = 它周围 8 格里有几颗星（扫雷规则）；左边/上面的数字 = 这一行 / 这一列里「连续几颗星」（数织规则）。两条线索一起用，就能推出全部星位。","扫雷 + 数织 双线索入门",true,null,0,[[0,3,4],[1,2,1],[2,0,4],[3,2,0]]],
+  [2,"第 2 关 · 天箭座",7,"gsIAggCCAA==","gkAAAACCAA==",0,4,3,"盘面更大、星更多了。把两种线索一起用：数字看周围 8 格，行/列数字看这一行/列连续几颗星。","constellation",true,null,1,[[0,2,0],[1,1,1],[2,4,2],[3,3,3]]],
+  [3,"第 5 关 · 小熊座",8,"SAiDQIQ0CBA=","SACDAIAAABA=",4,7,3,"","constellation",true,null,2,[[0,1,4],[1,3,1],[2,5,2],[3,5,3],[4,6,4],[5,5,5],[6,4,5]]]
 ];
 /* LEVELS_INJECT_END */
+/* BANK_INJECT_START */
+const BANK_CONST_EXTRA = [];   // 构建时由 tools/endless_bank_packed.json 替换
+const BANK_PACKED = [];
+/* BANK_INJECT_END */
+// 题库与关卡共享常量池（打包时已把相同的星座元数据复用关卡池下标），
+// 只有「同一星座、不同选星」的条目才进 BANK_CONST_EXTRA。
+const ALL_CONST = CONST.concat(BANK_CONST_EXTRA);
+const ENDLESS_BANK = expandLevelsPacked(BANK_PACKED, ALL_CONST);
+// 题库缺失时（源码模板）回落到关卡表，便于直接打开源码调试
+const BANK = (ENDLESS_BANK && ENDLESS_BANK.length) ? ENDLESS_BANK : LEVELS;
+const LEVELS = expandLevelsPacked(LEVELS_PACKED);
 
+// ---------- 紧凑图鉴数据：运行期展开（构建期由 tools/compact_sky.py 编码） ----------
+// SKY_PACKED 每行 = [id, zh, en, latin, abbr, ra, dec, areaRank, 最亮星zh, 最亮星en, 最亮星mag,
+//                    [相邻星座槽位, ...]]
+//   · 相邻槽位 j < 行数 → 就是 SKY_PACKED[j] 这条星座本身（拉丁名在 88 条里唯一，等价于
+//     tools/build_sky.py 的 by_latin 反查）；j >= 行数 → SKY_NB_EXTRA[j − 行数]
+//     （不在游戏 88 星座里的邻居：只存拉丁名与中文名，id/level 现算为 null）。
+//   · raText / decText / season / zone 现算，规则与 tools/build_sky.py 的
+//     fmt_ra / fmt_dec / season_of / zone_of 逐字符一致（含 U+2212 负号与 ° / ′）。
+//   · level 由 LEVELS 的 theme.id 反查（= build_sky.level_map() 的规则）——
+//     **levels.json 改了之后运行期自动同步**，图鉴数据不必重打包。
+function skyRoundMin(x){
+  // CPython 的 round() 是"四舍六入五成双"，JS 的 Math.round 是"五入"，只在 .5 上分叉。
+  // 现有 88 条数据实测没有一条落在 .5 上；这里仍按 CPython 语义实现，免得以后加星座踩坑。
+  const f = Math.floor(x), d = x - f;
+  if (d > 0.5) return f + 1;
+  if (d < 0.5) return f;
+  return (f % 2 === 0) ? f : f + 1;
+}
+function skyFmtRa(ra){
+  let h = Math.floor(ra), m = skyRoundMin((ra - h) * 60);
+  if (m === 60){ h += 1; m = 0; }
+  return h + 'h' + (m < 10 ? '0' : '') + m + 'm';
+}
+function skyFmtDec(dec){
+  const a = Math.abs(dec);
+  let d = Math.floor(a), m = skyRoundMin((a - d) * 60);
+  if (m === 60){ d += 1; m = 0; }
+  // U+2212 减号 / U+00B0 度 / U+2032 分：与 build_sky.py 的 fmt_dec 逐字符相同
+  return (dec >= 0 ? '+' : '\u2212') + d + '\u00b0' + (m < 10 ? '0' : '') + m + '\u2032';
+}
+function skySeasonOf(ra){
+  if (ra >= 9 && ra < 15) return '春季';
+  if (ra >= 15 && ra < 21) return '夏季';
+  if (ra >= 21 || ra < 3) return '秋季';
+  return '冬季';
+}
+function skyZoneOf(dec){
+  if (dec >= 30) return '北天';
+  if (dec <= -30) return '南天';
+  return '赤道带';
+}
+function expandSkyPacked(){
+  const rows = SKY_PACKED, n = rows.length;
+  const lvOf = {};                        // 星座 id -> 关卡号（以 LEVELS 为准）
+  for (let i = 0; i < LEVELS.length; i++){
+    const t = LEVELS[i] && LEVELS[i].theme;
+    if (t && t.id) lvOf[t.id] = LEVELS[i].id;
+  }
+  function lvOfId(id){ return (lvOf[id] === undefined) ? null : lvOf[id]; }
+  const out = [];
+  for (let i = 0; i < n; i++){
+    const p = rows[i], ra = p[5], dec = p[6];
+    const nb = [], ing = [];
+    for (let k = 0; k < p[11].length; k++){
+      const j = p[11][k];
+      if (j < n){
+        const q = rows[j];
+        nb.push({ latin: q[3], zh: q[1], id: q[0], level: lvOfId(q[0]) });
+        ing.push(q[0]);
+      } else {
+        const e = SKY_NB_EXTRA[j - n];
+        nb.push({ latin: e[0], zh: e[1], id: null, level: null });
+      }
+    }
+    out.push({
+      id: p[0], zh: p[1], en: p[2], latin: p[3], abbr: p[4],
+      level: lvOfId(p[0]),
+      ra: ra, dec: dec,
+      raText: skyFmtRa(ra), decText: skyFmtDec(dec),
+      areaRank: p[7], season: skySeasonOf(ra), zone: skyZoneOf(dec),
+      brightest: { zh: p[8], en: p[9], mag: p[10] },
+      neighbors: nb, inGameNeighbors: ing
+    });
+  }
+  return out;
+}
 /* SKY_INJECT_START */
-const SKY = [];
+const SKY_NB_EXTRA = [];
+const SKY_PACKED = [];
+const SKY = expandSkyPacked();
 /* SKY_INJECT_END */
 
 const boardEl = document.getElementById('board');
@@ -1502,13 +1397,14 @@ function endlessTierOfSize(n){
 // 抽卡袋：该档所有关卡打乱；抽完不放回；抽空才重洗，且把最近用过的排到后面
 function endlessBag(t){
   if (!run) return [];
+  const SRC = BANK;   // 题库（176 题）；模板态回落 LEVELS
   if (!run.bags) run.bags = {};
   const key = ENDLESS_TIERS[t].key;
   const bag = run.bags[key];
   if (!bag || !bag.length){
     const pool = [];
-    for (let i = 0; i < LEVELS.length; i++){
-      if (endlessTierOfSize(LEVELS[i].size) === t) pool.push(i);
+    for (let i = 0; i < SRC.length; i++){
+      if (endlessTierOfSize(SRC[i].size) === t) pool.push(i);
     }
     for (let i = pool.length - 1; i > 0; i--){          // 洗牌
       const j = Math.floor(Math.random() * (i + 1));
@@ -1522,11 +1418,11 @@ function endlessBag(t){
   return run.bags[key];
 }
 function endlessPickLevel(boardNo){
-  if (LEVELS.length <= 1) return 0;
+  if (BANK.length <= 1) return 0;
   const t = endlessTierIndex(boardNo);
   const bag = endlessBag(t);
   if (bag.length) { const idx = bag.pop(); return idx; }
-  return Math.floor(Math.random() * LEVELS.length);
+  return Math.floor(Math.random() * BANK.length);
 }
 function endlessLimitSec(level){
   const t = endlessTierOfSize(level && level.size ? level.size : 11);
@@ -1584,10 +1480,11 @@ function startEndlessBoard(){
   if (!run || run.over) return;
   run.boardNo += 1;
   const idx = endlessPickLevel(run.boardNo);
-  run.tier = endlessTierOfSize(LEVELS[idx] ? LEVELS[idx].size : 11);
+  const bankLevel = BANK[idx] || LEVELS[0];
+  run.tier = endlessTierOfSize(bankLevel.size);
   run.recent.push(idx);
   if (run.recent.length > 8) run.recent.shift();
-  startBoard(idx, null, true);
+  startBoard(idx, bankLevel, true);   // 题库下标可能 > 关卡数，startBoard 对无尽模式不裁剪
   run.boardStartMs = runElapsedMs();
   // 每题倒计时：从棋盘可操作时开始（揭晓/切题时间不计入）
   const lim = (S && S.level) ? endlessLimitSec(S.level) : ENDLESS_TIME_MIN;
@@ -1681,7 +1578,7 @@ function startBoard(rawIndex, overrideLevel, endless){
     boardEl.innerHTML = '<p class="err">关卡数据缺失。</p>';
     return;
   }
-  const index = overrideLevel ? clampIndex(rawIndex) : clampIndex(rawIndex);
+  const index = endless ? Math.max(0, rawIndex | 0) : clampIndex(rawIndex);
   const level = overrideLevel || LEVELS[index];
   const n = level.size;
   const mineSet = new Set();
