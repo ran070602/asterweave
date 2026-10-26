@@ -24305,7 +24305,7 @@ function buildEndlessEnd(){
     tip.className = 'endless-stats';
     tip.style.color = '#9fb4d0';
     tip.textContent = '规则：开局 1 架望远镜，每通关 ' + ENDLESS_LIFE_EVERY + ' 题 +1 架（上限 ' + ENDLESS_MAX_LIVES +
-      '）；失误 −1 架，0 架时再失误即结束。进行中的分数只增不减，时间不扣分。';
+      '）；每失误一次 −1 架，用尽最后一架即结束本轮（1 架 = 只能失误 1 次）。进行中的分数只增不减，时间不扣分。';
     const clearBtn = mkBtn('↻ 清除最高分', 'btn ghost', function(){
       const s2 = endlessStats(); s2.best = 0; s2.bestStreak = 0; s2.fastestMs = null; saveProgress();
       modalSignature = ''; modalDismissed = false; render();
