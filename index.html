@@ -23450,7 +23450,7 @@ function refreshIntro(){
   if (et) et.textContent = live ? '继续本轮' : (homePlaying() ? '开始新的一轮' : '无尽冲分');
   if (es) es.textContent = live
     ? ('当前分数 ' + runScore() + ' · 第 ' + run.boardNo + ' 题')
-    : ('约 2 分钟一局 · 最高分 ' + (st.best || 0));
+    : ('每题限时 · 最高分 ' + (st.best || 0));
 }
 let homeOpen = false, homePausedClock = false, homeFadeTimer = 0;
 function openHome(pause){
@@ -23545,10 +23545,13 @@ function runsFromMines(mineSet, n, byRow, k){
 }
 
 // ===== 无尽冲分模式 =====
-const ENDLESS_START_LIVES = 1;    // 开局望远镜
+const ENDLESS_START_LIVES = 2;    // 开局望远镜（2026-10-26 用户决定：限时背景下给 2 架容错）
 const ENDLESS_LIFE_EVERY = 3;     // 每通关 N 题 +1 架
 const ENDLESS_MAX_LIVES = 3;      // 上限（与 HUD 的三个槽位一致）
 const ENDLESS_DIFF_RAMP = 0.14;   // 每题的难度目标增幅（0=最简单，1=最难）
+const ENDLESS_TIME_K = 0.65;      // 每题限时 = 闯关目标时间 × 该系数（闯关硬限时用的是 1.35）
+const ENDLESS_TIME_MIN = 25;      // 每题限时下限（秒）
+const ENDLESS_TIME_MAX = 120;     // 每题限时上限（秒）
 let runMode = 'campaign';         // 'campaign' | 'endless'
 let run = null;                   // 无尽本轮状态
 
@@ -23574,6 +23577,14 @@ function endlessPickLevel(boardNo){
     if (recent.indexOf(scored[k].i) < 0) return scored[k].i;
   }
   return scored[0].i;
+}
+function endlessLimitSec(level){
+  const t = levelTargetSec(level) * ENDLESS_TIME_K;
+  return Math.max(ENDLESS_TIME_MIN, Math.min(ENDLESS_TIME_MAX, Math.round(t / 5) * 5));
+}
+function endlessRemainingSec(){
+  if (!run || !run.boardDeadline || run.over) return null;
+  return (run.boardDeadline - Date.now()) / 1000;
 }
 function runElapsedMs(){
   if (!run) return 0;
@@ -23626,7 +23637,12 @@ function startEndlessBoard(){
   if (run.recent.length > 8) run.recent.shift();
   startBoard(idx, null, true);
   run.boardStartMs = runElapsedMs();
+  // 每题倒计时：从棋盘可操作时开始（揭晓/切题时间不计入）
+  const lim = (S && S.level) ? endlessLimitSec(S.level) : ENDLESS_TIME_MIN;
+  run.boardLimit = lim;
+  run.boardDeadline = Date.now() + lim * 1000;
   runClockResume();
+  showRunToast('第 ' + run.boardNo + ' 题 · 随机抽到 ' + S.n + '×' + S.n + ' · 限时 ' + lim + 's');
   render();
 }
 function endlessBoardCleared(){
@@ -23662,6 +23678,17 @@ function endlessMistake(){
   showRunToast('望远镜 −1 · 剩 ' + run.lives + ' 架');
   saveProgress();
   return false;
+}
+function endlessTimeout(){
+  if (!run || run.over || !S || S.status !== 'playing') return;
+  run.boardDeadline = 0;                    // 先停掉本题倒计时，避免重复触发
+  const over = endlessMistake();            // 复用同一套扣命/判负逻辑
+  S.lives = run ? run.lives : 0;
+  if (over) return;                         // 已结束本轮，endEndlessRun 里会渲染
+  showRunToast('⏱ 超时 · 本题作废');
+  if (S) S.status = 'lost';
+  render();
+  setTimeout(function(){ if (run && !run.over) startEndlessBoard(); }, 700);
 }
 function endEndlessRun(reason){
   if (!run || run.over) return;
@@ -24322,8 +24349,9 @@ function buildEndlessEnd(){
     const tip = document.createElement('div');
     tip.className = 'endless-stats';
     tip.style.color = '#9fb4d0';
-    tip.textContent = '规则：开局 1 架望远镜，每通关 ' + ENDLESS_LIFE_EVERY + ' 题 +1 架（上限 ' + ENDLESS_MAX_LIVES +
-      '）；每失误一次 −1 架，用尽最后一架即结束本轮（1 架 = 只能失误 1 次）。进行中的分数只增不减，时间不扣分。';
+    tip.textContent = '规则：开局 ' + ENDLESS_START_LIVES + ' 架望远镜，每通关 ' + ENDLESS_LIFE_EVERY + ' 题 +1 架（上限 ' +
+      ENDLESS_MAX_LIVES + '）；失误 −1 架，用尽最后一架即结束本轮。每题限时（目标时间 × ' + ENDLESS_TIME_K +
+      '），超时扣 1 架并跳过本题。进行中的分数只增不减，结算时才计入时间与望远镜奖励。';
     const clearBtn = mkBtn('↻ 清除最高分', 'btn ghost', function(){
       const s2 = endlessStats(); s2.best = 0; s2.bestStreak = 0; s2.fastestMs = null; saveProgress();
       modalSignature = ''; modalDismissed = false; render();
@@ -24469,6 +24497,18 @@ function resetClock(){ timeStart = 0; timeStop = 0; }
 
 function refreshTimerChip(){
   if (!timerChipEl) return;
+  if (runMode === 'endless'){
+    // 无尽：每题倒计时（本题可操作时才起跳，揭晓/切题不计时）
+    const left = endlessRemainingSec();
+    const lim = run && run.boardLimit ? run.boardLimit : ENDLESS_TIME_MIN;
+    if (left == null || !S || S.status !== 'playing'){ timerChipEl.hidden = true; return; }
+    timerChipEl.hidden = false;
+    timerChipEl.className = 'timer' +
+      (left <= 10 ? ' danger' : (left <= Math.max(15, lim * 0.25) ? ' warn' : ''));
+    timerChipEl.textContent = '⏱ 剩 ' + fmtClock(left);
+    timerChipEl.setAttribute('aria-label', '本题剩余 ' + fmtClock(left) + '，超时扣 1 架望远镜并跳过本题');
+    return;
+  }
   if (!S || !timeIsTimed() || S.status !== 'playing'){ timerChipEl.hidden = true; return; }
   const limit = levelLimitSec(S.level);
   timerChipEl.hidden = false;
@@ -24499,10 +24539,16 @@ function timeUp(){
   render();
 }
 function tickClock(){
+  if (runMode === 'endless'){ endlessTick(); return; }
   if (!timeIsTimed()) return;                 // 无限模式不判负
   if (!S || S.status !== 'playing' || !timeStart) return;
   refreshTimerChip();
   if (timeElapsedSec() > levelLimitSec(S.level)) timeUp();   // 限时关卡：到点即判负
+}
+function endlessTick(){
+  if (!run || run.over || !S || S.status !== 'playing' || !run.boardDeadline) return;
+  refreshTimerChip();
+  if (endlessRemainingSec() <= 0) endlessTimeout();
 }
 setInterval(tickClock, 500);
 
