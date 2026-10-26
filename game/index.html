@@ -1462,10 +1462,17 @@ function runsFromMines(mineSet, n, byRow, k){
 const ENDLESS_START_LIVES = 2;    // 开局望远镜（2026-10-26 用户决定：限时背景下给 2 架容错）
 const ENDLESS_LIFE_EVERY = 3;     // 每通关 N 题 +1 架
 const ENDLESS_MAX_LIVES = 3;      // 上限（与 HUD 的三个槽位一致）
-const ENDLESS_DIFF_RAMP = 0.14;   // 每题的难度目标增幅（0=最简单，1=最难）
-const ENDLESS_TIME_K = 0.65;      // 每题限时 = 闯关目标时间 × 该系数（闯关硬限时用的是 1.35）
+// 分档抽题：按盘面尺寸分 4 档，每档一把"抽卡袋"（抽完不放回，抽空才重洗）
+// 档位随题号推进（带 ±1 波动，保证越打越大但每题仍有随机性）；限时系数逐档放宽（大盘给的比例更接近目标线）
+const ENDLESS_TIERS = [
+  { key: 'A', sizes: [6, 7, 8], k: 0.70, label: '小盘' },
+  { key: 'B', sizes: [9],       k: 0.75, label: '中盘' },
+  { key: 'C', sizes: [10],      k: 0.80, label: '大盘' },
+  { key: 'D', sizes: [11],      k: 0.85, label: '超大' },
+];
+const ENDLESS_SCHEDULE = [0, 0, 1, 1, 1, 2, 2, 2, 2];   // 题号 1..9 的基准档；第 10 题起一律 D
 const ENDLESS_TIME_MIN = 25;      // 每题限时下限（秒）
-const ENDLESS_TIME_MAX = 120;     // 每题限时上限（秒）
+const ENDLESS_TIME_MAX = 150;     // 每题限时上限（秒）
 let runMode = 'campaign';         // 'campaign' | 'endless'
 let run = null;                   // 无尽本轮状态
 
@@ -1475,26 +1482,56 @@ function endlessStats(){
   }
   return progress.endless;
 }
-// 难度递进抽题：难度目标随题号上升，在目标附近随机挑题，并避开最近用过的题
+// 本题属于哪一档：基准档随题号推进；第 4 题起允许相邻档波动（第 6 题前不放大盘），兼顾"越打越大"与随机性
+function endlessTierIndex(boardNo){
+  const i = boardNo - 1;
+  let base = (i < ENDLESS_SCHEDULE.length) ? ENDLESS_SCHEDULE[i] : 3;
+  if (boardNo >= 4){
+    if (Math.random() < 0.34) base += (Math.random() < 0.5 ? -1 : 1);
+    base = Math.max(0, Math.min(ENDLESS_TIERS.length - 1, base));
+    if (boardNo < 6) base = Math.min(base, 2);
+  }
+  return base;
+}
+function endlessTierOfSize(n){
+  for (let t = 0; t < ENDLESS_TIERS.length; t++){
+    if (ENDLESS_TIERS[t].sizes.indexOf(n) >= 0) return t;
+  }
+  return ENDLESS_TIERS.length - 1;
+}
+// 抽卡袋：该档所有关卡打乱；抽完不放回；抽空才重洗，且把最近用过的排到后面
+function endlessBag(t){
+  if (!run) return [];
+  if (!run.bags) run.bags = {};
+  const key = ENDLESS_TIERS[t].key;
+  const bag = run.bags[key];
+  if (!bag || !bag.length){
+    const pool = [];
+    for (let i = 0; i < LEVELS.length; i++){
+      if (endlessTierOfSize(LEVELS[i].size) === t) pool.push(i);
+    }
+    for (let i = pool.length - 1; i > 0; i--){          // 洗牌
+      const j = Math.floor(Math.random() * (i + 1));
+      const tmp = pool[i]; pool[i] = pool[j]; pool[j] = tmp;
+    }
+    const recent = run.recent || [];
+    const fresh = pool.filter(function(i){ return recent.indexOf(i) < 0; });
+    const stale = pool.filter(function(i){ return recent.indexOf(i) >= 0; });
+    run.bags[key] = fresh.length ? fresh : stale;
+  }
+  return run.bags[key];
+}
 function endlessPickLevel(boardNo){
-  const total = LEVELS.length;
-  if (total <= 1) return 0;
-  const target = Math.min(1, boardNo * ENDLESS_DIFF_RAMP);
-  const scored = [];
-  for (let i = 0; i < total; i++){
-    const diff = i / (total - 1);
-    scored.push({ i: i, d: Math.abs(diff - target) + Math.random() * 0.06 });
-  }
-  scored.sort(function(a, b){ return a.d - b.d; });
-  const recent = (run && run.recent) ? run.recent : [];
-  for (let k = 0; k < scored.length; k++){
-    if (recent.indexOf(scored[k].i) < 0) return scored[k].i;
-  }
-  return scored[0].i;
+  if (LEVELS.length <= 1) return 0;
+  const t = endlessTierIndex(boardNo);
+  const bag = endlessBag(t);
+  if (bag.length) { const idx = bag.pop(); return idx; }
+  return Math.floor(Math.random() * LEVELS.length);
 }
 function endlessLimitSec(level){
-  const t = levelTargetSec(level) * ENDLESS_TIME_K;
-  return Math.max(ENDLESS_TIME_MIN, Math.min(ENDLESS_TIME_MAX, Math.round(t / 5) * 5));
+  const t = endlessTierOfSize(level && level.size ? level.size : 11);
+  const t2 = levelTargetSec(level) * ENDLESS_TIERS[t].k;
+  return Math.max(ENDLESS_TIME_MIN, Math.min(ENDLESS_TIME_MAX, Math.round(t2 / 5) * 5));
 }
 function endlessRemainingSec(){
   if (!run || !run.boardDeadline || run.over) return null;
@@ -1546,7 +1583,8 @@ function startEndlessRun(){
 function startEndlessBoard(){
   if (!run || run.over) return;
   run.boardNo += 1;
-  const idx = endlessPickLevel(run.boardNo - 1);
+  const idx = endlessPickLevel(run.boardNo);
+  run.tier = endlessTierOfSize(LEVELS[idx] ? LEVELS[idx].size : 11);
   run.recent.push(idx);
   if (run.recent.length > 8) run.recent.shift();
   startBoard(idx, null, true);
@@ -1556,7 +1594,8 @@ function startEndlessBoard(){
   run.boardLimit = lim;
   run.boardDeadline = Date.now() + lim * 1000;
   runClockResume();
-  showRunToast('第 ' + run.boardNo + ' 题 · 随机抽到 ' + S.n + '×' + S.n + ' · 限时 ' + lim + 's');
+  showRunToast('第 ' + run.boardNo + ' 题 · 随机抽到 ' + S.n + '×' + S.n +
+    '（' + ENDLESS_TIERS[run.tier].label + '）· 限时 ' + lim + 's');
   render();
 }
 function endlessBoardCleared(){
@@ -2264,8 +2303,9 @@ function buildEndlessEnd(){
     tip.className = 'endless-stats';
     tip.style.color = '#9fb4d0';
     tip.textContent = '规则：开局 ' + ENDLESS_START_LIVES + ' 架望远镜，每通关 ' + ENDLESS_LIFE_EVERY + ' 题 +1 架（上限 ' +
-      ENDLESS_MAX_LIVES + '）；失误 −1 架，用尽最后一架即结束本轮。每题限时（目标时间 × ' + ENDLESS_TIME_K +
-      '），超时扣 1 架并跳过本题。进行中的分数只增不减，结算时才计入时间与望远镜奖励。';
+      ENDLESS_MAX_LIVES + '）；失误 −1 架，用尽最后一架即结束本轮。' +
+      '题目随机抽取（小盘→中盘→大盘→超大，同一档内不重复），每题限时（目标时间 × 0.70~0.85），' +
+      '超时扣 1 架并跳过本题。进行中的分数只增不减，结算时才计入时间与望远镜奖励。';
     const clearBtn = mkBtn('↻ 清除最高分', 'btn ghost', function(){
       const s2 = endlessStats(); s2.best = 0; s2.bestStreak = 0; s2.fastestMs = null; saveProgress();
       modalSignature = ''; modalDismissed = false; render();
