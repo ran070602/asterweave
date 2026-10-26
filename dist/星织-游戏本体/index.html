@@ -662,7 +662,10 @@
   .fb-rows .btn{flex:1 1 auto;min-width:104px;margin:0}
   .fb-status{margin:10px 0 0;font-size:11px;line-height:1.5;color:#8fd0a8;min-height:16px}
   .intro-overlay{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;
-    padding:18px;background:rgba(4,7,16,.72);backdrop-filter:blur(2px)}
+    padding:18px;background:rgba(4,7,16,.72);backdrop-filter:blur(2px);
+    opacity:0;transition:opacity .14s ease}
+  .intro-overlay.show{opacity:1}
+  @media (prefers-reduced-motion: reduce){ .intro-overlay{transition:none} }
   .intro-overlay[hidden]{display:none}
   .intro-card{width:100%;max-width:340px;padding:18px 16px 16px;border:1px solid rgba(126,180,255,.34);border-radius:16px;
     background:linear-gradient(180deg,rgba(20,30,58,.98),rgba(10,16,34,.98));box-shadow:0 18px 50px rgba(0,0,0,.55)}
@@ -23449,12 +23452,17 @@ function refreshIntro(){
     ? ('当前分数 ' + runScore() + ' · 第 ' + run.boardNo + ' 题')
     : ('约 2 分钟一局 · 最高分 ' + (st.best || 0));
 }
-let homeOpen = false, homePausedClock = false;
+let homeOpen = false, homePausedClock = false, homeFadeTimer = 0;
 function openHome(pause){
   const el = document.getElementById('introOverlay');
   if (!el) return;
   refreshIntro();
   el.hidden = false;
+  void el.offsetWidth;                 // 强制回流，让淡入过渡生效
+  el.classList.add('show');
+  // 兜底：无论过渡是否真的跑（某些内核/无动画环境会冻结过渡），180ms 后强制可见
+  clearTimeout(homeFadeTimer);
+  homeFadeTimer = setTimeout(function(){ el.style.opacity = '1'; }, 180);
   homeOpen = true;
   if (pause){
     homePausedClock = !!timeStart && !timeStop;
@@ -23466,7 +23474,8 @@ function openHome(pause){
 }
 function closeHome(){
   const el = document.getElementById('introOverlay');
-  if (el) el.hidden = true;
+  clearTimeout(homeFadeTimer);
+  if (el){ el.classList.remove('show'); el.style.opacity = ''; el.hidden = true; }
   homeOpen = false;
   if (homePausedClock && timeStart && timeStop) timeStop = 0;   // 恢复闯关计时
   homePausedClock = false;
@@ -26243,8 +26252,9 @@ if (Array.isArray(LEVELS) && LEVELS.length){
   refreshSkyModeBtns();
   const idx0 = startIndex();
   startLevel(idx0);
-  // 入场页：首次打开必显示（不论停在哪一关）；之后再进来直接进棋盘
-  if (!progress.introSeen) showIntro();
+  // 主页：每次打开网址都显示（用户 2026-10-26 决定）。理由：菜单很轻（一次点击即进关卡），
+  // 而"直接砸进棋盘"会让玩家紧张；主页也顺带承担音频解锁手势。计时不受影响——startClock 在首次操作才启动。
+  showIntro();
   const ires = document.getElementById('homeResume');
   if (ires) ires.addEventListener('click', function(){ initAudio(); sndStart(); closeHome(); });
   const icamp = document.getElementById('homeCampaign');

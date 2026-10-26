@@ -239,3 +239,19 @@ unMode === 'endless' 护栏；但 ct() 里的 startClock() 与 	ickClock() 的�
   - **规则与文档同步**：`check_levels.py` 规则 7 改为“所有关卡 showRuns=true”，新增规则 8“第 1 关必须数织必需
     且有连续块线索”；README、设计思路文档（8 处）与迭代文档（新增 §2.11）同步。
   - **协作注意**：`fit_constellation_levels.py` 的 `PLAN[0]` 只记意图，**重跑会覆盖 levels.json 第 1 关**。
+
+## 13. 菜单改为“每次打开网址都弹”（v11）
+
+- **决定（用户 2026-10-26）**：不再只在首次访问弹主页，**每次加载都弹**。理由一：菜单很轻（
+  「闯关模式」卡直接显示「继续第 N 关」，点一下即进关卡）；理由二：直接进棋盘有些突然、会让玩家紧张。
+  主页同时承担**音频解锁手势**（浏览器要求用户手势后才出声）。
+- **实现**：初始化处 if (!progress.introSeen) showIntro(); → 无条件 showIntro();；introSeen 仍会写入（仅作看过入场页的标记，不再控制是否弹出）。
+- **淡入**：.intro-overlay{opacity:0;transition:opacity .14s} + .show{opacity:1}，openHome() 强制回流后加类；**另有 JS 兜底**（180ms 后 style.opacity=1），
+  防止某些内核冻结过渡导致菜单不可见；prefers-reduced-motion 下关闭过渡。
+- **风险已核实**：第 11 关起是强制限时，但 	ickClock() 在 !timeStart 时直接 return，全文件只有一处
+  startClock()（注释「第一次操作开始计时」）→ **在菜单上停留不会消耗限时**。
+- **未做（用户决定）**：不做 Enter 秒进（主要面向手机玩家）。
+- 实测：老玩家（introSeen=true + 已通 3 关）打开 → 主页显示、show 类在、卡片完整在视口、挑战卡显示「继续第 4 关」；
+  点「闯关模式」→ 主页关闭、棋盘可玩（36 格/第 1 关）；点「继续当前进度」→ 关闭后可正常通关（弹窗 overlay open）；零 JS 报错。
+- **提醒（不属于本次改动）**：erification/v16_ui_test.js 第 203 行的断言标签写着「老玩家不再自动弹」，
+  与新行为不符；但其断言内容只检查 saved.introSeen === true，**仍然通过**。该文件属他人作用域，未改动。
