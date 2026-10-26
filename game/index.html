@@ -702,7 +702,6 @@
   .intro-steps{margin:0 0 13px;padding-left:17px}
   .intro-steps li{margin:0 0 6px;font-size:12.5px;line-height:1.5;color:#c2d1e6}
   .intro-steps li b{color:#eaf2ff}
-  .intro-card #introRestart{margin-top:8px}
   .intro-foot{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px}
   .intro-chip{min-height:32px;padding:0 11px;border-radius:999px;border:1px solid #2c4666;background:#16294a;
     color:#dbeaff;font:inherit;font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap}
@@ -864,7 +863,6 @@
       <button type="button" class="modecard primary" id="homeResume" hidden><span class="modecard-t"><svg class="mico" viewBox="0 0 20 20" fill="currentColor" stroke="none"><path d="M6.6 4.4 15 10l-8.4 5.6z"/></svg>继续当前进度</span><span class="modecard-sub" id="homeResumeSub"></span></button>
       <button type="button" class="modecard" id="homeCampaign"><span class="modecard-t"><svg class="mico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3.2" y="3.2" width="13.6" height="13.6" rx="2.2"/><path d="M3.2 7.9h13.6M3.2 12.1h13.6M7.9 3.2v13.6M12.1 3.2v13.6"/></svg>闯关模式</span><span class="modecard-sub" id="homeCampaignSub"></span></button>
       <button type="button" class="modecard" id="homeEndless"><span class="modecard-t"><svg class="mico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6.4 6.6c2 0 2.9 2 3.6 3.4.7 1.4 1.6 3.4 3.6 3.4a2.9 2.9 0 0 0 0-5.8c-2 0-2.9 2-3.6 3.4-.7 1.4-1.6 3.4-3.6 3.4a2.9 2.9 0 0 1 0-5.8z"/></svg><span id="homeEndlessLabel">无尽冲分</span></span><span class="modecard-sub" id="homeEndlessSub"></span></button>
-      <button type="button" class="btn ghost" id="introRestart" hidden>从第 1 关开始</button>
       <div class="intro-foot">
         <button type="button" class="intro-chip" id="introSky">✦ 图鉴 <b id="introSkyNum">0</b>/<b id="introSkyTotal">50</b></button>
         <button type="button" class="intro-chip" id="introSound">🔊 音效开</button>
@@ -1329,9 +1327,7 @@ function homeRunLive(){ return runMode === 'endless' && run && !run.over; }
 function homePlaying(){ return homeRunLive() || (runMode === 'campaign' && boardTouched()); }
 
 function refreshIntro(){
-  const againBtn = document.getElementById('introRestart');
   const hasSave = introHasSave();
-  if (againBtn) againBtn.hidden = !hasSave;
   const num = document.getElementById('introSkyNum');
   const tot = document.getElementById('introSkyTotal');
   if (num) num.textContent = String(introLitCount());
@@ -4170,8 +4166,6 @@ if (Array.isArray(LEVELS) && LEVELS.length){
     closeHome();
     startEndlessRun();                                // 新的一轮
   });
-  const ire = document.getElementById('introRestart');
-  if (ire) ire.addEventListener('click', function(){ initAudio(); sndStart(); hideIntro(true); });
   const isk = document.getElementById('introSky');
   if (isk) isk.addEventListener('click', function(){ closeHome(); openSky(); });
   const isd = document.getElementById('introSound');

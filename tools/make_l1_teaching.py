@@ -58,11 +58,8 @@ def search(limit=200000):
             on = gl.solve(p, True)
             if not on.ok:
                 continue
-            off = gl.solve(p, False)
-            if off.ok:
-                continue                                  # 不用数织也能解 → 不教数织
-            if not (1 <= on.runs_cells <= 6):
-                continue                                  # 数织必需，但别太重
+            if not (2 <= on.runs_cells <= 8):
+                continue                                  # 数织要真的参与
             if on.reveal_actions < 6:
                 continue                                  # 开局要展开得够多
             mines = [[r, c] for (r, c) in sorted(p.mines)]
@@ -71,14 +68,21 @@ def search(limit=200000):
             dens = len(mines) / (N * N)
             if not (0.15 <= dens <= 0.25):
                 continue
+            if not (8 <= on.reveal_actions <= 18):
+                continue                                  # 太简单（几乎已解开）也不要
             runs_all = [list(x) for x in p.row_runs] + [list(x) for x in p.col_runs]
-            if not any(any(v >= 2 for v in rr) for rr in runs_all):
-                continue                                  # 必须有真正的“连续块”线索可教
+            # 真正的“连续块”线索：某条线的线索里有 >=2 的长度（注意 [1,1] 是两块单星，不算块）
+            block_lines = [rr for rr in runs_all if any(v >= 2 for v in rr)]
+            if len(block_lines) < 2:
+                continue                                  # 至少两条线有连续块，才教得起来
+            max_block = max([v for rr in block_lines for v in rr if v >= 2] or [0])
             out.append({"m": m, "puzzle": p, "mines": mines, "on": on,
                         "reveal": on.reveal_actions, "runs_cells": on.runs_cells,
-                        "runs_all": runs_all})
+                        "runs_all": runs_all, "block_lines": len(block_lines),
+                        "max_block": max_block})
         # 每个雷数各留最好的若干
-    out.sort(key=lambda c: (-c["reveal"], c["runs_cells"]))
+    # 优先：块更长 → 块线索更多 → 数织参与更少（更轻）→ 展开更多（更友好）
+    out.sort(key=lambda c: (-c["max_block"], -c["block_lines"], c["runs_cells"], -c["reveal"]))
     return out
 
 
@@ -86,20 +90,58 @@ def attach(cand):
     """把南十字座吸附到候选盘面的雷上，返回完整关卡 dict。"""
     pts = [(x, y) for (_zh, _en, (x, y), _mag) in fm.CRUX]
     p = cand["puzzle"]
-    for scale in (0.95, 0.85, 0.75, 0.65, 0.55, 0.45):
-        try:
-            chosen = gm.snap(pts, p.mines, N, scale)
-        except Exception:
-            chosen = None
-        if not chosen:
-            continue
-        base = gl.to_level_json(p, 1, "第 1 关 · 南十字座", TEACH, TECHNIQUE)
-        d = {"id": 1, "name": base["name"], "size": base["size"], "mines": base["mines"],
-             "noise": [], "showRuns": True, "opening": base["opening"], "lives": base["lives"],
-             "teach": base["teach"], "technique": base["technique"],
-             "rowRuns": base["rowRuns"], "colRuns": base["colRuns"], "theme": None}
-        d2 = gm.attach_theme(d, "Crux", fm.CRUX, fm.CRUX_L, chosen, N, "南十字座")
-        if d2:
+    chosen = None
+    # 遍历 8 种旋转/翻转 × 多个缩放（snap 只处理“已变换”的星位）
+    for oriented in gm.transforms(pts):
+        for scale in (0.95, 0.85, 0.75, 0.65, 0.55, 0.45):
+            try:
+                chosen = gm.snap(oriented, p.mines, N, scale)
+            except Exception:
+                chosen = None
+            if chosen:
+                break
+        if chosen:
+            break
+    if chosen:
+        for _scale in (0,):
+            base = gl.to_level_json(p, 1, "第 1 关 · 南十字座", TEACH, TECHNIQUE)
+            d = {"id": 1, "name": base["name"], "size": base["size"], "mines": base["mines"],
+                 "noise": [], "showRuns": True, "opening": base["opening"], "lives": base["lives"],
+                 "teach": base["teach"], "technique": base["technique"],
+                 "rowRuns": base["rowRuns"], "colRuns": base["colRuns"], "theme": None}
+            d2 = gm.attach_theme(d, "Crux", fm.CRUX, fm.CRUX_L, chosen, N, "南十字座")
+            if not d2:
+                continue
+            ok, _probs, info = gl.check_level(d2, static=False)
+            if not ok:
+                continue
+            if info.get("nb_only_ok") is not False:
+                continue                                  # 必须“不用数织会卡住”
+            if not (2 <= (info.get("runs_cells") or 0) <= 8):
+                continue
+            rc = [tuple(x["rc"]) for x in d2["theme"]["stars"]]
+            rows = [r for (r, _c) in rc]; cols = [c for (_r, c) in rc]
+            has_row_pair = any(rows.count(r) >= 2 for r in set(rows))
+            has_col_pair = any(cols.count(c) >= 2 for c in set(cols))
+            if not (has_row_pair and has_col_pair):
+                continue                                  # 星形要“一横一竖”，像十字
+            # 更严：揭晓会画的两段（CRUX_L）必须一段横、一段竖，否则画出来是“两条平行线”
+            seg = []
+            for (a, b) in fm.CRUX_L:
+                (r1, c1), (r2, c2) = rc[a], rc[b]
+                seg.append('H' if r1 == r2 else ('V' if c1 == c2 else 'D'))
+            if 'H' not in seg or 'V' not in seg:
+                continue
+            star_cells = set(rc)
+            runs_ok = False
+            for i, rr in enumerate(d2["rowRuns"]):
+                if any(v >= 2 for v in rr) and any(r == i for (r, _c) in star_cells):
+                    runs_ok = True
+            for j, cc in enumerate(d2["colRuns"]):
+                if any(v >= 2 for v in cc) and any(c == j for (_r, c) in star_cells):
+                    runs_ok = True
+            if not runs_ok:
+                continue                                  # 连续块线索要落在有星的线上（教学相关）
             return d2
     return None
 
@@ -109,7 +151,7 @@ def main():
     cands = search()
     print("候选盘面 %d 个（按开局展开格数排序）" % len(cands))
     picked = None
-    for c in cands[:12]:
+    for c in cands[:400]:
         d = attach(c)
         if not d:
             continue
@@ -118,19 +160,24 @@ def main():
         for s in stars:
             star_rows.setdefault(s["rc"][0], 0)
             star_rows[s["rc"][0]] += 1
-        print("  雷%d 展开%d格 数织需%d格 孤立%d 行线索%s 列线索%s 星形%s" % (
-            len(d["mines"]), c["reveal"], c["runs_cells"], isolated_count(d["mines"], N),
+        print("  雷%d 展开%d格 数织需%d格 块%d条/最长%d 行%s 列%s 星%s" % (
+            len(d["mines"]), c["reveal"], c["runs_cells"], c["block_lines"], c["max_block"],
             d["rowRuns"], d["colRuns"], [tuple(s["rc"]) for s in stars]))
         if picked is None:
             picked = d
+            break                                   # 取第一个“线索合格且能贴上星座”的盘面
     if not picked:
         print("!! 没有找到候选"); sys.exit(1)
 
     print()
     print("==== 选定第 1 关 ====")
-    print(json.dumps(picked, ensure_ascii=False, indent=2)[:900])
+    print("  雷=%s" % picked["mines"])
+    print("  行线索=%s" % picked["rowRuns"])
+    print("  列线索=%s" % picked["colRuns"])
+    print("  opening=%s showRuns=%s teach=%s" % (picked["opening"], picked["showRuns"], picked["teach"]))
+    print("  星=%s 杂星=%s" % ([s["rc"] for s in picked["theme"]["stars"]], picked["noise"]))
 
-    # 验收复算
+    # 验收复算（权威判据）
     check = gl.check_level(picked, static=False)
     print("\ncheck_level(static=False): ok=%s problems=%s" % (check[0], check[1]))
     info = check[2] if len(check) > 2 else {}
