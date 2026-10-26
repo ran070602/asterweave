@@ -1,0 +1,8381 @@
+[
+  {
+    "id": "andromeda",
+    "zh": "仙女座",
+    "en": "Andromeda",
+    "desig": "And",
+    "rank": 19,
+    "raH": 0.651,
+    "decDeg": 40.425,
+    "brightest": {
+      "zh": "仙女α",
+      "en": "Alpha And",
+      "mag": 2.07
+    },
+    "stars": [
+      {
+        "zh": "仙女α",
+        "en": "Alpha And",
+        "mag": 2.07,
+        "raH": 0.14,
+        "decDeg": 29.09
+      },
+      {
+        "zh": "仙女β",
+        "en": "Beta And",
+        "mag": 2.07,
+        "raH": 1.162,
+        "decDeg": 35.621
+      },
+      {
+        "zh": "仙女γ¹",
+        "en": "Gamma1 And",
+        "mag": 2.1,
+        "raH": 2.065,
+        "decDeg": 42.33
+      },
+      {
+        "zh": "仙女δ",
+        "en": "Delta And",
+        "mag": 3.27,
+        "raH": 0.655,
+        "decDeg": 30.861
+      },
+      {
+        "zh": "仙女51",
+        "en": "51 And",
+        "mag": 3.59,
+        "raH": 1.633,
+        "decDeg": 48.628
+      },
+      {
+        "zh": "仙女ο",
+        "en": "Omicron And",
+        "mag": 3.62,
+        "raH": 23.032,
+        "decDeg": 42.326
+      },
+      {
+        "zh": "仙女λ",
+        "en": "Lambda And",
+        "mag": 3.81,
+        "raH": 23.626,
+        "decDeg": 46.458
+      }
+    ],
+    "lines": [
+      [
+        0,
+        3
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        3,
+        5
+      ]
+    ],
+    "neighbours": [
+      "Cassiopeia",
+      "Lacerta",
+      "Pegasus",
+      "Perseus",
+      "Pisces",
+      "Triangulum"
+    ],
+    "fact": "仙女座是希腊神话中的公主星座，仙女α是它最亮的星，座内有仙女座大星系。"
+  },
+  {
+    "id": "antlia",
+    "zh": "唧筒座",
+    "en": "Antlia",
+    "desig": "Ant",
+    "rank": 62,
+    "raH": 10.127,
+    "decDeg": -34.09,
+    "brightest": {
+      "zh": "唧筒α",
+      "en": "Alpha Ant",
+      "mag": 4.28
+    },
+    "stars": [
+      {
+        "zh": "唧筒α",
+        "en": "Alpha Ant",
+        "mag": 4.28,
+        "raH": 10.453,
+        "decDeg": -31.068
+      },
+      {
+        "zh": "唧筒ε",
+        "en": "Epsilon Ant",
+        "mag": 4.51,
+        "raH": 9.487,
+        "decDeg": -35.951
+      },
+      {
+        "zh": "唧筒ι",
+        "en": "Iota Ant",
+        "mag": 4.6,
+        "raH": 10.945,
+        "decDeg": -37.138
+      },
+      {
+        "zh": "唧筒θ",
+        "en": "Theta Ant",
+        "mag": 4.78,
+        "raH": 9.737,
+        "decDeg": -27.769
+      },
+      {
+        "zh": "唧筒η",
+        "en": "Eta Ant",
+        "mag": 5.23,
+        "raH": 9.981,
+        "decDeg": -35.891
+      },
+      {
+        "zh": "唧筒δ",
+        "en": "Delta Ant",
+        "mag": 5.57,
+        "raH": 10.493,
+        "decDeg": -30.607
+      },
+      {
+        "zh": "唧筒ζ¹",
+        "en": "Zeta1 Ant",
+        "mag": 5.75,
+        "raH": 9.513,
+        "decDeg": -31.889
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "neighbours": [
+      "Centaurus",
+      "Hydra",
+      "Pyxis",
+      "Vela"
+    ],
+    "fact": "唧筒座是拉卡伊命名的南天小星座，唧筒α是它最亮的星。"
+  },
+  {
+    "id": "apus",
+    "zh": "天燕座",
+    "en": "Apus",
+    "desig": "Aps",
+    "rank": 67,
+    "raH": 16.165,
+    "decDeg": -74.981,
+    "brightest": {
+      "zh": "天燕α",
+      "en": "Alpha Aps",
+      "mag": 3.83
+    },
+    "stars": [
+      {
+        "zh": "天燕α",
+        "en": "Alpha Aps",
+        "mag": 3.83,
+        "raH": 14.798,
+        "decDeg": -79.045
+      },
+      {
+        "zh": "天燕γ",
+        "en": "Gamma Aps",
+        "mag": 3.86,
+        "raH": 16.558,
+        "decDeg": -78.897
+      },
+      {
+        "zh": "天燕β",
+        "en": "Beta Aps",
+        "mag": 4.23,
+        "raH": 16.718,
+        "decDeg": -77.517
+      },
+      {
+        "zh": "天燕δ¹",
+        "en": "Delta1 Aps",
+        "mag": 4.68,
+        "raH": 16.339,
+        "decDeg": -78.696
+      },
+      {
+        "zh": "天燕ζ",
+        "en": "Zeta Aps",
+        "mag": 4.76,
+        "raH": 17.367,
+        "decDeg": -67.771
+      },
+      {
+        "zh": "天燕η",
+        "en": "Eta Aps",
+        "mag": 4.89,
+        "raH": 14.304,
+        "decDeg": -81.008
+      },
+      {
+        "zh": "天燕ε",
+        "en": "Epsilon Aps",
+        "mag": 5.06,
+        "raH": 14.373,
+        "decDeg": -80.109
+      }
+    ],
+    "lines": [
+      [
+        0,
+        3
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "neighbours": [
+      "Ara",
+      "Chamaeleon",
+      "Circinus",
+      "Musca",
+      "Octans",
+      "Pavo",
+      "Triangulum Australe"
+    ],
+    "fact": "天燕座是普朗修斯命名的南天星座，天燕α是它最亮的星。"
+  },
+  {
+    "id": "aquarius",
+    "zh": "宝瓶座",
+    "en": "Aquarius",
+    "desig": "Aqr",
+    "rank": 10,
+    "raH": 22.418,
+    "decDeg": -10.35,
+    "brightest": {
+      "zh": "宝瓶β",
+      "en": "Beta Aqr",
+      "mag": 2.9
+    },
+    "stars": [
+      {
+        "zh": "宝瓶β",
+        "en": "Beta Aqr",
+        "mag": 2.9,
+        "raH": 21.526,
+        "decDeg": -5.571
+      },
+      {
+        "zh": "宝瓶α",
+        "en": "Alpha Aqr",
+        "mag": 2.95,
+        "raH": 22.096,
+        "decDeg": -0.32
+      },
+      {
+        "zh": "宝瓶δ",
+        "en": "Delta Aqr",
+        "mag": 3.27,
+        "raH": 22.911,
+        "decDeg": -15.821
+      },
+      {
+        "zh": "宝瓶ζ¹",
+        "en": "Zeta1 Aqr",
+        "mag": 3.65,
+        "raH": 22.481,
+        "decDeg": -0.02
+      },
+      {
+        "zh": "宝瓶88",
+        "en": "88 Aqr",
+        "mag": 3.68,
+        "raH": 23.157,
+        "decDeg": -21.172
+      },
+      {
+        "zh": "宝瓶λ",
+        "en": "Lambda Aqr",
+        "mag": 3.73,
+        "raH": 22.877,
+        "decDeg": -7.58
+      },
+      {
+        "zh": "宝瓶ε",
+        "en": "Epsilon Aqr",
+        "mag": 3.78,
+        "raH": 20.795,
+        "decDeg": -9.496
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        6
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        3,
+        5
+      ],
+      [
+        4,
+        5
+      ]
+    ],
+    "neighbours": [
+      "Aquila",
+      "Capricornus",
+      "Cetus",
+      "Delphinus",
+      "Equuleus",
+      "Pegasus",
+      "Pisces",
+      "Piscis Austrinus",
+      "Sculptor"
+    ],
+    "fact": "宝瓶座是黄道十二星座中的宝瓶，宝瓶β是它最亮的星，座内有螺旋星云。"
+  },
+  {
+    "id": "aquila",
+    "zh": "天鹰座",
+    "en": "Aquila",
+    "desig": "Aql",
+    "rank": 22,
+    "raH": 19.614,
+    "decDeg": 3.383,
+    "brightest": {
+      "zh": "天鹰α",
+      "en": "Alpha Aql",
+      "mag": 0.76
+    },
+    "stars": [
+      {
+        "zh": "天鹰α",
+        "en": "Alpha Aql",
+        "mag": 0.76,
+        "raH": 19.846,
+        "decDeg": 8.868
+      },
+      {
+        "zh": "天鹰γ",
+        "en": "Gamma Aql",
+        "mag": 2.72,
+        "raH": 19.771,
+        "decDeg": 10.613
+      },
+      {
+        "zh": "天鹰ζ",
+        "en": "Zeta Aql",
+        "mag": 2.99,
+        "raH": 19.09,
+        "decDeg": 13.863
+      },
+      {
+        "zh": "天鹰θ",
+        "en": "Theta Aql",
+        "mag": 3.24,
+        "raH": 20.188,
+        "decDeg": -0.821
+      },
+      {
+        "zh": "天鹰δ",
+        "en": "Delta Aql",
+        "mag": 3.36,
+        "raH": 19.425,
+        "decDeg": 3.115
+      },
+      {
+        "zh": "天鹰λ",
+        "en": "Lambda Aql",
+        "mag": 3.43,
+        "raH": 19.104,
+        "decDeg": -4.883
+      },
+      {
+        "zh": "天鹰β",
+        "en": "Beta Aql",
+        "mag": 3.71,
+        "raH": 19.922,
+        "decDeg": 6.407
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        4
+      ],
+      [
+        0,
+        6
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        6
+      ],
+      [
+        4,
+        5
+      ]
+    ],
+    "neighbours": [
+      "Aquarius",
+      "Capricornus",
+      "Delphinus",
+      "Hercules",
+      "Ophiuchus",
+      "Sagitta",
+      "Sagittarius",
+      "Scutum",
+      "Serpens"
+    ],
+    "fact": "天鹰座是希腊神话中宙斯的神鹰，天鹰α是它最亮的星。"
+  },
+  {
+    "id": "ara",
+    "zh": "天坛座",
+    "en": "Ara",
+    "desig": "Ara",
+    "rank": 63,
+    "raH": 17.323,
+    "decDeg": -53.828,
+    "brightest": {
+      "zh": "天坛β",
+      "en": "Beta Ara",
+      "mag": 2.84
+    },
+    "stars": [
+      {
+        "zh": "天坛β",
+        "en": "Beta Ara",
+        "mag": 2.84,
+        "raH": 17.422,
+        "decDeg": -55.53
+      },
+      {
+        "zh": "天坛α",
+        "en": "Alpha Ara",
+        "mag": 2.84,
+        "raH": 17.531,
+        "decDeg": -49.876
+      },
+      {
+        "zh": "天坛ζ",
+        "en": "Zeta Ara",
+        "mag": 3.12,
+        "raH": 16.977,
+        "decDeg": -55.99
+      },
+      {
+        "zh": "天坛γ",
+        "en": "Gamma Ara",
+        "mag": 3.31,
+        "raH": 17.423,
+        "decDeg": -56.378
+      },
+      {
+        "zh": "天坛δ",
+        "en": "Delta Ara",
+        "mag": 3.6,
+        "raH": 17.518,
+        "decDeg": -60.684
+      },
+      {
+        "zh": "天坛θ",
+        "en": "Theta Ara",
+        "mag": 3.65,
+        "raH": 18.111,
+        "decDeg": -50.091
+      },
+      {
+        "zh": "天坛η",
+        "en": "Eta Ara",
+        "mag": 3.77,
+        "raH": 16.83,
+        "decDeg": -59.041
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        6
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        4,
+        6
+      ]
+    ],
+    "neighbours": [
+      "Apus",
+      "Corona Australis",
+      "Norma",
+      "Pavo",
+      "Scorpius",
+      "Telescopium",
+      "Triangulum Australe"
+    ],
+    "fact": "天坛座是希腊神话中的祭坛，天坛β是它最亮的星。"
+  },
+  {
+    "id": "aries",
+    "zh": "白羊座",
+    "en": "Aries",
+    "desig": "Ari",
+    "rank": 39,
+    "raH": 2.665,
+    "decDeg": 19.956,
+    "brightest": {
+      "zh": "白羊α",
+      "en": "Alpha Ari",
+      "mag": 2.01
+    },
+    "stars": [
+      {
+        "zh": "白羊α",
+        "en": "Alpha Ari",
+        "mag": 2.01,
+        "raH": 2.12,
+        "decDeg": 23.462
+      },
+      {
+        "zh": "白羊β",
+        "en": "Beta Ari",
+        "mag": 2.64,
+        "raH": 1.911,
+        "decDeg": 20.808
+      },
+      {
+        "zh": "白羊41",
+        "en": "41 Ari",
+        "mag": 3.61,
+        "raH": 2.833,
+        "decDeg": 27.261
+      },
+      {
+        "zh": "白羊γ²",
+        "en": "Gamma2 Ari",
+        "mag": 3.88,
+        "raH": 1.892,
+        "decDeg": 19.294
+      },
+      {
+        "zh": "白羊δ",
+        "en": "Delta Ari",
+        "mag": 4.35,
+        "raH": 3.194,
+        "decDeg": 19.727
+      },
+      {
+        "zh": "白羊39",
+        "en": "39 Ari",
+        "mag": 4.52,
+        "raH": 2.798,
+        "decDeg": 29.247
+      },
+      {
+        "zh": "白羊ε",
+        "en": "Epsilon Ari",
+        "mag": 4.63,
+        "raH": 2.987,
+        "decDeg": 21.34
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        3
+      ]
+    ],
+    "neighbours": [
+      "Cetus",
+      "Perseus",
+      "Pisces",
+      "Taurus",
+      "Triangulum"
+    ],
+    "fact": "白羊座是黄道十二星座中的金羊，白羊α是它最亮的星。"
+  },
+  {
+    "id": "auriga",
+    "zh": "御夫座",
+    "en": "Auriga",
+    "desig": "Aur",
+    "rank": 21,
+    "raH": 5.958,
+    "decDeg": 40.217,
+    "brightest": {
+      "zh": "御夫α",
+      "en": "Alpha Aur",
+      "mag": 0.08
+    },
+    "stars": [
+      {
+        "zh": "御夫α",
+        "en": "Alpha Aur",
+        "mag": 0.08,
+        "raH": 5.278,
+        "decDeg": 45.998
+      },
+      {
+        "zh": "御夫β",
+        "en": "Beta Aur",
+        "mag": 1.9,
+        "raH": 5.992,
+        "decDeg": 44.947
+      },
+      {
+        "zh": "御夫θ",
+        "en": "Theta Aur",
+        "mag": 2.65,
+        "raH": 5.995,
+        "decDeg": 37.213
+      },
+      {
+        "zh": "御夫ι",
+        "en": "Iota Aur",
+        "mag": 2.69,
+        "raH": 4.95,
+        "decDeg": 33.166
+      },
+      {
+        "zh": "御夫ε",
+        "en": "Epsilon Aur",
+        "mag": 3.03,
+        "raH": 5.033,
+        "decDeg": 43.823
+      },
+      {
+        "zh": "御夫η",
+        "en": "Eta Aur",
+        "mag": 3.18,
+        "raH": 5.109,
+        "decDeg": 41.234
+      },
+      {
+        "zh": "御夫ζ",
+        "en": "Zeta Aur",
+        "mag": 3.69,
+        "raH": 5.041,
+        "decDeg": 41.076
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        4
+      ],
+      [
+        0,
+        5
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        3,
+        5
+      ],
+      [
+        4,
+        6
+      ]
+    ],
+    "neighbours": [
+      "Camelopardalis",
+      "Gemini",
+      "Lynx",
+      "Perseus",
+      "Taurus"
+    ],
+    "fact": "御夫座是希腊神话中的御者，御夫α是它最亮的星。"
+  },
+  {
+    "id": "bootes",
+    "zh": "牧夫座",
+    "en": "Bootes",
+    "desig": "Boo",
+    "rank": 13,
+    "raH": 14.62,
+    "decDeg": 29.131,
+    "brightest": {
+      "zh": "牧夫α",
+      "en": "Alpha Boo",
+      "mag": -0.05
+    },
+    "stars": [
+      {
+        "zh": "牧夫α",
+        "en": "Alpha Boo",
+        "mag": -0.05,
+        "raH": 14.261,
+        "decDeg": 19.182
+      },
+      {
+        "zh": "牧夫ε",
+        "en": "Epsilon Boo",
+        "mag": 2.35,
+        "raH": 14.75,
+        "decDeg": 27.074
+      },
+      {
+        "zh": "牧夫η",
+        "en": "Eta Boo",
+        "mag": 2.68,
+        "raH": 13.911,
+        "decDeg": 18.398
+      },
+      {
+        "zh": "牧夫γ",
+        "en": "Gamma Boo",
+        "mag": 3.04,
+        "raH": 14.535,
+        "decDeg": 38.308
+      },
+      {
+        "zh": "牧夫δ",
+        "en": "Delta Boo",
+        "mag": 3.46,
+        "raH": 15.258,
+        "decDeg": 33.315
+      },
+      {
+        "zh": "牧夫β",
+        "en": "Beta Boo",
+        "mag": 3.49,
+        "raH": 15.032,
+        "decDeg": 40.391
+      },
+      {
+        "zh": "牧夫ρ",
+        "en": "Rho Boo",
+        "mag": 3.57,
+        "raH": 14.53,
+        "decDeg": 30.371
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        6
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        3,
+        5
+      ],
+      [
+        3,
+        6
+      ],
+      [
+        4,
+        5
+      ]
+    ],
+    "neighbours": [
+      "Canes Venatici",
+      "Coma Berenices",
+      "Corona Borealis",
+      "Draco",
+      "Hercules",
+      "Serpens",
+      "Ursa Major",
+      "Virgo"
+    ],
+    "fact": "牧夫座是希腊神话中的牧人，牧夫α是它最亮的星，座内有牧夫座空洞。"
+  },
+  {
+    "id": "caelum",
+    "zh": "雕具座",
+    "en": "Caelum",
+    "desig": "Cae",
+    "rank": 81,
+    "raH": 4.735,
+    "decDeg": -38.62,
+    "brightest": {
+      "zh": "雕具α",
+      "en": "Alpha Cae",
+      "mag": 4.44
+    },
+    "stars": [
+      {
+        "zh": "雕具α",
+        "en": "Alpha Cae",
+        "mag": 4.44,
+        "raH": 4.676,
+        "decDeg": -41.864
+      },
+      {
+        "zh": "雕具γ¹",
+        "en": "Gamma1 Cae",
+        "mag": 4.55,
+        "raH": 5.073,
+        "decDeg": -35.483
+      },
+      {
+        "zh": "雕具β",
+        "en": "Beta Cae",
+        "mag": 5.04,
+        "raH": 4.701,
+        "decDeg": -37.144
+      },
+      {
+        "zh": "雕具δ",
+        "en": "Delta Cae",
+        "mag": 5.07,
+        "raH": 4.514,
+        "decDeg": -44.954
+      },
+      {
+        "zh": "雕具γ²",
+        "en": "Gamma2 Cae",
+        "mag": 6.32,
+        "raH": 5.074,
+        "decDeg": -35.705
+      },
+      {
+        "zh": "雕具ζ",
+        "en": "Zeta Cae",
+        "mag": 6.35,
+        "raH": 4.797,
+        "decDeg": -30.02
+      }
+    ],
+    "lines": [
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        3
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "neighbours": [
+      "Columba",
+      "Dorado",
+      "Eridanus",
+      "Horologium",
+      "Lepus",
+      "Pictor"
+    ],
+    "fact": "雕具座是拉卡伊命名的南天小星座，雕具α是它最亮的星。"
+  },
+  {
+    "id": "camelopardalis",
+    "zh": "鹿豹座",
+    "en": "Camelopardalis",
+    "desig": "Cam",
+    "rank": 18,
+    "raH": 6.047,
+    "decDeg": 68.209,
+    "brightest": {
+      "zh": "鹿豹β",
+      "en": "Beta Cam",
+      "mag": 4.03
+    },
+    "stars": [
+      {
+        "zh": "鹿豹β",
+        "en": "Beta Cam",
+        "mag": 4.03,
+        "raH": 5.057,
+        "decDeg": 60.442
+      },
+      {
+        "zh": "鹿豹α",
+        "en": "Alpha Cam",
+        "mag": 4.26,
+        "raH": 4.901,
+        "decDeg": 66.343
+      },
+      {
+        "zh": "鹿豹7",
+        "en": "7 Cam",
+        "mag": 4.43,
+        "raH": 4.955,
+        "decDeg": 53.752
+      },
+      {
+        "zh": "鹿豹γ",
+        "en": "Gamma Cam",
+        "mag": 4.59,
+        "raH": 3.839,
+        "decDeg": 71.332
+      },
+      {
+        "zh": "鹿豹3",
+        "en": "3 Cam",
+        "mag": 5.07,
+        "raH": 4.665,
+        "decDeg": 53.08
+      },
+      {
+        "zh": "鹿豹43",
+        "en": "43 Cam",
+        "mag": 5.11,
+        "raH": 6.895,
+        "decDeg": 68.888
+      },
+      {
+        "zh": "鹿豹42",
+        "en": "42 Cam",
+        "mag": 5.14,
+        "raH": 6.849,
+        "decDeg": 67.572
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        3
+      ]
+    ],
+    "neighbours": [
+      "Auriga",
+      "Cassiopeia",
+      "Cepheus",
+      "Draco",
+      "Lynx",
+      "Perseus",
+      "Ursa Major",
+      "Ursa Minor"
+    ],
+    "fact": "鹿豹座是普朗修斯命名的北天星座，鹿豹β是它最亮的星。"
+  },
+  {
+    "id": "cancer",
+    "zh": "巨蟹座",
+    "en": "Cancer",
+    "desig": "Cnc",
+    "rank": 31,
+    "raH": 8.663,
+    "decDeg": 19.095,
+    "brightest": {
+      "zh": "巨蟹β",
+      "en": "Beta Cnc",
+      "mag": 3.53
+    },
+    "stars": [
+      {
+        "zh": "巨蟹β",
+        "en": "Beta Cnc",
+        "mag": 3.53,
+        "raH": 8.275,
+        "decDeg": 9.186
+      },
+      {
+        "zh": "巨蟹δ",
+        "en": "Delta Cnc",
+        "mag": 3.94,
+        "raH": 8.745,
+        "decDeg": 18.154
+      },
+      {
+        "zh": "巨蟹ι",
+        "en": "Iota Cnc",
+        "mag": 4.03,
+        "raH": 8.778,
+        "decDeg": 28.76
+      },
+      {
+        "zh": "巨蟹α",
+        "en": "Alpha Cnc",
+        "mag": 4.26,
+        "raH": 8.975,
+        "decDeg": 11.858
+      },
+      {
+        "zh": "巨蟹γ",
+        "en": "Gamma Cnc",
+        "mag": 4.66,
+        "raH": 8.721,
+        "decDeg": 21.469
+      },
+      {
+        "zh": "巨蟹ζ²",
+        "en": "Zeta2 Cnc",
+        "mag": 4.67,
+        "raH": 8.204,
+        "decDeg": 17.648
+      },
+      {
+        "zh": "巨蟹χ",
+        "en": "Chi Cnc",
+        "mag": 5.13,
+        "raH": 8.334,
+        "decDeg": 27.218
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        4
+      ]
+    ],
+    "neighbours": [
+      "Canis Minor",
+      "Gemini",
+      "Hydra",
+      "Leo",
+      "Lynx"
+    ],
+    "fact": "巨蟹座是黄道十二星座中的巨蟹，巨蟹β是它最亮的星，座内有鬼宿星团。"
+  },
+  {
+    "id": "canes-venatici",
+    "zh": "猎犬座",
+    "en": "Canes Venatici",
+    "desig": "CVn",
+    "rank": 38,
+    "raH": 13.142,
+    "decDeg": 39.945,
+    "brightest": {
+      "zh": "猎犬α²",
+      "en": "Alpha2 CVn",
+      "mag": 2.89
+    },
+    "stars": [
+      {
+        "zh": "猎犬α²",
+        "en": "Alpha2 CVn",
+        "mag": 2.89,
+        "raH": 12.934,
+        "decDeg": 38.318
+      },
+      {
+        "zh": "猎犬β",
+        "en": "Beta CVn",
+        "mag": 4.24,
+        "raH": 12.562,
+        "decDeg": 41.357
+      },
+      {
+        "zh": "猎犬24",
+        "en": "24 CVn",
+        "mag": 4.68,
+        "raH": 13.574,
+        "decDeg": 49.016
+      },
+      {
+        "zh": "猎犬20",
+        "en": "20 CVn",
+        "mag": 4.72,
+        "raH": 13.292,
+        "decDeg": 40.573
+      },
+      {
+        "zh": "猎犬5",
+        "en": "5 CVn",
+        "mag": 4.76,
+        "raH": 12.4,
+        "decDeg": 51.562
+      },
+      {
+        "zh": "猎犬25",
+        "en": "25 CVn",
+        "mag": 4.82,
+        "raH": 13.624,
+        "decDeg": 36.295
+      },
+      {
+        "zh": "猎犬6",
+        "en": "6 CVn",
+        "mag": 5.01,
+        "raH": 12.431,
+        "decDeg": 39.019
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ]
+    ],
+    "neighbours": [
+      "Bootes",
+      "Coma Berenices",
+      "Ursa Major"
+    ],
+    "fact": "猎犬座是赫维留命名的猎犬星座，猎犬α²是它最亮的星，座内有涡状星系。"
+  },
+  {
+    "id": "canis-major",
+    "zh": "大犬座",
+    "en": "Canis Major",
+    "desig": "CMa",
+    "rank": 43,
+    "raH": 6.877,
+    "decDeg": -22.161,
+    "brightest": {
+      "zh": "大犬α",
+      "en": "Alpha CMa",
+      "mag": -1.44
+    },
+    "stars": [
+      {
+        "zh": "大犬α",
+        "en": "Alpha CMa",
+        "mag": -1.44,
+        "raH": 6.752,
+        "decDeg": -16.716
+      },
+      {
+        "zh": "大犬ε",
+        "en": "Epsilon CMa",
+        "mag": 1.5,
+        "raH": 6.977,
+        "decDeg": -28.972
+      },
+      {
+        "zh": "大犬δ",
+        "en": "Delta CMa",
+        "mag": 1.83,
+        "raH": 7.14,
+        "decDeg": -26.393
+      },
+      {
+        "zh": "大犬β",
+        "en": "Beta CMa",
+        "mag": 1.98,
+        "raH": 6.378,
+        "decDeg": -17.956
+      },
+      {
+        "zh": "大犬η",
+        "en": "Eta CMa",
+        "mag": 2.45,
+        "raH": 7.402,
+        "decDeg": -29.303
+      },
+      {
+        "zh": "大犬ζ",
+        "en": "Zeta CMa",
+        "mag": 3.02,
+        "raH": 6.339,
+        "decDeg": -30.063
+      },
+      {
+        "zh": "大犬ο²",
+        "en": "Omicron2 CMa",
+        "mag": 3.02,
+        "raH": 7.05,
+        "decDeg": -23.833
+      }
+    ],
+    "lines": [
+      [
+        0,
+        3
+      ],
+      [
+        0,
+        6
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        2,
+        6
+      ]
+    ],
+    "neighbours": [
+      "Columba",
+      "Lepus",
+      "Monoceros",
+      "Puppis"
+    ],
+    "fact": "大犬座是希腊神话中猎户的猎犬，大犬α是它最亮的星。"
+  },
+  {
+    "id": "canis-minor",
+    "zh": "小犬座",
+    "en": "Canis Minor",
+    "desig": "CMi",
+    "rank": 71,
+    "raH": 7.637,
+    "decDeg": 5.74,
+    "brightest": {
+      "zh": "小犬α",
+      "en": "Alpha CMi",
+      "mag": 0.4
+    },
+    "stars": [
+      {
+        "zh": "小犬α",
+        "en": "Alpha CMi",
+        "mag": 0.4,
+        "raH": 7.655,
+        "decDeg": 5.225
+      },
+      {
+        "zh": "小犬β",
+        "en": "Beta CMi",
+        "mag": 2.89,
+        "raH": 7.453,
+        "decDeg": 8.289
+      },
+      {
+        "zh": "小犬γ",
+        "en": "Gamma CMi",
+        "mag": 4.33,
+        "raH": 7.469,
+        "decDeg": 8.926
+      },
+      {
+        "zh": "小犬6",
+        "en": "6 CMi",
+        "mag": 4.55,
+        "raH": 7.497,
+        "decDeg": 12.007
+      },
+      {
+        "zh": "小犬ε",
+        "en": "Epsilon CMi",
+        "mag": 4.99,
+        "raH": 7.427,
+        "decDeg": 9.276
+      },
+      {
+        "zh": "小犬ζ",
+        "en": "Zeta CMi",
+        "mag": 5.12,
+        "raH": 7.862,
+        "decDeg": 1.767
+      },
+      {
+        "zh": "小犬η",
+        "en": "Eta CMi",
+        "mag": 5.22,
+        "raH": 7.467,
+        "decDeg": 6.942
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ]
+    ],
+    "neighbours": [
+      "Cancer",
+      "Gemini",
+      "Hydra",
+      "Monoceros"
+    ],
+    "fact": "小犬座是希腊神话中的小猎犬，小犬α是它最亮的星。"
+  },
+  {
+    "id": "capricornus",
+    "zh": "摩羯座",
+    "en": "Capricornus",
+    "desig": "Cap",
+    "rank": 40,
+    "raH": 21.02,
+    "decDeg": -18.561,
+    "brightest": {
+      "zh": "摩羯δ",
+      "en": "Delta Cap",
+      "mag": 2.85
+    },
+    "stars": [
+      {
+        "zh": "摩羯δ",
+        "en": "Delta Cap",
+        "mag": 2.85,
+        "raH": 21.784,
+        "decDeg": -16.127
+      },
+      {
+        "zh": "摩羯β",
+        "en": "Beta Cap",
+        "mag": 3.05,
+        "raH": 20.35,
+        "decDeg": -14.781
+      },
+      {
+        "zh": "摩羯α²",
+        "en": "Alpha2 Cap",
+        "mag": 3.58,
+        "raH": 20.301,
+        "decDeg": -12.545
+      },
+      {
+        "zh": "摩羯γ",
+        "en": "Gamma Cap",
+        "mag": 3.69,
+        "raH": 21.668,
+        "decDeg": -16.662
+      },
+      {
+        "zh": "摩羯ζ",
+        "en": "Zeta Cap",
+        "mag": 3.77,
+        "raH": 21.444,
+        "decDeg": -22.411
+      },
+      {
+        "zh": "摩羯θ",
+        "en": "Theta Cap",
+        "mag": 4.08,
+        "raH": 21.099,
+        "decDeg": -17.233
+      },
+      {
+        "zh": "摩羯ω",
+        "en": "Omega Cap",
+        "mag": 4.12,
+        "raH": 20.864,
+        "decDeg": -26.919
+      }
+    ],
+    "lines": [
+      [
+        0,
+        3
+      ],
+      [
+        0,
+        4
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        6
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        5
+      ],
+      [
+        4,
+        6
+      ]
+    ],
+    "neighbours": [
+      "Aquarius",
+      "Aquila",
+      "Microscopium",
+      "Piscis Austrinus",
+      "Sagittarius"
+    ],
+    "fact": "摩羯座是黄道十二星座中的海山羊，摩羯δ是它最亮的星。"
+  },
+  {
+    "id": "carina",
+    "zh": "船底座",
+    "en": "Carina",
+    "desig": "Car",
+    "rank": 34,
+    "raH": 9.16,
+    "decDeg": -61.399,
+    "brightest": {
+      "zh": "船底α",
+      "en": "Alpha Car",
+      "mag": -0.62
+    },
+    "stars": [
+      {
+        "zh": "船底α",
+        "en": "Alpha Car",
+        "mag": -0.62,
+        "raH": 6.399,
+        "decDeg": -52.696
+      },
+      {
+        "zh": "船底β",
+        "en": "Beta Car",
+        "mag": 1.67,
+        "raH": 9.22,
+        "decDeg": -69.717
+      },
+      {
+        "zh": "船底ε",
+        "en": "Epsilon Car",
+        "mag": 1.86,
+        "raH": 8.375,
+        "decDeg": -59.509
+      },
+      {
+        "zh": "船底ι",
+        "en": "Iota Car",
+        "mag": 2.21,
+        "raH": 9.285,
+        "decDeg": -59.275
+      },
+      {
+        "zh": "船底θ",
+        "en": "Theta Car",
+        "mag": 2.74,
+        "raH": 10.716,
+        "decDeg": -64.394
+      },
+      {
+        "zh": "船底υ",
+        "en": "Upsilon Car",
+        "mag": 2.92,
+        "raH": 9.785,
+        "decDeg": -65.072
+      },
+      {
+        "zh": "船底ω",
+        "en": "Omega Car",
+        "mag": 3.29,
+        "raH": 10.229,
+        "decDeg": -70.038
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        6
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        4,
+        6
+      ]
+    ],
+    "neighbours": [
+      "Centaurus",
+      "Chamaeleon",
+      "Musca",
+      "Pictor",
+      "Puppis",
+      "Vela",
+      "Volans"
+    ],
+    "fact": "船底座是南船座拆分出的船底，船底α是它最亮的星，座内有船底座大星云。"
+  },
+  {
+    "id": "cassiopeia",
+    "zh": "仙后座",
+    "en": "Cassiopeia",
+    "desig": "Cas",
+    "rank": 25,
+    "raH": 1.129,
+    "decDeg": 60.773,
+    "brightest": {
+      "zh": "仙后γ",
+      "en": "Gamma Cas",
+      "mag": 2.15
+    },
+    "stars": [
+      {
+        "zh": "仙后γ",
+        "en": "Gamma Cas",
+        "mag": 2.15,
+        "raH": 0.945,
+        "decDeg": 60.717
+      },
+      {
+        "zh": "仙后α",
+        "en": "Alpha Cas",
+        "mag": 2.24,
+        "raH": 0.675,
+        "decDeg": 56.537
+      },
+      {
+        "zh": "仙后β",
+        "en": "Beta Cas",
+        "mag": 2.28,
+        "raH": 0.153,
+        "decDeg": 59.15
+      },
+      {
+        "zh": "仙后δ",
+        "en": "Delta Cas",
+        "mag": 2.66,
+        "raH": 1.43,
+        "decDeg": 60.235
+      },
+      {
+        "zh": "仙后ε",
+        "en": "Epsilon Cas",
+        "mag": 3.35,
+        "raH": 1.907,
+        "decDeg": 63.67
+      },
+      {
+        "zh": "仙后η",
+        "en": "Eta Cas",
+        "mag": 3.46,
+        "raH": 0.818,
+        "decDeg": 57.815
+      },
+      {
+        "zh": "仙后ζ",
+        "en": "Zeta Cas",
+        "mag": 3.69,
+        "raH": 0.616,
+        "decDeg": 53.897
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        3
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        3,
+        4
+      ]
+    ],
+    "neighbours": [
+      "Andromeda",
+      "Camelopardalis",
+      "Cepheus",
+      "Lacerta",
+      "Perseus"
+    ],
+    "fact": "仙后座是希腊神话中的王后，仙后γ是它最亮的星，座内有仙后座A射电源。"
+  },
+  {
+    "id": "centaurus",
+    "zh": "半人马座",
+    "en": "Centaurus",
+    "desig": "Cen",
+    "rank": 9,
+    "raH": 13.077,
+    "decDeg": -47.209,
+    "brightest": {
+      "zh": "半人马α¹",
+      "en": "Alpha1 Cen",
+      "mag": -0.01
+    },
+    "stars": [
+      {
+        "zh": "半人马α¹",
+        "en": "Alpha1 Cen",
+        "mag": -0.01,
+        "raH": 14.661,
+        "decDeg": -60.834
+      },
+      {
+        "zh": "半人马β",
+        "en": "Beta Cen",
+        "mag": 0.61,
+        "raH": 14.064,
+        "decDeg": -60.373
+      },
+      {
+        "zh": "半人马α²",
+        "en": "Alpha2 Cen",
+        "mag": 1.35,
+        "raH": 14.66,
+        "decDeg": -60.838
+      },
+      {
+        "zh": "半人马θ",
+        "en": "Theta Cen",
+        "mag": 2.06,
+        "raH": 14.111,
+        "decDeg": -36.37
+      },
+      {
+        "zh": "半人马γ",
+        "en": "Gamma Cen",
+        "mag": 2.2,
+        "raH": 12.692,
+        "decDeg": -48.96
+      },
+      {
+        "zh": "半人马ε",
+        "en": "Epsilon Cen",
+        "mag": 2.29,
+        "raH": 13.665,
+        "decDeg": -53.466
+      },
+      {
+        "zh": "半人马η",
+        "en": "Eta Cen",
+        "mag": 2.33,
+        "raH": 14.592,
+        "decDeg": -42.158
+      }
+    ],
+    "lines": [
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        5
+      ],
+      [
+        3,
+        6
+      ],
+      [
+        4,
+        5
+      ]
+    ],
+    "neighbours": [
+      "Antlia",
+      "Carina",
+      "Circinus",
+      "Crux",
+      "Hydra",
+      "Lupus",
+      "Musca",
+      "Vela"
+    ],
+    "fact": "半人马座是希腊神话中的马人，半人马α¹是它最亮的星，座内有半人马ω星团。"
+  },
+  {
+    "id": "cepheus",
+    "zh": "仙王座",
+    "en": "Cepheus",
+    "desig": "Cep",
+    "rank": 27,
+    "raH": 22.722,
+    "decDeg": 69.125,
+    "brightest": {
+      "zh": "仙王α",
+      "en": "Alpha Cep",
+      "mag": 2.45
+    },
+    "stars": [
+      {
+        "zh": "仙王α",
+        "en": "Alpha Cep",
+        "mag": 2.45,
+        "raH": 21.31,
+        "decDeg": 62.586
+      },
+      {
+        "zh": "仙王γ",
+        "en": "Gamma Cep",
+        "mag": 3.21,
+        "raH": 23.656,
+        "decDeg": 77.632
+      },
+      {
+        "zh": "仙王β",
+        "en": "Beta Cep",
+        "mag": 3.23,
+        "raH": 21.478,
+        "decDeg": 70.561
+      },
+      {
+        "zh": "仙王ζ",
+        "en": "Zeta Cep",
+        "mag": 3.39,
+        "raH": 22.181,
+        "decDeg": 58.201
+      },
+      {
+        "zh": "仙王η",
+        "en": "Eta Cep",
+        "mag": 3.41,
+        "raH": 20.755,
+        "decDeg": 61.839
+      },
+      {
+        "zh": "仙王ι",
+        "en": "Iota Cep",
+        "mag": 3.5,
+        "raH": 22.828,
+        "decDeg": 66.2
+      },
+      {
+        "zh": "仙王δ",
+        "en": "Delta Cep",
+        "mag": 4.07,
+        "raH": 22.486,
+        "decDeg": 58.415
+      }
+    ],
+    "lines": [
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        3
+      ],
+      [
+        0,
+        4
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        6
+      ],
+      [
+        5,
+        6
+      ]
+    ],
+    "neighbours": [
+      "Camelopardalis",
+      "Cassiopeia",
+      "Cygnus",
+      "Draco",
+      "Lacerta",
+      "Ursa Minor"
+    ],
+    "fact": "仙王座是希腊神话中的国王，仙王α是它最亮的星，座内有造父变星的原型星。"
+  },
+  {
+    "id": "cetus",
+    "zh": "鲸鱼座",
+    "en": "Cetus",
+    "desig": "Cet",
+    "rank": 4,
+    "raH": 1.664,
+    "decDeg": -9.162,
+    "brightest": {
+      "zh": "鲸鱼β",
+      "en": "Beta Cet",
+      "mag": 2.04
+    },
+    "stars": [
+      {
+        "zh": "鲸鱼β",
+        "en": "Beta Cet",
+        "mag": 2.04,
+        "raH": 0.726,
+        "decDeg": -17.987
+      },
+      {
+        "zh": "鲸鱼α",
+        "en": "Alpha Cet",
+        "mag": 2.54,
+        "raH": 3.038,
+        "decDeg": 4.09
+      },
+      {
+        "zh": "鲸鱼η",
+        "en": "Eta Cet",
+        "mag": 3.46,
+        "raH": 1.143,
+        "decDeg": -10.182
+      },
+      {
+        "zh": "鲸鱼γ",
+        "en": "Gamma Cet",
+        "mag": 3.47,
+        "raH": 2.722,
+        "decDeg": 3.236
+      },
+      {
+        "zh": "鲸鱼τ",
+        "en": "Tau Cet",
+        "mag": 3.49,
+        "raH": 1.734,
+        "decDeg": -15.937
+      },
+      {
+        "zh": "鲸鱼ι",
+        "en": "Iota Cet",
+        "mag": 3.56,
+        "raH": 0.324,
+        "decDeg": -8.824
+      },
+      {
+        "zh": "鲸鱼θ",
+        "en": "Theta Cet",
+        "mag": 3.6,
+        "raH": 1.4,
+        "decDeg": -8.183
+      }
+    ],
+    "lines": [
+      [
+        0,
+        4
+      ],
+      [
+        0,
+        5
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        2,
+        6
+      ],
+      [
+        3,
+        4
+      ]
+    ],
+    "neighbours": [
+      "Aquarius",
+      "Aries",
+      "Eridanus",
+      "Fornax",
+      "Pisces",
+      "Sculptor",
+      "Taurus"
+    ],
+    "fact": "鲸鱼座是希腊神话中的海怪，鲸鱼β是它最亮的星。"
+  },
+  {
+    "id": "chamaeleon",
+    "zh": "蝘蜓座",
+    "en": "Chamaeleon",
+    "desig": "Cha",
+    "rank": 79,
+    "raH": 10.646,
+    "decDeg": -78.834,
+    "brightest": {
+      "zh": "蝘蜓α",
+      "en": "Alpha Cha",
+      "mag": 4.05
+    },
+    "stars": [
+      {
+        "zh": "蝘蜓α",
+        "en": "Alpha Cha",
+        "mag": 4.05,
+        "raH": 8.309,
+        "decDeg": -76.92
+      },
+      {
+        "zh": "蝘蜓γ",
+        "en": "Gamma Cha",
+        "mag": 4.11,
+        "raH": 10.591,
+        "decDeg": -78.608
+      },
+      {
+        "zh": "蝘蜓β",
+        "en": "Beta Cha",
+        "mag": 4.24,
+        "raH": 12.306,
+        "decDeg": -79.312
+      },
+      {
+        "zh": "蝘蜓θ",
+        "en": "Theta Cha",
+        "mag": 4.34,
+        "raH": 8.344,
+        "decDeg": -77.484
+      },
+      {
+        "zh": "蝘蜓δ²",
+        "en": "Delta2 Cha",
+        "mag": 4.45,
+        "raH": 10.763,
+        "decDeg": -80.54
+      },
+      {
+        "zh": "蝘蜓ε",
+        "en": "Epsilon Cha",
+        "mag": 4.88,
+        "raH": 11.994,
+        "decDeg": -78.222
+      },
+      {
+        "zh": "蝘蜓κ",
+        "en": "Kappa Cha",
+        "mag": 5.04,
+        "raH": 12.08,
+        "decDeg": -76.519
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        2,
+        5
+      ]
+    ],
+    "neighbours": [
+      "Apus",
+      "Carina",
+      "Mensa",
+      "Musca",
+      "Octans",
+      "Volans"
+    ],
+    "fact": "蝘蜓座是普朗修斯命名的南天星座，蝘蜓α是它最亮的星。"
+  },
+  {
+    "id": "circinus",
+    "zh": "圆规座",
+    "en": "Circinus",
+    "desig": "Cir",
+    "rank": 85,
+    "raH": 14.738,
+    "decDeg": -63.387,
+    "brightest": {
+      "zh": "圆规α",
+      "en": "Alpha Cir",
+      "mag": 3.18
+    },
+    "stars": [
+      {
+        "zh": "圆规α",
+        "en": "Alpha Cir",
+        "mag": 3.18,
+        "raH": 14.708,
+        "decDeg": -64.975
+      },
+      {
+        "zh": "圆规β",
+        "en": "Beta Cir",
+        "mag": 4.07,
+        "raH": 15.292,
+        "decDeg": -58.801
+      },
+      {
+        "zh": "圆规γ",
+        "en": "Gamma Cir",
+        "mag": 4.48,
+        "raH": 15.39,
+        "decDeg": -59.321
+      },
+      {
+        "zh": "圆规ε",
+        "en": "Epsilon Cir",
+        "mag": 4.85,
+        "raH": 15.294,
+        "decDeg": -63.61
+      },
+      {
+        "zh": "圆规δ",
+        "en": "Delta Cir",
+        "mag": 5.04,
+        "raH": 15.282,
+        "decDeg": -60.957
+      },
+      {
+        "zh": "圆规θ",
+        "en": "Theta Cir",
+        "mag": 5.08,
+        "raH": 14.946,
+        "decDeg": -62.781
+      },
+      {
+        "zh": "圆规η",
+        "en": "Eta Cir",
+        "mag": 5.16,
+        "raH": 15.08,
+        "decDeg": -64.031
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "neighbours": [
+      "Apus",
+      "Centaurus",
+      "Lupus",
+      "Musca",
+      "Norma",
+      "Triangulum Australe"
+    ],
+    "fact": "圆规座是拉卡伊命名的南天小星座，圆规α是它最亮的星。"
+  },
+  {
+    "id": "columba",
+    "zh": "天鸽座",
+    "en": "Columba",
+    "desig": "Col",
+    "rank": 54,
+    "raH": 5.832,
+    "decDeg": -35.545,
+    "brightest": {
+      "zh": "天鸽α",
+      "en": "Alpha Col",
+      "mag": 2.65
+    },
+    "stars": [
+      {
+        "zh": "天鸽α",
+        "en": "Alpha Col",
+        "mag": 2.65,
+        "raH": 5.661,
+        "decDeg": -34.074
+      },
+      {
+        "zh": "天鸽β",
+        "en": "Beta Col",
+        "mag": 3.12,
+        "raH": 5.849,
+        "decDeg": -35.768
+      },
+      {
+        "zh": "天鸽δ",
+        "en": "Delta Col",
+        "mag": 3.85,
+        "raH": 6.369,
+        "decDeg": -33.436
+      },
+      {
+        "zh": "天鸽ε",
+        "en": "Epsilon Col",
+        "mag": 3.86,
+        "raH": 5.52,
+        "decDeg": -35.471
+      },
+      {
+        "zh": "天鸽η",
+        "en": "Eta Col",
+        "mag": 3.96,
+        "raH": 5.986,
+        "decDeg": -42.815
+      },
+      {
+        "zh": "天鸽γ",
+        "en": "Gamma Col",
+        "mag": 4.36,
+        "raH": 5.959,
+        "decDeg": -35.283
+      },
+      {
+        "zh": "天鸽κ",
+        "en": "Kappa Col",
+        "mag": 4.37,
+        "raH": 6.276,
+        "decDeg": -35.141
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        3
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        4
+      ]
+    ],
+    "neighbours": [
+      "Caelum",
+      "Canis Major",
+      "Lepus",
+      "Pictor",
+      "Puppis"
+    ],
+    "fact": "天鸽座是普朗修斯命名的天鸽，天鸽α是它最亮的星。"
+  },
+  {
+    "id": "coma-berenices",
+    "zh": "后发座",
+    "en": "Coma Berenices",
+    "desig": "Com",
+    "rank": 42,
+    "raH": 12.759,
+    "decDeg": 22.527,
+    "brightest": {
+      "zh": "后发β",
+      "en": "Beta Com",
+      "mag": 4.23
+    },
+    "stars": [
+      {
+        "zh": "后发β",
+        "en": "Beta Com",
+        "mag": 4.23,
+        "raH": 13.198,
+        "decDeg": 27.878
+      },
+      {
+        "zh": "后发α",
+        "en": "Alpha Com",
+        "mag": 4.32,
+        "raH": 13.166,
+        "decDeg": 17.529
+      },
+      {
+        "zh": "后发γ",
+        "en": "Gamma Com",
+        "mag": 4.35,
+        "raH": 12.449,
+        "decDeg": 28.268
+      },
+      {
+        "zh": "后发11",
+        "en": "11 Com",
+        "mag": 4.72,
+        "raH": 12.345,
+        "decDeg": 17.793
+      },
+      {
+        "zh": "后发36",
+        "en": "36 Com",
+        "mag": 4.76,
+        "raH": 12.982,
+        "decDeg": 17.409
+      },
+      {
+        "zh": "后发12",
+        "en": "12 Com",
+        "mag": 4.78,
+        "raH": 12.375,
+        "decDeg": 25.846
+      },
+      {
+        "zh": "后发23",
+        "en": "23 Com",
+        "mag": 4.8,
+        "raH": 12.581,
+        "decDeg": 22.629
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "neighbours": [
+      "Bootes",
+      "Canes Venatici",
+      "Leo",
+      "Ursa Major",
+      "Virgo"
+    ],
+    "fact": "后发座是希腊神话中王后的长发，后发β是它最亮的星，座内有后发座星系团。"
+  },
+  {
+    "id": "corona-australis",
+    "zh": "南冕座",
+    "en": "Corona Australis",
+    "desig": "CrA",
+    "rank": 80,
+    "raH": 18.635,
+    "decDeg": -40.909,
+    "brightest": {
+      "zh": "南冕β",
+      "en": "Beta CrA",
+      "mag": 4.1
+    },
+    "stars": [
+      {
+        "zh": "南冕β",
+        "en": "Beta CrA",
+        "mag": 4.1,
+        "raH": 19.167,
+        "decDeg": -39.341
+      },
+      {
+        "zh": "南冕α",
+        "en": "Alpha CrA",
+        "mag": 4.11,
+        "raH": 19.158,
+        "decDeg": -37.904
+      },
+      {
+        "zh": "南冕γ",
+        "en": "Gamma CrA",
+        "mag": 4.23,
+        "raH": 19.107,
+        "decDeg": -37.063
+      },
+      {
+        "zh": "南冕δ",
+        "en": "Delta CrA",
+        "mag": 4.57,
+        "raH": 19.139,
+        "decDeg": -40.497
+      },
+      {
+        "zh": "南冕θ",
+        "en": "Theta CrA",
+        "mag": 4.62,
+        "raH": 18.558,
+        "decDeg": -42.313
+      },
+      {
+        "zh": "南冕ζ",
+        "en": "Zeta CrA",
+        "mag": 4.74,
+        "raH": 19.052,
+        "decDeg": -42.095
+      },
+      {
+        "zh": "南冕ε",
+        "en": "Epsilon CrA",
+        "mag": 4.83,
+        "raH": 18.979,
+        "decDeg": -37.107
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        3
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        6
+      ],
+      [
+        3,
+        5
+      ],
+      [
+        4,
+        5
+      ]
+    ],
+    "neighbours": [
+      "Ara",
+      "Sagittarius",
+      "Scorpius",
+      "Telescopium"
+    ],
+    "fact": "南冕座是托勒密记载的南天王冠，南冕β是它最亮的星。"
+  },
+  {
+    "id": "corona-borealis",
+    "zh": "北冕座",
+    "en": "Corona Borealis",
+    "desig": "CrB",
+    "rank": 73,
+    "raH": 15.892,
+    "decDeg": 32.041,
+    "brightest": {
+      "zh": "北冕α",
+      "en": "Alpha CrB",
+      "mag": 2.22
+    },
+    "stars": [
+      {
+        "zh": "北冕α",
+        "en": "Alpha CrB",
+        "mag": 2.22,
+        "raH": 15.578,
+        "decDeg": 26.715
+      },
+      {
+        "zh": "北冕β",
+        "en": "Beta CrB",
+        "mag": 3.66,
+        "raH": 15.464,
+        "decDeg": 29.106
+      },
+      {
+        "zh": "北冕γ",
+        "en": "Gamma CrB",
+        "mag": 3.81,
+        "raH": 15.712,
+        "decDeg": 26.296
+      },
+      {
+        "zh": "北冕θ",
+        "en": "Theta CrB",
+        "mag": 4.14,
+        "raH": 15.549,
+        "decDeg": 31.359
+      },
+      {
+        "zh": "北冕ε",
+        "en": "Epsilon CrB",
+        "mag": 4.14,
+        "raH": 15.96,
+        "decDeg": 26.878
+      },
+      {
+        "zh": "北冕δ",
+        "en": "Delta CrB",
+        "mag": 4.59,
+        "raH": 15.827,
+        "decDeg": 26.068
+      },
+      {
+        "zh": "北冕ζ¹",
+        "en": "Zeta1 CrB",
+        "mag": 4.64,
+        "raH": 15.656,
+        "decDeg": 36.636
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        4,
+        5
+      ]
+    ],
+    "neighbours": [
+      "Bootes",
+      "Hercules",
+      "Serpens"
+    ],
+    "fact": "北冕座是希腊神话中的王冠，北冕α是它最亮的星。"
+  },
+  {
+    "id": "corvus",
+    "zh": "乌鸦座",
+    "en": "Corvus",
+    "desig": "Crv",
+    "rank": 70,
+    "raH": 12.426,
+    "decDeg": -18.093,
+    "brightest": {
+      "zh": "乌鸦γ",
+      "en": "Gamma Crv",
+      "mag": 2.58
+    },
+    "stars": [
+      {
+        "zh": "乌鸦γ",
+        "en": "Gamma Crv",
+        "mag": 2.58,
+        "raH": 12.263,
+        "decDeg": -17.542
+      },
+      {
+        "zh": "乌鸦β",
+        "en": "Beta Crv",
+        "mag": 2.65,
+        "raH": 12.573,
+        "decDeg": -23.397
+      },
+      {
+        "zh": "乌鸦δ",
+        "en": "Delta Crv",
+        "mag": 2.94,
+        "raH": 12.498,
+        "decDeg": -16.515
+      },
+      {
+        "zh": "乌鸦ε",
+        "en": "Epsilon Crv",
+        "mag": 3.02,
+        "raH": 12.169,
+        "decDeg": -22.62
+      },
+      {
+        "zh": "乌鸦α",
+        "en": "Alpha Crv",
+        "mag": 4.02,
+        "raH": 12.14,
+        "decDeg": -24.729
+      },
+      {
+        "zh": "乌鸦η",
+        "en": "Eta Crv",
+        "mag": 4.3,
+        "raH": 12.535,
+        "decDeg": -16.196
+      },
+      {
+        "zh": "乌鸦ζ",
+        "en": "Zeta Crv",
+        "mag": 5.2,
+        "raH": 12.343,
+        "decDeg": -22.216
+      }
+    ],
+    "lines": [
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        3
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        3,
+        4
+      ]
+    ],
+    "neighbours": [
+      "Crater",
+      "Hydra",
+      "Virgo"
+    ],
+    "fact": "乌鸦座是希腊神话中阿波罗的乌鸦，乌鸦γ是它最亮的星。"
+  },
+  {
+    "id": "crater",
+    "zh": "巨爵座",
+    "en": "Crater",
+    "desig": "Crt",
+    "rank": 53,
+    "raH": 11.404,
+    "decDeg": -15.766,
+    "brightest": {
+      "zh": "巨爵δ",
+      "en": "Delta Crt",
+      "mag": 3.56
+    },
+    "stars": [
+      {
+        "zh": "巨爵δ",
+        "en": "Delta Crt",
+        "mag": 3.56,
+        "raH": 11.322,
+        "decDeg": -14.779
+      },
+      {
+        "zh": "巨爵γ",
+        "en": "Gamma Crt",
+        "mag": 4.06,
+        "raH": 11.415,
+        "decDeg": -17.684
+      },
+      {
+        "zh": "巨爵α",
+        "en": "Alpha Crt",
+        "mag": 4.08,
+        "raH": 10.996,
+        "decDeg": -18.299
+      },
+      {
+        "zh": "巨爵β",
+        "en": "Beta Crt",
+        "mag": 4.46,
+        "raH": 11.194,
+        "decDeg": -22.826
+      },
+      {
+        "zh": "巨爵θ",
+        "en": "Theta Crt",
+        "mag": 4.7,
+        "raH": 11.611,
+        "decDeg": -9.802
+      },
+      {
+        "zh": "巨爵ζ",
+        "en": "Zeta Crt",
+        "mag": 4.71,
+        "raH": 11.746,
+        "decDeg": -18.351
+      },
+      {
+        "zh": "巨爵ε",
+        "en": "Epsilon Crt",
+        "mag": 4.81,
+        "raH": 11.41,
+        "decDeg": -10.859
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        6
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        4,
+        6
+      ]
+    ],
+    "neighbours": [
+      "Corvus",
+      "Hydra",
+      "Leo",
+      "Sextans",
+      "Virgo"
+    ],
+    "fact": "巨爵座是希腊神话中的酒杯，巨爵δ是它最亮的星。"
+  },
+  {
+    "id": "crux",
+    "zh": "南十字座",
+    "en": "Crux",
+    "desig": "Cru",
+    "rank": 88,
+    "raH": 12.431,
+    "decDeg": -59.785,
+    "brightest": {
+      "zh": "南十字α¹",
+      "en": "Alpha1 Cru",
+      "mag": 0.77
+    },
+    "stars": [
+      {
+        "zh": "南十字α¹",
+        "en": "Alpha1 Cru",
+        "mag": 0.77,
+        "raH": 12.443,
+        "decDeg": -63.099
+      },
+      {
+        "zh": "南十字β",
+        "en": "Beta Cru",
+        "mag": 1.25,
+        "raH": 12.795,
+        "decDeg": -59.689
+      },
+      {
+        "zh": "南十字γ",
+        "en": "Gamma Cru",
+        "mag": 1.59,
+        "raH": 12.519,
+        "decDeg": -57.113
+      },
+      {
+        "zh": "南十字δ",
+        "en": "Delta Cru",
+        "mag": 2.79,
+        "raH": 12.252,
+        "decDeg": -58.749
+      },
+      {
+        "zh": "南十字ε",
+        "en": "Epsilon Cru",
+        "mag": 3.59,
+        "raH": 12.356,
+        "decDeg": -60.401
+      },
+      {
+        "zh": "南十字μ¹",
+        "en": "Mu1 Cru",
+        "mag": 4.03,
+        "raH": 12.91,
+        "decDeg": -57.178
+      },
+      {
+        "zh": "南十字ζ",
+        "en": "Zeta Cru",
+        "mag": 4.06,
+        "raH": 12.307,
+        "decDeg": -64.003
+      }
+    ],
+    "lines": [
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        3
+      ]
+    ],
+    "neighbours": [
+      "Centaurus",
+      "Musca"
+    ],
+    "fact": "南十字座是南天著名的十字星座，南十字α¹是它最亮的星，座内有煤袋星云。"
+  },
+  {
+    "id": "cygnus",
+    "zh": "天鹅座",
+    "en": "Cygnus",
+    "desig": "Cyg",
+    "rank": 16,
+    "raH": 20.605,
+    "decDeg": 42.242,
+    "brightest": {
+      "zh": "天鹅α",
+      "en": "Alpha Cyg",
+      "mag": 1.25
+    },
+    "stars": [
+      {
+        "zh": "天鹅α",
+        "en": "Alpha Cyg",
+        "mag": 1.25,
+        "raH": 20.691,
+        "decDeg": 45.28
+      },
+      {
+        "zh": "天鹅γ",
+        "en": "Gamma Cyg",
+        "mag": 2.23,
+        "raH": 20.37,
+        "decDeg": 40.257
+      },
+      {
+        "zh": "天鹅ε",
+        "en": "Epsilon Cyg",
+        "mag": 2.48,
+        "raH": 20.77,
+        "decDeg": 33.97
+      },
+      {
+        "zh": "天鹅δ",
+        "en": "Delta Cyg",
+        "mag": 2.86,
+        "raH": 19.75,
+        "decDeg": 45.131
+      },
+      {
+        "zh": "天鹅β¹",
+        "en": "Beta1 Cyg",
+        "mag": 3.05,
+        "raH": 19.512,
+        "decDeg": 27.96
+      },
+      {
+        "zh": "天鹅ζ",
+        "en": "Zeta Cyg",
+        "mag": 3.21,
+        "raH": 21.216,
+        "decDeg": 30.227
+      },
+      {
+        "zh": "天鹅ξ",
+        "en": "Xi Cyg",
+        "mag": 3.72,
+        "raH": 21.082,
+        "decDeg": 43.928
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        5
+      ]
+    ],
+    "neighbours": [
+      "Cepheus",
+      "Draco",
+      "Lacerta",
+      "Lyra",
+      "Pegasus",
+      "Vulpecula"
+    ],
+    "fact": "天鹅座是希腊神话中的天鹅，天鹅α是它最亮的星，座内有天鹅座X-1。"
+  },
+  {
+    "id": "delphinus",
+    "zh": "海豚座",
+    "en": "Delphinus",
+    "desig": "Del",
+    "rank": 69,
+    "raH": 20.669,
+    "decDeg": 12.556,
+    "brightest": {
+      "zh": "海豚β",
+      "en": "Beta Del",
+      "mag": 3.64
+    },
+    "stars": [
+      {
+        "zh": "海豚β",
+        "en": "Beta Del",
+        "mag": 3.64,
+        "raH": 20.626,
+        "decDeg": 14.595
+      },
+      {
+        "zh": "海豚α",
+        "en": "Alpha Del",
+        "mag": 3.77,
+        "raH": 20.661,
+        "decDeg": 15.912
+      },
+      {
+        "zh": "海豚ε",
+        "en": "Epsilon Del",
+        "mag": 4.03,
+        "raH": 20.554,
+        "decDeg": 11.303
+      },
+      {
+        "zh": "海豚γ²",
+        "en": "Gamma2 Del",
+        "mag": 4.27,
+        "raH": 20.778,
+        "decDeg": 16.124
+      },
+      {
+        "zh": "海豚δ",
+        "en": "Delta Del",
+        "mag": 4.43,
+        "raH": 20.724,
+        "decDeg": 15.075
+      },
+      {
+        "zh": "海豚ζ",
+        "en": "Zeta Del",
+        "mag": 4.64,
+        "raH": 20.588,
+        "decDeg": 14.674
+      },
+      {
+        "zh": "海豚κ",
+        "en": "Kappa Del",
+        "mag": 5.07,
+        "raH": 20.652,
+        "decDeg": 10.086
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        4
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        3,
+        4
+      ]
+    ],
+    "neighbours": [
+      "Aquarius",
+      "Aquila",
+      "Equuleus",
+      "Pegasus",
+      "Sagitta",
+      "Vulpecula"
+    ],
+    "fact": "海豚座是希腊神话中的海豚，海豚β是它最亮的星。"
+  },
+  {
+    "id": "dorado",
+    "zh": "剑鱼座",
+    "en": "Dorado",
+    "desig": "Dor",
+    "rank": 72,
+    "raH": 5.134,
+    "decDeg": -61.322,
+    "brightest": {
+      "zh": "剑鱼α",
+      "en": "Alpha Dor",
+      "mag": 3.3
+    },
+    "stars": [
+      {
+        "zh": "剑鱼α",
+        "en": "Alpha Dor",
+        "mag": 3.3,
+        "raH": 4.567,
+        "decDeg": -55.045
+      },
+      {
+        "zh": "剑鱼β",
+        "en": "Beta Dor",
+        "mag": 3.76,
+        "raH": 5.56,
+        "decDeg": -62.49
+      },
+      {
+        "zh": "剑鱼γ",
+        "en": "Gamma Dor",
+        "mag": 4.26,
+        "raH": 4.267,
+        "decDeg": -51.487
+      },
+      {
+        "zh": "剑鱼δ",
+        "en": "Delta Dor",
+        "mag": 4.34,
+        "raH": 5.746,
+        "decDeg": -65.736
+      },
+      {
+        "zh": "剑鱼ζ",
+        "en": "Zeta Dor",
+        "mag": 4.71,
+        "raH": 5.092,
+        "decDeg": -57.473
+      },
+      {
+        "zh": "剑鱼θ",
+        "en": "Theta Dor",
+        "mag": 4.81,
+        "raH": 5.229,
+        "decDeg": -67.185
+      },
+      {
+        "zh": "剑鱼η²",
+        "en": "Eta2 Dor",
+        "mag": 5.01,
+        "raH": 6.188,
+        "decDeg": -65.589
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        4
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        1,
+        4
+      ]
+    ],
+    "neighbours": [
+      "Caelum",
+      "Horologium",
+      "Hydrus",
+      "Mensa",
+      "Pictor",
+      "Reticulum",
+      "Volans"
+    ],
+    "fact": "剑鱼座是普朗修斯命名的南天星座，剑鱼α是它最亮的星，座内有大麦哲伦云。"
+  },
+  {
+    "id": "draco",
+    "zh": "天龙座",
+    "en": "Draco",
+    "desig": "Dra",
+    "rank": 8,
+    "raH": 16.832,
+    "decDeg": 64.14,
+    "brightest": {
+      "zh": "天龙γ",
+      "en": "Gamma Dra",
+      "mag": 2.24
+    },
+    "stars": [
+      {
+        "zh": "天龙γ",
+        "en": "Gamma Dra",
+        "mag": 2.24,
+        "raH": 17.943,
+        "decDeg": 51.489
+      },
+      {
+        "zh": "天龙η",
+        "en": "Eta Dra",
+        "mag": 2.73,
+        "raH": 16.4,
+        "decDeg": 61.514
+      },
+      {
+        "zh": "天龙β",
+        "en": "Beta Dra",
+        "mag": 2.79,
+        "raH": 17.507,
+        "decDeg": 52.301
+      },
+      {
+        "zh": "天龙δ",
+        "en": "Delta Dra",
+        "mag": 3.07,
+        "raH": 19.209,
+        "decDeg": 67.662
+      },
+      {
+        "zh": "天龙ζ",
+        "en": "Zeta Dra",
+        "mag": 3.17,
+        "raH": 17.146,
+        "decDeg": 65.715
+      },
+      {
+        "zh": "天龙ι",
+        "en": "Iota Dra",
+        "mag": 3.29,
+        "raH": 15.415,
+        "decDeg": 58.966
+      },
+      {
+        "zh": "天龙χ",
+        "en": "Chi Dra",
+        "mag": 3.55,
+        "raH": 18.351,
+        "decDeg": 72.733
+      }
+    ],
+    "lines": [
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        3,
+        4
+      ]
+    ],
+    "neighbours": [
+      "Bootes",
+      "Camelopardalis",
+      "Cepheus",
+      "Cygnus",
+      "Hercules",
+      "Lyra",
+      "Ursa Major",
+      "Ursa Minor"
+    ],
+    "fact": "天龙座是希腊神话中的巨龙，天龙γ是它最亮的星。"
+  },
+  {
+    "id": "equuleus",
+    "zh": "小马座",
+    "en": "Equuleus",
+    "desig": "Equ",
+    "rank": 87,
+    "raH": 21.197,
+    "decDeg": 7.381,
+    "brightest": {
+      "zh": "小马α",
+      "en": "Alpha Equ",
+      "mag": 3.92
+    },
+    "stars": [
+      {
+        "zh": "小马α",
+        "en": "Alpha Equ",
+        "mag": 3.92,
+        "raH": 21.264,
+        "decDeg": 5.248
+      },
+      {
+        "zh": "小马δ",
+        "en": "Delta Equ",
+        "mag": 4.47,
+        "raH": 21.241,
+        "decDeg": 10.007
+      },
+      {
+        "zh": "小马γ",
+        "en": "Gamma Equ",
+        "mag": 4.7,
+        "raH": 21.172,
+        "decDeg": 10.132
+      },
+      {
+        "zh": "小马β",
+        "en": "Beta Equ",
+        "mag": 5.16,
+        "raH": 21.382,
+        "decDeg": 6.811
+      },
+      {
+        "zh": "小马ε",
+        "en": "Epsilon Equ",
+        "mag": 5.3,
+        "raH": 20.985,
+        "decDeg": 4.293
+      },
+      {
+        "zh": "小马3",
+        "en": "3 Equ",
+        "mag": 5.63,
+        "raH": 21.076,
+        "decDeg": 5.503
+      },
+      {
+        "zh": "小马9",
+        "en": "9 Equ",
+        "mag": 5.81,
+        "raH": 21.351,
+        "decDeg": 7.355
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "neighbours": [
+      "Aquarius",
+      "Delphinus",
+      "Pegasus"
+    ],
+    "fact": "小马座是希腊神话中的小马，小马α是它最亮的星。"
+  },
+  {
+    "id": "eridanus",
+    "zh": "波江座",
+    "en": "Eridanus",
+    "desig": "Eri",
+    "rank": 6,
+    "raH": 3.725,
+    "decDeg": -21.471,
+    "brightest": {
+      "zh": "波江α",
+      "en": "Alpha Eri",
+      "mag": 0.45
+    },
+    "stars": [
+      {
+        "zh": "波江α",
+        "en": "Alpha Eri",
+        "mag": 0.45,
+        "raH": 1.629,
+        "decDeg": -57.237
+      },
+      {
+        "zh": "波江β",
+        "en": "Beta Eri",
+        "mag": 2.78,
+        "raH": 5.131,
+        "decDeg": -5.086
+      },
+      {
+        "zh": "波江θ¹",
+        "en": "Theta1 Eri",
+        "mag": 2.88,
+        "raH": 2.971,
+        "decDeg": -40.305
+      },
+      {
+        "zh": "波江γ",
+        "en": "Gamma Eri",
+        "mag": 2.97,
+        "raH": 3.967,
+        "decDeg": -13.509
+      },
+      {
+        "zh": "波江δ",
+        "en": "Delta Eri",
+        "mag": 3.52,
+        "raH": 3.721,
+        "decDeg": -9.763
+      },
+      {
+        "zh": "波江υ⁴",
+        "en": "Upsilon4 Eri",
+        "mag": 3.55,
+        "raH": 4.298,
+        "decDeg": -33.798
+      },
+      {
+        "zh": "波江φ",
+        "en": "Phi Eri",
+        "mag": 3.56,
+        "raH": 2.275,
+        "decDeg": -51.512
+      }
+    ],
+    "lines": [
+      [
+        0,
+        6
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        2,
+        6
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        4,
+        5
+      ]
+    ],
+    "neighbours": [
+      "Caelum",
+      "Cetus",
+      "Fornax",
+      "Horologium",
+      "Hydrus",
+      "Lepus",
+      "Orion",
+      "Phoenix",
+      "Taurus"
+    ],
+    "fact": "波江座是希腊神话中的天河，波江α是它最亮的星。"
+  },
+  {
+    "id": "fornax",
+    "zh": "天炉座",
+    "en": "Fornax",
+    "desig": "For",
+    "rank": 41,
+    "raH": 2.761,
+    "decDeg": -31.062,
+    "brightest": {
+      "zh": "天炉α",
+      "en": "Alpha For",
+      "mag": 3.8
+    },
+    "stars": [
+      {
+        "zh": "天炉α",
+        "en": "Alpha For",
+        "mag": 3.8,
+        "raH": 3.201,
+        "decDeg": -28.988
+      },
+      {
+        "zh": "天炉β",
+        "en": "Beta For",
+        "mag": 4.45,
+        "raH": 2.818,
+        "decDeg": -32.406
+      },
+      {
+        "zh": "天炉ν",
+        "en": "Nu For",
+        "mag": 4.68,
+        "raH": 2.075,
+        "decDeg": -29.297
+      },
+      {
+        "zh": "天炉ω",
+        "en": "Omega For",
+        "mag": 4.96,
+        "raH": 2.564,
+        "decDeg": -28.232
+      },
+      {
+        "zh": "天炉δ",
+        "en": "Delta For",
+        "mag": 4.99,
+        "raH": 3.704,
+        "decDeg": -31.938
+      },
+      {
+        "zh": "天炉φ",
+        "en": "Phi For",
+        "mag": 5.13,
+        "raH": 2.467,
+        "decDeg": -33.811
+      },
+      {
+        "zh": "天炉κ",
+        "en": "Kappa For",
+        "mag": 5.19,
+        "raH": 2.376,
+        "decDeg": -23.816
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "neighbours": [
+      "Cetus",
+      "Eridanus",
+      "Phoenix",
+      "Sculptor"
+    ],
+    "fact": "天炉座是拉卡伊命名的南天小星座，天炉α是它最亮的星，座内有天炉座矮星系。"
+  },
+  {
+    "id": "gemini",
+    "zh": "双子座",
+    "en": "Gemini",
+    "desig": "Gem",
+    "rank": 30,
+    "raH": 7.12,
+    "decDeg": 23.47,
+    "brightest": {
+      "zh": "双子β",
+      "en": "Beta Gem",
+      "mag": 1.16
+    },
+    "stars": [
+      {
+        "zh": "双子β",
+        "en": "Beta Gem",
+        "mag": 1.16,
+        "raH": 7.755,
+        "decDeg": 28.026
+      },
+      {
+        "zh": "双子α",
+        "en": "Alpha Gem",
+        "mag": 1.58,
+        "raH": 7.577,
+        "decDeg": 31.888
+      },
+      {
+        "zh": "双子γ",
+        "en": "Gamma Gem",
+        "mag": 1.93,
+        "raH": 6.629,
+        "decDeg": 16.399
+      },
+      {
+        "zh": "双子μ",
+        "en": "Mu Gem",
+        "mag": 2.87,
+        "raH": 6.383,
+        "decDeg": 22.514
+      },
+      {
+        "zh": "双子ε",
+        "en": "Epsilon Gem",
+        "mag": 3.06,
+        "raH": 6.732,
+        "decDeg": 25.131
+      },
+      {
+        "zh": "双子η",
+        "en": "Eta Gem",
+        "mag": 3.31,
+        "raH": 6.248,
+        "decDeg": 22.507
+      },
+      {
+        "zh": "双子ξ",
+        "en": "Xi Gem",
+        "mag": 3.35,
+        "raH": 6.755,
+        "decDeg": 12.896
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        6
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        5
+      ]
+    ],
+    "neighbours": [
+      "Auriga",
+      "Cancer",
+      "Canis Minor",
+      "Lynx",
+      "Monoceros",
+      "Orion",
+      "Taurus"
+    ],
+    "fact": "双子座是黄道十二星座中的双生子，双子β是它最亮的星，座内有双子座流星雨。"
+  },
+  {
+    "id": "grus",
+    "zh": "天鹤座",
+    "en": "Grus",
+    "desig": "Gru",
+    "rank": 45,
+    "raH": 22.547,
+    "decDeg": -44.921,
+    "brightest": {
+      "zh": "天鹤α",
+      "en": "Alpha Gru",
+      "mag": 1.73
+    },
+    "stars": [
+      {
+        "zh": "天鹤α",
+        "en": "Alpha Gru",
+        "mag": 1.73,
+        "raH": 22.137,
+        "decDeg": -46.961
+      },
+      {
+        "zh": "天鹤β",
+        "en": "Beta Gru",
+        "mag": 2.07,
+        "raH": 22.711,
+        "decDeg": -46.885
+      },
+      {
+        "zh": "天鹤γ",
+        "en": "Gamma Gru",
+        "mag": 3.0,
+        "raH": 21.899,
+        "decDeg": -37.365
+      },
+      {
+        "zh": "天鹤ε",
+        "en": "Epsilon Gru",
+        "mag": 3.49,
+        "raH": 22.809,
+        "decDeg": -51.317
+      },
+      {
+        "zh": "天鹤ι",
+        "en": "Iota Gru",
+        "mag": 3.88,
+        "raH": 23.173,
+        "decDeg": -45.247
+      },
+      {
+        "zh": "天鹤δ¹",
+        "en": "Delta1 Gru",
+        "mag": 3.97,
+        "raH": 22.488,
+        "decDeg": -43.496
+      },
+      {
+        "zh": "天鹤ζ",
+        "en": "Zeta Gru",
+        "mag": 4.11,
+        "raH": 23.015,
+        "decDeg": -52.754
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        5
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        6
+      ]
+    ],
+    "neighbours": [
+      "Indus",
+      "Microscopium",
+      "Phoenix",
+      "Piscis Austrinus",
+      "Sculptor",
+      "Tucana"
+    ],
+    "fact": "天鹤座是普朗修斯命名的南天星座，天鹤α是它最亮的星。"
+  },
+  {
+    "id": "hercules",
+    "zh": "武仙座",
+    "en": "Hercules",
+    "desig": "Her",
+    "rank": 5,
+    "raH": 17.333,
+    "decDeg": 28.222,
+    "brightest": {
+      "zh": "武仙β",
+      "en": "Beta Her",
+      "mag": 2.78
+    },
+    "stars": [
+      {
+        "zh": "武仙β",
+        "en": "Beta Her",
+        "mag": 2.78,
+        "raH": 16.504,
+        "decDeg": 21.49
+      },
+      {
+        "zh": "武仙α¹",
+        "en": "Alpha1 Her",
+        "mag": 2.78,
+        "raH": 17.244,
+        "decDeg": 14.39
+      },
+      {
+        "zh": "武仙ζ",
+        "en": "Zeta Her",
+        "mag": 2.81,
+        "raH": 16.688,
+        "decDeg": 31.603
+      },
+      {
+        "zh": "武仙δ",
+        "en": "Delta Her",
+        "mag": 3.12,
+        "raH": 17.251,
+        "decDeg": 24.839
+      },
+      {
+        "zh": "武仙π",
+        "en": "Pi Her",
+        "mag": 3.16,
+        "raH": 17.251,
+        "decDeg": 36.809
+      },
+      {
+        "zh": "武仙μ",
+        "en": "Mu Her",
+        "mag": 3.42,
+        "raH": 17.774,
+        "decDeg": 27.721
+      },
+      {
+        "zh": "武仙η",
+        "en": "Eta Her",
+        "mag": 3.48,
+        "raH": 16.715,
+        "decDeg": 38.922
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        2,
+        6
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        5
+      ],
+      [
+        4,
+        6
+      ]
+    ],
+    "neighbours": [
+      "Aquila",
+      "Bootes",
+      "Corona Borealis",
+      "Draco",
+      "Lyra",
+      "Ophiuchus",
+      "Sagitta",
+      "Serpens",
+      "Vulpecula"
+    ],
+    "fact": "武仙座是希腊神话中的大力士，武仙β是它最亮的星，座内有武仙座球状星团。"
+  },
+  {
+    "id": "horologium",
+    "zh": "时钟座",
+    "en": "Horologium",
+    "desig": "Hor",
+    "rank": 58,
+    "raH": 3.247,
+    "decDeg": -52.806,
+    "brightest": {
+      "zh": "时钟α",
+      "en": "Alpha Hor",
+      "mag": 3.85
+    },
+    "stars": [
+      {
+        "zh": "时钟α",
+        "en": "Alpha Hor",
+        "mag": 3.85,
+        "raH": 4.233,
+        "decDeg": -42.294
+      },
+      {
+        "zh": "时钟δ",
+        "en": "Delta Hor",
+        "mag": 4.93,
+        "raH": 4.181,
+        "decDeg": -41.994
+      },
+      {
+        "zh": "时钟β",
+        "en": "Beta Hor",
+        "mag": 4.98,
+        "raH": 2.98,
+        "decDeg": -64.071
+      },
+      {
+        "zh": "时钟μ",
+        "en": "Mu Hor",
+        "mag": 5.12,
+        "raH": 3.06,
+        "decDeg": -59.738
+      },
+      {
+        "zh": "时钟ζ",
+        "en": "Zeta Hor",
+        "mag": 5.21,
+        "raH": 2.678,
+        "decDeg": -54.55
+      },
+      {
+        "zh": "时钟ν",
+        "en": "Nu Hor",
+        "mag": 5.25,
+        "raH": 2.817,
+        "decDeg": -62.807
+      },
+      {
+        "zh": "时钟η",
+        "en": "Eta Hor",
+        "mag": 5.3,
+        "raH": 2.623,
+        "decDeg": -52.543
+      }
+    ],
+    "lines": [
+      [
+        0,
+        6
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        4,
+        6
+      ]
+    ],
+    "neighbours": [
+      "Caelum",
+      "Dorado",
+      "Eridanus",
+      "Hydrus",
+      "Reticulum"
+    ],
+    "fact": "时钟座是拉卡伊命名的南天小星座，时钟α是它最亮的星。"
+  },
+  {
+    "id": "hydra",
+    "zh": "长蛇座",
+    "en": "Hydra",
+    "desig": "Hya",
+    "rank": 1,
+    "raH": 10.584,
+    "decDeg": -17.52,
+    "brightest": {
+      "zh": "长蛇α",
+      "en": "Alpha Hya",
+      "mag": 1.99
+    },
+    "stars": [
+      {
+        "zh": "长蛇α",
+        "en": "Alpha Hya",
+        "mag": 1.99,
+        "raH": 9.46,
+        "decDeg": -8.659
+      },
+      {
+        "zh": "长蛇γ",
+        "en": "Gamma Hya",
+        "mag": 2.99,
+        "raH": 13.315,
+        "decDeg": -23.172
+      },
+      {
+        "zh": "长蛇ζ",
+        "en": "Zeta Hya",
+        "mag": 3.11,
+        "raH": 8.923,
+        "decDeg": 5.946
+      },
+      {
+        "zh": "长蛇ν",
+        "en": "Nu Hya",
+        "mag": 3.11,
+        "raH": 10.827,
+        "decDeg": -16.194
+      },
+      {
+        "zh": "长蛇π",
+        "en": "Pi Hya",
+        "mag": 3.25,
+        "raH": 14.106,
+        "decDeg": -26.682
+      },
+      {
+        "zh": "长蛇ε",
+        "en": "Epsilon Hya",
+        "mag": 3.38,
+        "raH": 8.78,
+        "decDeg": 6.419
+      },
+      {
+        "zh": "长蛇ξ",
+        "en": "Xi Hya",
+        "mag": 3.54,
+        "raH": 11.55,
+        "decDeg": -31.858
+      }
+    ],
+    "lines": [
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        3
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        1,
+        6
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        6
+      ]
+    ],
+    "neighbours": [
+      "Antlia",
+      "Cancer",
+      "Canis Minor",
+      "Centaurus",
+      "Corvus",
+      "Crater",
+      "Leo",
+      "Libra",
+      "Monoceros",
+      "Puppis",
+      "Pyxis",
+      "Sextans",
+      "Virgo"
+    ],
+    "fact": "长蛇座是希腊神话中的水蛇，长蛇α是它最亮的星。"
+  },
+  {
+    "id": "hydrus",
+    "zh": "水蛇座",
+    "en": "Hydrus",
+    "desig": "Hyi",
+    "rank": 61,
+    "raH": 2.309,
+    "decDeg": -71.024,
+    "brightest": {
+      "zh": "水蛇β",
+      "en": "Beta Hyi",
+      "mag": 2.82
+    },
+    "stars": [
+      {
+        "zh": "水蛇β",
+        "en": "Beta Hyi",
+        "mag": 2.82,
+        "raH": 0.428,
+        "decDeg": -77.254
+      },
+      {
+        "zh": "水蛇α",
+        "en": "Alpha Hyi",
+        "mag": 2.86,
+        "raH": 1.979,
+        "decDeg": -61.57
+      },
+      {
+        "zh": "水蛇γ",
+        "en": "Gamma Hyi",
+        "mag": 3.26,
+        "raH": 3.787,
+        "decDeg": -74.239
+      },
+      {
+        "zh": "水蛇δ",
+        "en": "Delta Hyi",
+        "mag": 4.08,
+        "raH": 2.362,
+        "decDeg": -68.659
+      },
+      {
+        "zh": "水蛇ε",
+        "en": "Epsilon Hyi",
+        "mag": 4.12,
+        "raH": 2.66,
+        "decDeg": -68.267
+      },
+      {
+        "zh": "水蛇η²",
+        "en": "Eta2 Hyi",
+        "mag": 4.68,
+        "raH": 1.916,
+        "decDeg": -67.647
+      },
+      {
+        "zh": "水蛇ν",
+        "en": "Nu Hyi",
+        "mag": 4.76,
+        "raH": 2.841,
+        "decDeg": -75.067
+      }
+    ],
+    "lines": [
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        5
+      ]
+    ],
+    "neighbours": [
+      "Dorado",
+      "Eridanus",
+      "Horologium",
+      "Mensa",
+      "Octans",
+      "Reticulum",
+      "Tucana"
+    ],
+    "fact": "水蛇座是普朗修斯命名的南天星座，水蛇β是它最亮的星。"
+  },
+  {
+    "id": "indus",
+    "zh": "印第安座",
+    "en": "Indus",
+    "desig": "Ind",
+    "rank": 49,
+    "raH": 21.615,
+    "decDeg": -57.942,
+    "brightest": {
+      "zh": "印第安α",
+      "en": "Alpha Ind",
+      "mag": 3.11
+    },
+    "stars": [
+      {
+        "zh": "印第安α",
+        "en": "Alpha Ind",
+        "mag": 3.11,
+        "raH": 20.626,
+        "decDeg": -47.292
+      },
+      {
+        "zh": "印第安β",
+        "en": "Beta Ind",
+        "mag": 3.67,
+        "raH": 20.913,
+        "decDeg": -58.454
+      },
+      {
+        "zh": "印第安θ",
+        "en": "Theta Ind",
+        "mag": 4.39,
+        "raH": 21.331,
+        "decDeg": -53.449
+      },
+      {
+        "zh": "印第安δ",
+        "en": "Delta Ind",
+        "mag": 4.4,
+        "raH": 21.965,
+        "decDeg": -54.993
+      },
+      {
+        "zh": "印第安η",
+        "en": "Eta Ind",
+        "mag": 4.51,
+        "raH": 20.734,
+        "decDeg": -51.921
+      },
+      {
+        "zh": "印第安ε",
+        "en": "Epsilon Ind",
+        "mag": 4.69,
+        "raH": 22.055,
+        "decDeg": -56.786
+      },
+      {
+        "zh": "印第安ζ",
+        "en": "Zeta Ind",
+        "mag": 4.9,
+        "raH": 20.825,
+        "decDeg": -46.227
+      }
+    ],
+    "lines": [
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        4
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "neighbours": [
+      "Grus",
+      "Microscopium",
+      "Octans",
+      "Pavo",
+      "Telescopium",
+      "Tucana"
+    ],
+    "fact": "印第安座是普朗修斯命名的南天星座，印第安α是它最亮的星。"
+  },
+  {
+    "id": "lacerta",
+    "zh": "蝎虎座",
+    "en": "Lacerta",
+    "desig": "Lac",
+    "rank": 68,
+    "raH": 22.519,
+    "decDeg": 45.434,
+    "brightest": {
+      "zh": "蝎虎α",
+      "en": "Alpha Lac",
+      "mag": 3.76
+    },
+    "stars": [
+      {
+        "zh": "蝎虎α",
+        "en": "Alpha Lac",
+        "mag": 3.76,
+        "raH": 22.522,
+        "decDeg": 50.282
+      },
+      {
+        "zh": "蝎虎1",
+        "en": "1 Lac",
+        "mag": 4.14,
+        "raH": 22.266,
+        "decDeg": 37.749
+      },
+      {
+        "zh": "蝎虎5",
+        "en": "5 Lac",
+        "mag": 4.34,
+        "raH": 22.492,
+        "decDeg": 47.707
+      },
+      {
+        "zh": "蝎虎β",
+        "en": "Beta Lac",
+        "mag": 4.42,
+        "raH": 22.393,
+        "decDeg": 52.229
+      },
+      {
+        "zh": "蝎虎11",
+        "en": "11 Lac",
+        "mag": 4.5,
+        "raH": 22.675,
+        "decDeg": 44.276
+      },
+      {
+        "zh": "蝎虎6",
+        "en": "6 Lac",
+        "mag": 4.52,
+        "raH": 22.508,
+        "decDeg": 43.123
+      },
+      {
+        "zh": "蝎虎2",
+        "en": "2 Lac",
+        "mag": 4.55,
+        "raH": 22.35,
+        "decDeg": 46.537
+      }
+    ],
+    "lines": [
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        3
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        2,
+        6
+      ],
+      [
+        4,
+        5
+      ],
+      [
+        5,
+        6
+      ]
+    ],
+    "neighbours": [
+      "Andromeda",
+      "Cassiopeia",
+      "Cepheus",
+      "Cygnus",
+      "Pegasus"
+    ],
+    "fact": "蝎虎座是赫维留命名的北天星座，蝎虎α是它最亮的星。"
+  },
+  {
+    "id": "leo",
+    "zh": "狮子座",
+    "en": "Leo",
+    "desig": "Leo",
+    "rank": 12,
+    "raH": 10.708,
+    "decDeg": 15.021,
+    "brightest": {
+      "zh": "狮子α",
+      "en": "Alpha Leo",
+      "mag": 1.36
+    },
+    "stars": [
+      {
+        "zh": "狮子α",
+        "en": "Alpha Leo",
+        "mag": 1.36,
+        "raH": 10.14,
+        "decDeg": 11.967
+      },
+      {
+        "zh": "狮子γ¹",
+        "en": "Gamma1 Leo",
+        "mag": 2.01,
+        "raH": 10.333,
+        "decDeg": 19.841
+      },
+      {
+        "zh": "狮子β",
+        "en": "Beta Leo",
+        "mag": 2.14,
+        "raH": 11.818,
+        "decDeg": 14.572
+      },
+      {
+        "zh": "狮子δ",
+        "en": "Delta Leo",
+        "mag": 2.56,
+        "raH": 11.235,
+        "decDeg": 20.524
+      },
+      {
+        "zh": "狮子ε",
+        "en": "Epsilon Leo",
+        "mag": 2.97,
+        "raH": 9.764,
+        "decDeg": 23.774
+      },
+      {
+        "zh": "狮子θ",
+        "en": "Theta Leo",
+        "mag": 3.33,
+        "raH": 11.237,
+        "decDeg": 15.43
+      },
+      {
+        "zh": "狮子ζ",
+        "en": "Zeta Leo",
+        "mag": 3.43,
+        "raH": 10.278,
+        "decDeg": 23.417
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        5
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        1,
+        6
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        4,
+        6
+      ]
+    ],
+    "neighbours": [
+      "Cancer",
+      "Coma Berenices",
+      "Crater",
+      "Hydra",
+      "Leo Minor",
+      "Sextans",
+      "Ursa Major",
+      "Virgo"
+    ],
+    "fact": "狮子座是黄道十二星座中的雄狮，狮子α是它最亮的星。"
+  },
+  {
+    "id": "leo-minor",
+    "zh": "小狮座",
+    "en": "Leo Minor",
+    "desig": "LMi",
+    "rank": 64,
+    "raH": 10.32,
+    "decDeg": 33.68,
+    "brightest": {
+      "zh": "小狮46",
+      "en": "46 LMi",
+      "mag": 3.79
+    },
+    "stars": [
+      {
+        "zh": "小狮46",
+        "en": "46 LMi",
+        "mag": 3.79,
+        "raH": 10.889,
+        "decDeg": 34.215
+      },
+      {
+        "zh": "小狮β",
+        "en": "Beta LMi",
+        "mag": 4.2,
+        "raH": 10.465,
+        "decDeg": 36.707
+      },
+      {
+        "zh": "小狮21",
+        "en": "21 LMi",
+        "mag": 4.49,
+        "raH": 10.124,
+        "decDeg": 35.245
+      },
+      {
+        "zh": "小狮10",
+        "en": "10 LMi",
+        "mag": 4.54,
+        "raH": 9.57,
+        "decDeg": 36.398
+      },
+      {
+        "zh": "小狮37",
+        "en": "37 LMi",
+        "mag": 4.68,
+        "raH": 10.645,
+        "decDeg": 31.976
+      },
+      {
+        "zh": "小狮30",
+        "en": "30 LMi",
+        "mag": 4.72,
+        "raH": 10.432,
+        "decDeg": 33.796
+      },
+      {
+        "zh": "小狮41",
+        "en": "41 LMi",
+        "mag": 5.08,
+        "raH": 10.724,
+        "decDeg": 23.188
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        5
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        2,
+        5
+      ]
+    ],
+    "neighbours": [
+      "Leo",
+      "Lynx",
+      "Ursa Major"
+    ],
+    "fact": "小狮座是赫维留命名的北天小星座，小狮46是它最亮的星。"
+  },
+  {
+    "id": "lepus",
+    "zh": "天兔座",
+    "en": "Lepus",
+    "desig": "Lep",
+    "rank": 51,
+    "raH": 5.582,
+    "decDeg": -18.92,
+    "brightest": {
+      "zh": "天兔α",
+      "en": "Alpha Lep",
+      "mag": 2.58
+    },
+    "stars": [
+      {
+        "zh": "天兔α",
+        "en": "Alpha Lep",
+        "mag": 2.58,
+        "raH": 5.546,
+        "decDeg": -17.822
+      },
+      {
+        "zh": "天兔β",
+        "en": "Beta Lep",
+        "mag": 2.81,
+        "raH": 5.471,
+        "decDeg": -20.759
+      },
+      {
+        "zh": "天兔ε",
+        "en": "Epsilon Lep",
+        "mag": 3.19,
+        "raH": 5.091,
+        "decDeg": -22.371
+      },
+      {
+        "zh": "天兔μ",
+        "en": "Mu Lep",
+        "mag": 3.29,
+        "raH": 5.216,
+        "decDeg": -16.205
+      },
+      {
+        "zh": "天兔ζ",
+        "en": "Zeta Lep",
+        "mag": 3.55,
+        "raH": 5.783,
+        "decDeg": -14.822
+      },
+      {
+        "zh": "天兔γ",
+        "en": "Gamma Lep",
+        "mag": 3.59,
+        "raH": 5.741,
+        "decDeg": -22.448
+      },
+      {
+        "zh": "天兔η",
+        "en": "Eta Lep",
+        "mag": 3.71,
+        "raH": 5.94,
+        "decDeg": -14.168
+      }
+    ],
+    "lines": [
+      [
+        0,
+        3
+      ],
+      [
+        0,
+        4
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        4,
+        6
+      ]
+    ],
+    "neighbours": [
+      "Caelum",
+      "Canis Major",
+      "Columba",
+      "Eridanus",
+      "Monoceros",
+      "Orion"
+    ],
+    "fact": "天兔座是托勒密记载的南天兔子，天兔α是它最亮的星。"
+  },
+  {
+    "id": "libra",
+    "zh": "天秤座",
+    "en": "Libra",
+    "desig": "Lib",
+    "rank": 29,
+    "raH": 15.262,
+    "decDeg": -15.347,
+    "brightest": {
+      "zh": "天秤β",
+      "en": "Beta Lib",
+      "mag": 2.61
+    },
+    "stars": [
+      {
+        "zh": "天秤β",
+        "en": "Beta Lib",
+        "mag": 2.61,
+        "raH": 15.283,
+        "decDeg": -9.383
+      },
+      {
+        "zh": "天秤α²",
+        "en": "Alpha2 Lib",
+        "mag": 2.75,
+        "raH": 14.848,
+        "decDeg": -16.042
+      },
+      {
+        "zh": "天秤σ",
+        "en": "Sigma Lib",
+        "mag": 3.25,
+        "raH": 15.068,
+        "decDeg": -25.282
+      },
+      {
+        "zh": "天秤υ",
+        "en": "Upsilon Lib",
+        "mag": 3.6,
+        "raH": 15.617,
+        "decDeg": -28.135
+      },
+      {
+        "zh": "天秤τ",
+        "en": "Tau Lib",
+        "mag": 3.66,
+        "raH": 15.644,
+        "decDeg": -29.778
+      },
+      {
+        "zh": "天秤γ",
+        "en": "Gamma Lib",
+        "mag": 3.91,
+        "raH": 15.592,
+        "decDeg": -14.79
+      },
+      {
+        "zh": "天秤θ",
+        "en": "Theta Lib",
+        "mag": 4.13,
+        "raH": 15.897,
+        "decDeg": -16.729
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        5
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        5
+      ]
+    ],
+    "neighbours": [
+      "Hydra",
+      "Lupus",
+      "Ophiuchus",
+      "Scorpius",
+      "Serpens",
+      "Virgo"
+    ],
+    "fact": "天秤座是黄道十二星座中的天秤，天秤β是它最亮的星。"
+  },
+  {
+    "id": "lupus",
+    "zh": "豺狼座",
+    "en": "Lupus",
+    "desig": "Lup",
+    "rank": 46,
+    "raH": 15.252,
+    "decDeg": -42.891,
+    "brightest": {
+      "zh": "豺狼α",
+      "en": "Alpha Lup",
+      "mag": 2.3
+    },
+    "stars": [
+      {
+        "zh": "豺狼α",
+        "en": "Alpha Lup",
+        "mag": 2.3,
+        "raH": 14.699,
+        "decDeg": -47.388
+      },
+      {
+        "zh": "豺狼β",
+        "en": "Beta Lup",
+        "mag": 2.68,
+        "raH": 14.976,
+        "decDeg": -43.134
+      },
+      {
+        "zh": "豺狼γ",
+        "en": "Gamma Lup",
+        "mag": 2.8,
+        "raH": 15.586,
+        "decDeg": -41.167
+      },
+      {
+        "zh": "豺狼δ",
+        "en": "Delta Lup",
+        "mag": 3.22,
+        "raH": 15.356,
+        "decDeg": -40.648
+      },
+      {
+        "zh": "豺狼ε",
+        "en": "Epsilon Lup",
+        "mag": 3.37,
+        "raH": 15.378,
+        "decDeg": -44.69
+      },
+      {
+        "zh": "豺狼ζ",
+        "en": "Zeta Lup",
+        "mag": 3.41,
+        "raH": 15.205,
+        "decDeg": -52.099
+      },
+      {
+        "zh": "豺狼η",
+        "en": "Eta Lup",
+        "mag": 3.42,
+        "raH": 16.002,
+        "decDeg": -38.397
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        5
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        2,
+        6
+      ],
+      [
+        4,
+        5
+      ]
+    ],
+    "neighbours": [
+      "Centaurus",
+      "Circinus",
+      "Libra",
+      "Norma",
+      "Scorpius"
+    ],
+    "fact": "豺狼座是托勒密记载的南天野兽，豺狼α是它最亮的星。"
+  },
+  {
+    "id": "lynx",
+    "zh": "天猫座",
+    "en": "Lynx",
+    "desig": "Lyn",
+    "rank": 28,
+    "raH": 8.026,
+    "decDeg": 46.185,
+    "brightest": {
+      "zh": "天猫α",
+      "en": "Alpha Lyn",
+      "mag": 3.14
+    },
+    "stars": [
+      {
+        "zh": "天猫α",
+        "en": "Alpha Lyn",
+        "mag": 3.14,
+        "raH": 9.351,
+        "decDeg": 34.393
+      },
+      {
+        "zh": "天猫38",
+        "en": "38 Lyn",
+        "mag": 3.82,
+        "raH": 9.314,
+        "decDeg": 36.803
+      },
+      {
+        "zh": "天猫31",
+        "en": "31 Lyn",
+        "mag": 4.25,
+        "raH": 8.381,
+        "decDeg": 43.188
+      },
+      {
+        "zh": "天猫15",
+        "en": "15 Lyn",
+        "mag": 4.35,
+        "raH": 6.955,
+        "decDeg": 58.423
+      },
+      {
+        "zh": "天猫2",
+        "en": "2 Lyn",
+        "mag": 4.44,
+        "raH": 6.327,
+        "decDeg": 59.011
+      },
+      {
+        "zh": "天猫21",
+        "en": "21 Lyn",
+        "mag": 4.61,
+        "raH": 7.445,
+        "decDeg": 49.212
+      },
+      {
+        "zh": "天猫27",
+        "en": "27 Lyn",
+        "mag": 4.78,
+        "raH": 8.141,
+        "decDeg": 51.507
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        5
+      ]
+    ],
+    "neighbours": [
+      "Auriga",
+      "Camelopardalis",
+      "Cancer",
+      "Gemini",
+      "Leo Minor",
+      "Ursa Major"
+    ],
+    "fact": "天猫座是赫维留命名的北天星座，天猫α是它最亮的星。"
+  },
+  {
+    "id": "lyra",
+    "zh": "天琴座",
+    "en": "Lyra",
+    "desig": "Lyr",
+    "rank": 52,
+    "raH": 18.876,
+    "decDeg": 36.319,
+    "brightest": {
+      "zh": "天琴α",
+      "en": "Alpha Lyr",
+      "mag": 0.03
+    },
+    "stars": [
+      {
+        "zh": "天琴α",
+        "en": "Alpha Lyr",
+        "mag": 0.03,
+        "raH": 18.616,
+        "decDeg": 38.784
+      },
+      {
+        "zh": "天琴γ",
+        "en": "Gamma Lyr",
+        "mag": 3.25,
+        "raH": 18.982,
+        "decDeg": 32.69
+      },
+      {
+        "zh": "天琴β",
+        "en": "Beta Lyr",
+        "mag": 3.52,
+        "raH": 18.835,
+        "decDeg": 33.363
+      },
+      {
+        "zh": "天琴13",
+        "en": "13 Lyr",
+        "mag": 4.08,
+        "raH": 18.922,
+        "decDeg": 43.946
+      },
+      {
+        "zh": "天琴δ²",
+        "en": "Delta2 Lyr",
+        "mag": 4.22,
+        "raH": 18.908,
+        "decDeg": 36.899
+      },
+      {
+        "zh": "天琴κ",
+        "en": "Kappa Lyr",
+        "mag": 4.33,
+        "raH": 18.331,
+        "decDeg": 36.065
+      },
+      {
+        "zh": "天琴ζ¹",
+        "en": "Zeta1 Lyr",
+        "mag": 4.34,
+        "raH": 18.746,
+        "decDeg": 37.605
+      }
+    ],
+    "lines": [
+      [
+        0,
+        6
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        6
+      ],
+      [
+        4,
+        6
+      ]
+    ],
+    "neighbours": [
+      "Cygnus",
+      "Draco",
+      "Hercules",
+      "Vulpecula"
+    ],
+    "fact": "天琴座是希腊神话中俄耳甫斯的竖琴，天琴α是它最亮的星，座内有环状星云。"
+  },
+  {
+    "id": "mensa",
+    "zh": "山案座",
+    "en": "Mensa",
+    "desig": "Men",
+    "rank": 75,
+    "raH": 5.465,
+    "decDeg": -76.901,
+    "brightest": {
+      "zh": "山案α",
+      "en": "Alpha Men",
+      "mag": 5.08
+    },
+    "stars": [
+      {
+        "zh": "山案α",
+        "en": "Alpha Men",
+        "mag": 5.08,
+        "raH": 6.171,
+        "decDeg": -74.753
+      },
+      {
+        "zh": "山案γ",
+        "en": "Gamma Men",
+        "mag": 5.18,
+        "raH": 5.531,
+        "decDeg": -76.341
+      },
+      {
+        "zh": "山案β",
+        "en": "Beta Men",
+        "mag": 5.3,
+        "raH": 5.045,
+        "decDeg": -71.314
+      },
+      {
+        "zh": "山案θ",
+        "en": "Theta Men",
+        "mag": 5.45,
+        "raH": 6.943,
+        "decDeg": -79.42
+      },
+      {
+        "zh": "山案κ",
+        "en": "Kappa Men",
+        "mag": 5.46,
+        "raH": 5.838,
+        "decDeg": -79.361
+      },
+      {
+        "zh": "山案η",
+        "en": "Eta Men",
+        "mag": 5.47,
+        "raH": 4.92,
+        "decDeg": -74.937
+      },
+      {
+        "zh": "山案μ",
+        "en": "Mu Men",
+        "mag": 5.53,
+        "raH": 4.718,
+        "decDeg": -70.931
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        5
+      ]
+    ],
+    "neighbours": [
+      "Chamaeleon",
+      "Dorado",
+      "Hydrus",
+      "Octans",
+      "Volans"
+    ],
+    "fact": "山案座是拉卡伊命名的南天小星座，山案α是它最亮的星。"
+  },
+  {
+    "id": "microscopium",
+    "zh": "显微镜座",
+    "en": "Microscopium",
+    "desig": "Mic",
+    "rank": 66,
+    "raH": 20.968,
+    "decDeg": -36.233,
+    "brightest": {
+      "zh": "显微镜γ",
+      "en": "Gamma Mic",
+      "mag": 4.67
+    },
+    "stars": [
+      {
+        "zh": "显微镜γ",
+        "en": "Gamma Mic",
+        "mag": 4.67,
+        "raH": 21.022,
+        "decDeg": -32.258
+      },
+      {
+        "zh": "显微镜ε",
+        "en": "Epsilon Mic",
+        "mag": 4.71,
+        "raH": 21.299,
+        "decDeg": -32.173
+      },
+      {
+        "zh": "显微镜θ¹",
+        "en": "Theta1 Mic",
+        "mag": 4.8,
+        "raH": 21.346,
+        "decDeg": -40.809
+      },
+      {
+        "zh": "显微镜α",
+        "en": "Alpha Mic",
+        "mag": 4.89,
+        "raH": 20.833,
+        "decDeg": -33.78
+      },
+      {
+        "zh": "显微镜ι",
+        "en": "Iota Mic",
+        "mag": 5.11,
+        "raH": 20.808,
+        "decDeg": -43.989
+      },
+      {
+        "zh": "显微镜ν",
+        "en": "Nu Mic",
+        "mag": 5.12,
+        "raH": 20.565,
+        "decDeg": -44.516
+      },
+      {
+        "zh": "显微镜ζ",
+        "en": "Zeta Mic",
+        "mag": 5.32,
+        "raH": 21.049,
+        "decDeg": -38.631
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        3
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        3,
+        4
+      ]
+    ],
+    "neighbours": [
+      "Capricornus",
+      "Grus",
+      "Indus",
+      "Piscis Austrinus",
+      "Sagittarius"
+    ],
+    "fact": "显微镜座是拉卡伊命名的南天小星座，显微镜γ是它最亮的星。"
+  },
+  {
+    "id": "monoceros",
+    "zh": "麒麟座",
+    "en": "Monoceros",
+    "desig": "Mon",
+    "rank": 35,
+    "raH": 6.962,
+    "decDeg": -2.462,
+    "brightest": {
+      "zh": "麒麟β",
+      "en": "Beta Mon",
+      "mag": 3.76
+    },
+    "stars": [
+      {
+        "zh": "麒麟β",
+        "en": "Beta Mon",
+        "mag": 3.76,
+        "raH": 6.48,
+        "decDeg": -7.033
+      },
+      {
+        "zh": "麒麟α",
+        "en": "Alpha Mon",
+        "mag": 3.94,
+        "raH": 7.687,
+        "decDeg": -9.551
+      },
+      {
+        "zh": "麒麟γ",
+        "en": "Gamma Mon",
+        "mag": 3.99,
+        "raH": 6.248,
+        "decDeg": -6.275
+      },
+      {
+        "zh": "麒麟δ",
+        "en": "Delta Mon",
+        "mag": 4.15,
+        "raH": 7.198,
+        "decDeg": -0.493
+      },
+      {
+        "zh": "麒麟ζ",
+        "en": "Zeta Mon",
+        "mag": 4.36,
+        "raH": 8.143,
+        "decDeg": -2.984
+      },
+      {
+        "zh": "麒麟ε",
+        "en": "Epsilon Mon",
+        "mag": 4.39,
+        "raH": 6.396,
+        "decDeg": 4.593
+      },
+      {
+        "zh": "麒麟13",
+        "en": "13 Mon",
+        "mag": 4.47,
+        "raH": 6.548,
+        "decDeg": 7.333
+      }
+    ],
+    "lines": [
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        3
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        5
+      ],
+      [
+        5,
+        6
+      ]
+    ],
+    "neighbours": [
+      "Canis Major",
+      "Canis Minor",
+      "Gemini",
+      "Hydra",
+      "Lepus",
+      "Orion",
+      "Puppis"
+    ],
+    "fact": "麒麟座是普朗修斯命名的麒麟，麒麟β是它最亮的星，座内有玫瑰星云。"
+  },
+  {
+    "id": "musca",
+    "zh": "苍蝇座",
+    "en": "Musca",
+    "desig": "Mus",
+    "rank": 77,
+    "raH": 12.576,
+    "decDeg": -69.362,
+    "brightest": {
+      "zh": "苍蝇α",
+      "en": "Alpha Mus",
+      "mag": 2.69
+    },
+    "stars": [
+      {
+        "zh": "苍蝇α",
+        "en": "Alpha Mus",
+        "mag": 2.69,
+        "raH": 12.62,
+        "decDeg": -69.136
+      },
+      {
+        "zh": "苍蝇β",
+        "en": "Beta Mus",
+        "mag": 3.04,
+        "raH": 12.771,
+        "decDeg": -68.108
+      },
+      {
+        "zh": "苍蝇δ",
+        "en": "Delta Mus",
+        "mag": 3.61,
+        "raH": 13.038,
+        "decDeg": -71.549
+      },
+      {
+        "zh": "苍蝇λ",
+        "en": "Lambda Mus",
+        "mag": 3.63,
+        "raH": 11.76,
+        "decDeg": -66.729
+      },
+      {
+        "zh": "苍蝇γ",
+        "en": "Gamma Mus",
+        "mag": 3.84,
+        "raH": 12.541,
+        "decDeg": -72.133
+      },
+      {
+        "zh": "苍蝇ε",
+        "en": "Epsilon Mus",
+        "mag": 4.06,
+        "raH": 12.293,
+        "decDeg": -67.961
+      },
+      {
+        "zh": "苍蝇μ",
+        "en": "Mu Mus",
+        "mag": 4.75,
+        "raH": 11.804,
+        "decDeg": -66.815
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        4
+      ],
+      [
+        0,
+        5
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        3,
+        5
+      ]
+    ],
+    "neighbours": [
+      "Apus",
+      "Carina",
+      "Centaurus",
+      "Chamaeleon",
+      "Circinus",
+      "Crux"
+    ],
+    "fact": "苍蝇座是普朗修斯命名的南天星座，苍蝇α是它最亮的星。"
+  },
+  {
+    "id": "norma",
+    "zh": "矩尺座",
+    "en": "Norma",
+    "desig": "Nor",
+    "rank": 74,
+    "raH": 16.082,
+    "decDeg": -51.505,
+    "brightest": {
+      "zh": "矩尺γ²",
+      "en": "Gamma2 Nor",
+      "mag": 4.01
+    },
+    "stars": [
+      {
+        "zh": "矩尺γ²",
+        "en": "Gamma2 Nor",
+        "mag": 4.01,
+        "raH": 16.331,
+        "decDeg": -50.156
+      },
+      {
+        "zh": "矩尺ε",
+        "en": "Epsilon Nor",
+        "mag": 4.46,
+        "raH": 16.453,
+        "decDeg": -47.555
+      },
+      {
+        "zh": "矩尺ι¹",
+        "en": "Iota1 Nor",
+        "mag": 4.63,
+        "raH": 16.059,
+        "decDeg": -57.775
+      },
+      {
+        "zh": "矩尺η",
+        "en": "Eta Nor",
+        "mag": 4.65,
+        "raH": 16.054,
+        "decDeg": -49.23
+      },
+      {
+        "zh": "矩尺δ",
+        "en": "Delta Nor",
+        "mag": 4.73,
+        "raH": 16.108,
+        "decDeg": -45.173
+      },
+      {
+        "zh": "矩尺μ",
+        "en": "Mu Nor",
+        "mag": 4.86,
+        "raH": 16.568,
+        "decDeg": -44.045
+      },
+      {
+        "zh": "矩尺κ",
+        "en": "Kappa Nor",
+        "mag": 4.95,
+        "raH": 16.225,
+        "decDeg": -54.63
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        3
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        3,
+        4
+      ]
+    ],
+    "neighbours": [
+      "Ara",
+      "Circinus",
+      "Lupus",
+      "Scorpius",
+      "Triangulum Australe"
+    ],
+    "fact": "矩尺座是拉卡伊命名的南天小星座，矩尺γ²是它最亮的星。"
+  },
+  {
+    "id": "octans",
+    "zh": "南极座",
+    "en": "Octans",
+    "desig": "Oct",
+    "rank": 50,
+    "raH": 21.007,
+    "decDeg": -81.72,
+    "brightest": {
+      "zh": "南极ν",
+      "en": "Nu Oct",
+      "mag": 3.73
+    },
+    "stars": [
+      {
+        "zh": "南极ν",
+        "en": "Nu Oct",
+        "mag": 3.73,
+        "raH": 21.691,
+        "decDeg": -77.39
+      },
+      {
+        "zh": "南极β",
+        "en": "Beta Oct",
+        "mag": 4.13,
+        "raH": 22.768,
+        "decDeg": -81.382
+      },
+      {
+        "zh": "南极δ",
+        "en": "Delta Oct",
+        "mag": 4.31,
+        "raH": 14.449,
+        "decDeg": -83.668
+      },
+      {
+        "zh": "南极θ",
+        "en": "Theta Oct",
+        "mag": 4.78,
+        "raH": 0.027,
+        "decDeg": -77.066
+      },
+      {
+        "zh": "南极ε",
+        "en": "Epsilon Oct",
+        "mag": 5.09,
+        "raH": 22.334,
+        "decDeg": -80.44
+      },
+      {
+        "zh": "南极γ¹",
+        "en": "Gamma1 Oct",
+        "mag": 5.1,
+        "raH": 23.869,
+        "decDeg": -82.019
+      },
+      {
+        "zh": "南极α",
+        "en": "Alpha Oct",
+        "mag": 5.13,
+        "raH": 21.079,
+        "decDeg": -77.024
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "neighbours": [
+      "Apus",
+      "Chamaeleon",
+      "Hydrus",
+      "Indus",
+      "Mensa",
+      "Pavo",
+      "Tucana"
+    ],
+    "fact": "南极座是拉卡伊命名的南天小星座，南极ν是它最亮的星，座内有南天极。"
+  },
+  {
+    "id": "ophiuchus",
+    "zh": "蛇夫座",
+    "en": "Ophiuchus",
+    "desig": "Oph",
+    "rank": 11,
+    "raH": 17.337,
+    "decDeg": -5.439,
+    "brightest": {
+      "zh": "蛇夫α",
+      "en": "Alpha Oph",
+      "mag": 2.08
+    },
+    "stars": [
+      {
+        "zh": "蛇夫α",
+        "en": "Alpha Oph",
+        "mag": 2.08,
+        "raH": 17.582,
+        "decDeg": 12.56
+      },
+      {
+        "zh": "蛇夫η",
+        "en": "Eta Oph",
+        "mag": 2.43,
+        "raH": 17.173,
+        "decDeg": -15.725
+      },
+      {
+        "zh": "蛇夫ζ",
+        "en": "Zeta Oph",
+        "mag": 2.54,
+        "raH": 16.619,
+        "decDeg": -10.567
+      },
+      {
+        "zh": "蛇夫δ",
+        "en": "Delta Oph",
+        "mag": 2.73,
+        "raH": 16.239,
+        "decDeg": -3.694
+      },
+      {
+        "zh": "蛇夫β",
+        "en": "Beta Oph",
+        "mag": 2.76,
+        "raH": 17.725,
+        "decDeg": 4.567
+      },
+      {
+        "zh": "蛇夫κ",
+        "en": "Kappa Oph",
+        "mag": 3.19,
+        "raH": 16.961,
+        "decDeg": 9.375
+      },
+      {
+        "zh": "蛇夫ε",
+        "en": "Epsilon Oph",
+        "mag": 3.23,
+        "raH": 16.305,
+        "decDeg": -4.693
+      }
+    ],
+    "lines": [
+      [
+        0,
+        4
+      ],
+      [
+        0,
+        5
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        2,
+        6
+      ],
+      [
+        3,
+        5
+      ],
+      [
+        3,
+        6
+      ]
+    ],
+    "neighbours": [
+      "Aquila",
+      "Hercules",
+      "Libra",
+      "Sagittarius",
+      "Scorpius",
+      "Serpens"
+    ],
+    "fact": "蛇夫座是希腊神话中的医神，蛇夫α是它最亮的星，座内有巴纳德星。"
+  },
+  {
+    "id": "orion",
+    "zh": "猎户座",
+    "en": "Orion",
+    "desig": "Ori",
+    "rank": 26,
+    "raH": 5.597,
+    "decDeg": 4.354,
+    "brightest": {
+      "zh": "猎户β",
+      "en": "Beta Ori",
+      "mag": 0.18
+    },
+    "stars": [
+      {
+        "zh": "猎户β",
+        "en": "Beta Ori",
+        "mag": 0.18,
+        "raH": 5.242,
+        "decDeg": -8.202
+      },
+      {
+        "zh": "猎户α",
+        "en": "Alpha Ori",
+        "mag": 0.45,
+        "raH": 5.92,
+        "decDeg": 7.407
+      },
+      {
+        "zh": "猎户γ",
+        "en": "Gamma Ori",
+        "mag": 1.64,
+        "raH": 5.419,
+        "decDeg": 6.35
+      },
+      {
+        "zh": "猎户ε",
+        "en": "Epsilon Ori",
+        "mag": 1.69,
+        "raH": 5.604,
+        "decDeg": -1.202
+      },
+      {
+        "zh": "猎户ζ",
+        "en": "Zeta Ori",
+        "mag": 1.74,
+        "raH": 5.679,
+        "decDeg": -1.943
+      },
+      {
+        "zh": "猎户κ",
+        "en": "Kappa Ori",
+        "mag": 2.07,
+        "raH": 5.796,
+        "decDeg": -9.67
+      },
+      {
+        "zh": "猎户δ",
+        "en": "Delta Ori",
+        "mag": 2.25,
+        "raH": 5.533,
+        "decDeg": -0.299
+      }
+    ],
+    "lines": [
+      [
+        0,
+        6
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        6
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        6
+      ],
+      [
+        4,
+        5
+      ]
+    ],
+    "neighbours": [
+      "Eridanus",
+      "Gemini",
+      "Lepus",
+      "Monoceros",
+      "Taurus"
+    ],
+    "fact": "猎户座是希腊神话中的猎人，猎户β是它最亮的星，座内有猎户座大星云。"
+  },
+  {
+    "id": "pavo",
+    "zh": "孔雀座",
+    "en": "Pavo",
+    "desig": "Pav",
+    "rank": 44,
+    "raH": 19.547,
+    "decDeg": -64.77,
+    "brightest": {
+      "zh": "孔雀α",
+      "en": "Alpha Pav",
+      "mag": 1.94
+    },
+    "stars": [
+      {
+        "zh": "孔雀α",
+        "en": "Alpha Pav",
+        "mag": 1.94,
+        "raH": 20.427,
+        "decDeg": -56.735
+      },
+      {
+        "zh": "孔雀β",
+        "en": "Beta Pav",
+        "mag": 3.42,
+        "raH": 20.749,
+        "decDeg": -66.203
+      },
+      {
+        "zh": "孔雀δ",
+        "en": "Delta Pav",
+        "mag": 3.55,
+        "raH": 20.145,
+        "decDeg": -66.182
+      },
+      {
+        "zh": "孔雀η",
+        "en": "Eta Pav",
+        "mag": 3.61,
+        "raH": 17.762,
+        "decDeg": -64.724
+      },
+      {
+        "zh": "孔雀ε",
+        "en": "Epsilon Pav",
+        "mag": 3.97,
+        "raH": 20.01,
+        "decDeg": -72.911
+      },
+      {
+        "zh": "孔雀ζ",
+        "en": "Zeta Pav",
+        "mag": 4.01,
+        "raH": 18.717,
+        "decDeg": -71.428
+      },
+      {
+        "zh": "孔雀γ",
+        "en": "Gamma Pav",
+        "mag": 4.21,
+        "raH": 21.441,
+        "decDeg": -65.366
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        1,
+        6
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        3,
+        5
+      ],
+      [
+        4,
+        5
+      ]
+    ],
+    "neighbours": [
+      "Apus",
+      "Ara",
+      "Indus",
+      "Octans",
+      "Telescopium"
+    ],
+    "fact": "孔雀座是普朗修斯命名的南天星座，孔雀α是它最亮的星。"
+  },
+  {
+    "id": "pegasus",
+    "zh": "飞马座",
+    "en": "Pegasus",
+    "desig": "Peg",
+    "rank": 7,
+    "raH": 22.681,
+    "decDeg": 19.583,
+    "brightest": {
+      "zh": "飞马ε",
+      "en": "Epsilon Peg",
+      "mag": 2.38
+    },
+    "stars": [
+      {
+        "zh": "飞马ε",
+        "en": "Epsilon Peg",
+        "mag": 2.38,
+        "raH": 21.736,
+        "decDeg": 9.875
+      },
+      {
+        "zh": "飞马β",
+        "en": "Beta Peg",
+        "mag": 2.44,
+        "raH": 23.063,
+        "decDeg": 28.083
+      },
+      {
+        "zh": "飞马α",
+        "en": "Alpha Peg",
+        "mag": 2.49,
+        "raH": 23.079,
+        "decDeg": 15.205
+      },
+      {
+        "zh": "飞马γ",
+        "en": "Gamma Peg",
+        "mag": 2.83,
+        "raH": 0.221,
+        "decDeg": 15.184
+      },
+      {
+        "zh": "飞马η",
+        "en": "Eta Peg",
+        "mag": 2.93,
+        "raH": 22.717,
+        "decDeg": 30.221
+      },
+      {
+        "zh": "飞马ζ",
+        "en": "Zeta Peg",
+        "mag": 3.41,
+        "raH": 22.691,
+        "decDeg": 10.831
+      },
+      {
+        "zh": "飞马μ",
+        "en": "Mu Peg",
+        "mag": 3.51,
+        "raH": 22.833,
+        "decDeg": 24.602
+      }
+    ],
+    "lines": [
+      [
+        0,
+        5
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        1,
+        6
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        2,
+        5
+      ]
+    ],
+    "neighbours": [
+      "Andromeda",
+      "Aquarius",
+      "Cygnus",
+      "Delphinus",
+      "Equuleus",
+      "Lacerta",
+      "Pisces",
+      "Vulpecula"
+    ],
+    "fact": "飞马座是希腊神话中的飞马，飞马ε是它最亮的星，座内有飞马座大四边形。"
+  },
+  {
+    "id": "perseus",
+    "zh": "英仙座",
+    "en": "Perseus",
+    "desig": "Per",
+    "rank": 24,
+    "raH": 3.41,
+    "decDeg": 45.063,
+    "brightest": {
+      "zh": "英仙α",
+      "en": "Alpha Per",
+      "mag": 1.79
+    },
+    "stars": [
+      {
+        "zh": "英仙α",
+        "en": "Alpha Per",
+        "mag": 1.79,
+        "raH": 3.405,
+        "decDeg": 49.861
+      },
+      {
+        "zh": "英仙β",
+        "en": "Beta Per",
+        "mag": 2.09,
+        "raH": 3.136,
+        "decDeg": 40.956
+      },
+      {
+        "zh": "英仙ζ",
+        "en": "Zeta Per",
+        "mag": 2.84,
+        "raH": 3.902,
+        "decDeg": 31.884
+      },
+      {
+        "zh": "英仙ε",
+        "en": "Epsilon Per",
+        "mag": 2.9,
+        "raH": 3.964,
+        "decDeg": 40.01
+      },
+      {
+        "zh": "英仙γ",
+        "en": "Gamma Per",
+        "mag": 2.91,
+        "raH": 3.08,
+        "decDeg": 53.506
+      },
+      {
+        "zh": "英仙δ",
+        "en": "Delta Per",
+        "mag": 3.01,
+        "raH": 3.715,
+        "decDeg": 47.788
+      },
+      {
+        "zh": "英仙ρ",
+        "en": "Rho Per",
+        "mag": 3.32,
+        "raH": 3.086,
+        "decDeg": 38.84
+      }
+    ],
+    "lines": [
+      [
+        0,
+        4
+      ],
+      [
+        0,
+        5
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        1,
+        6
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        3,
+        5
+      ]
+    ],
+    "neighbours": [
+      "Andromeda",
+      "Aries",
+      "Auriga",
+      "Camelopardalis",
+      "Cassiopeia",
+      "Taurus",
+      "Triangulum"
+    ],
+    "fact": "英仙座是希腊神话中的英雄珀耳修斯，英仙α是它最亮的星，座内有英仙座流星雨。"
+  },
+  {
+    "id": "phoenix",
+    "zh": "凤凰座",
+    "en": "Phoenix",
+    "desig": "Phe",
+    "rank": 37,
+    "raH": 0.734,
+    "decDeg": -47.29,
+    "brightest": {
+      "zh": "凤凰α",
+      "en": "Alpha Phe",
+      "mag": 2.4
+    },
+    "stars": [
+      {
+        "zh": "凤凰α",
+        "en": "Alpha Phe",
+        "mag": 2.4,
+        "raH": 0.438,
+        "decDeg": -42.306
+      },
+      {
+        "zh": "凤凰β",
+        "en": "Beta Phe",
+        "mag": 3.32,
+        "raH": 1.101,
+        "decDeg": -46.718
+      },
+      {
+        "zh": "凤凰γ",
+        "en": "Gamma Phe",
+        "mag": 3.41,
+        "raH": 1.473,
+        "decDeg": -43.318
+      },
+      {
+        "zh": "凤凰ε",
+        "en": "Epsilon Phe",
+        "mag": 3.88,
+        "raH": 0.157,
+        "decDeg": -45.747
+      },
+      {
+        "zh": "凤凰κ",
+        "en": "Kappa Phe",
+        "mag": 3.93,
+        "raH": 0.437,
+        "decDeg": -43.68
+      },
+      {
+        "zh": "凤凰δ",
+        "en": "Delta Phe",
+        "mag": 3.93,
+        "raH": 1.521,
+        "decDeg": -49.073
+      },
+      {
+        "zh": "凤凰ζ",
+        "en": "Zeta Phe",
+        "mag": 3.94,
+        "raH": 1.14,
+        "decDeg": -55.246
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        3
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        1,
+        6
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        5,
+        6
+      ]
+    ],
+    "neighbours": [
+      "Eridanus",
+      "Fornax",
+      "Grus",
+      "Sculptor",
+      "Tucana"
+    ],
+    "fact": "凤凰座是普朗修斯命名的凤凰，凤凰α是它最亮的星。"
+  },
+  {
+    "id": "pictor",
+    "zh": "绘架座",
+    "en": "Pictor",
+    "desig": "Pic",
+    "rank": 59,
+    "raH": 5.636,
+    "decDeg": -52.444,
+    "brightest": {
+      "zh": "绘架α",
+      "en": "Alpha Pic",
+      "mag": 3.24
+    },
+    "stars": [
+      {
+        "zh": "绘架α",
+        "en": "Alpha Pic",
+        "mag": 3.24,
+        "raH": 6.803,
+        "decDeg": -61.941
+      },
+      {
+        "zh": "绘架β",
+        "en": "Beta Pic",
+        "mag": 3.85,
+        "raH": 5.788,
+        "decDeg": -51.067
+      },
+      {
+        "zh": "绘架γ",
+        "en": "Gamma Pic",
+        "mag": 4.5,
+        "raH": 5.83,
+        "decDeg": -56.167
+      },
+      {
+        "zh": "绘架δ",
+        "en": "Delta Pic",
+        "mag": 4.72,
+        "raH": 6.172,
+        "decDeg": -54.969
+      },
+      {
+        "zh": "绘架η²",
+        "en": "Eta2 Pic",
+        "mag": 5.05,
+        "raH": 5.083,
+        "decDeg": -49.578
+      },
+      {
+        "zh": "绘架λ",
+        "en": "Lambda Pic",
+        "mag": 5.3,
+        "raH": 4.713,
+        "decDeg": -50.481
+      },
+      {
+        "zh": "绘架η¹",
+        "en": "Eta1 Pic",
+        "mag": 5.37,
+        "raH": 5.047,
+        "decDeg": -49.151
+      }
+    ],
+    "lines": [
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "neighbours": [
+      "Caelum",
+      "Carina",
+      "Columba",
+      "Dorado",
+      "Puppis",
+      "Volans"
+    ],
+    "fact": "绘架座是拉卡伊命名的南天小星座，绘架α是它最亮的星。"
+  },
+  {
+    "id": "pisces",
+    "zh": "双鱼座",
+    "en": "Pisces",
+    "desig": "Psc",
+    "rank": 14,
+    "raH": 0.651,
+    "decDeg": 10.886,
+    "brightest": {
+      "zh": "双鱼η",
+      "en": "Eta Psc",
+      "mag": 3.62
+    },
+    "stars": [
+      {
+        "zh": "双鱼η",
+        "en": "Eta Psc",
+        "mag": 3.62,
+        "raH": 1.525,
+        "decDeg": 15.346
+      },
+      {
+        "zh": "双鱼γ",
+        "en": "Gamma Psc",
+        "mag": 3.7,
+        "raH": 23.286,
+        "decDeg": 3.282
+      },
+      {
+        "zh": "双鱼α",
+        "en": "Alpha Psc",
+        "mag": 3.82,
+        "raH": 2.034,
+        "decDeg": 2.764
+      },
+      {
+        "zh": "双鱼ω",
+        "en": "Omega Psc",
+        "mag": 4.03,
+        "raH": 23.989,
+        "decDeg": 6.863
+      },
+      {
+        "zh": "双鱼ι",
+        "en": "Iota Psc",
+        "mag": 4.13,
+        "raH": 23.666,
+        "decDeg": 5.626
+      },
+      {
+        "zh": "双鱼ο",
+        "en": "Omicron Psc",
+        "mag": 4.26,
+        "raH": 1.757,
+        "decDeg": 9.158
+      },
+      {
+        "zh": "双鱼ε",
+        "en": "Epsilon Psc",
+        "mag": 4.27,
+        "raH": 1.049,
+        "decDeg": 7.89
+      }
+    ],
+    "lines": [
+      [
+        0,
+        5
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        2,
+        6
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        6
+      ]
+    ],
+    "neighbours": [
+      "Andromeda",
+      "Aquarius",
+      "Aries",
+      "Cetus",
+      "Pegasus",
+      "Triangulum"
+    ],
+    "fact": "双鱼座是黄道十二星座中的双鱼，双鱼η是它最亮的星。"
+  },
+  {
+    "id": "piscis-austrinus",
+    "zh": "南鱼座",
+    "en": "Piscis Austrinus",
+    "desig": "PsA",
+    "rank": 60,
+    "raH": 22.316,
+    "decDeg": -30.852,
+    "brightest": {
+      "zh": "南鱼α",
+      "en": "Alpha PsA",
+      "mag": 1.17
+    },
+    "stars": [
+      {
+        "zh": "南鱼α",
+        "en": "Alpha PsA",
+        "mag": 1.17,
+        "raH": 22.961,
+        "decDeg": -29.622
+      },
+      {
+        "zh": "南鱼ε",
+        "en": "Epsilon PsA",
+        "mag": 4.18,
+        "raH": 22.678,
+        "decDeg": -27.044
+      },
+      {
+        "zh": "南鱼δ",
+        "en": "Delta PsA",
+        "mag": 4.2,
+        "raH": 22.932,
+        "decDeg": -32.54
+      },
+      {
+        "zh": "南鱼β",
+        "en": "Beta PsA",
+        "mag": 4.29,
+        "raH": 22.525,
+        "decDeg": -32.346
+      },
+      {
+        "zh": "南鱼ι",
+        "en": "Iota PsA",
+        "mag": 4.35,
+        "raH": 21.749,
+        "decDeg": -33.026
+      },
+      {
+        "zh": "南鱼γ",
+        "en": "Gamma PsA",
+        "mag": 4.46,
+        "raH": 22.875,
+        "decDeg": -32.876
+      },
+      {
+        "zh": "南鱼μ",
+        "en": "Mu PsA",
+        "mag": 4.5,
+        "raH": 22.14,
+        "decDeg": -32.988
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        6
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        5
+      ],
+      [
+        3,
+        6
+      ],
+      [
+        4,
+        6
+      ]
+    ],
+    "neighbours": [
+      "Aquarius",
+      "Capricornus",
+      "Grus",
+      "Microscopium",
+      "Sculptor"
+    ],
+    "fact": "南鱼座是托勒密记载的南天鱼，南鱼α是它最亮的星。"
+  },
+  {
+    "id": "puppis",
+    "zh": "船尾座",
+    "en": "Puppis",
+    "desig": "Pup",
+    "rank": 20,
+    "raH": 7.617,
+    "decDeg": -34.287,
+    "brightest": {
+      "zh": "船尾ζ",
+      "en": "Zeta Pup",
+      "mag": 2.21
+    },
+    "stars": [
+      {
+        "zh": "船尾ζ",
+        "en": "Zeta Pup",
+        "mag": 2.21,
+        "raH": 8.06,
+        "decDeg": -40.003
+      },
+      {
+        "zh": "船尾π",
+        "en": "Pi Pup",
+        "mag": 2.71,
+        "raH": 7.286,
+        "decDeg": -37.097
+      },
+      {
+        "zh": "船尾ρ",
+        "en": "Rho Pup",
+        "mag": 2.83,
+        "raH": 8.126,
+        "decDeg": -24.304
+      },
+      {
+        "zh": "船尾τ",
+        "en": "Tau Pup",
+        "mag": 2.94,
+        "raH": 6.832,
+        "decDeg": -50.615
+      },
+      {
+        "zh": "船尾ν",
+        "en": "Nu Pup",
+        "mag": 3.17,
+        "raH": 6.629,
+        "decDeg": -43.196
+      },
+      {
+        "zh": "船尾σ",
+        "en": "Sigma Pup",
+        "mag": 3.25,
+        "raH": 7.487,
+        "decDeg": -43.301
+      },
+      {
+        "zh": "船尾ξ",
+        "en": "Xi Pup",
+        "mag": 3.34,
+        "raH": 7.822,
+        "decDeg": -24.86
+      }
+    ],
+    "lines": [
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        1,
+        6
+      ],
+      [
+        2,
+        6
+      ]
+    ],
+    "neighbours": [
+      "Canis Major",
+      "Carina",
+      "Columba",
+      "Hydra",
+      "Monoceros",
+      "Pictor",
+      "Pyxis",
+      "Vela"
+    ],
+    "fact": "船尾座是南船座拆分出的船尾，船尾ζ是它最亮的星。"
+  },
+  {
+    "id": "pyxis",
+    "zh": "罗盘座",
+    "en": "Pyxis",
+    "desig": "Pyx",
+    "rank": 65,
+    "raH": 8.895,
+    "decDeg": -29.068,
+    "brightest": {
+      "zh": "罗盘α",
+      "en": "Alpha Pyx",
+      "mag": 3.68
+    },
+    "stars": [
+      {
+        "zh": "罗盘α",
+        "en": "Alpha Pyx",
+        "mag": 3.68,
+        "raH": 8.727,
+        "decDeg": -33.186
+      },
+      {
+        "zh": "罗盘β",
+        "en": "Beta Pyx",
+        "mag": 3.97,
+        "raH": 8.668,
+        "decDeg": -35.308
+      },
+      {
+        "zh": "罗盘γ",
+        "en": "Gamma Pyx",
+        "mag": 4.02,
+        "raH": 8.842,
+        "decDeg": -27.71
+      },
+      {
+        "zh": "罗盘κ",
+        "en": "Kappa Pyx",
+        "mag": 4.62,
+        "raH": 9.134,
+        "decDeg": -25.859
+      },
+      {
+        "zh": "罗盘θ",
+        "en": "Theta Pyx",
+        "mag": 4.71,
+        "raH": 9.358,
+        "decDeg": -25.965
+      },
+      {
+        "zh": "罗盘λ",
+        "en": "Lambda Pyx",
+        "mag": 4.71,
+        "raH": 9.387,
+        "decDeg": -28.834
+      },
+      {
+        "zh": "罗盘ζ",
+        "en": "Zeta Pyx",
+        "mag": 4.86,
+        "raH": 8.662,
+        "decDeg": -29.561
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "neighbours": [
+      "Antlia",
+      "Hydra",
+      "Puppis",
+      "Vela"
+    ],
+    "fact": "罗盘座是拉卡伊命名的南天小星座，罗盘α是它最亮的星。"
+  },
+  {
+    "id": "reticulum",
+    "zh": "网罟座",
+    "en": "Reticulum",
+    "desig": "Ret",
+    "rank": 82,
+    "raH": 3.886,
+    "decDeg": -60.865,
+    "brightest": {
+      "zh": "网罟α",
+      "en": "Alpha Ret",
+      "mag": 3.33
+    },
+    "stars": [
+      {
+        "zh": "网罟α",
+        "en": "Alpha Ret",
+        "mag": 3.33,
+        "raH": 4.24,
+        "decDeg": -62.474
+      },
+      {
+        "zh": "网罟β",
+        "en": "Beta Ret",
+        "mag": 3.84,
+        "raH": 3.737,
+        "decDeg": -64.807
+      },
+      {
+        "zh": "网罟ε",
+        "en": "Epsilon Ret",
+        "mag": 4.44,
+        "raH": 4.275,
+        "decDeg": -59.302
+      },
+      {
+        "zh": "网罟γ",
+        "en": "Gamma Ret",
+        "mag": 4.48,
+        "raH": 4.015,
+        "decDeg": -62.159
+      },
+      {
+        "zh": "网罟δ",
+        "en": "Delta Ret",
+        "mag": 4.56,
+        "raH": 3.979,
+        "decDeg": -61.4
+      },
+      {
+        "zh": "网罟κ",
+        "en": "Kappa Ret",
+        "mag": 4.71,
+        "raH": 3.49,
+        "decDeg": -62.938
+      },
+      {
+        "zh": "网罟ι",
+        "en": "Iota Ret",
+        "mag": 4.97,
+        "raH": 4.022,
+        "decDeg": -61.079
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        4
+      ]
+    ],
+    "neighbours": [
+      "Dorado",
+      "Horologium",
+      "Hydrus"
+    ],
+    "fact": "网罟座是拉卡伊命名的南天小星座，网罟α是它最亮的星。"
+  },
+  {
+    "id": "sagitta",
+    "zh": "天箭座",
+    "en": "Sagitta",
+    "desig": "Sge",
+    "rank": 86,
+    "raH": 19.692,
+    "decDeg": 18.687,
+    "brightest": {
+      "zh": "天箭γ",
+      "en": "Gamma Sge",
+      "mag": 3.51
+    },
+    "stars": [
+      {
+        "zh": "天箭γ",
+        "en": "Gamma Sge",
+        "mag": 3.51,
+        "raH": 19.979,
+        "decDeg": 19.492
+      },
+      {
+        "zh": "天箭δ",
+        "en": "Delta Sge",
+        "mag": 3.68,
+        "raH": 19.79,
+        "decDeg": 18.534
+      },
+      {
+        "zh": "天箭α",
+        "en": "Alpha Sge",
+        "mag": 4.39,
+        "raH": 19.668,
+        "decDeg": 18.014
+      },
+      {
+        "zh": "天箭β",
+        "en": "Beta Sge",
+        "mag": 4.39,
+        "raH": 19.684,
+        "decDeg": 17.476
+      },
+      {
+        "zh": "天箭ζ",
+        "en": "Zeta Sge",
+        "mag": 5.01,
+        "raH": 19.816,
+        "decDeg": 19.142
+      },
+      {
+        "zh": "天箭η",
+        "en": "Eta Sge",
+        "mag": 5.09,
+        "raH": 20.086,
+        "decDeg": 19.991
+      },
+      {
+        "zh": "天箭13",
+        "en": "13 Sge",
+        "mag": 5.33,
+        "raH": 20.001,
+        "decDeg": 17.517
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        3
+      ]
+    ],
+    "neighbours": [
+      "Aquila",
+      "Delphinus",
+      "Hercules",
+      "Vulpecula"
+    ],
+    "fact": "天箭座是托勒密记载的南天箭，天箭γ是它最亮的星。"
+  },
+  {
+    "id": "sagittarius",
+    "zh": "人马座",
+    "en": "Sagittarius",
+    "desig": "Sgr",
+    "rank": 15,
+    "raH": 19.158,
+    "decDeg": -28.127,
+    "brightest": {
+      "zh": "人马ε",
+      "en": "Epsilon Sgr",
+      "mag": 1.79
+    },
+    "stars": [
+      {
+        "zh": "人马ε",
+        "en": "Epsilon Sgr",
+        "mag": 1.79,
+        "raH": 18.403,
+        "decDeg": -34.385
+      },
+      {
+        "zh": "人马σ",
+        "en": "Sigma Sgr",
+        "mag": 2.05,
+        "raH": 18.921,
+        "decDeg": -26.297
+      },
+      {
+        "zh": "人马ζ",
+        "en": "Zeta Sgr",
+        "mag": 2.6,
+        "raH": 19.044,
+        "decDeg": -29.88
+      },
+      {
+        "zh": "人马δ",
+        "en": "Delta Sgr",
+        "mag": 2.72,
+        "raH": 18.35,
+        "decDeg": -29.828
+      },
+      {
+        "zh": "人马λ",
+        "en": "Lambda Sgr",
+        "mag": 2.82,
+        "raH": 18.466,
+        "decDeg": -25.422
+      },
+      {
+        "zh": "人马π",
+        "en": "Pi Sgr",
+        "mag": 2.88,
+        "raH": 19.163,
+        "decDeg": -21.024
+      },
+      {
+        "zh": "人马γ²",
+        "en": "Gamma2 Sgr",
+        "mag": 2.98,
+        "raH": 18.097,
+        "decDeg": -30.424
+      }
+    ],
+    "lines": [
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        3
+      ],
+      [
+        0,
+        6
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        6
+      ]
+    ],
+    "neighbours": [
+      "Aquila",
+      "Capricornus",
+      "Corona Australis",
+      "Microscopium",
+      "Ophiuchus",
+      "Scorpius",
+      "Scutum",
+      "Serpens",
+      "Telescopium"
+    ],
+    "fact": "人马座是黄道十二星座中的射手，人马ε是它最亮的星，座内有礁湖星云。"
+  },
+  {
+    "id": "scorpius",
+    "zh": "天蝎座",
+    "en": "Scorpius",
+    "desig": "Sco",
+    "rank": 33,
+    "raH": 16.863,
+    "decDeg": -32.666,
+    "brightest": {
+      "zh": "天蝎α",
+      "en": "Alpha Sco",
+      "mag": 1.06
+    },
+    "stars": [
+      {
+        "zh": "天蝎α",
+        "en": "Alpha Sco",
+        "mag": 1.06,
+        "raH": 16.49,
+        "decDeg": -26.432
+      },
+      {
+        "zh": "天蝎λ",
+        "en": "Lambda Sco",
+        "mag": 1.62,
+        "raH": 17.56,
+        "decDeg": -37.104
+      },
+      {
+        "zh": "天蝎θ",
+        "en": "Theta Sco",
+        "mag": 1.86,
+        "raH": 17.622,
+        "decDeg": -42.998
+      },
+      {
+        "zh": "天蝎δ",
+        "en": "Delta Sco",
+        "mag": 2.29,
+        "raH": 16.006,
+        "decDeg": -22.622
+      },
+      {
+        "zh": "天蝎ε",
+        "en": "Epsilon Sco",
+        "mag": 2.29,
+        "raH": 16.836,
+        "decDeg": -34.293
+      },
+      {
+        "zh": "天蝎κ",
+        "en": "Kappa Sco",
+        "mag": 2.39,
+        "raH": 17.708,
+        "decDeg": -39.03
+      },
+      {
+        "zh": "天蝎β¹",
+        "en": "Beta1 Sco",
+        "mag": 2.56,
+        "raH": 16.091,
+        "decDeg": -19.805
+      }
+    ],
+    "lines": [
+      [
+        0,
+        3
+      ],
+      [
+        0,
+        4
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        6
+      ]
+    ],
+    "neighbours": [
+      "Ara",
+      "Corona Australis",
+      "Libra",
+      "Lupus",
+      "Norma",
+      "Ophiuchus",
+      "Sagittarius"
+    ],
+    "fact": "天蝎座是黄道十二星座中的天蝎，天蝎α是它最亮的星。"
+  },
+  {
+    "id": "sculptor",
+    "zh": "玉夫座",
+    "en": "Sculptor",
+    "desig": "Scl",
+    "rank": 36,
+    "raH": 0.476,
+    "decDeg": -31.677,
+    "brightest": {
+      "zh": "玉夫α",
+      "en": "Alpha Scl",
+      "mag": 4.3
+    },
+    "stars": [
+      {
+        "zh": "玉夫α",
+        "en": "Alpha Scl",
+        "mag": 4.3,
+        "raH": 0.977,
+        "decDeg": -29.357
+      },
+      {
+        "zh": "玉夫β",
+        "en": "Beta Scl",
+        "mag": 4.38,
+        "raH": 23.55,
+        "decDeg": -37.818
+      },
+      {
+        "zh": "玉夫γ",
+        "en": "Gamma Scl",
+        "mag": 4.41,
+        "raH": 23.314,
+        "decDeg": -32.532
+      },
+      {
+        "zh": "玉夫δ",
+        "en": "Delta Scl",
+        "mag": 4.59,
+        "raH": 23.815,
+        "decDeg": -28.13
+      },
+      {
+        "zh": "玉夫η",
+        "en": "Eta Scl",
+        "mag": 4.86,
+        "raH": 0.465,
+        "decDeg": -33.007
+      },
+      {
+        "zh": "玉夫ζ",
+        "en": "Zeta Scl",
+        "mag": 5.04,
+        "raH": 0.039,
+        "decDeg": -29.72
+      },
+      {
+        "zh": "玉夫ι",
+        "en": "Iota Scl",
+        "mag": 5.18,
+        "raH": 0.359,
+        "decDeg": -28.981
+      }
+    ],
+    "lines": [
+      [
+        0,
+        3
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "neighbours": [
+      "Aquarius",
+      "Cetus",
+      "Fornax",
+      "Grus",
+      "Phoenix",
+      "Piscis Austrinus"
+    ],
+    "fact": "玉夫座是拉卡伊命名的南天小星座，玉夫α是它最亮的星，座内有玉夫座星系。"
+  },
+  {
+    "id": "scutum",
+    "zh": "盾牌座",
+    "en": "Scutum",
+    "desig": "Sct",
+    "rank": 84,
+    "raH": 18.668,
+    "decDeg": -9.947,
+    "brightest": {
+      "zh": "盾牌α",
+      "en": "Alpha Sct",
+      "mag": 3.85
+    },
+    "stars": [
+      {
+        "zh": "盾牌α",
+        "en": "Alpha Sct",
+        "mag": 3.85,
+        "raH": 18.587,
+        "decDeg": -8.244
+      },
+      {
+        "zh": "盾牌β",
+        "en": "Beta Sct",
+        "mag": 4.22,
+        "raH": 18.786,
+        "decDeg": -4.748
+      },
+      {
+        "zh": "盾牌ζ",
+        "en": "Zeta Sct",
+        "mag": 4.66,
+        "raH": 18.394,
+        "decDeg": -8.934
+      },
+      {
+        "zh": "盾牌γ",
+        "en": "Gamma Sct",
+        "mag": 4.67,
+        "raH": 18.487,
+        "decDeg": -14.566
+      },
+      {
+        "zh": "盾牌δ",
+        "en": "Delta Sct",
+        "mag": 4.7,
+        "raH": 18.705,
+        "decDeg": -9.053
+      },
+      {
+        "zh": "盾牌η",
+        "en": "Eta Sct",
+        "mag": 4.83,
+        "raH": 18.951,
+        "decDeg": -5.846
+      },
+      {
+        "zh": "盾牌ε",
+        "en": "Epsilon Sct",
+        "mag": 4.88,
+        "raH": 18.725,
+        "decDeg": -8.275
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        3
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        3,
+        4
+      ]
+    ],
+    "neighbours": [
+      "Aquila",
+      "Sagittarius",
+      "Serpens"
+    ],
+    "fact": "盾牌座是赫维留命名的盾牌星座，盾牌α是它最亮的星，座内有野鸭星团。"
+  },
+  {
+    "id": "serpens",
+    "zh": "巨蛇座",
+    "en": "Serpens",
+    "desig": "Ser",
+    "rank": 23,
+    "raH": 16.407,
+    "decDeg": 5.366,
+    "brightest": {
+      "zh": "巨蛇α",
+      "en": "Alpha Ser",
+      "mag": 2.63
+    },
+    "stars": [
+      {
+        "zh": "巨蛇α",
+        "en": "Alpha Ser",
+        "mag": 2.63,
+        "raH": 15.738,
+        "decDeg": 6.426
+      },
+      {
+        "zh": "巨蛇η",
+        "en": "Eta Ser",
+        "mag": 3.23,
+        "raH": 18.355,
+        "decDeg": -2.899
+      },
+      {
+        "zh": "巨蛇μ",
+        "en": "Mu Ser",
+        "mag": 3.54,
+        "raH": 15.827,
+        "decDeg": -3.43
+      },
+      {
+        "zh": "巨蛇ξ",
+        "en": "Xi Ser",
+        "mag": 3.54,
+        "raH": 17.626,
+        "decDeg": -15.399
+      },
+      {
+        "zh": "巨蛇β",
+        "en": "Beta Ser",
+        "mag": 3.65,
+        "raH": 15.77,
+        "decDeg": 15.422
+      },
+      {
+        "zh": "巨蛇ε",
+        "en": "Epsilon Ser",
+        "mag": 3.71,
+        "raH": 15.847,
+        "decDeg": 4.478
+      },
+      {
+        "zh": "巨蛇δ",
+        "en": "Delta Ser",
+        "mag": 3.8,
+        "raH": 15.58,
+        "decDeg": 10.539
+      }
+    ],
+    "lines": [
+      [
+        0,
+        5
+      ],
+      [
+        0,
+        6
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        4,
+        6
+      ]
+    ],
+    "neighbours": [
+      "Aquila",
+      "Bootes",
+      "Corona Borealis",
+      "Hercules",
+      "Libra",
+      "Ophiuchus",
+      "Sagittarius",
+      "Scutum",
+      "Virgo"
+    ],
+    "fact": "巨蛇座是希腊神话中的巨蛇，巨蛇α是它最亮的星，座内有鹰状星云。"
+  },
+  {
+    "id": "sextans",
+    "zh": "六分仪座",
+    "en": "Sextans",
+    "desig": "Sex",
+    "rank": 47,
+    "raH": 10.27,
+    "decDeg": -2.367,
+    "brightest": {
+      "zh": "六分仪α",
+      "en": "Alpha Sex",
+      "mag": 4.48
+    },
+    "stars": [
+      {
+        "zh": "六分仪α",
+        "en": "Alpha Sex",
+        "mag": 4.48,
+        "raH": 10.132,
+        "decDeg": -0.372
+      },
+      {
+        "zh": "六分仪γ",
+        "en": "Gamma Sex",
+        "mag": 5.07,
+        "raH": 9.875,
+        "decDeg": -8.105
+      },
+      {
+        "zh": "六分仪β",
+        "en": "Beta Sex",
+        "mag": 5.08,
+        "raH": 10.505,
+        "decDeg": -0.637
+      },
+      {
+        "zh": "六分仪δ",
+        "en": "Delta Sex",
+        "mag": 5.19,
+        "raH": 10.491,
+        "decDeg": -2.739
+      },
+      {
+        "zh": "六分仪ε",
+        "en": "Epsilon Sex",
+        "mag": 5.25,
+        "raH": 10.294,
+        "decDeg": -8.069
+      },
+      {
+        "zh": "六分仪18",
+        "en": "18 Sex",
+        "mag": 5.64,
+        "raH": 10.182,
+        "decDeg": -8.418
+      },
+      {
+        "zh": "六分仪19",
+        "en": "19 Sex",
+        "mag": 5.77,
+        "raH": 10.213,
+        "decDeg": 4.615
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "neighbours": [
+      "Crater",
+      "Hydra",
+      "Leo"
+    ],
+    "fact": "六分仪座是赫维留命名的六分仪星座，六分仪α是它最亮的星。"
+  },
+  {
+    "id": "taurus",
+    "zh": "金牛座",
+    "en": "Taurus",
+    "desig": "Tau",
+    "rank": 17,
+    "raH": 4.445,
+    "decDeg": 16.824,
+    "brightest": {
+      "zh": "金牛α",
+      "en": "Alpha Tau",
+      "mag": 0.87
+    },
+    "stars": [
+      {
+        "zh": "金牛α",
+        "en": "Alpha Tau",
+        "mag": 0.87,
+        "raH": 4.599,
+        "decDeg": 16.509
+      },
+      {
+        "zh": "金牛β",
+        "en": "Beta Tau",
+        "mag": 1.65,
+        "raH": 5.438,
+        "decDeg": 28.607
+      },
+      {
+        "zh": "金牛η",
+        "en": "Eta Tau",
+        "mag": 2.85,
+        "raH": 3.791,
+        "decDeg": 24.105
+      },
+      {
+        "zh": "金牛ζ",
+        "en": "Zeta Tau",
+        "mag": 2.97,
+        "raH": 5.627,
+        "decDeg": 21.143
+      },
+      {
+        "zh": "金牛θ²",
+        "en": "Theta2 Tau",
+        "mag": 3.4,
+        "raH": 4.478,
+        "decDeg": 15.871
+      },
+      {
+        "zh": "金牛λ",
+        "en": "Lambda Tau",
+        "mag": 3.41,
+        "raH": 4.011,
+        "decDeg": 12.49
+      },
+      {
+        "zh": "金牛ε",
+        "en": "Epsilon Tau",
+        "mag": 3.53,
+        "raH": 4.477,
+        "decDeg": 19.18
+      }
+    ],
+    "lines": [
+      [
+        0,
+        3
+      ],
+      [
+        0,
+        4
+      ],
+      [
+        1,
+        6
+      ],
+      [
+        4,
+        6
+      ]
+    ],
+    "neighbours": [
+      "Aries",
+      "Auriga",
+      "Cetus",
+      "Eridanus",
+      "Gemini",
+      "Orion",
+      "Perseus"
+    ],
+    "fact": "金牛座是黄道十二星座中的公牛，金牛α是它最亮的星，座内有昴星团。"
+  },
+  {
+    "id": "telescopium",
+    "zh": "望远镜座",
+    "en": "Telescopium",
+    "desig": "Tel",
+    "rank": 57,
+    "raH": 19.275,
+    "decDeg": -50.726,
+    "brightest": {
+      "zh": "望远镜α",
+      "en": "Alpha Tel",
+      "mag": 3.49
+    },
+    "stars": [
+      {
+        "zh": "望远镜α",
+        "en": "Alpha Tel",
+        "mag": 3.49,
+        "raH": 18.45,
+        "decDeg": -45.968
+      },
+      {
+        "zh": "望远镜ζ",
+        "en": "Zeta Tel",
+        "mag": 4.1,
+        "raH": 18.481,
+        "decDeg": -49.071
+      },
+      {
+        "zh": "望远镜ε",
+        "en": "Epsilon Tel",
+        "mag": 4.52,
+        "raH": 18.187,
+        "decDeg": -45.954
+      },
+      {
+        "zh": "望远镜λ",
+        "en": "Lambda Tel",
+        "mag": 4.85,
+        "raH": 18.974,
+        "decDeg": -52.939
+      },
+      {
+        "zh": "望远镜ι",
+        "en": "Iota Tel",
+        "mag": 4.88,
+        "raH": 19.587,
+        "decDeg": -48.099
+      },
+      {
+        "zh": "望远镜δ¹",
+        "en": "Delta1 Tel",
+        "mag": 4.92,
+        "raH": 18.529,
+        "decDeg": -45.915
+      },
+      {
+        "zh": "望远镜ξ",
+        "en": "Xi Tel",
+        "mag": 4.93,
+        "raH": 20.123,
+        "decDeg": -52.881
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "neighbours": [
+      "Ara",
+      "Corona Australis",
+      "Indus",
+      "Pavo",
+      "Sagittarius"
+    ],
+    "fact": "望远镜座是拉卡伊命名的南天小星座，望远镜α是它最亮的星。"
+  },
+  {
+    "id": "triangulum",
+    "zh": "三角座",
+    "en": "Triangulum",
+    "desig": "Tri",
+    "rank": 78,
+    "raH": 2.161,
+    "decDeg": 32.179,
+    "brightest": {
+      "zh": "三角β",
+      "en": "Beta Tri",
+      "mag": 3.0
+    },
+    "stars": [
+      {
+        "zh": "三角β",
+        "en": "Beta Tri",
+        "mag": 3.0,
+        "raH": 2.159,
+        "decDeg": 34.987
+      },
+      {
+        "zh": "三角α",
+        "en": "Alpha Tri",
+        "mag": 3.42,
+        "raH": 1.885,
+        "decDeg": 29.579
+      },
+      {
+        "zh": "三角γ",
+        "en": "Gamma Tri",
+        "mag": 4.03,
+        "raH": 2.289,
+        "decDeg": 33.847
+      },
+      {
+        "zh": "三角δ",
+        "en": "Delta Tri",
+        "mag": 4.84,
+        "raH": 2.284,
+        "decDeg": 34.224
+      },
+      {
+        "zh": "三角6",
+        "en": "6 Tri",
+        "mag": 4.94,
+        "raH": 2.206,
+        "decDeg": 30.303
+      },
+      {
+        "zh": "三角14",
+        "en": "14 Tri",
+        "mag": 5.15,
+        "raH": 2.535,
+        "decDeg": 36.147
+      },
+      {
+        "zh": "三角7",
+        "en": "7 Tri",
+        "mag": 5.25,
+        "raH": 2.266,
+        "decDeg": 33.359
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "neighbours": [
+      "Andromeda",
+      "Aries",
+      "Perseus",
+      "Pisces"
+    ],
+    "fact": "三角座是托勒密记载的三角星座，三角β是它最亮的星，座内有三角座星系。"
+  },
+  {
+    "id": "triangulum-australe",
+    "zh": "南三角座",
+    "en": "Triangulum Australe",
+    "desig": "TrA",
+    "rank": 83,
+    "raH": 16.054,
+    "decDeg": -65.718,
+    "brightest": {
+      "zh": "南三角α",
+      "en": "Alpha TrA",
+      "mag": 1.91
+    },
+    "stars": [
+      {
+        "zh": "南三角α",
+        "en": "Alpha TrA",
+        "mag": 1.91,
+        "raH": 16.811,
+        "decDeg": -69.028
+      },
+      {
+        "zh": "南三角β",
+        "en": "Beta TrA",
+        "mag": 2.83,
+        "raH": 15.919,
+        "decDeg": -63.431
+      },
+      {
+        "zh": "南三角γ",
+        "en": "Gamma TrA",
+        "mag": 2.87,
+        "raH": 15.315,
+        "decDeg": -68.68
+      },
+      {
+        "zh": "南三角δ",
+        "en": "Delta TrA",
+        "mag": 3.86,
+        "raH": 16.257,
+        "decDeg": -63.686
+      },
+      {
+        "zh": "南三角ε",
+        "en": "Epsilon TrA",
+        "mag": 4.11,
+        "raH": 15.612,
+        "decDeg": -66.317
+      },
+      {
+        "zh": "南三角ζ",
+        "en": "Zeta TrA",
+        "mag": 4.9,
+        "raH": 16.474,
+        "decDeg": -70.084
+      },
+      {
+        "zh": "南三角κ",
+        "en": "Kappa TrA",
+        "mag": 5.11,
+        "raH": 15.925,
+        "decDeg": -68.603
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "neighbours": [
+      "Apus",
+      "Ara",
+      "Circinus",
+      "Norma"
+    ],
+    "fact": "南三角座是普朗修斯命名的南天三角，南三角α是它最亮的星。"
+  },
+  {
+    "id": "tucana",
+    "zh": "杜鹃座",
+    "en": "Tucana",
+    "desig": "Tuc",
+    "rank": 48,
+    "raH": 23.867,
+    "decDeg": -63.867,
+    "brightest": {
+      "zh": "杜鹃α",
+      "en": "Alpha Tuc",
+      "mag": 2.87
+    },
+    "stars": [
+      {
+        "zh": "杜鹃α",
+        "en": "Alpha Tuc",
+        "mag": 2.87,
+        "raH": 22.308,
+        "decDeg": -60.26
+      },
+      {
+        "zh": "杜鹃γ",
+        "en": "Gamma Tuc",
+        "mag": 3.99,
+        "raH": 23.29,
+        "decDeg": -58.236
+      },
+      {
+        "zh": "杜鹃ζ",
+        "en": "Zeta Tuc",
+        "mag": 4.23,
+        "raH": 0.334,
+        "decDeg": -64.875
+      },
+      {
+        "zh": "杜鹃κ",
+        "en": "Kappa Tuc",
+        "mag": 4.25,
+        "raH": 1.263,
+        "decDeg": -68.876
+      },
+      {
+        "zh": "杜鹃β¹",
+        "en": "Beta1 Tuc",
+        "mag": 4.36,
+        "raH": 0.526,
+        "decDeg": -62.958
+      },
+      {
+        "zh": "杜鹃ε",
+        "en": "Epsilon Tuc",
+        "mag": 4.49,
+        "raH": 23.999,
+        "decDeg": -65.577
+      },
+      {
+        "zh": "杜鹃δ",
+        "en": "Delta Tuc",
+        "mag": 4.51,
+        "raH": 22.456,
+        "decDeg": -64.966
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        6
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        5,
+        6
+      ]
+    ],
+    "neighbours": [
+      "Grus",
+      "Hydrus",
+      "Indus",
+      "Octans",
+      "Phoenix"
+    ],
+    "fact": "杜鹃座是普朗修斯命名的南天星座，杜鹃α是它最亮的星，座内有小麦哲伦云。"
+  },
+  {
+    "id": "ursa-major",
+    "zh": "大熊座",
+    "en": "Ursa Major",
+    "desig": "UMa",
+    "rank": 3,
+    "raH": 10.968,
+    "decDeg": 52.383,
+    "brightest": {
+      "zh": "大熊ε",
+      "en": "Epsilon UMa",
+      "mag": 1.76
+    },
+    "stars": [
+      {
+        "zh": "大熊ε",
+        "en": "Epsilon UMa",
+        "mag": 1.76,
+        "raH": 12.9,
+        "decDeg": 55.96
+      },
+      {
+        "zh": "大熊α",
+        "en": "Alpha UMa",
+        "mag": 1.81,
+        "raH": 11.062,
+        "decDeg": 61.751
+      },
+      {
+        "zh": "大熊η",
+        "en": "Eta UMa",
+        "mag": 1.85,
+        "raH": 13.792,
+        "decDeg": 49.313
+      },
+      {
+        "zh": "大熊ζ",
+        "en": "Zeta UMa",
+        "mag": 2.23,
+        "raH": 13.399,
+        "decDeg": 54.925
+      },
+      {
+        "zh": "大熊β",
+        "en": "Beta UMa",
+        "mag": 2.34,
+        "raH": 11.031,
+        "decDeg": 56.382
+      },
+      {
+        "zh": "大熊γ",
+        "en": "Gamma UMa",
+        "mag": 2.41,
+        "raH": 11.897,
+        "decDeg": 53.695
+      },
+      {
+        "zh": "大熊ψ",
+        "en": "Psi UMa",
+        "mag": 3.0,
+        "raH": 11.161,
+        "decDeg": 44.498
+      }
+    ],
+    "lines": [
+      [
+        0,
+        3
+      ],
+      [
+        0,
+        5
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        4,
+        5
+      ]
+    ],
+    "neighbours": [
+      "Bootes",
+      "Camelopardalis",
+      "Canes Venatici",
+      "Coma Berenices",
+      "Draco",
+      "Leo",
+      "Leo Minor",
+      "Lynx"
+    ],
+    "fact": "大熊座是希腊神话中的大熊，大熊ε是它最亮的星，座内有北斗七星。"
+  },
+  {
+    "id": "ursa-minor",
+    "zh": "小熊座",
+    "en": "Ursa Minor",
+    "desig": "UMi",
+    "rank": 56,
+    "raH": 15.163,
+    "decDeg": 76.22,
+    "brightest": {
+      "zh": "小熊α",
+      "en": "Alpha UMi",
+      "mag": 1.97
+    },
+    "stars": [
+      {
+        "zh": "小熊α",
+        "en": "Alpha UMi",
+        "mag": 1.97,
+        "raH": 2.53,
+        "decDeg": 89.264
+      },
+      {
+        "zh": "小熊β",
+        "en": "Beta UMi",
+        "mag": 2.07,
+        "raH": 14.845,
+        "decDeg": 74.156
+      },
+      {
+        "zh": "小熊γ",
+        "en": "Gamma UMi",
+        "mag": 3.0,
+        "raH": 15.345,
+        "decDeg": 71.834
+      },
+      {
+        "zh": "小熊ε",
+        "en": "Epsilon UMi",
+        "mag": 4.21,
+        "raH": 16.766,
+        "decDeg": 82.037
+      },
+      {
+        "zh": "小熊5",
+        "en": "5 UMi",
+        "mag": 4.25,
+        "raH": 14.459,
+        "decDeg": 75.696
+      },
+      {
+        "zh": "小熊ζ",
+        "en": "Zeta UMi",
+        "mag": 4.29,
+        "raH": 15.734,
+        "decDeg": 77.794
+      },
+      {
+        "zh": "小熊δ",
+        "en": "Delta UMi",
+        "mag": 4.35,
+        "raH": 17.537,
+        "decDeg": 86.586
+      }
+    ],
+    "lines": [
+      [
+        0,
+        6
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        5
+      ],
+      [
+        3,
+        6
+      ]
+    ],
+    "neighbours": [
+      "Camelopardalis",
+      "Cepheus",
+      "Draco"
+    ],
+    "fact": "小熊座是希腊神话中的小熊，小熊α是它最亮的星。"
+  },
+  {
+    "id": "vela",
+    "zh": "船帆座",
+    "en": "Vela",
+    "desig": "Vel",
+    "rank": 32,
+    "raH": 9.581,
+    "decDeg": -47.838,
+    "brightest": {
+      "zh": "船帆γ²",
+      "en": "Gamma2 Vel",
+      "mag": 1.75
+    },
+    "stars": [
+      {
+        "zh": "船帆γ²",
+        "en": "Gamma2 Vel",
+        "mag": 1.75,
+        "raH": 8.159,
+        "decDeg": -47.337
+      },
+      {
+        "zh": "船帆δ",
+        "en": "Delta Vel",
+        "mag": 1.93,
+        "raH": 8.745,
+        "decDeg": -54.709
+      },
+      {
+        "zh": "船帆λ",
+        "en": "Lambda Vel",
+        "mag": 2.23,
+        "raH": 9.133,
+        "decDeg": -43.433
+      },
+      {
+        "zh": "船帆κ",
+        "en": "Kappa Vel",
+        "mag": 2.47,
+        "raH": 9.369,
+        "decDeg": -55.011
+      },
+      {
+        "zh": "船帆μ",
+        "en": "Mu Vel",
+        "mag": 2.69,
+        "raH": 10.779,
+        "decDeg": -49.42
+      },
+      {
+        "zh": "船帆φ",
+        "en": "Phi Vel",
+        "mag": 3.52,
+        "raH": 9.948,
+        "decDeg": -54.568
+      },
+      {
+        "zh": "船帆ψ",
+        "en": "Psi Vel",
+        "mag": 3.6,
+        "raH": 9.512,
+        "decDeg": -40.467
+      }
+    ],
+    "lines": [
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        2,
+        6
+      ],
+      [
+        3,
+        5
+      ],
+      [
+        4,
+        5
+      ],
+      [
+        4,
+        6
+      ]
+    ],
+    "neighbours": [
+      "Antlia",
+      "Carina",
+      "Centaurus",
+      "Puppis",
+      "Pyxis"
+    ],
+    "fact": "船帆座是南船座拆分出的船帆，船帆γ²是它最亮的星。"
+  },
+  {
+    "id": "virgo",
+    "zh": "室女座",
+    "en": "Virgo",
+    "desig": "Vir",
+    "rank": 2,
+    "raH": 13.316,
+    "decDeg": -2.011,
+    "brightest": {
+      "zh": "室女α",
+      "en": "Alpha Vir",
+      "mag": 0.98
+    },
+    "stars": [
+      {
+        "zh": "室女α",
+        "en": "Alpha Vir",
+        "mag": 0.98,
+        "raH": 13.42,
+        "decDeg": -11.161
+      },
+      {
+        "zh": "室女γ",
+        "en": "Gamma Vir",
+        "mag": 2.74,
+        "raH": 12.694,
+        "decDeg": -1.449
+      },
+      {
+        "zh": "室女ε",
+        "en": "Epsilon Vir",
+        "mag": 2.85,
+        "raH": 13.036,
+        "decDeg": 10.959
+      },
+      {
+        "zh": "室女ζ",
+        "en": "Zeta Vir",
+        "mag": 3.38,
+        "raH": 13.578,
+        "decDeg": -0.596
+      },
+      {
+        "zh": "室女δ",
+        "en": "Delta Vir",
+        "mag": 3.39,
+        "raH": 12.927,
+        "decDeg": 3.397
+      },
+      {
+        "zh": "室女β",
+        "en": "Beta Vir",
+        "mag": 3.59,
+        "raH": 11.845,
+        "decDeg": 1.765
+      },
+      {
+        "zh": "室女109",
+        "en": "109 Vir",
+        "mag": 3.73,
+        "raH": 14.771,
+        "decDeg": 1.893
+      }
+    ],
+    "lines": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        3,
+        6
+      ]
+    ],
+    "neighbours": [
+      "Bootes",
+      "Coma Berenices",
+      "Corvus",
+      "Crater",
+      "Hydra",
+      "Leo",
+      "Libra",
+      "Serpens"
+    ],
+    "fact": "室女座是黄道十二星座中的丰收女神，室女α是它最亮的星，座内有室女座星系团。"
+  },
+  {
+    "id": "volans",
+    "zh": "飞鱼座",
+    "en": "Volans",
+    "desig": "Vol",
+    "rank": 76,
+    "raH": 7.893,
+    "decDeg": -69.148,
+    "brightest": {
+      "zh": "飞鱼β",
+      "en": "Beta Vol",
+      "mag": 3.77
+    },
+    "stars": [
+      {
+        "zh": "飞鱼β",
+        "en": "Beta Vol",
+        "mag": 3.77,
+        "raH": 8.429,
+        "decDeg": -66.137
+      },
+      {
+        "zh": "飞鱼γ²",
+        "en": "Gamma2 Vol",
+        "mag": 3.78,
+        "raH": 7.146,
+        "decDeg": -70.499
+      },
+      {
+        "zh": "飞鱼ζ",
+        "en": "Zeta Vol",
+        "mag": 3.93,
+        "raH": 7.697,
+        "decDeg": -72.606
+      },
+      {
+        "zh": "飞鱼δ",
+        "en": "Delta Vol",
+        "mag": 3.97,
+        "raH": 7.281,
+        "decDeg": -67.957
+      },
+      {
+        "zh": "飞鱼α",
+        "en": "Alpha Vol",
+        "mag": 4.0,
+        "raH": 9.041,
+        "decDeg": -66.396
+      },
+      {
+        "zh": "飞鱼ε",
+        "en": "Epsilon Vol",
+        "mag": 4.35,
+        "raH": 8.132,
+        "decDeg": -68.617
+      },
+      {
+        "zh": "飞鱼θ",
+        "en": "Theta Vol",
+        "mag": 5.19,
+        "raH": 8.651,
+        "decDeg": -70.387
+      }
+    ],
+    "lines": [
+      [
+        0,
+        4
+      ],
+      [
+        0,
+        5
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        3,
+        5
+      ],
+      [
+        4,
+        5
+      ]
+    ],
+    "neighbours": [
+      "Carina",
+      "Chamaeleon",
+      "Dorado",
+      "Mensa",
+      "Pictor"
+    ],
+    "fact": "飞鱼座是普朗修斯命名的南天星座，飞鱼β是它最亮的星。"
+  },
+  {
+    "id": "vulpecula",
+    "zh": "狐狸座",
+    "en": "Vulpecula",
+    "desig": "Vul",
+    "rank": 55,
+    "raH": 20.213,
+    "decDeg": 24.628,
+    "brightest": {
+      "zh": "狐狸α",
+      "en": "Alpha Vul",
+      "mag": 4.44
+    },
+    "stars": [
+      {
+        "zh": "狐狸α",
+        "en": "Alpha Vul",
+        "mag": 4.44,
+        "raH": 19.478,
+        "decDeg": 24.665
+      },
+      {
+        "zh": "狐狸23",
+        "en": "23 Vul",
+        "mag": 4.5,
+        "raH": 20.263,
+        "decDeg": 27.814
+      },
+      {
+        "zh": "狐狸31",
+        "en": "31 Vul",
+        "mag": 4.56,
+        "raH": 20.869,
+        "decDeg": 27.097
+      },
+      {
+        "zh": "狐狸13",
+        "en": "13 Vul",
+        "mag": 4.57,
+        "raH": 19.891,
+        "decDeg": 24.08
+      },
+      {
+        "zh": "狐狸15",
+        "en": "15 Vul",
+        "mag": 4.66,
+        "raH": 20.018,
+        "decDeg": 27.754
+      },
+      {
+        "zh": "狐狸1",
+        "en": "1 Vul",
+        "mag": 4.76,
+        "raH": 19.27,
+        "decDeg": 21.39
+      },
+      {
+        "zh": "狐狸29",
+        "en": "29 Vul",
+        "mag": 4.81,
+        "raH": 20.642,
+        "decDeg": 21.201
+      }
+    ],
+    "lines": [
+      [
+        0,
+        3
+      ],
+      [
+        0,
+        5
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        3,
+        4
+      ]
+    ],
+    "neighbours": [
+      "Cygnus",
+      "Delphinus",
+      "Hercules",
+      "Lyra",
+      "Pegasus",
+      "Sagitta"
+    ],
+    "fact": "狐狸座是赫维留命名的北天小星座，狐狸α是它最亮的星，座内有哑铃星云。"
+  }
+]

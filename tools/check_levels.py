@@ -7,7 +7,7 @@
   2. 零猜测可解（第 1 关同样必须用数织线索，不再豁免）            —— 硬失败
   3. 孤立雷（周围 8 格无雷）≤2，>3 报错                          —— 超 3 失败、=3 警告
   4. 空行/空列（第 1 关允许，其余应为 0）                        —— 警告
-  5. 雷密度 15%–25%                                              —— 警告
+  5. 雷密度 15%–28%（51–88 关按设计到 0.273）                      —— 警告
   6. 星座重复、图鉴 sky.json 覆盖                                —— 警告
   7. 所有关卡 showRuns 必须 true（第 1 关已改为“首关即引入数织”）  —— 警告
   8. 第 1 关必须“不用数织会卡住”且至少一条长度 ≥2 的连续块线索    —— 警告
@@ -72,8 +72,8 @@ def main():
             blocks = [v for rr in list(x["rowRuns"]) + list(x["colRuns"]) for v in rr if v >= 2]
             if not blocks:
                 warn.append("第 1 关：没有任何长度 ≥2 的连续块线索，教不了数织")
-        if not (15 <= dens <= 25):
-            warn.append(f"第 {lid} 关：雷密度 {dens:.1f}%（目标约 20%）")
+        if not (15 <= dens <= 28):
+            warn.append(f"第 {lid} 关：雷密度 {dens:.1f}%（1–50 关目标约 20%，51–88 关 25–27%）")
         cid = x["theme"]["id"]
         if cid in seen_const:
             warn.append(f"第 {lid} 关与第 {seen_const[cid]} 关星座重复：{cid}")

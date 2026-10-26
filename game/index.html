@@ -2389,8 +2389,11 @@ function levelTargetSec(level){
   const safe = n * n - mines;
   return Math.round((15 + 0.99 * safe + 2.2 * mines) / 5) * 5;
 }
-function levelLimitSec(level){                // 硬限时（倒计时显示的就是它）
-  return Math.round(levelTargetSec(level) * TIME_GRACE / 5) * 5;
+function levelLimitSec(level){
+  // 硬限时（倒计时显示的就是它）。关卡可用 timeK 收紧/放宽（缺省 TIME_GRACE）；
+  // 后期关卡（51–88）按用户决定用更紧的 timeK 提高压迫感。
+  const k = (level && typeof level.timeK === 'number' && level.timeK > 0) ? level.timeK : TIME_GRACE;
+  return Math.round(levelTargetSec(level) * k / 5) * 5;
 }
 function fmtClock(sec){
   sec = Math.max(0, Math.floor(sec));
