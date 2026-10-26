@@ -27,11 +27,19 @@ powershell -NoProfile -File tools\coord\coord.ps1 release -Session <会话名>
 5. **改 `game/index.html` 的会话独占构建**：`index.html`、`dist/`、`星织-游戏本体.zip` 都是生成的，
    你跑构建会覆盖别人正在编辑的生成物；别人改源码时也不要构建。
 
-## 两条已装好的护栏（自动生效）
+## 两条护栏（受版本控制，靠 `core.hooksPath` 生效）
 
-- `pre-push`：拦下非快进推送和删除远端分支 —— **对所有会话生效，无需配置**。
-- `pre-commit`：设置了 `COORD_SESSION` 时才生效，会把 `git add -A` 挡下。
-  临时绕过 `COORD_BYPASS=1 git commit …`。
+- **`pre-push`**（`tools/coord/hooks/pre-push`）：拦下非快进推送和删除远端分支 ——
+  **对所有会话生效，不需要任何环境变量**。
+- **`pre-commit`**（`tools/coord/hooks/pre-commit`）：设置了 `COORD_SESSION` 时才生效，
+  会把 `git add -A` 挡下。临时绕过 `COORD_BYPASS=1 git commit …`。
+
+> `core.hooksPath` 存在 `.git/config` 里，**不会随克隆带过去**。
+> 新克隆后必须跑一次下面这条，否则仓库**没有任何防护**：
+>
+> ```powershell
+> powershell -NoProfile -File tools\coord\coord.ps1 install-hooks
+> ```
 
 ## 想彻底不互相干扰：用独立工作区
 

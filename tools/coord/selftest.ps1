@@ -44,8 +44,10 @@ Set-Content -LiteralPath (Join-Path $work 'dist\app.js')     -Value 'v1' -Encodi
 $cd = Join-Path $work 'tools\coord'
 New-Item -ItemType Directory -Force -Path $cd | Out-Null
 Copy-Item -LiteralPath (Join-Path $src 'tools\coord\coord.ps1') -Destination (Join-Path $cd 'coord.ps1') -Force
-Copy-Item -LiteralPath (Join-Path $src '.git\hooks\pre-push')   -Destination (Join-Path $work '.git\hooks\pre-push')   -Force
-Copy-Item -LiteralPath (Join-Path $src '.git\hooks\pre-commit') -Destination (Join-Path $work '.git\hooks\pre-commit') -Force
+# hook 的权威源在 tools\coord\hooks（受版本控制），不是 .git\hooks 里的那份副本。
+# 测试仓库不设 core.hooksPath，所以放进它的 .git\hooks 即可生效。
+Copy-Item -LiteralPath (Join-Path $src 'tools\coord\hooks\pre-push')   -Destination (Join-Path $work '.git\hooks\pre-push')   -Force
+Copy-Item -LiteralPath (Join-Path $src 'tools\coord\hooks\pre-commit') -Destination (Join-Path $work '.git\hooks\pre-commit') -Force
 
 $script:Coord = Join-Path $cd 'coord.ps1'
 
@@ -217,6 +219,47 @@ $r = RunCoord @('release', '-Session', 'A') 'A'
 Check 'release 成功' ($r.Code -eq 0) $r.Text
 $r = RunCoord @('claim', '-Session', 'C', '-Paths', 'game/index.html') 'C'
 Check 'A 释放后 C 可以认领该文件' ($r.Code -eq 0) $r.Text
+
+Write-Host ''
+Write-Host '=== 12. pre-push 护栏真值表（含 CR 回归） ===' -ForegroundColor Cyan
+# 守两个真实踩过的坑：
+#   a) 字段尾部混入 CR 会让 sha 无法解析，从而把每一次合法推送都误拦成「非快进」；
+#   b) 退出码必须在管道不被截断的情况下读取，否则 PS 5.1 会记成 -1。
+$sh = @('C:\Program Files\Git\bin\sh.exe', 'C:\Program Files\Git\bin\bash.exe') |
+      Where-Object { Test-Path $_ } | Select-Object -First 1
+if (-not $sh) { $sh = 'sh' }
+$hookPath = Join-Path $work '.git\hooks\pre-push'
+$headSha = (RunGit @('rev-parse', 'HEAD')).Text.Trim()
+$ancSha  = (RunGit @('rev-parse', 'HEAD~1')).Text.Trim()
+$tree    = (RunGit @('rev-parse', 'HEAD^{tree}')).Text.Trim()
+$zeroSha = '0000000000000000000000000000000000000000'
+# 造一个不在 HEAD 历史里的提交，模拟「远端有别人提交」
+$dangling = ("probe`n" | & git -C $work commit-tree $tree 2>&1 | Select-Object -First 1)
+$dangling = "$dangling".Trim()
+
+function Test-PrePush {
+  param([string]$Line, [int]$Expect)
+  # hook 里的 git merge-base 是按「当前目录」解析 sha 的，
+  # 所以必须在被隔离的测试仓库里执行，否则会拿测试仓库的 sha 去真实仓库里找。
+  Push-Location $work
+  try {
+    $out = $Line | & $sh $hookPath origin 'https://example.invalid/x.git' 2>&1   # 先赋值，不截断管道
+    $code = $LASTEXITCODE
+  } finally { Pop-Location }
+  return [pscustomobject]@{ Code = $code; Ok = ($code -eq $Expect); Text = ($out -join ' ') }
+}
+
+$c1 = Test-PrePush -Line "refs/heads/main $headSha refs/heads/main $ancSha" -Expect 0
+Check '快进推送放行（exit 0）' $c1.Ok ("code=$($c1.Code) $($c1.Text)")
+$c2 = Test-PrePush -Line "refs/heads/main $headSha refs/heads/main $dangling" -Expect 1
+Check '非快进推送拦下（exit 1）' ($c2.Ok -and $c2.Text -match '非快进推送') ("code=$($c2.Code) $($c2.Text)")
+# 同一行数据后面加 CR，模拟工具包装/跨平台管道带来的回车
+$c3 = Test-PrePush -Line "refs/heads/main $headSha refs/heads/main $ancSha`r" -Expect 0
+Check 'CR 回归：带 CR 的快进推送仍然放行' $c3.Ok ("code=$($c3.Code) $($c3.Text)")
+$c4 = Test-PrePush -Line "refs/heads/main $zeroSha refs/heads/main $headSha" -Expect 1
+Check '删除远端分支拦下（exit 1）' ($c4.Ok -and $c4.Text -match '拒绝删除远端分支') ("code=$($c4.Code) $($c4.Text)")
+$c5 = Test-PrePush -Line "refs/heads/session/new $headSha refs/heads/session/new $zeroSha" -Expect 0
+Check '新分支放行（exit 0）' $c5.Ok ("code=$($c5.Code) $($c5.Text)")
 
 Write-Host ''
 Write-Host '===============================' -ForegroundColor Cyan

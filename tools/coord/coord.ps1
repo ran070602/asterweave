@@ -588,26 +588,61 @@ function Invoke-Selftest {
   Write-Host ("状态目录   : " + $StateDir)
   Write-Host ("活跃租约   : " + @(Get-LiveLeases).Count)
   if (Test-Path -LiteralPath $LockFile) { Write-Host '锁状态     : 占用' -ForegroundColor Yellow } else { Write-Host '锁状态     : 空闲' }
-  $hooks = Join-Path $Repo '.git\hooks'
+  $hooks = Get-EffectiveHooksDir
+  Write-Host ("hook 目录  : " + $hooks)
   foreach ($h in @('pre-push', 'pre-commit')) {
     $p = Join-Path $hooks $h
     if (Test-Path -LiteralPath $p) { Write-Host ("hook " + $h.PadRight(11) + ": 已安装") -ForegroundColor Green }
-    else { Write-Host ("hook " + $h.PadRight(11) + ": 缺失") -ForegroundColor Yellow }
+    else { Write-Host ("hook " + $h.PadRight(11) + ": 缺失（跑一次 install-hooks）") -ForegroundColor Red }
   }
   Write-Host '--- 自检结束 ---' -ForegroundColor Cyan
 }
 
+# hook 受版本控制放在 tools\coord\hooks，靠 core.hooksPath 生效。
+# 不设 core.hooksPath 的话新克隆会静默失去全部防护，所以单独给一个动作。
+function Get-EffectiveHooksDir {
+  $r = Invoke-GitText @('config', 'core.hooksPath')
+  $rel = ''
+  if ($r.Code -eq 0) { $rel = [string](@($r.Out | Where-Object { "$_" -ne '' }) | Select-Object -First 1) }
+  if (-not $rel) { return (Join-Path $Repo '.git\hooks') }
+  if ([System.IO.Path]::IsPathRooted($rel)) { return $rel }
+  return (Join-Path $Repo ($rel -replace '/', '\'))
+}
+
+function Invoke-InstallHooks {
+  $src = Join-Path $Repo 'tools\coord\hooks'
+  if (-not (Test-Path -LiteralPath $src)) { throw ('找不到 hook 源目录：' + $src + '（是否 checkout 到了还没有这个目录的提交？）') }
+  $dst = Join-Path $StateDir 'hooks'
+  New-Item -ItemType Directory -Force -Path $dst | Out-Null
+  foreach ($h in @('pre-push', 'pre-commit')) {
+    $s = Join-Path $src $h
+    if (-not (Test-Path -LiteralPath $s)) { throw ('缺少 hook 源文件：' + $s) }
+    Copy-Item -LiteralPath $s -Destination (Join-Path $dst $h) -Force
+  }
+  # 指向 git 公共目录里的这份副本，而不是相对路径：
+  # 相对路径会按「各 worktree 自己 checkout 的内容」解析，某个 worktree 的提交里
+  # 没有 tools/coord/hooks 时，hook 会静默失效、一句提示都没有。
+  $r = Invoke-GitText @('config', 'core.hooksPath', $dst)
+  if ($r.Code -ne 0) { throw ('设置 core.hooksPath 失败：' + ($r.Out -join ' ')) }
+  Write-Log ('INSTALL-HOOKS ' + $dst)
+  Write-Host ('OK core.hooksPath = ' + $dst) -ForegroundColor Green
+  foreach ($h in @('pre-push', 'pre-commit')) { Write-Host ('   ' + $h + ' 就位') -ForegroundColor Green }
+  Write-Host '  源文件在 tools\coord\hooks（受版本控制）；改过 hook 之后要重跑一次本命令。' -ForegroundColor Gray
+  Write-Host '  core.hooksPath 存在 .git/config，不会随克隆带过去；新克隆后请重跑。' -ForegroundColor Gray
+}
+
 switch ($Action.ToLower()) {
-  'status'   { Show-Status }
-  'claim'    { Invoke-Claim }
-  'release'  { Invoke-Release }
-  'commit'   { Invoke-Commit }
-  'push'     { Invoke-Push }
-  'watch'    { Invoke-Watch }
-  'selftest' { Invoke-Selftest }
+  'status'        { Show-Status }
+  'claim'         { Invoke-Claim }
+  'release'       { Invoke-Release }
+  'commit'        { Invoke-Commit }
+  'push'          { Invoke-Push }
+  'watch'         { Invoke-Watch }
+  'selftest'      { Invoke-Selftest }
+  'install-hooks' { Invoke-InstallHooks }
   default {
     Write-Host ("未知动作：" + $Action) -ForegroundColor Red
-    Write-Host '可用：status | claim | release | commit | push | watch | selftest' -ForegroundColor Yellow
+    Write-Host '可用：status | claim | release | commit | push | watch | selftest | install-hooks' -ForegroundColor Yellow
     exit 2
   }
 }

@@ -1,0 +1,73 @@
+#!/bin/sh
+# Asterweave 协调护栏：推送前拦截「非快进推送」。
+#
+# 目的：阻止任何会话用 --force / amend 后强推，覆盖远端已经存在的提交。
+# 生效范围：本仓库所有会话（不需要设置任何环境变量）。
+# 正常快进推送完全不受影响。
+#
+# 例外（确需强制推送时，请先与协调会话确认）：
+#   git push --no-verify ...
+
+remote="$1"
+url="$2"
+zero=0000000000000000000000000000000000000000
+status=0
+CR=$(printf '\r')
+
+# 去掉字符串尾部的所有回车。git 自己喂的是 LF，正常推送不受影响；
+# 但只要有任何 CR 混进来（工具包装、跨平台管道、脚本化调用），
+# sha 就无法被 git 解析，这一行会被误判成非快进而拦下每次合法推送。
+# 之所以要循环剥，是因为包装层可能同时引入内容里的 CR 和行结束符的 CR。
+stripcr() {
+  _v="$1"
+  while [ "${_v%"$CR"}" != "$_v" ]; do _v=${_v%"$CR"}; done
+  printf '%s' "$_v"
+}
+
+while read -r local_ref local_sha remote_ref remote_sha; do
+  local_ref=$(stripcr "$local_ref")
+  local_sha=$(stripcr "$local_sha")
+  remote_ref=$(stripcr "$remote_ref")
+  remote_sha=$(stripcr "$remote_sha")
+
+  case "$remote_ref" in
+    refs/heads/*) ;;
+    *) continue ;;
+  esac
+  branch=${remote_ref#refs/heads/}
+
+  # 删除远端分支：一律拦下
+  if [ "$local_sha" = "$zero" ]; then
+    echo "" >&2
+    echo "✗ [coord] 拒绝删除远端分支：$branch" >&2
+    echo "    远端分支删除会让其它会话的基线消失。若确需删除，请人工执行。" >&2
+    echo "" >&2
+    status=1
+    continue
+  fi
+
+  # 远端还没有这个分支：新分支，放行
+  if [ "$remote_sha" = "$zero" ]; then
+    continue
+  fi
+
+  # 远端提交必须已经是本地提交的祖先，否则就是非快进
+  if ! git merge-base --is-ancestor "$remote_sha" "$local_sha" 2>/dev/null; then
+    echo "" >&2
+    echo "✗ [coord] 非快进推送已拦下：$branch" >&2
+    echo "    远端提交 $remote_sha 不是本地提交 $local_sha 的祖先。" >&2
+    echo "    常见原因：① 别的会话已经推了新提交；② 你 amend/rebase 了已推送的提交。" >&2
+    echo "" >&2
+    echo "    正确做法：" >&2
+    echo "      git fetch origin" >&2
+    echo "      git rebase origin/$branch" >&2
+    echo "      powershell -NoProfile -File tools\\coord\\coord.ps1 push" >&2
+    echo "" >&2
+    echo "    不要用 git push --force 绕过：那会丢掉远端已有的提交。" >&2
+    echo "    确实需要强制推送时，先与协调会话确认没有别人依赖这段历史。" >&2
+    echo "" >&2
+    status=1
+  fi
+done
+
+exit $status

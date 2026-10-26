@@ -1,0 +1,124 @@
+#!/bin/sh
+# Asterweave 协调护栏：提交前拦截「把别人正在改的文件卷进自己的提交」。
+#
+# 生效条件：只有设置了 COORD_SESSION 的会话才受约束。
+#   未设置 -> 完全放行（不影响不使用协调器的会话）。
+# 约束内容：
+#   1) 暂存区里的每一个路径都必须在本会话已认领的租约范围内；
+#   2) 任何暂存路径都不能落在其它会话的活跃租约里。
+# 也就是：`git add -A` 这类全量暂存会被挡住，必须显式列出自己的路径。
+#
+# 临时绕过（明确知道自己在干什么时）：COORD_BYPASS=1 git commit ...
+
+session="${COORD_SESSION:-}"
+[ -n "$session" ] || exit 0
+[ "${COORD_BYPASS:-}" = "1" ] && exit 0
+
+root=$(git rev-parse --show-toplevel 2>/dev/null) || exit 0
+
+# 协调状态放在 git 公共目录下，这样主工作区和各个 worktree 共享同一份租约。
+# --path-format=absolute 需要 git >= 2.31，取不到时退回相对路径 + 工作区根。
+common=$(git rev-parse --path-format=absolute --git-common-dir 2>/dev/null)
+if [ -z "$common" ]; then
+  common=$(git rev-parse --git-common-dir 2>/dev/null)
+  case "$common" in
+    /*|[A-Za-z]:[\\/]*) ;;
+    *) common="$root/$common" ;;
+  esac
+fi
+[ -n "$common" ] || common="$root/.git"
+lease="$common/asterweave-coord/leases.tsv"
+
+# 设置了 COORD_SESSION 却连租约文件都没有：说明还没声明作用域就要提交。
+# 这里必须拒绝，否则「先 add -A 再 claim」的路径会漏防。
+if [ ! -f "$lease" ]; then
+  echo "" >&2
+  echo "✗ [coord] 你设置了 COORD_SESSION=$session，但仓库里还没有任何作用域租约。" >&2
+  echo "    先声明你要动的路径，再提交：" >&2
+  echo "      powershell -NoProfile -File tools\\coord\\coord.ps1 claim -Session $session -Paths <路径1>,<路径2>" >&2
+  echo "    或直接用协调器提交（它会自动追加认领，且只暂存你列出的路径）：" >&2
+  echo "      powershell -NoProfile -File tools\\coord\\coord.ps1 commit -Session $session -Message \"...\" -Paths <路径...>" >&2
+  echo "    确实要临时绕过：COORD_BYPASS=1 git commit ..." >&2
+  echo "" >&2
+  exit 1
+fi
+
+now=$(date +%s)
+CR=$(printf '\r')
+staged=$(git -c core.quotepath=false diff --cached --name-only)
+[ -n "$staged" ] || exit 0
+
+# scope 与 path 的匹配：精确相等，或 scope 是 path 的上级目录。
+# 注意：租约里存的 scope 已经去掉了结尾的 /，所以 "game" 必须能匹配 "game/index.html"。
+matches() {
+  [ "$1" = "$2" ] && return 0
+  case "$2" in
+    "$1"/*) return 0 ;;
+  esac
+  return 1
+}
+
+conflict=""
+uncovered=""
+
+while IFS= read -r p; do
+  p=${p%"$CR"}
+  [ -n "$p" ] || continue
+  mine=0
+  other=""
+  while IFS="$(printf '\t')" read -r lsess lexp lscope; do
+    # 容错：无论租约文件是 LF 还是 CRLF，都去掉行尾回车，
+    # 否则 scope 会带上 \r，路径匹配静默失效。
+    lsess=${lsess%"$CR"}
+    lexp=${lexp%"$CR"}
+    lscope=${lscope%"$CR"}
+    case "$lsess" in ''|'#'*) continue ;; esac
+    [ "$lexp" -gt "$now" ] 2>/dev/null || continue
+    [ -n "$lscope" ] || continue
+    if matches "$lscope" "$p"; then
+      if [ "$lsess" = "$session" ]; then
+        mine=1
+      else
+        other="$lsess"
+      fi
+    fi
+  done < "$lease"
+
+  if [ -n "$other" ]; then
+    conflict="$conflict
+    $p   <- 正被会话 $other 修改"
+  fi
+  if [ "$mine" -ne 1 ]; then
+    uncovered="$uncovered
+    $p"
+  fi
+done <<EOF
+$staged
+EOF
+
+if [ -n "$conflict" ]; then
+  echo "" >&2
+  echo "✗ [coord] 拒绝提交：以下路径正被其它会话修改" >&2
+  printf '%s\n' "$conflict" >&2
+  echo "" >&2
+  echo "    请先与对方约定分工，或在对方 release 之后再提交。" >&2
+  echo "" >&2
+  exit 1
+fi
+
+if [ -n "$uncovered" ]; then
+  echo "" >&2
+  echo "✗ [coord] 拒绝提交：以下暂存路径不在本会话（$session）的租约范围内" >&2
+  printf '%s\n' "$uncovered" >&2
+  echo "" >&2
+  echo "    先认领你要动的路径，再提交：" >&2
+  echo "      powershell -NoProfile -File tools\\coord\\coord.ps1 claim -Session $session -Paths <路径1>,<路径2>" >&2
+  echo "    或直接用协调器提交（它只暂存你列出的路径）：" >&2
+  echo "      powershell -NoProfile -File tools\\coord\\coord.ps1 commit -Session $session -Message \"...\" -Paths <路径...>" >&2
+  echo "" >&2
+  echo "    确实要临时绕过：COORD_BYPASS=1 git commit ..." >&2
+  echo "" >&2
+  exit 1
+fi
+
+exit 0

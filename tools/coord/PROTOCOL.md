@@ -90,7 +90,8 @@ powershell -NoProfile -File tools\coord\coord.ps1 claim -Session <名字> -Paths
 | `commit -Session S -Message "…" -Paths …` | 拿锁 → 校验索引干净 → 拒绝与他方租约重叠 → 自动追加认领 → 只暂存列出的路径 → 提交 | 脏索引 4 / 冲突 3 / 无改动 5 / 失败 6 |
 | `push -Session S` | 拿锁 → fetch → 落后则拒绝 → 快进推送（从不 force） | fetch 失败 7 / 落后 8 / push 失败 9 |
 | `watch` | 快照对比：抓出「上次快照之后谁动了什么」，用来发现别的会话 | 0 |
-| `selftest` | 体检：git 可用性、租约、锁、两个 hook 是否在位 | 0 |
+| `selftest` | 体检：git 可用性、租约、锁、hook 是否真的就位 | 0 |
+| `install-hooks` | 把 `core.hooksPath` 指到 `tools/coord/hooks`。**新克隆后必须跑一次** | 0 |
 
 通用开关：`-DryRun`（commit/push 只报告不执行）、`-Force`（允许覆盖别人的租约声明，谨慎）、
 `-RepoRoot <路径>`（指定仓库，便于脚本化）。
@@ -112,7 +113,7 @@ powershell -NoProfile -File tools\coord\coord.ps1 claim -Session <名字> -Paths
 
 ## 5. 哪些是机械强制的，哪些靠自觉
 
-**已装好的两道 git hook（放在 `.git/hooks/`，所有 worktree 共享，自动生效）：**
+**两道 git hook（受版本控制，放在 `tools/coord/hooks/`，靠 `core.hooksPath` 生效）：**
 
 - **`pre-push`**：拦下**非快进推送**和**删除远端分支**。不需要任何环境变量就生效，正常快进推送不受影响。
   确需强推：`git push --no-verify …`，但先确认没人依赖那段历史。
@@ -121,6 +122,15 @@ powershell -NoProfile -File tools\coord\coord.ps1 claim -Session <名字> -Paths
   生效时要求：暂存区每个路径都在你自己的租约内，且不落在别人的活跃租约内 ——
   也就是一旦加入协调，`git add -A` 会被直接挡下。
   临时绕过：`COORD_BYPASS=1 git commit …`
+
+> **`core.hooksPath` 存在 `.git/config`，不会随克隆带过去。**
+> 新克隆后必须跑一次下面这条，否则仓库**没有任何防护**（而且是静默的）：
+>
+> ```powershell
+> powershell -NoProfile -File tools\coord\coord.ps1 install-hooks
+> ```
+>
+> `selftest` 动作会报告 hook 是否真的就位。
 
 **靠自觉（工具管不了）：**
 
@@ -159,6 +169,12 @@ powershell -NoProfile -File tools\coord\coord.ps1 claim -Session <名字> -Paths
    调 git 时要临时降到 `Continue`（见 `coord.ps1` 的 `Invoke-GitText`）。
 
 8. **`Write-Host '文本' + $var` 缺括号**会把 `+` 当成独立参数打出来。要写 `Write-Host ('文本' + $var)`。
+
+9. **hook 从 stdin 读到的字段可能带尾部回车**（被工具包装、跨平台管道调用时）。
+   `git merge-base` 拿到带 `\r` 的 sha 会解析失败，于是**每一次合法推送都被误判成非快进**。
+   `pre-push` 已用 `stripcr` 剥掉尾部全部回车；改 hook 时别把这个去掉。
+   顺带一提：用 `& git … | Select-Object -First 1` 之类截断管道后再读退出码，会得到 **-1**，
+   验证 hook 时要在不截断管道的前提下取退出码。
 
 ---
 
