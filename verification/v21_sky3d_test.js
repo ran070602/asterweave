@@ -9,7 +9,8 @@ const vm = require('vm');
 const ROOT = 'D:\\AI-Native casual game';
 const DIST = path.join(ROOT, 'dist', '星织-游戏本体', 'index.html');
 const html = fs.readFileSync(DIST, 'utf8');
-const play = JSON.parse(fs.readFileSync(path.join(ROOT, 'verification', 'v13_play.json'), 'utf8'));
+// 注：曾在此加载 verification/v13_play.json（50 关时代的旧录像，已过期且从未被本套使用），已删除；
+// 需要盘面请像 v15–v18/v22/v23 那样从页面内联数据（LEVELS_PACKED/BANK_PACKED）现场解码。
 
 const R = [];                       // 结果
 function ok(name, cond, ev) { R.push({ name, pass: !!cond, ev: ev === undefined ? '' : String(ev) }); }

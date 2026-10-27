@@ -1,6 +1,6 @@
-// v13 D/E/F：自写 DOM 桩（无 npm、无外部依赖），驱动 dist/index.html 真实脚本。
-// 断言：50 关全部玩到 status="won"；揭晓图星/连线/杂星计数；按钮文案；title；
-//       未通关时不泄露雷位；失败路径；全部解锁一次点击生效；图鉴页开关/计数/未通关不泄露星图。
+// v23：♾ 无尽挑战 —— 自写 DOM 桩（无 npm、无外部依赖），驱动 dist/index.html 真实脚本。
+// 断言：主页入口 / 开局望远镜 / 连击加分与每 3 题补给 / 失误扣命与「用尽即结束」/
+//       本轮成绩写入 progress.endless / 再来一轮 / 主动结束 / 回到闯关。
 'use strict';
 const fs = require('fs');
 const path = require('path');
@@ -9,7 +9,25 @@ const vm = require('vm');
 const ROOT = 'D:\\AI-Native casual game';
 const DIST = path.join(ROOT, 'dist', '星织-游戏本体', 'index.html');
 const html = fs.readFileSync(DIST, 'utf8');
-const play = JSON.parse(fs.readFileSync(path.join(ROOT, 'verification', 'v13_play.json'), 'utf8'));
+
+// ---------- 序列来源：从 dist 注入的紧凑数据「现场解码」 ----------
+// 旧写法读 verification/v13_play.json —— 那是 50 关时代按旧关卡 id 生成的映射；
+// 现在是 88 关 + 176 题无尽题库，play[state().levelId] 常常对不上（会按旧序列把无尽局玩死）。
+// 注入块在 IIFE 里，外部读不到常量；这里只改测试手里那份 HTML 字符串副本：
+// 把 LEVELS_PACKED / BANK_PACKED 以及展开后的 LEVELS / BANK 额外挂到 globalThis，跑完再取。
+const DATA_PATCH = [
+  [/const\s+LEVELS_PACKED\s*=/, 'const LEVELS_PACKED = globalThis.__LEVELS_PACKED ='],
+  [/const\s+BANK_PACKED\s*=/, 'const BANK_PACKED = globalThis.__BANK_PACKED ='],
+  [/const\s+LEVELS\s*=\s*expandLevelsPacked\(LEVELS_PACKED\)\s*;/,
+   'const LEVELS = globalThis.__LEVELS = expandLevelsPacked(LEVELS_PACKED);'],
+  [/const\s+BANK\s*=\s*\(ENDLESS_BANK\s*&&\s*ENDLESS_BANK\.length\)\s*\?\s*ENDLESS_BANK\s*:\s*LEVELS\s*;/,
+   'const BANK = globalThis.__BANK = ((ENDLESS_BANK && ENDLESS_BANK.length) ? ENDLESS_BANK : LEVELS);']
+];
+let dataHtml = html;
+DATA_PATCH.forEach(function(pair){
+  if (!pair[0].test(dataHtml)) throw new Error('注入点缺失：' + pair[0]);
+  dataHtml = dataHtml.replace(pair[0], pair[1]);
+});
 
 const R = [];                       // 结果
 function ok(name, cond, ev) { R.push({ name, pass: !!cond, ev: ev === undefined ? '' : String(ev) }); }
@@ -149,8 +167,8 @@ const win = {
 };
 win.window = win;
 
-// ---------------- 取出页面脚本并执行 ----------------
-const scripts = [...html.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/g)].map(x => x[1]);
+// ---------------- 取出页面脚本并执行（用打了数据导出补丁的副本） ----------------
+const scripts = [...dataHtml.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/g)].map(x => x[1]);
 ok('页面内联 script 数量==1', scripts.length === 1, 'count=' + scripts.length);
 // base64 垫片：关卡/题库数据用 atob 解压，Node 沙箱没有该浏览器全局
 if (typeof win.atob !== 'function'){ win.atob = function(b){ return Buffer.from(String(b), 'base64').toString('binary'); }; }
@@ -159,6 +177,11 @@ const ctx = vm.createContext(Object.assign(win, { globalThis: win }));
 vm.runInContext(scripts[0], ctx, { filename: 'dist-index-inline.js' });
 flush(0);
 ok('脚本执行无致命异常（关卡数据缺失提示未出现）', !String(boardEl.innerHTML).includes('关卡数据缺失'));
+
+// 解码出来的两套盘面池：闯关 88 关 / 无尽 176 题题库
+const POOLS = { campaign: ctx.__LEVELS || [], endless: ctx.__BANK || [] };
+ok('测试内可现场解码盘面（LEVELS / BANK）', POOLS.campaign.length > 0 && POOLS.endless.length > 0,
+   'LEVELS=' + POOLS.campaign.length + ' BANK=' + POOLS.endless.length);
 
 // ---------------- 辅助：读状态 ----------------
 const state = () => JSON.parse(bodyEl.dataset.gameState || '{}');
@@ -191,23 +214,54 @@ function deepText(el){
   (el.children || []).forEach(function(c){ s += deepText(c) + ' '; });
   return s;
 }
-function clearBoard(){                       // 按标准序列通关当前这一题（无尽会自动进下一题）
-  const id = String(state().levelId);
-  const seq = play[id] || [];
-  for (let i = 0; i < seq.length; i++){ if (seq[i][0] === 'flag') rightClick2(seq[i][1]); else tapCell2(seq[i][1]); }
-  flush(1700);                               // 快速揭晓 + 900ms 后自动进下一题
+// ---------------- 盘面序列：按「当前真实盘面」现场生成 ----------------
+// mines 已含杂星（startBoard 再把 noise 并进雷集），所以雷集 = mines ∪ noise。
+function poolForMode(){ return runMode() === 'endless' ? POOLS.endless : POOLS.campaign; }
+function currentLevel(){
+  const st = state(), pool = poolForMode();
+  for (let i = 0; i < pool.length; i++) if (pool[i].id === st.levelId && pool[i].size === st.size) return pool[i];
+  return pool[st.level - 1] || null;
 }
-function nthMine(n){                     // 第 n 颗尚未被观测过的雷（同一颗雷只算一次失误）
-  const id = String(state().levelId);
-  const seq = play[id] || [];
-  let seen = 0;
-  for (let i = 0; i < seq.length; i++){
-    if (seq[i][0] !== 'flag') continue;
-    const idx = seq[i][1];
-    if (seen === n) return idx;
-    seen++;
+function mineCells(lv){
+  const n = lv.size, set = new Set();
+  (lv.mines || []).forEach(function(c){ set.add(c[0] * n + c[1]); });
+  (lv.noise || []).forEach(function(c){ set.add(c[0] * n + c[1]); });
+  return Array.from(set).sort(function(a, b){ return a - b; });
+}
+function clearSeq(lv){                       // 先右键标记所有雷，再点开所有安全格
+  const mines = new Set(mineCells(lv)), ops = [], total = lv.size * lv.size;
+  for (let i = 0; i < total; i++) if (mines.has(i)) ops.push(['flag', i]);
+  for (let i = 0; i < total; i++) if (!mines.has(i)) ops.push(['dig', i]);
+  return ops;
+}
+function firstSafe(lv){ const mines = new Set(mineCells(lv)); for (let i = 0; i < lv.size * lv.size; i++) if (!mines.has(i)) return i; return -1; }
+const seqBad = [];                           // 现场解码的雷集与盘面不符的题（夹具自检）
+function hiddenSafe(lv){                     // 第一个「安全但尚未翻开」的格子（用于验证点击确实翻开新格）
+  const mines = new Set(mineCells(lv)), map = cellsByI();
+  for (let i = 0; i < lv.size * lv.size; i++){
+    if (mines.has(i)) continue;
+    const el = map[i];
+    if (el && String(el.className).indexOf('revealed') < 0) return i;
   }
-  return -1;
+  return firstSafe(lv);
+}
+function clearBoard(){                       // 按现场序列通关当前这一题（返回操作后是否立即通关）
+  const lv = currentLevel();
+  if (!lv) throw new Error('无法定位当前盘面：levelId=' + state().levelId + ' level=' + state().level);
+  const mines = mineCells(lv);
+  if (mines.length !== state().mines) seqBad.push(state().levelId + '（解码 ' + mines.length + ' ≠ 盘面 ' + state().mines + '）');
+  const ops = clearSeq(lv);
+  for (let i = 0; i < ops.length; i++){ if (ops[i][0] === 'flag') rightClick2(ops[i][1]); else tapCell2(ops[i][1]); }
+  const wonNow = state().status === 'won';
+  flush(1700);                               // 快速揭晓 + 900ms 后自动进下一题
+  return wonNow;
+}
+function nthMine(n){                         // 当前盘面第 n 颗雷（同一颗只算一次失误：n 递增即换格）
+  const lv = currentLevel();
+  if (!lv) throw new Error('无法定位当前盘面（取雷）：levelId=' + state().levelId);
+  const cells = mineCells(lv);
+  if (n >= cells.length) throw new Error('盘面雷数不足：' + n + '/' + cells.length);
+  return cells[n];
 }
 
 // ① 主页 → 无尽
@@ -221,32 +275,45 @@ ok('进入无尽模式（runMode=endless）', runMode() === 'endless', runMode()
 ok('无尽下隐藏「关卡」按钮、显示「结束本轮」', byId.lvBtn.hidden === true && byId.endRunBtn.hidden === false,
    'lv=' + byId.lvBtn.hidden + ' end=' + byId.endRunBtn.hidden);
 ok('第 1 题开局', state().status === 'playing', state().status);
-ok('开局 1 架望远镜', state().lives === 1, String(state().lives));
+const startLives = state().lives;
+ok('开局 2 架望远镜（ENDLESS_START_LIVES）', startLives === 2, String(startLives));
+ok('现场解码的雷数与盘面一致（state().mines == 解码雷集大小）',
+   !!currentLevel() && mineCells(currentLevel()).length === state().mines,
+   (currentLevel() ? mineCells(currentLevel()).length : '?') + ' vs ' + state().mines);
 
 // ② 连过 3 题：连击、分数、每 3 题 +1 架
 const lv1 = state().levelId;
-clearBoard();
+const won1 = clearBoard();
+ok('按现场解码的序列可通关本题（序列与当前盘面一致）', won1 === true, 'status=' + state().status);
 ok('通关后自动进下一题', state().status === 'playing' && state().levelId !== lv1,
    lv1 + ' → ' + state().levelId + ' status=' + state().status);
 clearBoard();
 clearBoard();
-ok('连过 3 题后望远镜变为 2 架', state().lives === 2, String(state().lives));
+ok('连过 3 题后望远镜 +1（每 3 题 +1 架，2 → 3）', state().lives === startLives + 1,
+   startLives + ' → ' + state().lives);
+ok('现场解码的雷集与每道题的 state().mines 一致（随机抽题也不跑偏）', seqBad.length === 0,
+   seqBad.length ? seqBad.join('、') : '已核对 3 题');
 ok('无尽通关不写入闯关进度（cleared 仍为空）',
    Object.keys(prog().cleared || {}).length === 0, JSON.stringify(prog().cleared || {}));
 ok('无尽不改变闯关断点（last 仍为 0）', (prog().last || 0) === 0, String(prog().last));
 
-// ③ 失误扣命
-const m1 = nthMine(0);
-tapCell2(m1);
+// ③ 失误扣命（相对前值断言，避免常量变动再次过期）
+const livesBeforeMistake = state().lives;
+tapCell2(nthMine(0));
 flush(20);
-ok('失误 −1 架（2 → 1）', state().lives === 1, String(state().lives));
-ok('失误未被计入闯关的失败（仍有望远镜）', state().status === 'playing', state().status);
+ok('失误 −1 架（相对失误前）', state().lives === livesBeforeMistake - 1,
+   livesBeforeMistake + ' → ' + state().lives);
+ok('失误未被计入闯关的失败（仍有望远镜、仍 playing）',
+   state().status === 'playing' && state().lives >= 1, state().status + '/' + state().lives);
 
-// ④ 再失误 → 本轮结束
-const m2 = nthMine(1);
-tapCell2(m2);
+// ④ 连续失误直到用尽望远镜 → 本轮结束（N 架 = N 次失误）
+const livesBeforeRunOut = livesBeforeMistake;          // 第一次失误前的望远镜数
+let mistakes = 1;                                      // nthMine(0) 已计一次
+for (let k = 1; k <= 6 && state().status === 'playing'; k++){ tapCell2(nthMine(k)); flush(20); mistakes++; }
 flush(1200);
-ok('0 架时再失误即结束', state().status === 'lost', state().status);
+ok('用尽最后一架望远镜即结束（失误次数 == 失误前望远镜数、结束时 0 架）',
+   state().status === 'lost' && mistakes === livesBeforeRunOut && state().lives === 0,
+   '失误前 ' + livesBeforeRunOut + ' 架 · 失误 ' + mistakes + ' 次 · status=' + state().status + ' lives=' + state().lives);
 ok('结束弹窗标题为「本轮结束」', String(byId.modalTitle.textContent).indexOf('本轮结束') >= 0, byId.modalTitle.textContent);
 const modalTxt = deepText(byId.constSlot) + deepText(byId.modalSub);
 ok('结算展示 SCORE 与规则说明',
@@ -261,8 +328,8 @@ const btns = byId.modalBtns.children || [];
 const againBtn = btns.filter(function(b){ return String(b.textContent).indexOf('再来一轮') >= 0; })[0];
 ok('结束弹窗有「再来一轮」', !!againBtn, (btns.map(function(b){ return String(b.textContent); }).join(' / ')));
 if (againBtn){ againBtn.dispatchEvent(mkEvent('click', { target: againBtn })); flush(60); }
-ok('再来一轮后回到 playing 且望远镜重置为 1',
-   state().status === 'playing' && state().lives === 1, state().status + '/' + state().lives);
+ok('再来一轮后回到 playing 且望远镜重置为开局值（2 架）',
+   state().status === 'playing' && state().lives === startLives, state().status + '/' + state().lives);
 ok('runs 计数累加为 2', (prog().endless || {}).runs === 2, String((prog().endless || {}).runs));
 
 // ⑥ 「结束本轮」按钮 → 主动结束
@@ -280,13 +347,16 @@ if (backBtn){ backBtn.dispatchEvent(mkEvent('click', { target: backBtn })); flus
 ok('回到闯关模式（runMode=campaign）', runMode() === 'campaign', runMode());
 ok('「关卡」按钮恢复、「结束本轮」隐藏', byId.lvBtn.hidden === false && byId.endRunBtn.hidden === true,
    'lv=' + byId.lvBtn.hidden + ' end=' + byId.endRunBtn.hidden);
-ok('闯关下第 1 关仍可玩、且不是无尽棋盘', state().status === 'playing' && state().lives === 3,
+const campLv = currentLevel();
+ok('闯关下第 1 关仍可玩（望远镜按关卡数据、不是无尽口径）',
+   state().status === 'playing' && state().lives === ((campLv && campLv.lives) || 3),
    state().status + '/' + state().lives);
 const before = state().revealed;
-const safe0 = (play['1'] || []).filter(function(a){ return a[0] === 'dig'; })[0][1];
+const safe0 = hiddenSafe(campLv);
 tapCell2(safe0);
 flush(20);
-ok('闯关棋盘可正常观测', state().revealed >= before, before + ' → ' + state().revealed);
+ok('闯关棋盘可正常观测（点开未翻开的空格后 revealed 增加）', state().revealed > before,
+   before + ' → ' + state().revealed);
 ok('闯关不显示 ⏱ 计时条（第 1 关不计时）', byId.timerChip.hidden === true);
 
 const pass = R.filter(x => x.pass === true).length;

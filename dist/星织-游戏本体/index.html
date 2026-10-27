@@ -3023,6 +3023,12 @@ function dismissModal(){
   modalDismissed = true;
   closeModal(true);
   render();          // 结算条接替 modal，保留「下一关 / 重来」入口
+  // render() 会重建格子 className（不含 lit），通关后收起弹窗必须把「点亮的星座星 + 连线」补回来，
+  // 否则刚揭晓的星座会整片变暗（与 finishBoardReveal() 的同款补偿；由 v18 探针发现）。
+  if (S && S.status === 'won' && winRevealDone){
+    const th = (S.level && S.level.theme) || null;
+    if (th && Array.isArray(th.stars) && th.stars.length){ markAllStarsLit(); drawAllSegments(); }
+  }
 }
 
 // 底部结算条：仅在 modal 被 Esc/遮罩收起后出现，避免“关了就没入口”

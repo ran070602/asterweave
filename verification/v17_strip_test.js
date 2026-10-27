@@ -9,7 +9,9 @@ const vm = require('vm');
 const ROOT = 'D:\\AI-Native casual game';
 const DIST = path.join(ROOT, 'dist', '星织-游戏本体', 'index.html');
 const html = fs.readFileSync(DIST, 'utf8');
-const play = JSON.parse(fs.readFileSync(path.join(ROOT, 'verification', 'v13_play.json'), 'utf8'));
+// 关卡数据源：tools/levels.json 的 mines/noise 与 dist 内嵌的打包数据同源（88 关）。
+// 旧夹具 v13_play.json 的通关序列属于旧版第 1 关盘面，在现盘面上会踩雷 —— 已在下方改用现算夹具。
+const LEVELS_JSON = JSON.parse(fs.readFileSync(path.join(ROOT, 'tools', 'levels.json'), 'utf8'));
 
 const R = [];                       // 结果
 function ok(name, cond, ev) { R.push({ name, pass: !!cond, ev: ev === undefined ? '' : String(ev) }); }
@@ -129,12 +131,16 @@ const byId = parseStatic();
 const titleText = (html.match(/<title>([\s\S]*?)<\/title>/) || [, ''])[1];
 const boardEl = byId.board, bodyEl = mkEl('body', null);
 const docEl = mkEl('html', null);
+// .boardwrap 只有 class 没有 id，只能靠 document.querySelector 取到。
+// 取不到时 boardWrapEl=null，startBoardReveal() 会直接跳到终态（game/index.html:2649-2652），
+// 真实揭晓时序（杂星淡出→星点亮→逐段画线→闪烁→弹窗）就完全测不到。这里补上该桩。
+const _wrapStub = mkEl('div', 'boardwrap');
 const doc = {
   body: bodyEl, documentElement: docEl, activeElement: null,
   getElementById: id => byId[id] || null,
   createElement: t => mkEl(t),
   createDocumentFragment: () => { const f = mkEl('fragment'); f._frag = true; return f; },
-  querySelector: s => (s === 'title' ? null : null), addEventListener() {}, removeEventListener() {},
+  querySelector: s => (s === '.boardwrap' ? _wrapStub : null), addEventListener() {}, removeEventListener() {},
   _byId: byId
 };
 const store = {};
@@ -172,9 +178,26 @@ function actCell(i, mode) {
   flush(0);
 }
 
-// ---------------- v17：结算条按钮（失败无「结算」，通关保留）----------------
-const safeIdx = (play['1'] || []).filter(a => a[0] === 'dig').map(a => a[1]);
-const mineIdx = (play['1'] || []).filter(a => a[0] === 'flag').map(a => a[1]);
+// ---------------- v17：结算条按钮（失败无「回看」，通关保留「图鉴详情 / 下一关」）----------------
+// 夹具：按 tools/levels.json 现算当前关卡的雷位/安全格。
+// 雷集 = mines ∪ noise（game/index.html:1601-1623），checkWin 要求「所有安全格翻开 + 所有雷标出」
+// （game/index.html:1779-1788），所以 dig 全部安全格、flag 全部雷 = 一条合法通关序列。
+const cur0 = state();
+const fixtureLv = LEVELS_JSON.filter(l => l.id === (cur0.levelId || cur0.level))[0];
+const N = fixtureLv ? fixtureLv.size : 0;
+const mineSet = new Set();
+if (fixtureLv){
+  (fixtureLv.mines || []).forEach(rc => mineSet.add(rc[0] * N + rc[1]));
+  (fixtureLv.noise || []).forEach(rc => mineSet.add(rc[0] * N + rc[1]));
+}
+const mineIdx = Array.from(mineSet).sort((a, b) => a - b);
+const safeIdx = [];
+for (let i = 0; i < N * N; i++) if (!mineSet.has(i)) safeIdx.push(i);
+ok('夹具：当前关卡能在 tools/levels.json 中按 id 找到', !!fixtureLv,
+   `gameState.levelId=${cur0.levelId} level=${cur0.level} size=${cur0.size}`);
+ok('夹具与运行盘面一致（size / mines / totalSafe）',
+   !!fixtureLv && cur0.size === N && cur0.mines === mineSet.size && cur0.totalSafe === N * N - mineSet.size,
+   `盘面 size=${cur0.size} mines=${cur0.mines} totalSafe=${cur0.totalSafe} · 夹具 size=${N} mines=${mineSet.size} totalSafe=${N * N - mineSet.size}`);
 
 // 关掉首屏说明（首次进入会弹）
 if (byId.introStart) { byId.introStart.dispatchEvent(mkEvent('click', { target: byId.introStart })); flush(0); }
@@ -202,10 +225,16 @@ function dismissModal(){
   flush(20);
 }
 
-// ---- A. 失败：结算条不应出现「结算」 ----
+// ---- A. 失败：三击真雷 → modal → 收起后才出现底部结算条（game/index.html:2770-2780）----
+// 逐次记录，失败时能看出是夹具过期（没踩到 3 颗）还是本体缺陷。
+const hitTrace = [];
 let lostOk = false;
-for (const mi of mineIdx){ touchTap(mi); if (state().status === 'lost'){ lostOk = true; break; } }
-ok('三击雷位 → lost', lostOk, `status=${state().status} lives=${state().lives}`);
+for (const mi of mineIdx.slice(0, 3)){
+  touchTap(mi);
+  hitTrace.push(mi + ':' + state().status + '/lives=' + state().lives);
+  if (state().status === 'lost'){ lostOk = true; break; }
+}
+ok('三击雷位 → lost', lostOk, `status=${state().status} lives=${state().lives} trace=${hitTrace.join(' ')}`);
 flush(1200);
 dismissModal();
 const tLose = stripTexts();
@@ -213,23 +242,18 @@ ok('失败结算条出现（modal 收起后）', tLose.length > 0, JSON.stringif
 ok('失败结算条含「重来本关」', tLose.some(t => t.includes('重来本关')), JSON.stringify(tLose));
 ok('失败结算条不含回看按钮（无「图鉴详情」）', !tLose.some(t => t.includes('图鉴详情')), JSON.stringify(tLose));
 
-
-console.log('DEBUG byId.result 存在:', !!byId.result, '| class:', byId.result && byId.result.className, '| children:', byId.result && (byId.result.children||[]).length);
-console.log('DEBUG modalOpenNow/modalDismissed 不可见；overlay class:', byId.overlay && byId.overlay.className);
-console.log('DEBUG result.innerHTML 长度:', String(byId.result && byId.result.innerHTML || '').length);
 // ---- B. 通关：结算条保留「★ 图鉴详情」（用来回看星座）----
-// 重开本关
+// 重开本关（#replay → replayLevel()，game/index.html:2051-2056）
 const replayBtn = byId.replay;
-byId.replayActions && byId.replayActions.dispatchEvent ? null : null;
 if (replayBtn) { replayBtn.dispatchEvent(mkEvent('click', { target: replayBtn })); flush(30); }
 ok('重玩后回到 playing', state().status === 'playing', `status=${state().status}`);
 
-for (const a of (play['1'] || [])){
-  if (a[0] === 'flag') rightClick(a[1]);
-  else touchTap(a[1]);
-}
-flush(1200);
-ok('按通关序列执行后 status=won', state().status === 'won', `status=${state().status} revealed=${state().revealed}/${state().totalSafe} flagged=${state().flagged}`);
+// 按现行盘面求解：翻开全部安全格 + 标出全部雷
+for (const i of safeIdx) touchTap(i);
+for (const mi of mineIdx) rightClick(mi);
+flush(1200);                                   // 揭晓 ~1.1s（含闪烁+弹窗），见 game/index.html:2647-2701
+ok('按通关序列执行后 status=won', state().status === 'won',
+   `status=${state().status} revealed=${state().revealed}/${state().totalSafe} flagged=${state().flagged}/${state().mines}`);
 dismissModal();
 const tWin = stripTexts();
 ok('通关结算条含「★ 图鉴详情」按钮', tWin.some(t => t.includes('图鉴详情')), JSON.stringify(tWin));

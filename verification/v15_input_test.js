@@ -9,7 +9,8 @@ const vm = require('vm');
 const ROOT = 'D:\\AI-Native casual game';
 const DIST = path.join(ROOT, 'dist', '星织-游戏本体', 'index.html');
 const html = fs.readFileSync(DIST, 'utf8');
-const play = JSON.parse(fs.readFileSync(path.join(ROOT, 'verification', 'v13_play.json'), 'utf8'));
+// 不再读 verification/v13_play.json 的 '1'：那份录像录的是旧版第 1 关（雷位已变），
+// 详见下面「夹具」段的说明。安全格 / 雷位改为从页面自身注入的关卡数据解出。
 
 const R = [];                       // 结果
 function ok(name, cond, ev) { R.push({ name, pass: !!cond, ev: ev === undefined ? '' : String(ev) }); }
@@ -174,9 +175,42 @@ function actCell(i, mode) {
 
 // ---------------- v15（v1.9）：触摸轻触/长按；鼠标单击/右键（无双击）----------------
 // 注意：每类测试前都先「重玩本关」，避免上一次操作引发的连锁展开影响断言。
-const safeIdx = (play['1'] || []).filter(a => a[0] === 'dig').map(a => a[1]);
-const mineIdx = (play['1'] || []).filter(a => a[0] === 'flag').map(a => a[1]);
-if (byId.introStart) { byId.introStart.dispatchEvent(mkEvent('click', { target: byId.introStart })); flush(0); }
+//
+// 【夹具说明】原先用 v13_play.json['1'] 取「安全格 / 雷位」，但那份录像录的是旧版第 1 关
+// （标记 {2,9,13,18,28,34,35}）。现行第 1 关已换新 —— game/index.html:1016 的 LEVELS_PACKED
+// 第 1 条：6×6、8 颗星、opening=(0,1)。旧录像里的 dig 0/1 早已被开局连锁翻开、flag 2 根本不是星，
+// 而 act() 对已翻开的格直接 return（game/index.html:1815），于是 6 条输入断言全部空转
+// （实测 revealed 恒为 8、flagged 恒为 0）。现改为解页面自身注入的 LEVELS_PACKED
+// （与页内运行的关卡数据同源），再用盘面 class 剔掉「开局连锁已翻开」的格。
+const PACKED_M = /const LEVELS_PACKED = (\[[\s\S]*?\]);\s*\/\* LEVELS_INJECT_END \*\//.exec(scripts[0]);
+const L1 = PACKED_M ? JSON.parse(PACKED_M[1])[0] : null;
+const L1_N = L1 ? L1[2] : 0;
+function packedCells(b64, n){
+  const raw = Buffer.from(String(b64), 'base64').toString('binary'), out = [];
+  for (let i = 0; i < n * n; i++) if (raw.charCodeAt(i >> 3) & (1 << (7 - (i & 7)))) out.push(i);
+  return out;
+}
+// mines 已含杂星，这里再并一次 noise，与 startBoard 的雷集口径一致（game/index.html:1603-1623）
+const L1_MINES = new Set(L1 ? packedCells(L1[3], L1_N).concat(packedCells(L1[4], L1_N)) : []);
+
+// 主页：现行版本每次打开网址都弹主页（game/index.html:4180），且已无 introStart；
+// 三态入口是 homeResume / homeCampaign / homeEndless（game/index.html:873-875）。
+// 走真实入口关掉主页，再「重玩本关」拿干净盘面。
+if (byId.homeCampaign){ byId.homeCampaign.dispatchEvent(mkEvent('click', { target: byId.homeCampaign })); flush(0); }
+restart();
+const startRevealed = new Set(cells().filter(c => (c.className || '').split(/\s+/).includes('revealed'))
+  .map(c => parseInt(c.getAttribute('data-i'), 10)));
+const safeIdx = [], mineIdx = [];
+for (let i = 0; i < L1_N * L1_N; i++){
+  if (startRevealed.has(i)) continue;      // 开局连锁已翻开的格：按它既不置位 S.acted，也不是有效操作
+  (L1_MINES.has(i) ? mineIdx : safeIdx).push(i);
+}
+const cur1 = state();
+ok('夹具自检：解出的第 1 关与运行盘面一致，且有未被开局翻开的 安全格 / 雷位',
+   !!L1 && cur1.size === L1_N && cur1.mines === L1_MINES.size &&
+   safeIdx.length > 0 && mineIdx.length === L1_MINES.size,
+   `matched=${!!PACKED_M} 盘面 size=${cur1.size} mines=${cur1.mines} · 夹具 size=${L1_N} mines=${L1_MINES.size}` +
+   ` safe=${safeIdx.length} mine=${mineIdx.length} revealedAtStart=${startRevealed.size}`);
 
 function down(i, opts){
   boardEl.dispatchEvent(mkEvent('pointerdown', Object.assign({ target: cellsByI()[i], button: 0, clientX: 100, clientY: 100 }, opts || {})));

@@ -9,7 +9,9 @@ const vm = require('vm');
 const ROOT = 'D:\\AI-Native casual game';
 const DIST = path.join(ROOT, 'dist', '星织-游戏本体', 'index.html');
 const html = fs.readFileSync(DIST, 'utf8');
-const play = JSON.parse(fs.readFileSync(path.join(ROOT, 'verification', 'v13_play.json'), 'utf8'));
+// 关卡数据源：tools/levels.json 的 mines/noise 与 dist 内嵌的打包数据同源（88 关）。
+// 旧夹具 v13_play.json 的通关序列属于旧版第 1 关盘面，在现盘面上会踩雷 —— 已在下方改用现算夹具。
+const LEVELS_JSON = JSON.parse(fs.readFileSync(path.join(ROOT, 'tools', 'levels.json'), 'utf8'));
 
 const R = [];                       // 结果
 function ok(name, cond, ev) { R.push({ name, pass: !!cond, ev: ev === undefined ? '' : String(ev) }); }
@@ -173,10 +175,32 @@ function actCell(i, mode) {
   flush(0);
 }
 
-// ---------------- v18：通关揭晓时长与整体闪烁（虚拟时钟实测）----------------
+// ---------------- v18：通关揭晓序列与时刻（虚拟时钟实测）----------------
 if (byId.introStart) { byId.introStart.dispatchEvent(mkEvent('click', { target: byId.introStart })); flush(0); }
 
-const seq = play['1'] || [];
+// 夹具：按 tools/levels.json 现算当前关卡的通关序列。
+// 雷集 = mines ∪ noise（game/index.html:1601-1623）；checkWin 要求「所有安全格翻开 + 所有雷标出」
+// （game/index.html:1779-1788）→ dig 全部安全格 + flag 全部雷 必定通关。
+const cur0 = state();
+const fixtureLv = LEVELS_JSON.filter(l => l.id === (cur0.levelId || cur0.level))[0];
+const N = fixtureLv ? fixtureLv.size : 0;
+const mineSet = new Set();
+if (fixtureLv){
+  (fixtureLv.mines || []).forEach(rc => mineSet.add(rc[0] * N + rc[1]));
+  (fixtureLv.noise || []).forEach(rc => mineSet.add(rc[0] * N + rc[1]));
+}
+const FIX_MINES = Array.from(mineSet).sort((a, b) => a - b);
+const FIX_SAFE = [];
+for (let i = 0; i < N * N; i++) if (!mineSet.has(i)) FIX_SAFE.push(i);
+const FIX_THEME = (fixtureLv && fixtureLv.theme) || {};
+const FIX_STARS = Array.isArray(FIX_THEME.stars) ? FIX_THEME.stars.length : 0;
+const FIX_LINES = Array.isArray(FIX_THEME.lines) ? FIX_THEME.lines.length : 0;
+ok('夹具：当前关卡能在 tools/levels.json 中按 id 找到', !!fixtureLv,
+   `gameState.levelId=${cur0.levelId} level=${cur0.level} size=${cur0.size} stars=${FIX_STARS} lines=${FIX_LINES}`);
+ok('夹具与运行盘面一致（size / mines / totalSafe）',
+   !!fixtureLv && cur0.size === N && cur0.mines === mineSet.size && cur0.totalSafe === N * N - mineSet.size,
+   `盘面 size=${cur0.size} mines=${cur0.mines} totalSafe=${cur0.totalSafe} · 夹具 size=${N} mines=${mineSet.size} totalSafe=${N * N - mineSet.size}`);
+
 function restart(){ byId.replay.dispatchEvent(mkEvent('click', { target: byId.replay })); flush(20); }
 function rightClick(i){
   boardEl.dispatchEvent(mkEvent('pointerdown', { target: cellsByI()[i], button: 2, pointerType: 'mouse', clientX: 100, clientY: 100 }));
@@ -188,25 +212,46 @@ function touchTap(i){
   flush(0);
 }
 function playToWin(){
-  for (const a of seq){ if (a[0] === 'flag') rightClick(a[1]); else touchTap(a[1]); }
+  for (const i of FIX_SAFE) touchTap(i);
+  for (const mi of FIX_MINES) rightClick(mi);
   flush(0);
 }
 function overlayOpen(){ return ((byId.overlay.className || '').indexOf('open') >= 0); }
 function flashing(){ return ((boardEl.className || '').indexOf('reveal-flash') >= 0); }
+// 现行揭晓的三个可视标记（game/index.html:2653 / 2662 / 2678-2688）
+function wonstarLit(){ return (boardEl.children || []).filter(c => {
+  const cl = (c.className || '').split(/\s+/); return cl.includes('wonstar') && cl.includes('lit');
+}).length; }
+function wonstarCount(){ return (boardEl.children || []).filter(c => (c.className || '').split(/\s+/).includes('wonstar')).length; }
+function lineDelays(){
+  return (String((byId.boardReveal && byId.boardReveal.innerHTML) || '').match(/animation-delay:(\d+)ms/g) || [])
+    .map(s => Number(/(\d+)/.exec(s)[1]));
+}
 
 ok('源码已无死代码 winFlashPending', !html.includes('winFlashPending'));
 ok('闪烁 CSS 仍存在（.board.reveal-flash）', html.includes('.board.reveal-flash'));
 
-// —— 首次通关：测闪烁出现时刻与弹窗时刻 ——
+// —— 首次通关：测揭晓序列（reveal-stage → 星点亮 → 逐段画线 → 整体闪烁）与弹窗时刻 ——
 playToWin();
 ok('通关已达成（status=won）', state().status === 'won', `status=${state().status}`);
 let flashAt = -1, modalAt = -1, flashGoneAtModal = null;
+let stageAt = -1, litMax = 0, segMax = 0, delaysSeen = [];
 let t = 0;
 for (let i = 0; i < 400; i++){
   flush(16); t += 16;
+  if (stageAt < 0 && (boardEl.className || '').indexOf('reveal-stage') >= 0) stageAt = t;
+  const lit = wonstarLit(); if (lit > litMax) litMax = lit;
+  const d = lineDelays(); if (d.length > segMax){ segMax = d.length; delaysSeen = d; }
   if (flashAt < 0 && flashing()) flashAt = t;
   if (modalAt < 0 && overlayOpen()){ modalAt = t; flashGoneAtModal = flashing(); break; }
 }
+ok('揭晓期间棋盘进入 .reveal-stage（杂星淡出/星座星舞台）', stageAt > 0, `stageAt=${stageAt}ms`);
+ok('星座星一次性点亮（.cell.wonstar.lit 数 == 星座星数）', FIX_STARS > 0 && litMax === FIX_STARS,
+   `lit=${litMax} 期望=${FIX_STARS}`);
+ok('逐段画线（每段一条 <line>、animation-delay 递增）',
+   FIX_LINES > 0 && segMax === FIX_LINES && new Set(delaysSeen).size === FIX_LINES &&
+   delaysSeen.every((d, k) => k === 0 || d > delaysSeen[k - 1]),
+   `segs=${segMax}/${FIX_LINES} delays=${JSON.stringify(delaysSeen)}`);
 ok('结尾出现整体闪烁（.reveal-flash 被加上）', flashAt > 0, `flashAt=${flashAt}ms`);
 ok('弹窗在闪烁之后才出现', modalAt > flashAt && flashAt > 0, `flash@${flashAt} modal@${modalAt}`);
 ok('揭晓总时长落在 ~1.4s（1000–1800ms）', modalAt >= 1000 && modalAt <= 1800, `modalAt=${modalAt}ms`);
@@ -215,6 +260,13 @@ ok('弹窗出现时闪烁类已清除', flashGoneAtModal === false, `flashing=${
 // —— 重玩再通关：走快通道，应明显更短 ——
 byId.overlay.dispatchEvent(mkEvent('click', { target: byId.overlay }));   // 收起弹窗
 flush(30);
+// 观察记录（pass=null，不计入通过/失败；复现即本文件的运行输出）：
+// 收起结算弹窗会走 dismissModal() → render()（game/index.html:2762-2767），render() 用不含 lit 的
+// className 覆盖格子（game/index.html:1933），而 .board.reveal-stage .cell.wonstar 只有带 .lit 才不暗
+//（217 未点亮 opacity:.22 / 219 点亮 opacity:1）。finishBoardReveal 在 render() 之后补调过
+// markAllStarsLit()（2717-2722），dismissModal 这条路径没有补 → 疑似本体缺陷（详见回报）。
+note('观察：收起结算弹窗后星座星 .lit 状态（预期可疑：reveal-stage 仍在但 lit 归零）',
+  `wonstar=${wonstarCount()} lit=${wonstarLit()} board=${JSON.stringify(boardEl.className)}`);
 restart();
 playToWin();
 let modalFast = -1; let t2 = 0;
@@ -223,6 +275,8 @@ for (let i = 0; i < 400; i++){
   if (overlayOpen()){ modalFast = t2; break; }
 }
 ok('重玩快通道更短（≤1200ms）', modalFast > 0 && modalFast <= 1200, `fastModalAt=${modalFast}ms`);
+ok('重玩快通道确实短于首次揭晓', modalFast > 0 && modalAt > 0 && modalFast < modalAt,
+   `fast=${modalFast}ms first=${modalAt}ms`);
 
 const pass = R.filter(x => x.pass === true).length;
 const fail = R.filter(x => x.pass === false);

@@ -1,6 +1,5 @@
-// v13 D/E/F：自写 DOM 桩（无 npm、无外部依赖），驱动 dist/index.html 真实脚本。
-// 断言：50 关全部玩到 status="won"；揭晓图星/连线/杂星计数；按钮文案；title；
-//       未通关时不泄露雷位；失败路径；全部解锁一次点击生效；图鉴页开关/计数/未通关不泄露星图。
+// v22：⏱ 限时关卡（第 11 关起强制）+ 关卡面板 ⏱ 图标 + 无尽每题倒计时。
+// 自写 DOM 桩（无 npm、无外部依赖），驱动 dist/index.html 真实脚本。
 'use strict';
 const fs = require('fs');
 const path = require('path');
@@ -9,7 +8,24 @@ const vm = require('vm');
 const ROOT = 'D:\\AI-Native casual game';
 const DIST = path.join(ROOT, 'dist', '星织-游戏本体', 'index.html');
 const html = fs.readFileSync(DIST, 'utf8');
-const play = JSON.parse(fs.readFileSync(path.join(ROOT, 'verification', 'v13_play.json'), 'utf8'));
+
+// ---------- 序列来源：从 dist 注入的紧凑数据「现场解码」 ----------
+// 旧写法读 verification/v13_play.json —— 那是 50 关时代按旧关卡 id 生成的映射，
+// 现在是 88 关，按键取值不保证对得上当前盘面。这里只改测试手里那份 HTML 字符串副本：
+// 把 LEVELS_PACKED / BANK_PACKED 以及展开后的 LEVELS / BANK 额外挂到 globalThis，跑完再取。
+const DATA_PATCH = [
+  [/const\s+LEVELS_PACKED\s*=/, 'const LEVELS_PACKED = globalThis.__LEVELS_PACKED ='],
+  [/const\s+BANK_PACKED\s*=/, 'const BANK_PACKED = globalThis.__BANK_PACKED ='],
+  [/const\s+LEVELS\s*=\s*expandLevelsPacked\(LEVELS_PACKED\)\s*;/,
+   'const LEVELS = globalThis.__LEVELS = expandLevelsPacked(LEVELS_PACKED);'],
+  [/const\s+BANK\s*=\s*\(ENDLESS_BANK\s*&&\s*ENDLESS_BANK\.length\)\s*\?\s*ENDLESS_BANK\s*:\s*LEVELS\s*;/,
+   'const BANK = globalThis.__BANK = ((ENDLESS_BANK && ENDLESS_BANK.length) ? ENDLESS_BANK : LEVELS);']
+];
+let dataHtml = html;
+DATA_PATCH.forEach(function(pair){
+  if (!pair[0].test(dataHtml)) throw new Error('注入点缺失：' + pair[0]);
+  dataHtml = dataHtml.replace(pair[0], pair[1]);
+});
 
 const R = [];                       // 结果
 function ok(name, cond, ev) { R.push({ name, pass: !!cond, ev: ev === undefined ? '' : String(ev) }); }
@@ -149,8 +165,8 @@ const win = {
 };
 win.window = win;
 
-// ---------------- 取出页面脚本并执行 ----------------
-const scripts = [...html.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/g)].map(x => x[1]);
+// ---------------- 取出页面脚本并执行（用打了数据导出补丁的副本） ----------------
+const scripts = [...dataHtml.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/g)].map(x => x[1]);
 ok('页面内联 script 数量==1', scripts.length === 1, 'count=' + scripts.length);
 win.Date = { now: function(){ return 1700000000000 + clock; }, UTC: Date.UTC, parse: Date.parse };
 // base64 垫片：关卡/题库数据用 atob 解压，Node 沙箱没有该浏览器全局
@@ -160,6 +176,11 @@ const ctx = vm.createContext(Object.assign(win, { globalThis: win }));
 vm.runInContext(scripts[0], ctx, { filename: 'dist-index-inline.js' });
 flush(0);
 ok('脚本执行无致命异常（关卡数据缺失提示未出现）', !String(boardEl.innerHTML).includes('关卡数据缺失'));
+
+// 现场解码出来的两套盘面池：闯关 88 关 / 无尽 176 题题库
+const POOLS = { campaign: ctx.__LEVELS || [], endless: ctx.__BANK || [] };
+ok('测试内可现场解码盘面（LEVELS / BANK）', POOLS.campaign.length > 0 && POOLS.endless.length > 0,
+   'LEVELS=' + POOLS.campaign.length + ' BANK=' + POOLS.endless.length);
 
 // ---------------- 辅助：读状态 ----------------
 const state = () => JSON.parse(bodyEl.dataset.gameState || '{}');
@@ -182,14 +203,49 @@ if (anyClose && byId.homeOverlay && !byId.homeOverlay.hidden) { anyClose.dispatc
 function openPanel(){ byId.lvBtn.dispatchEvent(mkEvent('click', { target: byId.lvBtn })); flush(20); }
 function closePanel2(){ if (byId.drawerMask) byId.drawerMask.dispatchEvent(mkEvent('click', { target: byId.drawerMask })); flush(260); }
 function goLevel(n){ openPanel(); byId.lvGrid.children[n - 1].dispatchEvent(mkEvent('click', { target: byId.lvGrid.children[n - 1] })); flush(40); }
-function firstDig(key){ const seq = play[key] || []; for (let i = 0; i < seq.length; i++) if (seq[i][0] === 'dig') return seq[i][1]; return -1; }
+
+// ---------- 盘面序列：按「当前真实盘面」现场生成（先右键标记所有雷，再点开所有安全格） ----------
+function campaignLevelAt(i){ return POOLS.campaign[i] || null; }
+function campaignLevelById(id){
+  for (let i = 0; i < POOLS.campaign.length; i++) if (POOLS.campaign[i].id === id) return POOLS.campaign[i];
+  return null;
+}
+function currentLevel(){
+  const st = state();
+  return campaignLevelById(st.levelId) || campaignLevelAt(st.level - 1);
+}
+function mineCells(lv){                      // mines 已含杂星；startBoard 再把 noise 并进雷集
+  const n = lv.size, set = new Set();
+  (lv.mines || []).forEach(function(c){ set.add(c[0] * n + c[1]); });
+  (lv.noise || []).forEach(function(c){ set.add(c[0] * n + c[1]); });
+  return Array.from(set).sort(function(a, b){ return a - b; });
+}
+function firstSafe(lv){ const mines = new Set(mineCells(lv)); for (let i = 0; i < lv.size * lv.size; i++) if (!mines.has(i)) return i; return -1; }
+function clearSeq(lv){
+  const mines = new Set(mineCells(lv)), ops = [], total = lv.size * lv.size;
+  for (let i = 0; i < total; i++) if (mines.has(i)) ops.push(['flag', i]);
+  for (let i = 0; i < total; i++) if (!mines.has(i)) ops.push(['dig', i]);
+  return ops;
+}
 function tapCell(i){
   boardEl.dispatchEvent(mkEvent('pointerdown', { target: cellsByI()[i], pointerType: 'touch', button: 0, clientX: 100, clientY: 100 }));
   boardEl.dispatchEvent(mkEvent('pointerup',   { target: cellsByI()[i], pointerType: 'touch', button: 0, clientX: 100, clientY: 100 }));
   flush(0);
 }
 function rightClick(i){ boardEl.dispatchEvent(mkEvent('pointerdown', { target: cellsByI()[i], button: 2, pointerType: 'mouse', clientX: 100, clientY: 100 })); flush(0); }
-function enterLevel(n){ goLevel(n); closePanel2(); const d = firstDig(String(n)); if (d >= 0) tapCell(d); flush(20); }
+function enterLevel(n){
+  goLevel(n); closePanel2();
+  const lv = campaignLevelAt(n - 1);
+  const d = lv ? firstSafe(lv) : -1;
+  if (d >= 0) tapCell(d);
+  flush(20);
+}
+function runClearSeq(){                      // 用当前盘面的现场序列通关（不 flush 揭晓动画）
+  const lv = currentLevel();
+  if (!lv) throw new Error('无法定位当前盘面：levelId=' + state().levelId + ' level=' + state().level);
+  const seq = clearSeq(lv);
+  for (let i = 0; i < seq.length; i++){ if (seq[i][0] === 'flag') rightClick(seq[i][1]); else tapCell(seq[i][1]); }
+}
 function chipMins(){                       // 返回 {el: 已用秒, limit: 限时秒}
   const t = String(byId.timerChip.textContent || '');
   const m = t.match(/(\d+):(\d\d)/);
@@ -217,7 +273,7 @@ ok('刚进关未操作时显示「限时 …」且不倒计时',
    String(byId.timerChip.textContent).indexOf('限时') >= 0 && String(byId.timerChip.className).indexOf('idle') >= 0,
    byId.timerChip.textContent + ' / ' + byId.timerChip.className);
 const idleShown = chipMins();
-tapCell(firstDig('11')); flush(0);
+tapCell(firstSafe(currentLevel())); flush(0);
 ok('第一次操作后开始倒计时', chipMins() !== null && Math.abs(chipMins() - idleShown) <= 1,
    idleShown + ' → ' + chipMins());
 
@@ -243,9 +299,8 @@ ok('超时不扣命（仍是 3 架望远镜）', state().lives === 3, String(sta
 
 // ⑥ 达标通关：金色 ⏱ + 最快用时
 byId.replay.dispatchEvent(mkEvent('click', { target: byId.replay })); flush(20);
-tapCell(firstDig('11')); flush(20);
-const seq = play['11'] || [];
-for (let i = 0; i < seq.length; i++){ if (seq[i][0] === 'flag') rightClick(seq[i][1]); else tapCell(seq[i][1]); }
+tapCell(firstSafe(currentLevel())); flush(20);
+runClearSeq();
 flush(1400);
 ok('第 11 关已通关', state().status === 'won', state().status);
 const prog = JSON.parse(store[PROG_KEY] || '{}');
@@ -259,25 +314,26 @@ closePanel2();
 
 // ⑥b 重玩已通关的关卡不再限时（c0cce5d）
 byId.replay.dispatchEvent(mkEvent('click', { target: byId.replay })); flush(20);
-tapCell(firstDig('11')); flush(20);
+tapCell(firstSafe(currentLevel())); flush(20);
 ok('重玩已通关的第 11 关不再限时（计时条隐藏）', byId.timerChip.hidden === true,
    'hidden=' + byId.timerChip.hidden + ' text=' + JSON.stringify(byId.timerChip.textContent));
 ok('但关卡面板仍标出它是限时关卡（timed）', hasCls(11, 'timed'), gridCls(11));
 
-// ⑦ 新需求：第 11 关起「所有」关卡都带 ⏱，包括未解锁的
+// ⑦ 新需求：第 11 关起「所有」关卡都带 ⏱，包括未解锁的（按现场解码出的关卡数扫完，摆脱 50 关时代的硬编码）
 byId.unlockBtn.dispatchEvent(mkEvent('click', { target: byId.unlockBtn })); flush(20);   // 先收回解锁（恢复锁）
+const N = POOLS.campaign.length;
 let untimedBad = [], lockedTimedBad = [];
 for (let i = 1; i <= 10; i++){ if (hasCls(i, 'timed')) untimedBad.push(i); }
-for (let i = 11; i <= 50; i++){
+for (let i = 11; i <= N; i++){
   if (!hasCls(i, 'timed')) untimedBad.push(i);
   if (hasCls(i, 'locked') && !hasCls(i, 'timed')) lockedTimedBad.push(i);
 }
 ok('第 1–10 关不带 ⏱（非限时）', untimedBad.filter(function(n){ return n <= 10; }).length === 0,
    '误标: ' + untimedBad.filter(function(n){ return n <= 10; }).join(','));
-ok('第 11–50 关全部带 ⏱（含未达标的）', untimedBad.filter(function(n){ return n >= 11; }).length === 0,
+ok('第 11–' + N + ' 关全部带 ⏱（含未达标的）', untimedBad.filter(function(n){ return n >= 11; }).length === 0,
    '缺失: ' + untimedBad.filter(function(n){ return n >= 11; }).slice(0, 8).join(',') + (untimedBad.length > 8 ? '…' : ''));
 const lockedTimed = [];
-for (let i = 11; i <= 50; i++) if (hasCls(i, 'locked')) lockedTimed.push(i);
+for (let i = 11; i <= N; i++) if (hasCls(i, 'locked')) lockedTimed.push(i);
 ok('锁定中的限时关卡也带 ⏱（与已解锁一致）',
    lockedTimed.length > 0 && lockedTimed.every(function(n){ return hasCls(n, 'timed'); }),
    '锁定 ' + lockedTimed.length + ' 关，例如 ' + lockedTimed.slice(0, 5).join(','));
@@ -285,25 +341,49 @@ ok('锁定关卡同时保留 🔒（locked 类）', lockedTimed.length > 0 && ha
    gridCls(lockedTimed[0] || 11));
 ok('全部解锁后仍带 ⏱',
    (function(){ byId.unlockBtn.dispatchEvent(mkEvent('click', { target: byId.unlockBtn })); flush(20);
-     let bad = 0; for (let i = 11; i <= 50; i++) if (!hasCls(i, 'timed')) bad++; return bad === 0; })(),
-   '缺失数 ' + (function(){ let bad = 0; for (let i = 11; i <= 50; i++) if (!hasCls(i, 'timed')) bad++; return bad; })());
+     let bad = 0; for (let i = 11; i <= N; i++) if (!hasCls(i, 'timed')) bad++; return bad === 0; })(),
+   '缺失数 ' + (function(){ let bad = 0; for (let i = 11; i <= N; i++) if (!hasCls(i, 'timed')) bad++; return bad; })());
 ok('CSS：.lvl.timed::before 画 ⏱', cssRule('.lvl.timed::before').indexOf('⏱') >= 0, cssRule('.lvl.timed::before'));
 ok('CSS：金色 timeok 规则在 timed 之后（覆盖生效）',
    html.indexOf('.lvl.timeok::before') > html.indexOf('.lvl.timed::before'));
 closePanel2();
 
-// ⑧ 无尽模式不受限时影响
+// ⑧ 无尽模式：每题有独立倒计时；闯关的 timeIsTimed() 在无尽恒为 false
 if (byId.homeBtn) { byId.homeBtn.dispatchEvent(mkEvent('click', { target: byId.homeBtn })); flush(200); }
 if (byId.homeEndless) { byId.homeEndless.dispatchEvent(mkEvent('click', { target: byId.homeEndless })); flush(60); }
 else if (byId.introEndless) { byId.introEndless.dispatchEvent(mkEvent('click', { target: byId.introEndless })); flush(60); }
 const inEndless = String(bodyEl.dataset.runMode || '') === 'endless';
-ok('进入无尽模式用于对照', inEndless === true || String(bodyEl.dataset.runMode || '') === 'campaign',
-   'runMode=' + bodyEl.dataset.runMode);
+ok('进入无尽模式用于对照', inEndless === true, 'runMode=' + bodyEl.dataset.runMode);
 if (inEndless){
-  tapCell(firstDig(String(state().levelId))); flush(20);
-  flush(30000);
-  ok('无尽模式不受关卡限时影响（超时也不判负）', state().status === 'playing', state().status);
-  ok('无尽模式不显示限时条', byId.timerChip.hidden === true, byId.timerChip.textContent);
+  function chipSecs(){                     // 无尽快照是「⏱ 剩 m:ss」，闯关是「限时 m:ss / ⏱ m:ss」
+    const m = String(byId.timerChip.textContent || '').match(/剩\s*(\d+):(\d\d)/);
+    return m ? (+m[1] * 60 + +m[2]) : null;
+  }
+  function toastLimitSec(){                // 开局 toast：「第 N 题 · 随机抽到 n×n（档）· 限时 Xs」
+    const kids = (bodyEl.children || []).filter(function(c){ return String(c.className).indexOf('runtoast') >= 0; });
+    const m = kids.length ? String(kids[kids.length - 1].textContent).match(/限时\s*(\d+)s/) : null;
+    return m ? +m[1] : null;
+  }
+  const left0 = chipSecs(), lim0 = toastLimitSec();
+  ok('现行：无尽每题有倒计时（不再是「不显示限时条」）', byId.timerChip.hidden === false && left0 !== null,
+     'hidden=' + byId.timerChip.hidden + ' text=' + JSON.stringify(byId.timerChip.textContent));
+  ok('每题倒计时落在 [25, 210] 秒（ENDLESS_TIME_MIN / ENDLESS_TIME_MAX）',
+     left0 !== null && left0 >= 25 && left0 <= 210 && lim0 !== null && lim0 >= 25 && lim0 <= 210,
+     '读数 ' + left0 + 's · 本题限时 ' + lim0 + 's');
+  ok('倒计时起点 = 本题限时（toast 与读数一致）', left0 !== null && lim0 !== null && Math.abs(lim0 - left0) <= 1,
+     lim0 + ' vs ' + left0);
+  ok('无尽走「每题倒计时」分支、不是闯关限时（未操作就已在倒数、没有 idle 的「限时 …」）',
+     String(byId.timerChip.className).indexOf('idle') < 0 && String(byId.timerChip.textContent).indexOf('限时') < 0,
+     byId.timerChip.className + ' / ' + byId.timerChip.textContent);
+
+  const lives0 = state().lives, lvId0 = state().levelId, progBefore = store[PROG_KEY] || '';
+  flush((left0 + 2) * 1000 + 900);         // 越过本题 deadline + 700ms 换题
+  ok('无尽超时扣 1 架望远镜（相对超时前）', state().lives === lives0 - 1, lives0 + ' → ' + state().lives);
+  ok('无尽超时后自动换下一题、本轮继续（不判负）',
+     state().status === 'playing' && state().levelId !== lvId0,
+     lvId0 + ' → ' + state().levelId + ' status=' + state().status);
+  ok('无尽倒计时不写闯关最快用时（timeIsTimed() 在无尽为 false）',
+     String(store[PROG_KEY] || '') === progBefore, String(store[PROG_KEY] || '').slice(0, 80));
 }
 
 const pass = R.filter(x => x.pass === true).length;
