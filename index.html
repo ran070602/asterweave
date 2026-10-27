@@ -1501,11 +1501,13 @@ function refreshIntro(){
   const live = homeRunLive();
   const res = document.getElementById('homeResume');
   if (res){
-    res.hidden = !homePlaying();
+    // 「继续当前进度」只在【闯关】棋盘已动过时出现。
+    // 无尽本轮进行中时，继续入口由无尽模式卡的「继续本轮」承担——
+    // 否则两个按钮点击效果完全一样（都只是 closeHome），是重复入口。
+    const campaignLive = (runMode === 'campaign' && boardTouched());
+    res.hidden = !campaignLive;
     const sub = document.getElementById('homeResumeSub');
-    if (sub) sub.textContent = live
-      ? ('无尽 · 第 ' + run.boardNo + ' 题 · 分数 ' + runScore())
-      : ('闯关 · 第 ' + Math.min(frontier() + 1, LEVELS.length) + ' 关');
+    if (sub) sub.textContent = '闯关 · 第 ' + Math.min(frontier() + 1, LEVELS.length) + ' 关';
   }
   const cs = document.getElementById('homeCampaignSub');
   if (cs) cs.textContent = hasSave
@@ -1518,6 +1520,14 @@ function refreshIntro(){
   if (es) es.textContent = live
     ? ('当前分数 ' + runScore() + ' · 第 ' + run.boardNo + ' 题')
     : ('每题限时 · 最高分 ' + (st.best || 0));
+  // 进行中时「继续本轮」就是主行动。
+  // 注意：测试用的极简 DOM 桩只实现了 classList.add/remove/contains（没有 toggle），
+  // 所以这里显式用 add/remove，避免在桩里抛 TypeError。
+  const ieHome = document.getElementById('homeEndless');
+  if (ieHome && ieHome.classList){
+    if (live) ieHome.classList.add('primary');
+    else ieHome.classList.remove('primary');
+  }
 }
 let homeOpen = false, homePausedClock = false, homeFadeTimer = 0;
 function openHome(pause){
