@@ -3378,12 +3378,18 @@ function skyFocusBands(bands){
   if (skyMode3d){
     // 3D：把该季节赤经带的中点转到正面中心（yaw = π/2 − α）
     if (!bands || !bands.length) return;
-    let midH = 0, wsum = 0;
+    // 赤经是**环形**的：秋季是跨 0h 的两段（[21,24] 与 [0,3]），中点应为 0h。
+    // 若按线性加权平均算，会得到 (22.5×3 + 1.5×3)/6 = 12h —— 正好是正对面，
+    // 于是"点秋季，星座全跑到背面"。这里改用**圆上的向量平均**（sin/cos 加权求和再 atan2）。
+    let sx = 0, sy = 0, wsum = 0, widestW = 0, widestMid = 0;
     for (let i = 0; i < bands.length; i++){
       const a = bands[i][0], b = bands[i][1], w = ((b - a) + 24) % 24 || 1;
-      midH += (((a + w / 2) % 24)) * w; wsum += w;
+      const m = (((a + w / 2) % 24)) * Math.PI / 12;      // 该段中点的弧度
+      sx += Math.cos(m) * w; sy += Math.sin(m) * w; wsum += w;
+      if (w > widestW){ widestW = w; widestMid = m; }
     }
-    const mid = (wsum ? midH / wsum : 0) * Math.PI / 12;
+    // 各段向量恰好互相抵消时（极罕见）退回"最宽一段的中点"
+    const mid = (Math.abs(sx) > 1e-9 || Math.abs(sy) > 1e-9) ? Math.atan2(sy, sx) : widestMid;
     let target = Math.PI / 2 - mid;
     // 取与当前朝向最近的等价角，避免绕远路
     while (target - skySpin.yaw > Math.PI) target -= Math.PI * 2;
@@ -3538,7 +3544,11 @@ function renderSkyMap3d(){
       '<g class="sky3d-front">' + front + '</g>' +
     '</g>' +
     '<rect class="sky-vignette" x="0" y="0" width="200" height="120" fill="url(#skyVig)" pointer-events="none"></rect>';
-  window.__sky3d = { yaw: yaw, pitch: pitch, nodes: items.length, labels: nearLabels };
+  // depth[] / ids[] 供自动化核对"季节聚焦后该季节是否真的转到正面"
+  window.__sky3d = { yaw: yaw, pitch: pitch, nodes: items.length, labels: nearLabels,
+    ids: items.map(function(it){ return it.s.id; }),
+    depths: items.map(function(it){ return it.p.z; }),
+    seasons: items.map(function(it){ return it.s.season; }) };
 }
 function sky3dAutoOn(){ return skyOpen && skyMode3d && !prefersReduced() && skySpinHold <= 0; }
 function sky3dTick(ts){
@@ -3562,9 +3572,11 @@ function sky3dSpinTo(target){
   if (typeof requestAnimationFrame !== 'function'){ skySpin.yaw = target; renderSkyMap(); return; }
   sky3dStop();
   const from = skySpin.yaw, dur = 420;
-  let t0 = 0;
+  let t0 = 0, last = 0;
   function step(ts){
-    const nt = (typeof ts === 'number' && isFinite(ts)) ? ts : ((t0 || 0) + 24);
+    // 缺时间戳时按 ~24ms/帧累加（不能写成 (t0||0)+24 —— t0 只在首帧赋值，那样每帧都算成同一时刻、动画会卡住）
+    const nt = (typeof ts === 'number' && isFinite(ts)) ? ts : (last ? last + 24 : 24);
+    last = nt;
     if (!t0) t0 = nt;
     const k = Math.min(1, (nt - t0) / dur), e = 1 - Math.pow(1 - k, 3);
     skySpin.yaw = from + (target - from) * e;

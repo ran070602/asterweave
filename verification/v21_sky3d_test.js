@@ -173,15 +173,8 @@ function actCell(i, mode) {
 }
 
 // ---------------- v21：图鉴 3D 天球 ----------------
-if (byId.introStart) { byId.introStart.dispatchEvent(mkEvent('click', { target: byId.introStart })); flush(0); }
-const SKY_IDS = (function(){
-  const m = html.match(/\/\* SKY_INJECT_START \*\/\s*const SKY = (\[[\s\S]*?\]);\s*\/\* SKY_INJECT_END \*\//);
-  return m ? JSON.parse(m[1]).map(function(x){ return x.id; }) : [];
-})();
-const SKY_ALL = (function(){
-  const m = html.match(/\/\* SKY_INJECT_START \*\/\s*const SKY = (\[[\s\S]*?\]);\s*\/\* SKY_INJECT_END \*\//);
-  return m ? JSON.parse(m[1]) : [];
-})();
+const homeClose0 = byId.homeResume || byId.homeCampaign;
+if (byId.introOverlay && !byId.introOverlay.hidden && homeClose0){ homeClose0.dispatchEvent(mkEvent('click', { target: homeClose0 })); flush(40); }
 function mapHtml(){ return String(byId.skyMap.innerHTML || ''); }
 function nodeXY(h){
   const out = [];
@@ -196,6 +189,10 @@ ok('默认是 3D 天球（按钮高亮 + 提示文案）',
    String(byId.skyMode3d.className).indexOf('on') >= 0 && String(byId.skyHint.textContent).indexOf('3D 天球') >= 0,
    byId.skyHint.textContent);
 openAtlas();
+// 图鉴数据现在是打包注入的，HTML 里解析不到，统一从运行时快照取（__sky3d.ids/seasons 为本帧全量）
+const TOTAL_NODES = (win.__sky3d && win.__sky3d.nodes) || 0;
+const SEASON_CNT = {};
+((win.__sky3d && win.__sky3d.seasons) || []).forEach(function(s){ SEASON_CNT[s] = (SEASON_CNT[s] || 0) + 1; });
 let h = mapHtml();
 ok('3D 地图包含天赤道环', h.indexOf('sky3d-eq') >= 0);
 ok('3D 地图包含赤纬/赤经网格', (h.match(/class="sky3d-g"/g) || []).length >= 12, String((h.match(/class="sky3d-g"/g) || []).length));
@@ -204,7 +201,8 @@ ok('3D 地图包含确定性星尘', (h.match(/fill="#cfe0ff"/g) || []).length >
 
 // 未观测：50 个节点都在，但一个名字都不显示（不泄露）
 let nodes = nodeXY(h);
-ok('50 个星座节点全部渲染', nodes.length === 50, String(nodes.length));
+ok('全部星座节点都渲染（与运行时总数一致且 > 50）', nodes.length === TOTAL_NODES && TOTAL_NODES > 50,
+   nodes.length + ' vs ' + TOTAL_NODES);
 ok('未观测时没有任何星座名字', (h.match(/class="lbl"/g) || []).length === 0);
 ok('未观测节点是暗色（op 上限 < 0.75）', Math.max.apply(null, nodes.map(n => n.op)) < 0.75, 'maxOp=' + Math.max.apply(null, nodes.map(n => n.op)));
 
@@ -229,7 +227,11 @@ ok('未观测节点是暗色且半径有限（球体不放大小到出界）',
 ok('深度线索：远侧不透明度明显低于近侧',
    Math.min.apply(null, nodes.map(n => n.op)) < Math.max.apply(null, nodes.map(n => n.op)) - 0.3,
    'min=' + Math.min.apply(null, nodes.map(n => n.op)).toFixed(2) + ' max=' + Math.max.apply(null, nodes.map(n => n.op)).toFixed(2));
-ok('__sky3d 状态可读', !!win.__sky3d && win.__sky3d.nodes === 50, JSON.stringify(win.__sky3d));
+ok('__sky3d 状态可读（含 depth/season 快照）',
+   !!win.__sky3d && win.__sky3d.nodes === TOTAL_NODES &&
+   Array.isArray(win.__sky3d.depths) && win.__sky3d.depths.length === TOTAL_NODES &&
+   Array.isArray(win.__sky3d.seasons) && win.__sky3d.seasons.length === TOTAL_NODES,
+   'nodes=' + (win.__sky3d && win.__sky3d.nodes) + ' depths=' + ((win.__sky3d && win.__sky3d.depths) || []).length);
 
 // 一键点亮后：正面半球出现名字，且只显示近侧
 byId.skyLitBtn.dispatchEvent(mkEvent('click', { target: byId.skyLitBtn }));
@@ -237,7 +239,7 @@ flush(20);
 h = mapHtml();
 const labels = (h.match(/class="lbl"/g) || []).length;
 ok('点亮后出现星座名标注', labels > 0, 'labels=' + labels);
-ok('标注只给正面半球（数量少于总数一半）', labels <= 25, 'labels=' + labels);
+ok('标注只给正面半球（数量少于总数一半）', labels <= Math.ceil(TOTAL_NODES / 2), 'labels=' + labels + '/' + TOTAL_NODES);
 ok('__sky3d 记录了标注数', win.__sky3d.labels === labels, String(win.__sky3d.labels));
 
 // 拖动 = 转动天球
@@ -271,11 +273,49 @@ function pickSeason(name){
   flush(60);
 }
 pickSeason('春季');
-const seasonCnt = SKY_ALL.filter(s => s.season === '春季').length;
+const seasonCnt = SEASON_CNT['春季'] || 0;
 ok('季节筛选后节点数 = 该季节星座数', nodeXY(mapHtml()).length === seasonCnt,
    nodeXY(mapHtml()).length + ' vs ' + seasonCnt);
+// 季节聚焦：点某个季节后，**该季节的星座必须真的转到正面**
+// （v2.11 修：秋季是跨 0h 的两段 [21,24]+[0,3]，原来用线性加权平均 → 中点算成 12h = 正对面，
+//   于是"点秋季，星座全跑到背面"；其余季节单段没暴露这个 bug）
+function angDiff(a, b){
+  let d = (a - b) % (Math.PI * 2);
+  if (d > Math.PI) d -= Math.PI * 2;
+  if (d < -Math.PI) d += Math.PI * 2;
+  return Math.abs(d);
+}
+const SEASON_MID_H = { '春季': 12, '夏季': 18, '秋季': 0, '冬季': 6 };
+const focusBad = [];
+let focusDetail = [];
+Object.keys(SEASON_MID_H).forEach(function(name){
+  pickSeason(name);
+  flush(700);                                        // 等 420ms 转向动画走完（此后 2.4s 内不会自转）
+  const d = win.__sky3d || {};
+  const zs = d.depths || [];
+  const meanZ = zs.reduce(function(a, b){ return a + b; }, 0) / (zs.length || 1);
+  const want = Math.PI / 2 - SEASON_MID_H[name] * Math.PI / 12;
+  const diff = angDiff(d.yaw, want);
+  focusDetail.push(name + ' 均值z=' + meanZ.toFixed(2) + ' yaw差=' + diff.toFixed(3));
+  if (diff > 0.08 || meanZ <= 0) focusBad.push(name + '(均值z=' + meanZ.toFixed(2) + ' yaw差=' + diff.toFixed(3) + ')');
+});
+ok('四个季节聚焦后，朝向精确命中该季节中点、星座整体在正面',
+   focusBad.length === 0, focusBad.length ? focusBad.join(' | ') : focusDetail.join(' · '));
+ok('秋季聚焦不再跑到背面（回归：跨 0h 的赤经带 [21,24]+[0,3]）',
+   (function(){
+     pickSeason('秋季'); flush(700);
+     const zs = (win.__sky3d || {}).depths || [];
+     const meanZ = zs.reduce(function(a, b){ return a + b; }, 0) / (zs.length || 1);
+     const want = Math.PI / 2;                       // 秋季中点 = 0h → 目标朝向 π/2（与其它季节同一套算法）
+     return zs.length > 0 && meanZ > 0 && angDiff(win.__sky3d.yaw, want) < 0.08;
+   })(),
+   focusDetail.join(' · '));
+ok('四季的聚焦口径完全一致（同一套算法、都不为负）',
+   focusDetail.every(function(s){ return s.indexOf('均值z=-') < 0; }), focusDetail.join(' · '));
+
 pickSeason('全部');
-ok('切回全部后节点恢复 50', nodeXY(mapHtml()).length === 50, String(nodeXY(mapHtml()).length));
+ok('切回全部后节点恢复', nodeXY(mapHtml()).length === TOTAL_NODES,
+   nodeXY(mapHtml()).length + ' vs ' + TOTAL_NODES);
 
 // 切到 2D 投影：3D 元素消失、提示文案变化
 byId.skyMode2d.dispatchEvent(mkEvent('click', { target: byId.skyMode2d }));
@@ -284,7 +324,8 @@ h = mapHtml();
 ok('切到 2D 后不再有 3D 网格', h.indexOf('sky3d-eq') < 0 && h.indexOf('sky3d-node') < 0);
 ok('切到 2D 后提示文案变成 2D 投影', String(byId.skyHint.textContent).indexOf('2D 投影') >= 0, byId.skyHint.textContent);
 ok('2D 模式仍是原来的「横向赤经/纵向赤纬」布局', h.indexOf('sky-sector') >= 0 || (h.match(/class="sky-grid/g) || []).length >= 5);
-ok('2D 下 50 个节点也都在', (h.match(/data-sky="/g) || []).length === 50, String((h.match(/data-sky="/g) || []).length));
+ok('2D 下所有星座节点也都在', (h.match(/data-sky="/g) || []).length === TOTAL_NODES,
+   String((h.match(/data-sky="/g) || []).length) + ' vs ' + TOTAL_NODES);
 
 // 切回 3D
 byId.skyMode3d.dispatchEvent(mkEvent('click', { target: byId.skyMode3d }));
