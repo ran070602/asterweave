@@ -1261,7 +1261,8 @@ function refreshIntro(){
   const et = document.getElementById('homeEndlessLabel');
   const es = document.getElementById('homeEndlessSub');
   const st = endlessStats();
-  if (et) et.textContent = live ? '继续本轮' : (homePlaying() ? '开始新的一轮' : '无尽冲分');
+  // 模式卡始终显示「模式名」；只有本轮进行中才变成动作语义「继续本轮」。
+  if (et) et.textContent = live ? '继续本轮' : '无尽冲分';
   if (es) es.textContent = live
     ? ('当前分数 ' + runScore() + ' · 第 ' + run.boardNo + ' 题')
     : ('每题限时 · 最高分 ' + (st.best || 0));
