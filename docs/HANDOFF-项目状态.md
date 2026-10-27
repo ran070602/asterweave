@@ -2,8 +2,8 @@
 
 > 状态：**未完工**。作者明确表示后续还要继续优化。本文件用于跨会话接手，勿当作终版说明。
 
-- 快照日期：2026-10-22
-- 当前关卡数：**50**
+- 快照日期：2026-10-27
+- 当前关卡数：**88**（88 星座齐全）｜图鉴：**88** 星座
 - 线上（主）：<https://asterweave.pages.dev>
 - 线上（备）：<https://ran070602.github.io/asterweave/>
 
@@ -13,16 +13,16 @@
 
 | 交付物 | 当前状态 |
 |---|---|
-| `星织-游戏本体.zip`（根目录 `index.html` + `README.txt`，≤50MB） | 已产出（约 56 KB） |
+| `星织-游戏本体.zip`（根目录 `index.html` + `README.txt`，≤50MB；**提交时命名为 `冉政-星织-游戏本体.zip`**） | 已产出（约 100 KB） |
 | `冉政-设计思路文档.md` | 已有内容，随迭代继续更新 |
 | `冉政-迭代优化过程文档.md` | 已有内容，随迭代继续更新 |
 | 参赛提交（上传到比赛平台） | **尚未提交** |
 
 ## 2. 当前已达成
 
-- **88 关**（1–50 原样 + 51–88 追加），数据在 `tools/levels.json`；`python tools/check_levels.py` 结果：硬失败 0 / 警告 0（零猜测可解、孤立雷、空行、密度、星座重复、图鉴覆盖全部通过）。
-- **图鉴 50 星座**：`tools/sky.json` 由 `python tools/build_sky.py` 生成；关卡号按 `theme.id` 从 `levels.json` **反查**（避免计数错位）。
-- **交互**：单击观测 / 双击·右键标记（220 ms 延迟判定窗口，已取代早期的"观测/标记"模式按钮）。
+- **88 关**（原 50 关于 2026-10-23 按难度分**重排**、其中 4 关做**深度闸门重生成**；51–88 为追加），数据在 `tools/levels.json`；`python tools/check_levels.py` 结果：硬失败 0 / 警告 0（零猜测可解、孤立雷、空行、密度、星座重复、图鉴覆盖全部通过）。
+- **图鉴 88 星座**（IAU 全集）：`tools/sky.json` 由 `python tools/build_sky.py` 生成；关卡号按 `theme.id` 从 `levels.json` **反查**（避免计数错位）。
+- **交互**：**触摸**＝按下→抬起即观测、长按 380 ms 标记（划动取消）；**鼠标**＝左键观测、右键标记；**键盘**＝Enter 观测、空格/Shift+Enter 标记。观测是**即时**的（早期的延迟判定与双击标记均已移除）。
 - **视觉**：双层闪烁星空背景（`body::before` + `body::after`，纯 CSS）；观测弹跳 + 亮度闪、标记轻抖 + 星形弹出、踩雷甩动；`prefers-reduced-motion` 全部降级。
 - **图鉴交互**：真实天球投影、季节筛选、滚轮/双指缩放、拖动平移、星座详情为**屏幕中央 modal**（× / 点空白 / Esc 关闭）、未解锁星座显示**暗色名字**、「🔆 一键点亮（预览）」开发开关。
 - **发布**：Cloudflare Pages（主，push 自动部署）+ GitHub Pages（备）。
@@ -174,7 +174,7 @@ python tools/sync_docs_tables.py   # 文档关卡表同步（幂等，--dry 可�
 unMode/
 un.boardNo/startEndlessRun）并已给 	imeIsTimed()、
 ecordBestTime() 加了 
-unMode === 'endless' 护栏；但 ct() 里的 startClock() 与 	ickClock() 的严格限时判负**漏了护栏**，会导致「无限模式 + 严格限时」被关卡目标时间判负。已修：ct() 仅在 	imeIsTimed() 时起表，	ickClock() 开头直接 if (!timeIsTimed()) return;。回归验证：关卡模式计时/达标/严格超时全部正常，无限模式不启动计时。
+unMode === 'endless' 护栏；但 ct() 里的 startClock() 与 	ickClock() 的严格限时判负**漏了护栏**，会导致「无限模式 + 严格限时」被关卡目标时间判负。已修：ct() 仅在 	imeIsTimed() 时起表，	ickClock() 开头直接 if (!timeIsTimed()) return;。回归验证：关卡模式计时/达标/严格超时全部正常，无限模式不启动计时。
 
 ## 10. 主页（模式选择）+ 常驻入口 + 暂停菜单（v8）
 
