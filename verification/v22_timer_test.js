@@ -153,6 +153,9 @@ win.window = win;
 const scripts = [...html.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/g)].map(x => x[1]);
 ok('页面内联 script 数量==1', scripts.length === 1, 'count=' + scripts.length);
 win.Date = { now: function(){ return 1700000000000 + clock; }, UTC: Date.UTC, parse: Date.parse };
+// base64 垫片：关卡/题库数据用 atob 解压，Node 沙箱没有该浏览器全局
+if (typeof win.atob !== 'function'){ win.atob = function(b){ return Buffer.from(String(b), 'base64').toString('binary'); }; }
+if (typeof win.btoa !== 'function'){ win.btoa = function(s){ return Buffer.from(String(s), 'binary').toString('base64'); }; }
 const ctx = vm.createContext(Object.assign(win, { globalThis: win }));
 vm.runInContext(scripts[0], ctx, { filename: 'dist-index-inline.js' });
 flush(0);
