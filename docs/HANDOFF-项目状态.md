@@ -454,3 +454,10 @@ unMode === 'endless' 护栏；但 ct() 里的 startClock() 与 	ickClock() 的�
   - **踩到的坑（值得记进方法论）**：我第一版用 `classList.toggle('primary', !!live)`，真实浏览器没问题，但**项目测试的极简 DOM 桩只实现了 `classList` 的 `add/remove/contains`，没有 `toggle`** → 9 套之外的 v16/v22/v23 立刻 `TypeError: ieHome.classList.toggle is not a function`。
     已改为显式 `add`/`remove`。**教训：这个仓库的 DOM 桩是"显式白名单"，写游戏代码时只能用桩里已有的 API；新增一个浏览器 API 就可能让整套测试在加载期崩掉。**
     同类前车之鉴：数据压缩引入 `atob` 曾让 9 套全灭（v13.1）。
+
+- **v13.7 菜单去重（第二处）：闯关进行中隐藏「闯关模式」卡**：
+  - 与 v13.6 同一原则——**每个模式在一屏里只有一个"继续"入口**。闯关棋盘动过后，「继续当前进度」与「闯关模式」卡点击都只是 `closeHome()` 回棋盘，属重复；
+    现改为 `campHome.hidden = campaignLive`（`campaignLive = runMode === 'campaign' && boardTouched()`），其它状态（全新 / 无尽本轮进行中）闯关卡照常显示用于切换模式。
+  - **构建产物三态实测**：① 全新 → `[闯关模式 | 无尽冲分]`；② 闯关棋盘已动过 → `[继续当前进度 | 开始新的一轮]`（闯关卡隐藏，点主卡回棋盘）；③ 无尽本轮进行中 → `[闯关模式 | 继续本轮(高亮)]`（点它回棋盘）。零 JS 报错。
+  - 项目自带套件**无新增失败**：v16 18/4、v22 30/1、v23 22/7（与本次改动前逐项一致）。
+  - 补丁脚本：`.scratch/fix_home_resume_dup2.py`（第二处）、`.scratch/fix_home_resume_dup.py`（第一处，无尽）。游戏源码备份在 `.scratch/backups/`（不再散落在仓库根）。

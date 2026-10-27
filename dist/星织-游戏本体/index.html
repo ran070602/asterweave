@@ -1499,16 +1499,20 @@ function refreshIntro(){
   refreshSoundBtn();          // 音效角标与顶部按钮共用同一套状态（含三档声波/静音斜杠）
 
   const live = homeRunLive();
+  const campaignLive = (runMode === 'campaign' && boardTouched());   // 闯关棋盘已动过
   const res = document.getElementById('homeResume');
   if (res){
     // 「继续当前进度」只在【闯关】棋盘已动过时出现。
     // 无尽本轮进行中时，继续入口由无尽模式卡的「继续本轮」承担——
     // 否则两个按钮点击效果完全一样（都只是 closeHome），是重复入口。
-    const campaignLive = (runMode === 'campaign' && boardTouched());
     res.hidden = !campaignLive;
     const sub = document.getElementById('homeResumeSub');
     if (sub) sub.textContent = '闯关 · 第 ' + Math.min(frontier() + 1, LEVELS.length) + ' 关';
   }
+  // 闯关进行中时，「闯关模式」卡与上面的主卡是同一件事（都只是回到棋盘）→ 隐藏它。
+  // 原则：每个模式在一屏里只有一个“继续”入口。其它状态照常显示，用于切换到闯关。
+  const campHome = document.getElementById('homeCampaign');
+  if (campHome) campHome.hidden = campaignLive;
   const cs = document.getElementById('homeCampaignSub');
   if (cs) cs.textContent = hasSave
     ? ('继续第 ' + Math.min(frontier() + 1, LEVELS.length) + ' 关 · 共 ' + LEVELS.length + ' 关')
