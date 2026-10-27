@@ -11,6 +11,7 @@
   6. 星座重复、图鉴 sky.json 覆盖                                —— 警告
   7. 所有关卡 showRuns 必须 true（第 1 关已改为“首关即引入数织”）  —— 警告
   8. 第 1 关必须“不用数织会卡住”且至少一条长度 ≥2 的连续块线索    —— 警告
+  9. 每关 name 必须是「第 N 关 · 星座名」（顶栏标题直接显示）      —— 警告
 退出码：0 = 全部通过（可能有警告）；1 = 有硬失败。
 """
 import importlib.util, json, os, sys
@@ -76,6 +77,10 @@ def main():
             warn.append(f"第 {lid} 关：雷密度 {dens:.1f}%（1–50 关目标约 20%，51–88 关 25–27%）")
         cid = x["theme"]["id"]
         if cid in seen_const:
+            want_name = f"第 {lid} 关 · {(x.get('theme') or {}).get('name', '')}"
+            if x.get("name") != want_name:
+                warn.append(f"第 {lid} 关：name 是 {x.get('name')!r}，应为 {want_name!r}"
+                            "（顶栏标题会显示与实际位置矛盾的关卡号；重排关卡后必须重算 name）")
             warn.append(f"第 {lid} 关与第 {seen_const[cid]} 关星座重复：{cid}")
         else:
             seen_const[cid] = lid
