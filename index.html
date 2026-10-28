@@ -97,7 +97,6 @@
   /* 限时关卡（第 11 关起）一律带 ⏱ 提示，含未解锁的关卡；达标后由下面的 timeok 规则覆盖成金色 */
   .lvl.timed::before{content:"⏱";position:absolute;top:2px;left:5px;font-size:9px;opacity:.4;color:#c2d1e6}
   .lvl.timeok::before{content:"⏱";position:absolute;top:2px;left:5px;font-size:9px;opacity:.95;color:#ffd166}
-  .modal-perfect{display:block;margin-top:3px;color:#ffd166;font-weight:800;font-size:12px}
   .lvbtn.vol-1 .ico .w2,.lvbtn.vol-1 .ico .w3{display:none}
   .lvbtn.vol-2 .ico .w3{display:none}
   .top-actions{position:relative}
@@ -162,15 +161,25 @@
   .lvl.cleared{background:#14301f;border-color:#2f6b46;color:#8ff0b4}
   .lvl.cleared::after{content:"✓";position:absolute;top:2px;right:6px;font-size:10px;color:#5fd08a}
   .lvl.current{background:#1f3a63;border-color:#4b7fbd;color:#eaf3ff;box-shadow:0 0 0 2px rgba(75,127,189,.3)}
-  .lvl.locked{background:#101419;border-color:#1f2734;color:#59647a;cursor:not-allowed}
-  .lvl.locked::after{content:"🔒";position:absolute;top:2px;right:5px;font-size:10px;opacity:.85}
+  .lvl.locked{background:#101419;border-color:#1f2734;color:#59647a;cursor:not-allowed;padding-top:13px}
   .lvl.playing{outline:2px dashed #ffd166;outline-offset:2px}
-  /* 满分（零失误通关）：左下角金色圆点（左上 ⏱、右上 ✓/🔒 已占用，故用背景圆点而非伪元素）。
-     注意必须放在 .lvl.cleared / .lvl.locked 之后——它们用 background 简写会清掉 background-image；
-     再加 .lvl.cleared.perfect 提高权重，避免将来被同权重规则覆盖（曾因顺序问题圆点不显示）。 */
-  .lvl.perfect, .lvl.cleared.perfect{background-image:radial-gradient(circle at 7px calc(100% - 6px), #ffd166 0 2.6px, transparent 3px)}
+  /* 未解锁：白色小锁，居中在数字上方（替代原先右上角的橙色 emoji 🔒） */
+  .lvl-lock{display:none;position:absolute;left:50%;top:7px;transform:translateX(-50%);width:11px;height:13.5px;
+    stroke:#e8eefc;stroke-opacity:.72;stroke-width:1.3;fill:#e8eefc;fill-opacity:.72}
+  .lvl.locked .lvl-lock{display:block}
+  /* 通关评价：三星（0–3 颗点亮），格子底部居中 */
+  .lvl-stars{display:none;position:absolute;left:50%;bottom:4px;transform:translateX(-50%);width:26px;height:8px}
+  .lvl.cleared .lvl-stars,.lvl.current .lvl-stars{display:block}
+  .lvl-stars .st{fill:#38445a}
+  .lvl.s1 .lvl-stars .st:nth-child(1),
+  .lvl.s2 .lvl-stars .st:nth-child(-n+2),
+  .lvl.s3 .lvl-stars .st{fill:#ffd166}
+  .star-num b{color:#ffd166}
+  /* 满分关：金色描边。
+     注：早先这里是「左下角金色圆点」（background-image），与后来加的底部三星重复表达，
+     2026-10-28 改为描边；不要再把圆点加回来（真浏览器截图里它和三星叠在一起很难看）。 */
+  .lvl.perfect{border-color:#c99b2e}
   .mini.on{background:#1d3550;border-color:#4b7fbd;color:#dbeaff}
-  .panel-hint{margin-top:8px;font-size:11px;color:#6f7f96;line-height:1.5}
 
   .status{
     margin:0 2px 8px;padding:9px 10px;border-radius:10px;
@@ -389,6 +398,16 @@
     bottom:calc(8px + env(safe-area-inset-bottom));z-index:6;margin:0;
     background:#141a23;box-shadow:0 14px 36px rgba(0,0,0,.55)}
   .modal .modal-cname{display:block;font-size:20px;font-weight:800;letter-spacing:.04em;color:#eaf3ff;margin-top:2px}
+  /* 通关评价：三星 + 胶囊 + ✓ 清单 */
+  .modal-stars{display:flex;justify-content:center;gap:9px;margin:8px 0 7px}
+  .modal-stars svg{width:34px;height:34px}
+  .modal-stars svg.on{fill:#ffd166;filter:drop-shadow(0 0 8px rgba(255,209,102,.5))}
+  .modal-stars svg.off{fill:#3a4658}
+  .modal-chip{display:inline-block;padding:3px 13px;border-radius:999px;border:1px solid rgba(255,209,102,.55);
+    background:rgba(255,209,102,.13);color:#ffd166;font-size:12.5px;font-weight:800;letter-spacing:.06em}
+  .modal-check{margin:10px auto 0;padding:0;list-style:none;width:fit-content;text-align:left}
+  .modal-check li{font-size:12.5px;color:#c3d0e2;line-height:1.8}
+  .modal-check li::before{content:"✓";color:#5fd08a;font-weight:800;margin-right:6px}
   .modal .modal-cmeta{display:block;margin-top:4px;font-size:12px;color:#9fb4d0}
   .result.win{background:#14251c;border-color:#2f6b46}
   .result.lose{background:#2a1418;border-color:#7a2333}
@@ -781,7 +800,7 @@
   <div class="drawer-mask" id="drawerMask" hidden></div>
   <section class="panel" id="levelPanel" hidden role="dialog" aria-modal="true" aria-label="关卡选择">
     <div class="panel-head">
-      <span class="panel-title">已通关 <b id="clearedCount">0</b>/<b id="totalCount">1</b>　·　完美 <b id="perfectCount">0</b>/<b id="perfectTotal">1</b></span>
+      <span class="panel-title">已通关 <b id="clearedCount">0</b>/<b id="totalCount">1</b>　·　<span class="star-num">★ <b id="starCount">0</b>/<b id="starTotal">0</b></span>　·　完美 <b id="perfectCount">0</b>/<b id="perfectTotal">1</b></span>
       <button type="button" class="mini" id="unlockBtn" aria-pressed="false">🔓 全部解锁</button>
       <button type="button" class="mini" id="resetBtn">重置进度</button>
     </div>
@@ -789,7 +808,6 @@
       <span class="panel-title">⏱ <b>第 11 关起为限时关卡</b>（未解锁的关也带 ⏱），超时即失败；<b>金色</b> ⏱ = 已在目标时间内完成</span>
     </div>
     <div class="lvgrid" id="lvGrid"></div>
-    <div class="panel-hint">✓ 已通关　·　高亮 = 当前关卡　·　🔒 未解锁（通关上一关后解锁）<br><b>✦ 左下金点 = 完美观测</b>（零失误通关，三架望远镜全留）<br>⏱ = <b>限时关卡</b>（第 11 关起每关都有，未解锁的也标出）　·　<b>金色 ⏱</b> = 已在目标时间内观测完成　·　想直接玩后面的关？点「全部解锁」（给评审/开发用，不影响进度记录）</div>
   </section>
 
   <section class="panel sky-panel" id="skyPanel" hidden aria-label="星座图鉴">
@@ -1397,6 +1415,8 @@ const lvGrid = document.getElementById('lvGrid');
 const clearedCountEl = document.getElementById('clearedCount');
 const totalCountEl = document.getElementById('totalCount');
 const perfectCountEl = document.getElementById('perfectCount');
+const starCountEl = document.getElementById('starCount');
+const starTotalEl = document.getElementById('starTotal');
 const perfectTotalEl = document.getElementById('perfectTotal');
 const resetBtn = document.getElementById('resetBtn');
 const constSlotEl = document.getElementById('constSlot');
@@ -2436,6 +2456,16 @@ function constSvg(theme, n, noise){
     ' 星座星图">' + dustHtml(theme) + noiseHtml + linesHtml + starsHtml + '</svg>';
 }
 
+// 弹窗里的三颗星：lit 颗金色、其余暗色（内联 SVG，无文字）
+function modalStarsSvg(lit){
+  const d = 'M12 2.4l2.9 6.1 6.7.9-4.9 4.6 1.2 6.6L12 17.4 6.1 20.6l1.2-6.6L2.4 9.4l6.7-.9z';
+  let out = '';
+  for (let i = 0; i < 3; i++){
+    out += '<svg viewBox="0 0 24 24" class="' + (i < lit ? 'on' : 'off') + '"><path d="' + d + '"/></svg>';
+  }
+  return out;
+}
+
 function buildConstPanel(theme, n, noise){
   const panel = document.createElement('div');
   panel.className = 'const-panel';
@@ -2532,27 +2562,40 @@ function buildModal(){
       modalSubEl.appendChild(nm);
       const meta = document.createElement('span');
       meta.className = 'modal-cmeta';
-      let metaTxt = (best && best.st && best.st.name
-          ? '最亮星 ' + best.st.name + '（' + best.mag + ' 等） · ' : '')
-        + (last ? '全部 ' + LEVELS.length + ' 关观测完成' : '已收入星座图鉴');
-      if (timeIsTimed() && timeStart){
-        const el = Math.round(timeElapsedSec()), goal = levelTargetSec(S.level);
-        const bestS = (progress.best || {})[String(S.index)];
-        metaTxt += ' · 用时 ' + fmtClock(el) + ' / 限时 ' + fmtClock(levelLimitSec(S.level))
-          + (el <= goal ? ' · ⏱ 提前达标' : '');
-        if (typeof bestS === 'number') metaTxt += ' · 最快 ' + fmtClock(bestS);
-      }
+      // —— 通关评价：三星 + 「N 星！」胶囊 + ✓ 清单（清单只讲"这次是怎么拿到分的"）——
       const maxL = levelMaxLives(S.level);
       const leftL = Math.max(0, Math.min(maxL, S.lives));
-      metaTxt += ' · 本次 🔭 ' + leftL + '/' + maxL;
+      const perfect = leftL >= maxL;
+      const litStars = Math.min(3, leftL);
+      const starsWrap = document.createElement('span');
+      starsWrap.className = 'modal-stars';
+      starsWrap.innerHTML = modalStarsSvg(litStars);
+      modalSubEl.appendChild(starsWrap);
+      const chip = document.createElement('span');
+      chip.className = 'modal-chip';
+      chip.textContent = (['', '一星', '二星', '三星'][litStars] || '一星') + '！';
+      modalSubEl.appendChild(chip);
+      const check = document.createElement('ul');
+      check.className = 'modal-check';
+      const liStars = document.createElement('li');
+      liStars.textContent = perfect
+        ? '三架望远镜全留（零失误）'
+        : ('失误 ' + (maxL - leftL) + ' 次 · 剩 ' + leftL + ' 架望远镜');
+      check.appendChild(liStars);
+      if (timeIsTimed() && timeStart){
+        const el = Math.round(timeElapsedSec()), goal = levelTargetSec(S.level);
+        const liTime = document.createElement('li');
+        liTime.textContent = '用时 ' + fmtClock(el) + ' / 限时 ' + fmtClock(levelLimitSec(S.level))
+          + (el <= goal ? ' · ⏱ 达标' : '');
+        check.appendChild(liTime);
+      }
+      modalSubEl.appendChild(check);
+      // 只留最亮星（"进了图鉴"由星图本体表达；按用户要求去掉「已收入星座图鉴」与「本次 🔭 N/3」）
+      let metaTxt = (best && best.st && best.st.name
+          ? '最亮星 ' + best.st.name + '（' + best.mag + ' 等）' : '')
+        + (last ? ' · 全部 ' + LEVELS.length + ' 关观测完成' : '');
       meta.textContent = metaTxt;
       modalSubEl.appendChild(meta);
-      if (leftL >= maxL){
-        const pf = document.createElement('span');
-        pf.className = 'modal-perfect';
-        pf.textContent = '✦ 完美观测（零失误，望远镜全留）';
-        modalSubEl.appendChild(pf);
-      }
     } else {
       modalSubEl.textContent = last ? '所有 ' + LEVELS.length + ' 关观测完成。' : '本关观测完成。';
     }
@@ -2629,7 +2672,9 @@ function fmtClock(sec){
 function timeIsTimed(){
   if (runMode === 'endless') return false;
   if (!S || (S.index + 1) < TIMED_FROM) return false;
-  return !isCleared(S.index);                 // 重玩已通关的关卡不限时（首次挑战才限时）
+  // 2026-10-28 用户决定：**重玩也要计时**。星星评价下重玩若不限时，满分就成了没有时间压力的刷分；
+  // 保留时间压力，才让"零失误"真正有分量。（此前是"重玩不限时"。）
+  return true;
 }
 function timeElapsedSec(){
   if (!timeStart) return 0;
@@ -2706,6 +2751,11 @@ function bestLivesOf(idx){
 function isPerfectClear(idx){
   const lv = LEVELS[idx];
   return !!lv && bestLivesOf(idx) >= levelMaxLives(lv);
+}
+function totalStars(){
+  let n = 0;
+  for (let i = 0; i < LEVELS.length; i++){ n += bestLivesOf(i); }
+  return n;
 }
 function perfectCount(){
   let n = 0;
@@ -3126,6 +3176,19 @@ function buildLevelGrid(){
     b.type = 'button';
     b.className = 'lvl';
     b.textContent = String(i + 1);                 // 关卡号
+    // 装饰节点：白色小锁（未解锁时显示，居中在数字上方）+ 三星（0–3 颗按 bestLives 点亮）。
+    // 用 createElement + innerHTML + appendChild：测试用的极简 DOM 桩没有 insertAdjacentHTML；
+    // 两个 SVG 都不含文字，所以不影响按钮的 textContent 与无障碍标签。
+    const deco = document.createElement('span');
+    deco.className = 'lvl-deco';
+    deco.innerHTML = '<svg class="lvl-lock" viewBox="0 0 12 15" aria-hidden="true">' +
+      '<path d="M3.4 6.4V4.6a2.6 2.6 0 0 1 5.2 0v1.8" fill="none"/>' +
+      '<rect x="1.7" y="6.2" width="8.6" height="6.6" rx="1.7"/></svg>' +
+      '<svg class="lvl-stars" viewBox="0 0 32 10" aria-hidden="true">' +
+        '<path class="st" d="M5 .8l1.28 2.62 2.9.42-2.1 2.04.5 2.9L5 7.42 2.42 8.78l.5-2.9L.82 3.84l2.9-.42z"/>' +
+        '<path class="st" d="M5 .8l1.28 2.62 2.9.42-2.1 2.04.5 2.9L5 7.42 2.42 8.78l.5-2.9L.82 3.84l2.9-.42z" transform="translate(11 0)"/>' +
+        '<path class="st" d="M5 .8l1.28 2.62 2.9.42-2.1 2.04.5 2.9L5 7.42 2.42 8.78l.5-2.9L.82 3.84l2.9-.42z" transform="translate(22 0)"/></svg>';
+    b.appendChild(deco);
     b.setAttribute('data-level', String(i + 1));
     b.setAttribute('data-index', String(i));
     if (progress.timeOk && progress.timeOk[String(i)]) b.classList.add('timeok');
@@ -3155,7 +3218,9 @@ function refreshLevelGrid(){
     if (i + 1 >= TIMED_FROM) cls += ' timed';      // 限时关卡一律带 ⏱（含未解锁的关卡，与已解锁的保持一致）
     else cls += ' untimed';                        // 非限时关卡（显式标记，便于测试与样式区分）
     if (progress.timeOk && progress.timeOk[String(i)]) cls += ' timeok';   // ⏱ 达标标记
-    if (isPerfectClear(i)) cls += ' perfect';                              // ✦ 满分（零失误）
+    const bl = bestLivesOf(i);
+    if (bl >= 1) cls += ' s' + Math.min(3, bl);                            // ★ 通关评价（剩余望远镜数）
+    if (isPerfectClear(i)) cls += ' perfect';                              // 满分（零失误）
     if (b.className !== cls) b.className = cls;
     b.disabled = !(unlocked || cleared);
     if (isPerfectClear(i)) label += '，完美观测';
@@ -3167,6 +3232,8 @@ function refreshLevelGrid(){
   totalCountEl.textContent = String(LEVELS.length);
   clearedCountEl.textContent = String(clearedTotal());
   if (perfectCountEl) perfectCountEl.textContent = String(perfectCount());
+  if (starCountEl) starCountEl.textContent = String(totalStars());
+  if (starTotalEl) starTotalEl.textContent = String(LEVELS.length * 3);
   if (perfectTotalEl) perfectTotalEl.textContent = String(LEVELS.length);
 }
 

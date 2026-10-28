@@ -1,11 +1,16 @@
 // v22：⏱ 限时关卡（第 11 关起强制）+ 关卡面板 ⏱ 图标 + 无尽每题倒计时。
 // 自写 DOM 桩（无 npm、无外部依赖），驱动 dist/index.html 真实脚本。
+//
+// 2026-10-28 新口径（重玩也要计时，推翻旧的「重玩不限时」）：
+//   timeIsTimed() = 无尽 false；关卡序号 < 11 false；>= 11 一律 true（含重玩已通关的关卡）。
+//   所以重玩第 11 关（及以后）同样显示「限时 m:ss」/倒计时，超时同样判负。
 'use strict';
 const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
 
-const ROOT = 'D:\\AI-Native casual game';
+// 仓库根 = 本文件所在目录的上一级（不再硬编码检出目录名，避免仓库改名/搬家后 ENOENT）
+const ROOT = path.resolve(__dirname, '..');
 const DIST = path.join(ROOT, 'dist', '星织-游戏本体', 'index.html');
 const html = fs.readFileSync(DIST, 'utf8');
 
@@ -312,12 +317,42 @@ ok('达标关卡带金色 ⏱（timeok + timed）',
    hasCls(11, 'timeok') && hasCls(11, 'timed'), gridCls(11));
 closePanel2();
 
-// ⑥b 重玩已通关的关卡不再限时（c0cce5d）
+// ⑥b 新口径（2026-10-28 用户决定，推翻旧的「重玩不限时」）：重玩已通关的关卡同样限时。
+// timeIsTimed()：无尽 false；关卡序号 < 11 false；>= 11 一律 true（含重玩已通关的关卡）。
 byId.replay.dispatchEvent(mkEvent('click', { target: byId.replay })); flush(20);
-tapCell(firstSafe(currentLevel())); flush(20);
-ok('重玩已通关的第 11 关不再限时（计时条隐藏）', byId.timerChip.hidden === true,
+ok('重玩已通关的第 11 关：计时条仍然可见（不再隐藏）', byId.timerChip.hidden === false,
    'hidden=' + byId.timerChip.hidden + ' text=' + JSON.stringify(byId.timerChip.textContent));
+ok('重玩时计时条是「限时 m:ss」形态（未操作 → idle，不倒计时）',
+   /^限时\s+\d+:\d\d$/.test(String(byId.timerChip.textContent)) &&
+   String(byId.timerChip.className).indexOf('idle') >= 0,
+   byId.timerChip.textContent + ' / ' + byId.timerChip.className);
+const replayLimit = chipMins();                 // 重玩时的本关限时（= 首次挑战同一口径）
+tapCell(firstSafe(currentLevel())); flush(20);
+ok('重玩时第一次操作后进入倒计时（「⏱ m:ss」，不再是 idle/隐藏）',
+   byId.timerChip.hidden === false && /^⏱\s+\d+:\d\d$/.test(String(byId.timerChip.textContent)) &&
+   String(byId.timerChip.className).indexOf('idle') < 0,
+   byId.timerChip.textContent + ' / ' + byId.timerChip.className);
+ok('重玩时的倒计时读数 ≈ 本关限时（与首次挑战同一个 levelLimitSec）',
+   replayLimit !== null && chipMins() !== null && Math.abs(replayLimit - chipMins()) <= 1,
+   replayLimit + ' → ' + chipMins());
 ok('但关卡面板仍标出它是限时关卡（timed）', hasCls(11, 'timed'), gridCls(11));
+// 新口径的后果：重玩不再豁免限时——到点同样判负
+flush((replayLimit + 5) * 1000);
+ok('重玩时限时到点同样判负（不再有「重玩免罚」）', state().status === 'lost', state().status);
+ok('重玩的失败原因同样是「⏱ 超时」', String(byId.modalTitle.textContent).indexOf('超时') >= 0,
+   byId.modalTitle.textContent);
+ok('重玩超时不扣命（仍是 3 架望远镜）', state().lives === 3, String(state().lives));
+
+// ⑥c 反面：第 10 关（序号 < 11）无论首玩还是重玩都不限时——对照组，证明「>= 11 一律限时」不是按通关状态判的
+goLevel(10); closePanel2(); flush(20);
+ok('第 10 关进入时不显示计时条', byId.timerChip.hidden === true,
+   'hidden=' + byId.timerChip.hidden + ' text=' + JSON.stringify(byId.timerChip.textContent));
+tapCell(firstSafe(currentLevel())); flush(20);
+ok('第 10 关操作后仍不显示计时条（确实没有开始计时）', byId.timerChip.hidden === true,
+   'hidden=' + byId.timerChip.hidden + ' text=' + JSON.stringify(byId.timerChip.textContent));
+flush(60000);
+ok('第 10 关停留远超任何限时也不判负（第 1–10 关确实不受限时约束）',
+   state().status === 'playing', state().status);
 
 // ⑦ 新需求：第 11 关起「所有」关卡都带 ⏱，包括未解锁的（按现场解码出的关卡数扫完，摆脱 50 关时代的硬编码）
 byId.unlockBtn.dispatchEvent(mkEvent('click', { target: byId.unlockBtn })); flush(20);   // 先收回解锁（恢复锁）

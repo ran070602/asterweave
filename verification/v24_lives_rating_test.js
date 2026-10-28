@@ -1,16 +1,25 @@
-// v24：命数评价（🔭 历史最佳剩余望远镜数 / ✦ 完美观测）—— 自写 DOM 桩（无 npm、无外部依赖），驱动 dist/index.html 真实脚本。
+// v24：命数评价（🔭 历史最佳剩余望远镜数 / ★ 三星 / 满分数）—— 自写 DOM 桩（无 npm、无外部依赖），驱动 dist/index.html 真实脚本。
+//
+// 2026-10-28 新口径（评价的显示面从「金点 + 本次 🔭 N/3」改成「三星 + 胶囊 + ✓ 清单」）：
+//   · 关卡格子：`.lvl.s1/.s2/.s3`（子节点 SVG `.lvl-stars` 里的三个 `.st`，按 progress.bestLives 点亮金色 #ffd166）
+//     + 保留 `.lvl.perfect`（满分/零失误，等价于 s3）；未解锁格改用子节点 SVG `.lvl-lock`（白锁），不再有 🔒 的 ::after。
+//   · 关卡面板：标题行新增「★ x/264」（y = 88×3 = 264，x = Σ bestLives）；底部整块 `.panel-hint` 说明已删除。
+//   · 结算弹窗：`.modal-stars`（3 颗 svg，on 金 #ffd166 / off 暗 #3a4658）+ `.modal-chip`（「三星！/二星！/一星！」）
+//     + `.modal-check`（ul，li::before 是绿色 ✓）：无计时关一行（满分「三架望远镜全留（零失误）」/ 有失误「失误 N 次 · 剩 M 架望远镜」）；
+//     有计时关再加一行「用时 m:ss / 限时 m:ss · ⏱ 达标」。
+//     `.modal-perfect` 元素、「本次 🔭 N/3」、「已收入星座图鉴」都已删除；meta 只留「最亮星 X（N 等）」。
 //
 // 覆盖：
-//   ① 默认与向后兼容：全新存档 / 老存档缺 bestLives → 面板「完美 0/88」、无任何格子带 perfect
-//   ② 零失误通关 → 满分：bestLives=3、格子 perfect、aria-label「，完美观测」、#perfectCount=1、
-//      #lvtag「最佳 🔭×3」、结算「本次 🔭 3/3」+ .modal-perfect
-//   ③ 失误一次通关 → 有评价但非满分：bestLives=2、无 perfect、#perfectCount=0、#lvtag「最佳 🔭×2」、
-//      结算「本次 🔭 2/3」且没有 .modal-perfect
-//   ④ 只增不减（历史最佳）：先满分（3）再故意失误通关（本次 2）→ 仍为 3 且格子仍带 perfect
+//   ① 默认与向后兼容：全新存档 / 老存档缺 bestLives → 面板「★ 0/264」「完美 0/88」、无任何格子带星
+//   ② 零失误通关 → 满分：bestLives=3、格子 perfect+s3、aria-label「，完美观测」、#perfectCount=1、#starCount=3、
+//      #lvtag「最佳 🔭×3」、结算三星全亮 + 「三星！」+ 清单「三架望远镜全留（零失误）」且无「用时」
+//   ③ 失误一次通关 → 有评价但非满分：bestLives=2、格子 s2（无 perfect/s3）、#perfectCount=0、#starCount=2、
+//      #lvtag「最佳 🔭×2」、结算 2 亮 1 暗 + 「二星！」+ 清单「失误 1 次 · 剩 2 架望远镜」
+//   ④ 只增不减（历史最佳）：先满分（3）再故意失误通关（本次 2）→ 仍为 3 且格子仍带 perfect；再加一星（1）的边界
 //   ⑤ 重玩也能刷新：先失误通关（2）再从干净状态零失误通关 → 升到 3
 //   ⑥ 无尽模式不记录：进无尽、通关一题 → progress.bestLives 不变
-//   ⑦ CSS 契约：页面有 .lvl.perfect（左下金点 radial-gradient），注释点出「左上 ⏱、右上 ✓/🔒 已占用」
-//      （并用实际 CSS 反证：.lvl.timed::before 占 left、.lvl.cleared/.locked::after 占 right）
+//   ⑦ CSS / DOM 契约：三星（.lvl-stars/s1-s3）、白锁（.lvl-lock）、装饰节点不含文字、perfect ⟺ s3、结算新区样式
+//   ⑧ 有计时关（第 11 关起）的结算清单多一行「用时 m:ss / 限时 m:ss · ⏱ 达标」（反面由 ②/③/⑤ 覆盖）
 //
 // 盘面序列全部「现场解码」自页面内联数据（LEVELS_PACKED 锚点 + expandLevelsPacked 展开结果），
 // 不使用 verification/v13_play.json（那份是 50 关时代的旧录像，按键取值已对不上当前盘面）。
@@ -18,7 +27,7 @@
 //
 // 两个沙箱（同一份 dist 产物、各造一套元素）：
 //   · FRESH = 全新存档（localStorage 里连存档键都没有）→ 跑【1】的「全新存档」与【2】的首通满分
-//   · MAIN  = 老存档（有 cleared/best/timeOk，唯独没有 bestLives）→ 跑【1】的兜底、【6】【3】【5】【4】【7】
+//   · MAIN  = 老存档（有 cleared/best/timeOk，唯独没有 bestLives）→ 跑【1】的兜底、【6】【3】【5】【4】【8】【7】
 // 用 useSandbox() 在两者间切换；两者状态互不影响，断言各归各的。
 'use strict';
 const fs = require('fs');
@@ -26,7 +35,8 @@ const path = require('path');
 const vm = require('vm');
 const crypto = require('crypto');
 
-const ROOT = 'D:\\AI-Native casual game';
+// 仓库根 = 本文件所在目录的上一级（不再硬编码检出目录名，避免仓库改名/搬家后 ENOENT）
+const ROOT = path.resolve(__dirname, '..');
 const DIST = path.join(ROOT, 'dist', '星织-游戏本体', 'index.html');
 const html = fs.readFileSync(DIST, 'utf8');
 
@@ -291,6 +301,12 @@ note('第 1 关现场参数', 'size=' + (L1 && L1.size) + ' 雷数=' + L1_MINES.
      FRESH.byId.clearedCount.textContent + '/' + FRESH.byId.totalCount.textContent);
   ok('【1】全新存档：88 个关卡格子中没有任何一个带 perfect',
      gr.length === 88 && perfectCells.length === 0, '格子=' + gr.length + ' 带 perfect=' + perfectCells.length);
+  const starredF = gr.filter(function(b){ return /\bs[123]\b/.test(String(b.className || '')); });
+  ok('【1】全新存档：88 个格子也都没有 s1/s2/s3（没有评价就不点亮星星）',
+     starredF.length === 0, '带星=' + starredF.length);
+  ok('【1】全新存档：面板「★ 星星总数」为 0/264（88 关 × 3 星）',
+     FRESH.byId.starCount.textContent === '0' && FRESH.byId.starTotal.textContent === '264',
+     FRESH.byId.starCount.textContent + '/' + FRESH.byId.starTotal.textContent);
   let fp = null;
   try { fp = JSON.parse(FRESH.store[PROG_KEY] || '{}'); } catch (e) {}
   ok('【1】全新存档：bestLives 初始化为空对象（启动落盘后也没有任何评价）',
@@ -314,6 +330,36 @@ function deepText(el){
   let s = String(el.innerHTML || '') + ' ' + String(el.textContent || '') + ' ';
   (el.children || []).forEach(function(c){ s += deepText(c) + ' '; });
   return s;
+}
+// —— 结算弹窗的新评价区（.modal-stars / .modal-chip / .modal-check / .modal-cmeta）——
+// 注意：DOM 桩不把 innerHTML 解析成子节点，所以三星 svg 只能从 .modal-stars 的 innerHTML 字符串上数
+// （元素本身是 appendChild 进来的，querySelectorAll 找得到）。
+function modalStarsInfo(){
+  const w = byId.modalSub.querySelectorAll('.modal-stars')[0] || null;
+  const raw = w ? String(w.innerHTML) : '';
+  return {
+    wrap: !!w,
+    svgs: (raw.match(/<svg/g) || []).length,
+    on: (raw.match(/class="on"/g) || []).length,
+    off: (raw.match(/class="off"/g) || []).length,
+    html: raw
+  };
+}
+function modalChip(){
+  const c = byId.modalSub.querySelectorAll('.modal-chip')[0] || null;
+  return c ? String(c.textContent) : '(缺失)';
+}
+function modalCheckItems(){
+  const ul = byId.modalSub.querySelectorAll('.modal-check')[0] || null;
+  return ul ? (ul.children || []).map(function(li){ return String(li.textContent); }) : null;
+}
+function modalMeta(){
+  const m = byId.modalSub.querySelectorAll('.modal-cmeta')[0] || null;
+  return m ? String(m.textContent) : '(缺失)';
+}
+function modalPerfectEls(){ return byId.modalSub.querySelectorAll('.modal-perfect').length; }
+function noTimedWord(items){
+  return !!items && items.every(function(t){ return t.indexOf('用时') < 0; });
 }
 function gridBtn(i){ return (byId.lvGrid.children || [])[i]; }
 function gridCls(i){ const b = gridBtn(i); return b ? String(b.className || '') : ''; }
@@ -377,15 +423,21 @@ function currentLevel(){
   ok('【1】老存档：没有任何格子带 perfect（虽然第 1 关带 cleared/timeok）',
      perfectGridIdx().length === 0 && hasCls(0, 'cleared') && hasCls(0, 'timeok'),
      '第1关class=' + gridCls(0));
-  const headM = /已通关 <b id="clearedCount">[\s\S]{0,60}?完美 <b id="perfectCount">[\s\S]{0,40}?<b id="perfectTotal">/.exec(html);
-  ok('【1】关卡面板标题行形态为「已通关 n/88　·　完美 x/88」', !!headM,
+  ok('【1】老存档：也没有格子带 s1/s2/s3、面板「★」计数 0/264',
+     (byId.lvGrid.children || []).every(function(b){ return !/\bs[123]\b/.test(String(b.className || '')); }) &&
+     byId.starCount.textContent === '0' && byId.starTotal.textContent === '264',
+     '★=' + byId.starCount.textContent + '/' + byId.starTotal.textContent);
+  // 面板标题行：新口径在「已通关」与「完美」之间插入「★ x/264」
+  const headM = /已通关 <b id="clearedCount">[\s\S]{0,80}?★ <b id="starCount">[\s\S]{0,80}?完美 <b id="perfectCount">[\s\S]{0,40}?<b id="perfectTotal">/.exec(html);
+  ok('【1】关卡面板标题行形态为「已通关 n/88　·　★ x/264　·　完美 y/88」（新增星星总数）', !!headM,
      headM ? headM[0].replace(/\s+/g, ' ') : '(未匹配)');
-  const legendAt = html.indexOf('左下金点 = 完美观测');
-  const hintAt = legendAt < 0 ? -1 : html.lastIndexOf('class="panel-hint"', legendAt);
-  ok('【1】【7】面板底部图例写明「✦ 左下金点 = 完美观测（零失误通关，三架望远镜全留）」',
-     legendAt > 0 && hintAt >= 0 && (legendAt - hintAt) < 500 &&
-     html.slice(legendAt, legendAt + 90).indexOf('三架望远镜全留') >= 0,
-     html.slice(Math.max(0, legendAt - 12), legendAt + 60));
+  // 面板底部整块说明 .panel-hint 已删除（连同 CSS 与里面的旧「左下金点」图例）
+  ok('【1】面板底部的说明块 .panel-hint 已删除（DOM 与 CSS 规则都不再存在）',
+     html.indexOf('class="panel-hint"') < 0 && html.indexOf('.panel-hint{') < 0,
+     'class 命中=' + html.indexOf('class="panel-hint"') + ' · CSS 命中=' + html.indexOf('.panel-hint{'));
+  ok('【1】旧图例「✦ 左下金点 = 完美观测（零失误通关，三架望远镜全留）」整段不再出现',
+     html.indexOf('左下金点') < 0 && html.indexOf('零失误通关，三架望远镜全留') < 0,
+     '金点命中=' + html.indexOf('左下金点') + ' · 旧图例命中=' + html.indexOf('零失误通关，三架望远镜全留'));
 }
 
 // ============================================================================
@@ -407,22 +459,37 @@ ok('【2】全新存档：通关前 #lvtag 无「最佳 🔭」、格子不带 p
   flush(3000);
   const d2 = deepText(byId.modalSub);
   ok('【2】bestLives["0"] === 3（3 架望远镜全留 = 满分）', bestLives()['0'] === 3, JSON.stringify(bestLives()));
-  ok('【2】第 1 关格子 className 含 perfect', hasCls(0, 'perfect'), gridCls(0));
+  ok('【2】第 1 关格子 className 含 perfect 与 s3（满分 = 三星）',
+     hasCls(0, 'perfect') && hasCls(0, 's3'), gridCls(0));
   ok('【2】第 1 关格子 aria-label 追加「，完美观测」',
      String(gridBtn(0).getAttribute('aria-label')).indexOf('完美观测') >= 0,
      String(gridBtn(0).getAttribute('aria-label')));
   ok('【2】#perfectCount === 1、#perfectTotal === 88',
      byId.perfectCount.textContent === '1' && byId.perfectTotal.textContent === '88',
      byId.perfectCount.textContent + '/' + byId.perfectTotal.textContent);
+  ok('【2】#starCount === 3、#starTotal === 264（★ 总数 = Σ bestLives = 本关 3）',
+     byId.starCount.textContent === '3' && byId.starTotal.textContent === '264',
+     byId.starCount.textContent + '/' + byId.starTotal.textContent);
   ok('【2】恰好 1 个格子带 perfect，且就是第 1 关', perfectGridIdx().join(',') === '0', perfectGridIdx().join(','));
   ok('【2】#lvtag 追加「最佳 🔭×3」', String(byId.lvtag.textContent).indexOf('最佳 🔭×3') >= 0, byId.lvtag.textContent);
   ok('【2】首通同时计入「已通关」（1/88）', byId.clearedCount.textContent === '1', byId.clearedCount.textContent);
   ok('【2】结算弹窗已打开', modalOpen(), String(byId.overlay.className));
-  ok('【2】结算 meta 含「本次 🔭 3/3」', d2.indexOf('本次 🔭 3/3') >= 0, d2.replace(/\s+/g, ' ').slice(0, 140));
-  const pf = byId.modalSub.querySelectorAll('.modal-perfect');
-  ok('【2】结算挂出恰好 1 个 .modal-perfect，文本 = 「✦ 完美观测（零失误，望远镜全留）」',
-     pf.length === 1 && String(pf[0].textContent) === '✦ 完美观测（零失误，望远镜全留）',
-     pf.length + ' | ' + (pf[0] ? String(pf[0].textContent) : '(缺失)'));
+  // —— 新结算区：三星 svg + 「N 星！」胶囊 + ✓ 清单（旧的「本次 🔭 3/3」+ .modal-perfect 已删除）——
+  const st2 = modalStarsInfo();
+  ok('【2】结算三星区：恰好 3 颗 svg 且全部点亮（on=3 / off=0）',
+     st2.wrap && st2.svgs === 3 && st2.on === 3 && st2.off === 0, JSON.stringify(st2));
+  ok('【2】结算胶囊文案「三星！」（按本次剩余望远镜 1–3 取值）', modalChip() === '三星！', modalChip());
+  const items2 = modalCheckItems();
+  ok('【2】无计时关（第 1 关）的 ✓ 清单只有一行', !!items2 && items2.length === 1, JSON.stringify(items2));
+  ok('【2】清单那一行 = 「三架望远镜全留（零失误）」（满分措辞）',
+     !!items2 && items2[0] === '三架望远镜全留（零失误）', items2 && items2[0]);
+  ok('【2】无计时关的清单不含「用时」（第 1 关不在第 11 关起的限时范围）',
+     noTimedWord(items2), JSON.stringify(items2));
+  ok('【2】结算 meta 只保留「最亮星 X（N 等）」',
+     /^最亮星 .+（[0-9.]+ 等）$/.test(modalMeta()), modalMeta());
+  ok('【2】结算不再有「本次 🔭 N/3」「已收入星座图鉴」，也不挂 .modal-perfect 元素',
+     d2.indexOf('本次 🔭') < 0 && d2.indexOf('已收入星座图鉴') < 0 && modalPerfectEls() === 0,
+     '本次🔭@' + d2.indexOf('本次 🔭') + ' 图鉴@' + d2.indexOf('已收入星座图鉴') + ' modal-perfect=' + modalPerfectEls());
 }
 useSandbox(MAIN);
 
@@ -470,8 +537,8 @@ ok('【3】开局望远镜 = levelMaxLives(第 1 关)（= level.lives = 3）', s
    'lives=' + state().lives + ' 上限=' + L1_MAX);
 ok('【3】通关前：没有历史最佳（#lvtag 不含「最佳 🔭」）',
    String(byId.lvtag.textContent).indexOf('最佳') < 0, byId.lvtag.textContent);
-ok('【3】通关前：第 1 关格子不带 perfect（只有 cleared/timeok）',
-   !hasCls(0, 'perfect'), gridCls(0));
+ok('【3】通关前：第 1 关格子不带 perfect、也不带 s1/s2/s3（只有 cleared/timeok）',
+   !hasCls(0, 'perfect') && !hasCls(0, 's1') && !hasCls(0, 's2') && !hasCls(0, 's3'), gridCls(0));
 tapCell2(L1_MINES[0]);                       // 故意踩 1 颗雷
 ok('【3】踩 1 颗雷后仍 playing、望远镜 3→2（第 1 关有 3 条命）',
    state().status === 'playing' && state().lives === 2, state().status + '/' + state().lives);
@@ -485,17 +552,28 @@ ok('【3】进行中不写评价（bestLives 无 "0"，#lvtag 也没有「最佳
   const d3 = deepText(byId.modalSub);
   ok('【3】bestLives["0"] === 2（失误一次 = 有评价，但不满分）', bestLives()['0'] === 2,
      JSON.stringify(bestLives()));
-  ok('【3】该格 className 不含 perfect', !hasCls(0, 'perfect'), gridCls(0));
+  ok('【3】该格 className 不含 perfect、也不含 s3（2 星 ≠ 满分）',
+     !hasCls(0, 'perfect') && !hasCls(0, 's3'), gridCls(0));
+  ok('【3】该格 className 带 s2（剩 2 架望远镜 = 2 星，按 bestLives 点亮）', hasCls(0, 's2'), gridCls(0));
   ok('【3】该格 aria-label 不含「完美观测」',
      String(gridBtn(0).getAttribute('aria-label')).indexOf('完美观测') < 0,
      String(gridBtn(0).getAttribute('aria-label')));
   ok('【3】#perfectCount === 0（88 关里 0 个满分）', byId.perfectCount.textContent === '0', byId.perfectCount.textContent);
+  ok('【3】#starCount === 2（★ 总数 = Σ bestLives = 2）', byId.starCount.textContent === '2', byId.starCount.textContent);
   ok('【3】恰好 0 个格子带 perfect', perfectGridIdx().length === 0, perfectGridIdx().join(','));
   ok('【3】#lvtag 追加「最佳 🔭×2」', String(byId.lvtag.textContent).indexOf('最佳 🔭×2') >= 0, byId.lvtag.textContent);
   ok('【3】结算弹窗已打开（文本不是上一轮残留）', modalOpen(), String(byId.overlay.className));
-  ok('【3】结算 meta 含「本次 🔭 2/3」', d3.indexOf('本次 🔭 2/3') >= 0, d3.replace(/\s+/g, ' ').slice(0, 150));
-  ok('【3】结算里没有 .modal-perfect（非满分不挂满分区）',
-     byId.modalSub.querySelectorAll('.modal-perfect').length === 0);
+  const st3 = modalStarsInfo();
+  ok('【3】结算三星区：2 颗点亮 / 1 颗熄灭（本次剩 2 架望远镜）',
+     st3.wrap && st3.svgs === 3 && st3.on === 2 && st3.off === 1, JSON.stringify(st3));
+  ok('【3】结算胶囊文案「二星！」', modalChip() === '二星！', modalChip());
+  const items3 = modalCheckItems();
+  ok('【3】无计时关的清单只有一行「失误 1 次 · 剩 2 架望远镜」',
+     !!items3 && items3.length === 1 && items3[0] === '失误 1 次 · 剩 2 架望远镜', JSON.stringify(items3));
+  ok('【3】清单不含「用时」', noTimedWord(items3), JSON.stringify(items3));
+  ok('【3】结算不再有「本次 🔭 2/3」、也不挂 .modal-perfect 元素',
+     d3.indexOf('本次 🔭') < 0 && modalPerfectEls() === 0,
+     '本次🔭@' + d3.indexOf('本次 🔭') + ' modal-perfect=' + modalPerfectEls());
   ok('【3】结算文案整体不含「完美观测」', d3.indexOf('完美观测') < 0, d3.replace(/\s+/g, ' ').slice(0, 150));
 }
 
@@ -512,6 +590,7 @@ ok('【3】进行中不写评价（bestLives 无 "0"，#lvtag 也没有「最佳
   ok('【5】重玩后 #lvtag 仍显示历史最佳「最佳 🔭×2」',
      String(byId.lvtag.textContent).indexOf('最佳 🔭×2') >= 0, byId.lvtag.textContent);
   ok('【5】重玩后格子仍不带 perfect（历史最佳 2 < 上限 3）', !hasCls(0, 'perfect'), gridCls(0));
+  ok('【5】重玩后格子仍是 s2（星数跟着历史最佳走）', hasCls(0, 's2') && !hasCls(0, 's3'), gridCls(0));
 
   const won5 = winSeq(L1);                    // 这一次零失误
   ok('【5】零失误通关成功', won5 === true, 'status=' + state().status);
@@ -520,22 +599,28 @@ ok('【3】进行中不写评价（bestLives 无 "0"，#lvtag 也没有「最佳
   ok('【5】bestLives["0"] 由 2 升到 3（重玩通关也参与刷新，不是只认首通）',
      bestLives()['0'] === 3, '2 → ' + bestLives()['0']);
   ok('【2·重玩】bestLives["0"] === 3（零失误 = 望远镜全留 = 满分 3/3）', bestLives()['0'] === 3, JSON.stringify(bestLives()));
-  ok('【2·重玩】第 1 关格子 className 含 perfect', hasCls(0, 'perfect'), gridCls(0));
+  ok('【2·重玩】第 1 关格子 className 含 perfect 与 s3', hasCls(0, 'perfect') && hasCls(0, 's3'), gridCls(0));
   ok('【2·重玩】第 1 关格子 aria-label 追加「，完美观测」',
      String(gridBtn(0).getAttribute('aria-label')).indexOf('完美观测') >= 0,
      String(gridBtn(0).getAttribute('aria-label')));
   ok('【2·重玩】#perfectCount === 1（88 关中恰好 1 关满分）', byId.perfectCount.textContent === '1', byId.perfectCount.textContent);
   ok('【2·重玩】#perfectTotal === 88', byId.perfectTotal.textContent === '88', byId.perfectTotal.textContent);
+  ok('【2·重玩】#starCount === 3（★ 总数跟着升到 3）', byId.starCount.textContent === '3', byId.starCount.textContent);
   ok('【2·重玩】恰好 1 个格子带 perfect，且就是第 1 关', perfectGridIdx().join(',') === '0', perfectGridIdx().join(','));
   ok('【2·重玩】#lvtag 追加「最佳 🔭×3」', String(byId.lvtag.textContent).indexOf('最佳 🔭×3') >= 0, byId.lvtag.textContent);
   ok('【2·重玩】结算弹窗已打开', modalOpen(), String(byId.overlay.className));
-  ok('【2·重玩】结算 meta 含「本次 🔭 3/3」', d2t.indexOf('本次 🔭 3/3') >= 0, d2t.replace(/\s+/g, ' ').slice(0, 150));
   {
-    const pf = byId.modalSub.querySelectorAll('.modal-perfect');
-    ok('【2·重玩】结算挂出恰好 1 个 .modal-perfect', pf.length === 1, 'count=' + pf.length);
-    ok('【2·重玩】.modal-perfect 文本 = 「✦ 完美观测（零失误，望远镜全留）」',
-       !!pf[0] && String(pf[0].textContent) === '✦ 完美观测（零失误，望远镜全留）',
-       pf[0] ? String(pf[0].textContent) : '(缺失)');
+    const st2t = modalStarsInfo();
+    ok('【2·重玩】结算三星区 3 颗全亮', st2t.wrap && st2t.svgs === 3 && st2t.on === 3 && st2t.off === 0, JSON.stringify(st2t));
+    ok('【2·重玩】结算胶囊「三星！」', modalChip() === '三星！', modalChip());
+    const items2t = modalCheckItems();
+    ok('【2·重玩】无计时关清单只有一行「三架望远镜全留（零失误）」',
+       !!items2t && items2t.length === 1 && items2t[0] === '三架望远镜全留（零失误）', JSON.stringify(items2t));
+    ok('【2·重玩】清单不含「用时」', noTimedWord(items2t), JSON.stringify(items2t));
+    ok('【2·重玩】结算里没有 .modal-perfect（元素已删除，满分区由三星表达）',
+       modalPerfectEls() === 0, 'count=' + modalPerfectEls());
+    ok('【2·重玩】结算不再出现「本次 🔭 3/3」', d2t.indexOf('本次 🔭') < 0,
+       '本次🔭@' + d2t.indexOf('本次 🔭'));
   }
 }
 
@@ -554,13 +639,45 @@ ok('【3】进行中不写评价（bestLives 无 "0"，#lvtag 也没有「最佳
   const d4 = deepText(byId.modalSub);
   ok('【4】历史最佳只增不减：本次只有 2，但 bestLives["0"] 仍为 3', bestLives()['0'] === 3,
      '本次=2 · 记录=' + bestLives()['0']);
-  ok('【4】该格仍带 perfect（历史最佳 3 未被更差的一轮抹掉）', hasCls(0, 'perfect'), gridCls(0));
+  ok('【4】该格仍带 perfect 与 s3（历史最佳 3 未被更差的一轮抹掉）',
+     hasCls(0, 'perfect') && hasCls(0, 's3'), gridCls(0));
   ok('【4】#perfectCount 仍为 1', byId.perfectCount.textContent === '1', byId.perfectCount.textContent);
+  ok('【4】#starCount 仍为 3（★ 总数只增不减）', byId.starCount.textContent === '3', byId.starCount.textContent);
   ok('【4】#lvtag 仍为「最佳 🔭×3」', String(byId.lvtag.textContent).indexOf('最佳 🔭×3') >= 0, byId.lvtag.textContent);
-  ok('【4】本次结算如实显示「本次 🔭 2/3」（历史最佳不冒充本次成绩）',
-     d4.indexOf('本次 🔭 2/3') >= 0, d4.replace(/\s+/g, ' ').slice(0, 150));
-  ok('【4】本次结算不挂 .modal-perfect（满分标记不会被历史最佳误触发）',
-     byId.modalSub.querySelectorAll('.modal-perfect').length === 0);
+  // 本次结算如实反映「这一轮」的成绩（历史最佳不冒充本次成绩）：2 星 → 2 亮 1 暗 + 「二星！」+ 失误行
+  {
+    const st4 = modalStarsInfo();
+    ok('【4】本次结算三星区：2 颗点亮 / 1 颗熄灭（不拿历史最佳的 3 冒充本次）',
+       st4.wrap && st4.svgs === 3 && st4.on === 2 && st4.off === 1, JSON.stringify(st4));
+    ok('【4】本次结算胶囊「二星！」', modalChip() === '二星！', modalChip());
+    const items4 = modalCheckItems();
+    ok('【4】本次结算清单一行「失误 1 次 · 剩 2 架望远镜」',
+       !!items4 && items4.length === 1 && items4[0] === '失误 1 次 · 剩 2 架望远镜', JSON.stringify(items4));
+    ok('【4】本次结算不挂 .modal-perfect 元素（满分标记不会被历史最佳误触发）', modalPerfectEls() === 0,
+       'count=' + modalPerfectEls());
+    ok('【4】本次结算不再出现「本次 🔭 2/3」', d4.indexOf('本次 🔭') < 0, '本次🔭@' + d4.indexOf('本次 🔭'));
+  }
+  // 边界：本次只剩 1 架望远镜（一星）——胶囊/星数/清单都要跟着「本次」降到一星，历史最佳仍是 3
+  {
+    const rb3 = modalBtn('重来本关');
+    if (rb3) { rb3.dispatchEvent(mkEvent('click', { target: rb3 })); flush(120); }
+    tapCell2(L1_MINES[0]); flush(20);
+    tapCell2(L1_MINES[1]); flush(20);
+    ok('【4】一星跑：连踩 2 颗雷后望远镜 3→1、仍 playing',
+       state().lives === 1 && state().status === 'playing', state().status + '/' + state().lives);
+    const won4b = winSeq(L1);
+    ok('【4】一星跑：只剩 1 架望远镜也能通关', won4b === true, 'status=' + state().status);
+    flush(3000);
+    const st4b = modalStarsInfo();
+    ok('【4】一星跑结算：1 颗点亮 / 2 颗熄灭', st4b.wrap && st4b.svgs === 3 && st4b.on === 1 && st4b.off === 2, JSON.stringify(st4b));
+    ok('【4】一星跑结算胶囊「一星！」', modalChip() === '一星！', modalChip());
+    const items4b = modalCheckItems();
+    ok('【4】一星跑清单「失误 2 次 · 剩 1 架望远镜」',
+       !!items4b && items4b.length === 1 && items4b[0] === '失误 2 次 · 剩 1 架望远镜', JSON.stringify(items4b));
+    ok('【4】一星跑不写回历史最佳：bestLives["0"] 仍为 3、格子仍 s3+perfect、#starCount 仍为 3',
+       bestLives()['0'] === 3 && hasCls(0, 's3') && hasCls(0, 'perfect') && byId.starCount.textContent === '3',
+       JSON.stringify(bestLives()) + ' | ' + gridCls(0) + ' | ★=' + byId.starCount.textContent);
+  }
   // 反面补充：失败（望远镜用尽）同样不写评价
   const rb2 = modalBtn('重来本关');
   if (rb2) { rb2.dispatchEvent(mkEvent('click', { target: rb2 })); flush(120); }
@@ -576,14 +693,60 @@ ok('【3】进行中不写评价（bestLives 无 "0"，#lvtag 也没有「最佳
   ok('【4+】失败结算里不出现「本次 🔭」（失败没有命数评价行）',
      deepText(byId.modalSub).indexOf('本次 🔭') < 0,
      deepText(byId.modalSub).replace(/\s+/g, ' ').slice(0, 120));
-  ok('【4+】失败结算里也没有 .modal-perfect（满分区不会残留）',
-     byId.modalSub.querySelectorAll('.modal-perfect').length === 0);
+  {
+    const stF = modalStarsInfo();
+    const itemsF = modalCheckItems();
+    ok('【4+】失败结算里没有三星区 / 胶囊 / ✓ 清单（评价区整块不残留）',
+       stF.wrap === false && stF.svgs === 0 && modalChip() === '(缺失)' && itemsF === null && modalPerfectEls() === 0,
+       'stars=' + stF.svgs + ' chip=' + modalChip() + ' check=' + JSON.stringify(itemsF) + ' modal-perfect=' + modalPerfectEls());
+  }
 }
 
 // ============================================================================
-// ⑦ CSS 契约
+// ⑧ 有计时关（第 11 关起）的结算清单：在星级行之外**再加一行**「用时 m:ss / 限时 m:ss · ⏱ 达标」
+//    反面由 ②/③/⑤ 覆盖（无计时关只有一行，且不含「用时」）。
 // ============================================================================
 {
+  byId.unlockBtn.dispatchEvent(mkEvent('click', { target: byId.unlockBtn })); flush(20);   // 评审用：全部解锁，直达第 11 关
+  goLevel(11);
+  const L11 = currentLevel();
+  ok('【8】进入第 11 关（限时关卡）：playing、望远镜 3、盘面与现场解码一致',
+     state().level === 11 && state().status === 'playing' && state().lives === 3 &&
+     !!L11 && state().size === L11.size && state().mines === mineCells(L11).length,
+     '第' + state().level + '关 ' + state().status + ' size=' + state().size +
+     ' 雷=' + state().mines + '/' + (L11 ? mineCells(L11).length : '?'));
+  const won8 = !!L11 && winSeq(L11);
+  ok('【8】第 11 关零失误通关', won8 === true, 'status=' + state().status);
+  flush(3000);
+  const d8 = deepText(byId.modalSub);
+  ok('【8】bestLives["10"] === 3（限时关也照常记录命数评价）', bestLives()['10'] === 3, JSON.stringify(bestLives()));
+  ok('【8】第 11 关格子带 s3 + perfect + timed（限时不影响三星口径）',
+     hasCls(10, 's3') && hasCls(10, 'perfect') && hasCls(10, 'timed'), gridCls(10));
+  const st8 = modalStarsInfo();
+  ok('【8】结算三星区 3 颗全亮', st8.wrap && st8.svgs === 3 && st8.on === 3 && st8.off === 0, JSON.stringify(st8));
+  ok('【8】结算胶囊「三星！」', modalChip() === '三星！', modalChip());
+  const items8 = modalCheckItems();
+  ok('【8】有计时关的 ✓ 清单有两行（星级行 + 用时行）', !!items8 && items8.length === 2, JSON.stringify(items8));
+  ok('【8】第 1 行仍是星级行「三架望远镜全留（零失误）」',
+     !!items8 && items8[0] === '三架望远镜全留（零失误）', items8 && items8[0]);
+  ok('【8】第 2 行 = 「用时 m:ss / 限时 m:ss · ⏱ 达标」（本次用时在目标时间内）',
+     !!items8 && /^用时 \d+:\d\d \/ 限时 \d+:\d\d · ⏱ 达标$/.test(items8[1]), items8 && items8[1]);
+  ok('【8】结算 meta 仍只有「最亮星 X（N 等）」',
+     /^最亮星 .+（[0-9.]+ 等）$/.test(modalMeta()), modalMeta());
+  ok('【8】面板 ★ 计数 = Σ bestLives（第 1 关 3 + 第 11 关 3 = 6）、#starTotal = 264',
+     byId.starCount.textContent === '6' && byId.starTotal.textContent === '264',
+     byId.starCount.textContent + '/' + byId.starTotal.textContent);
+  ok('【8】#perfectCount === 2（第 1 关 + 第 11 关都满分）', byId.perfectCount.textContent === '2', byId.perfectCount.textContent);
+  ok('【8】结算整体不含「本次 🔭」「已收入星座图鉴」、也没有 .modal-perfect 元素',
+     d8.indexOf('本次 🔭') < 0 && d8.indexOf('已收入星座图鉴') < 0 && modalPerfectEls() === 0,
+     d8.replace(/\s+/g, ' ').slice(0, 160));
+}
+
+// ============================================================================
+// ⑦ CSS / DOM 契约（新口径：三星 + 子节点小白锁；旧的金点 / 🔒 ::after 已作废）
+// ============================================================================
+{
+  byId.unlockBtn.dispatchEvent(mkEvent('click', { target: byId.unlockBtn })); flush(20);   // 收回「全部解锁」→ 恢复锁定格，便于验证 .lvl-lock
   function cssRule(sel){ const i = html.indexOf(sel); return i < 0 ? '' : html.slice(i, html.indexOf('}', i) + 1); }
   // 取「紧贴在该规则之前的那段说明注释」：从规则前的最后一个 /* 到它自己的 */，
   // 且两者之间到规则为止只允许空白（否则说明注释和规则不是一对）。
@@ -596,30 +759,110 @@ ok('【3】进行中不写评价（bestLives 无 "0"，#lvtag 也没有「最佳
     if (k < 0 || html.slice(k + 2, i).trim() !== '') return '';
     return html.slice(j, k + 2);
   }
-  const perfectRule = cssRule('.lvl.perfect');
-  ok('【7】存在 .lvl.perfect 规则，用 radial-gradient 画「左下角金点」',
-     perfectRule.indexOf('.lvl.perfect') >= 0 && perfectRule.indexOf('radial-gradient') >= 0 &&
-     perfectRule.indexOf('calc(100% - 6px)') >= 0 && perfectRule.indexOf('#ffd166') >= 0,
-     perfectRule);
-  const cmt = cssCommentBefore('.lvl.perfect').replace(/\s+/g, ' ');
-  ok('【7】规则上方注释点明「左上 ⏱、右上 ✓/🔒 已占用」（故用背景圆点而非伪元素）',
-     ['左上', '⏱', '右上', '✓/🔒', '占用'].every(function(t){ return cmt.indexOf(t) >= 0; }) &&
-     (cmt.indexOf('背景圆点') >= 0 || cmt.indexOf('非伪元素') >= 0),
-     cmt.slice(0, 120));
+
+  // —— 格子的通关评价：三星子节点 svg（取代旧的金点）——
+  const starsRule = cssRule('.lvl-stars');
+  ok('【7】.lvl-stars 是格子底部的三星条（绝对定位、水平居中、宽 26px、默认隐藏）',
+     starsRule.indexOf('position:absolute') >= 0 && starsRule.indexOf('left:50%') >= 0 &&
+     starsRule.indexOf('bottom:4px') >= 0 && starsRule.indexOf('width:26px') >= 0 &&
+     starsRule.indexOf('display:none') >= 0, starsRule);
+  ok('【7】三星条只在已通关 / 当前关格子上显示（.lvl.cleared/.lvl.current → display:block）',
+     cssRule('.lvl.cleared .lvl-stars').indexOf('display:block') >= 0, cssRule('.lvl.cleared .lvl-stars'));
+  ok('【7】显示规则排在 .lvl-stars 基础规则之后（否则 display:none 会赢）',
+     html.indexOf('.lvl.cleared .lvl-stars') > html.indexOf('.lvl-stars{'),
+     '基础@' + html.indexOf('.lvl-stars{') + ' 显示@' + html.indexOf('.lvl.cleared .lvl-stars'));
+  ok('【7】三颗星默认暗色 #38445a', cssRule('.lvl-stars .st').indexOf('#38445a') >= 0, cssRule('.lvl-stars .st'));
+  ok('【7】按 .lvl.s1/.s2/.s3 逐颗点亮金色 #ffd166（s1 第 1 颗 / s2 前 2 颗 / s3 全部）',
+     cssRule('.lvl.s1 .lvl-stars .st:nth-child(1)').indexOf('#ffd166') >= 0 &&
+     cssRule('.lvl.s2 .lvl-stars .st:nth-child(-n+2)').indexOf('#ffd166') >= 0 &&
+     cssRule('.lvl.s3 .lvl-stars .st').indexOf('#ffd166') >= 0,
+     cssRule('.lvl.s1 .lvl-stars .st:nth-child(1)').replace(/\s+/g, ' '));
+  ok('【7】三星规则上方注释点明「通关评价：三星（0–3 颗点亮），格子底部居中」',
+     ['通关评价', '三星', '0–3', '点亮', '格子底部居中'].every(function(t){ return cssCommentBefore('.lvl-stars').indexOf(t) >= 0; }),
+     cssCommentBefore('.lvl-stars').replace(/\s+/g, ' '));
+
+  // —— 未解锁格：子节点 SVG 小白锁（取代旧的右上角 🔒 ::after）——
+  const lockRule = cssRule('.lvl-lock');
+  ok('【7】.lvl-lock 是白色小锁子节点（绝对定位、水平居中在数字上方、默认隐藏）',
+     lockRule.indexOf('position:absolute') >= 0 && lockRule.indexOf('left:50%') >= 0 &&
+     lockRule.indexOf('top:7px') >= 0 && lockRule.indexOf('#e8eefc') >= 0 &&
+     lockRule.indexOf('display:none') >= 0, lockRule);
+  ok('【7】只有 .lvl.locked 显示小锁（.lvl.locked .lvl-lock → display:block）',
+     cssRule('.lvl.locked .lvl-lock').indexOf('display:block') >= 0, cssRule('.lvl.locked .lvl-lock'));
+  ok('【7】.lvl.locked 增加 padding-top:13px 给上方小锁让位',
+     cssRule('.lvl.locked').indexOf('padding-top:13px') >= 0, cssRule('.lvl.locked'));
+  ok('【7】反证契约（旧口径作废）：页面里不再有 .lvl.locked::after 的 🔒',
+     html.indexOf('.lvl.locked::after') < 0 && html.indexOf('content:"🔒"') < 0,
+     'lvl.locked::after@' + html.indexOf('.lvl.locked::after') + ' content:"🔒"@' + html.indexOf('content:"🔒"'));
+  ok('【7】反证契约：✓ 仍占右上（.lvl.cleared::after 用 right 定位）',
+     cssRule('.lvl.cleared::after').indexOf('"✓"') >= 0 && cssRule('.lvl.cleared::after').indexOf('right:') >= 0,
+     cssRule('.lvl.cleared::after'));
   ok('【7】反证契约：⏱ 确实占左上（.lvl.timed::before 用 left:5px）',
      cssRule('.lvl.timed::before').indexOf('⏱') >= 0 && cssRule('.lvl.timed::before').indexOf('left:5px') >= 0,
      cssRule('.lvl.timed::before'));
-  ok('【7】反证契约：✓ / 🔒 确实占右上（.lvl.cleared/.locked 的 ::after 用 right 定位）',
-     cssRule('.lvl.cleared::after').indexOf('"✓"') >= 0 && cssRule('.lvl.cleared::after').indexOf('right:') >= 0 &&
-     cssRule('.lvl.locked::after').indexOf('🔒') >= 0 && cssRule('.lvl.locked::after').indexOf('right:') >= 0,
-     cssRule('.lvl.cleared::after') + ' | ' + cssRule('.lvl.locked::after'));
-  ok('【7】金点规则排在 .lvl.cleared / .lvl.locked 之后，并用 .lvl.cleared.perfect 提高权重（不被 background 简写清掉）',
-     html.indexOf('.lvl.perfect') > html.indexOf('.lvl.cleared{') &&
-     html.indexOf('.lvl.perfect') > html.indexOf('.lvl.locked{') &&
-     /\.lvl\.cleared\.perfect\{/.test(html));
-  ok('【7】.modal-perfect 有独立样式（金色加粗）',
-     cssRule('.modal-perfect').indexOf('#ffd166') >= 0 && cssRule('.modal-perfect').indexOf('font-weight') >= 0,
-     cssRule('.modal-perfect'));
+
+  // —— 格子装饰节点：span.lvl-deco 里的两个内联 SVG（无文字，所以按钮 textContent 仍是关卡号）——
+  const btn0 = byId.lvGrid.children[0];
+  const deco0 = (btn0 && btn0.children) ? btn0.children[0] : null;
+  const decoRaw = deco0 ? String(deco0.innerHTML) : '';
+  ok('【7】格子装饰是子节点 span.lvl-deco（内含小锁 + 三星两个内联 SVG）',
+     !!deco0 && String(deco0.className) === 'lvl-deco' &&
+     decoRaw.indexOf('class="lvl-lock"') >= 0 && decoRaw.indexOf('class="lvl-stars"') >= 0,
+     (deco0 ? String(deco0.className) : '(缺失)') + ' | ' + decoRaw.slice(0, 80).replace(/\s+/g, ' '));
+  ok('【7】三星 SVG 恰好 3 条 .st 路径（1–3 颗按 s1/s2/s3 点亮）',
+     (decoRaw.match(/class="st"/g) || []).length === 3, '路径数=' + (decoRaw.match(/class="st"/g) || []).length);
+  ok('【7】两个装饰 SVG 都不含文字（按钮 textContent 仍是关卡号）',
+     decoRaw.replace(/<[^>]*>/g, '').trim() === '' && String(btn0.textContent) === '1',
+     '去标签=' + JSON.stringify(decoRaw.replace(/<[^>]*>/g, '').trim()) +
+     ' textContent=' + JSON.stringify(String(btn0.textContent)));
+  ok('【7】未解锁格确实带 .lvl-lock 子节点（小锁随 locked 类显示）',
+     (function(){
+       for (let i = 0; i < byId.lvGrid.children.length; i++){
+         if (!hasCls(i, 'locked')) continue;
+         const d = (byId.lvGrid.children[i].children || [])[0];
+         return !!d && String(d.innerHTML).indexOf('class="lvl-lock"') >= 0;
+       }
+       return false;                              // 没有锁定格（全部解锁）→ 无从验证，判失败
+     })(), '锁定格数=' + (byId.lvGrid.children || []).filter(function(b, i){ return hasCls(i, 'locked'); }).length);
+
+  // —— perfect ⟺ s3，且 s1/s2/s3 与 progress.bestLives 逐关一致 ——
+  {
+    const bl = bestLives(), bad = [];
+    for (let i = 0; i < byId.lvGrid.children.length; i++){
+      const want = Math.min(3, bl[String(i)] || 0);
+      const got = [1, 2, 3].filter(function(n){ return hasCls(i, 's' + n); }).join('');
+      if (got !== (want ? String(want) : '')) bad.push('#' + (i + 1) + ' bestLives=' + want + ' 星类=' + (got || '无'));
+      if (hasCls(i, 'perfect') !== (want === 3)) bad.push('#' + (i + 1) + ' perfect 与三星期望不符');
+    }
+    ok('【7】格子的 s1/s2/s3 与 progress.bestLives 逐关一致，且 perfect ⟺ s3（88 关）',
+       bad.length === 0 && byId.lvGrid.children.length === 88,
+       bad.slice(0, 6).join(' · ') || ('88 关全部一致 · bestLives=' + JSON.stringify(bl)));
+  }
+
+  // —— 结算弹窗新评价区的样式 ——
+  ok('【7】结算三星区：on 金色 #ffd166 / off 暗色 #3a4658，各有独立样式',
+     cssRule('.modal-stars svg.on').indexOf('#ffd166') >= 0 && cssRule('.modal-stars svg.off').indexOf('#3a4658') >= 0,
+     cssRule('.modal-stars svg.on') + ' | ' + cssRule('.modal-stars svg.off'));
+  ok('【7】胶囊 .modal-chip 用金色、✓ 清单 .modal-check li::before 是绿色 ✓',
+     cssRule('.modal-chip').indexOf('#ffd166') >= 0 &&
+     cssRule('.modal-check li::before').indexOf('"✓"') >= 0 &&
+     cssRule('.modal-check li::before').indexOf('#5fd08a') >= 0,
+     cssRule('.modal-chip') + ' | ' + cssRule('.modal-check li::before'));
+
+  // —— 旧口径的残留：只记录、不判定（把缺陷写成「期望」等于假绿），在 R 里可见即可 ——
+  ok('【7】旧的金点规则已删除：页面里不再有 .lvl.perfect 的 radial-gradient（满分改由底部三星表达）',
+     html.indexOf('radial-gradient(circle at 7px calc(100% - 6px)') < 0 &&
+     html.indexOf('.lvl.cleared.perfect{') < 0,
+     'radial-gradient@' + html.indexOf('radial-gradient(circle at 7px calc(100% - 6px)') +
+     ' cleared.perfect@' + html.indexOf('.lvl.cleared.perfect{'));
+  ok('【7】.lvl.perfect 类仍有配套样式（满分关的金色描边；评价本体由三星表达）',
+     cssRule('.lvl.perfect').indexOf('.lvl.perfect') >= 0, cssRule('.lvl.perfect').replace(/\s+/g, ' '));
+  const staleGoldCmt = html.indexOf('左下角金色圆点');
+  note('【7】旧金点口径的残影：' + (staleGoldCmt < 0
+    ? '已清理干净（.lvl.perfect 的 radial-gradient 规则与注释都不在了）'
+    : 'radial-gradient 规则已删除，但讲金点的旧注释仍在 game/index.html:179-181 → 注释与实现不一致'));
+  note('【7】旧满分区残影：.modal-perfect 元素已不再创建（见 ②③⑤ 的 modal-perfect=0），' +
+       '但 CSS 规则仍在 game/index.html:100 → 死样式；证据：' + cssRule('.modal-perfect').replace(/\s+/g, ' '));
 }
 
 const pass = R.filter(x => x.pass === true).length;
