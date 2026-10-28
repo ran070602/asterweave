@@ -97,6 +97,7 @@
   /* 限时关卡（第 11 关起）一律带 ⏱ 提示，含未解锁的关卡；达标后由下面的 timeok 规则覆盖成金色 */
   .lvl.timed::before{content:"⏱";position:absolute;top:2px;left:5px;font-size:9px;opacity:.4;color:#c2d1e6}
   .lvl.timeok::before{content:"⏱";position:absolute;top:2px;left:5px;font-size:9px;opacity:.95;color:#ffd166}
+  .modal-perfect{display:block;margin-top:3px;color:#ffd166;font-weight:800;font-size:12px}
   .lvbtn.vol-1 .ico .w2,.lvbtn.vol-1 .ico .w3{display:none}
   .lvbtn.vol-2 .ico .w3{display:none}
   .top-actions{position:relative}
@@ -164,6 +165,10 @@
   .lvl.locked{background:#101419;border-color:#1f2734;color:#59647a;cursor:not-allowed}
   .lvl.locked::after{content:"🔒";position:absolute;top:2px;right:5px;font-size:10px;opacity:.85}
   .lvl.playing{outline:2px dashed #ffd166;outline-offset:2px}
+  /* 满分（零失误通关）：左下角金色圆点（左上 ⏱、右上 ✓/🔒 已占用，故用背景圆点而非伪元素）。
+     注意必须放在 .lvl.cleared / .lvl.locked 之后——它们用 background 简写会清掉 background-image；
+     再加 .lvl.cleared.perfect 提高权重，避免将来被同权重规则覆盖（曾因顺序问题圆点不显示）。 */
+  .lvl.perfect, .lvl.cleared.perfect{background-image:radial-gradient(circle at 7px calc(100% - 6px), #ffd166 0 2.6px, transparent 3px)}
   .mini.on{background:#1d3550;border-color:#4b7fbd;color:#dbeaff}
   .panel-hint{margin-top:8px;font-size:11px;color:#6f7f96;line-height:1.5}
 
@@ -776,7 +781,7 @@
   <div class="drawer-mask" id="drawerMask" hidden></div>
   <section class="panel" id="levelPanel" hidden role="dialog" aria-modal="true" aria-label="关卡选择">
     <div class="panel-head">
-      <span class="panel-title">已通关 <b id="clearedCount">0</b>/<b id="totalCount">1</b></span>
+      <span class="panel-title">已通关 <b id="clearedCount">0</b>/<b id="totalCount">1</b>　·　完美 <b id="perfectCount">0</b>/<b id="perfectTotal">1</b></span>
       <button type="button" class="mini" id="unlockBtn" aria-pressed="false">🔓 全部解锁</button>
       <button type="button" class="mini" id="resetBtn">重置进度</button>
     </div>
@@ -784,7 +789,7 @@
       <span class="panel-title">⏱ <b>第 11 关起为限时关卡</b>（未解锁的关也带 ⏱），超时即失败；<b>金色</b> ⏱ = 已在目标时间内完成</span>
     </div>
     <div class="lvgrid" id="lvGrid"></div>
-    <div class="panel-hint">✓ 已通关　·　高亮 = 当前关卡　·　🔒 未解锁（通关上一关后解锁）<br>⏱ = <b>限时关卡</b>（第 11 关起每关都有，未解锁的也标出）　·　<b>金色 ⏱</b> = 已在目标时间内观测完成　·　想直接玩后面的关？点「全部解锁」（给评审/开发用，不影响进度记录）</div>
+    <div class="panel-hint">✓ 已通关　·　高亮 = 当前关卡　·　🔒 未解锁（通关上一关后解锁）<br><b>✦ 左下金点 = 完美观测</b>（零失误通关，三架望远镜全留）<br>⏱ = <b>限时关卡</b>（第 11 关起每关都有，未解锁的也标出）　·　<b>金色 ⏱</b> = 已在目标时间内观测完成　·　想直接玩后面的关？点「全部解锁」（给评审/开发用，不影响进度记录）</div>
   </section>
 
   <section class="panel sky-panel" id="skyPanel" hidden aria-label="星座图鉴">
@@ -1132,6 +1137,8 @@ const drawerMask = document.getElementById('drawerMask');
 const lvGrid = document.getElementById('lvGrid');
 const clearedCountEl = document.getElementById('clearedCount');
 const totalCountEl = document.getElementById('totalCount');
+const perfectCountEl = document.getElementById('perfectCount');
+const perfectTotalEl = document.getElementById('perfectTotal');
 const resetBtn = document.getElementById('resetBtn');
 const constSlotEl = document.getElementById('constSlot');
 const statusCountsEl = document.getElementById('statusCounts');
@@ -1172,7 +1179,7 @@ const PROPER_NAMES = {};
 const FEEDBACK = { "email": "", "show": "", "mailto": "", "qr": "", "version": "", "subject": "", "form_url": "", "form_qr": "" };
 /* FEEDBACK_INJECT_END */
 
-let progress = { v: 1, cleared: {}, last: 0, devUnlock: false, devSkyLit: false, introSeen: false, sound: true, volume: 0.85, sky3d: true, strictTime: false, best: {}, timeOk: {}, endless: { best: 0, bestStreak: 0, fastestMs: null, runs: 0 } };
+let progress = { v: 1, cleared: {}, last: 0, devUnlock: false, devSkyLit: false, introSeen: false, sound: true, volume: 0.85, sky3d: true, strictTime: false, best: {}, timeOk: {}, bestLives: {}, endless: { best: 0, bestStreak: 0, fastestMs: null, runs: 0 } };
 let storageOK = true;
 
 function loadProgress(){
@@ -1201,6 +1208,7 @@ function loadProgress(){
       strictTime: saved.strictTime === true,
       best: (saved.best && typeof saved.best === 'object') ? saved.best : {},
       timeOk: (saved.timeOk && typeof saved.timeOk === 'object') ? saved.timeOk : {},
+      bestLives: (saved.bestLives && typeof saved.bestLives === 'object') ? saved.bestLives : {},
       introSeen: saved.introSeen === true,
       sky3d: saved.sky3d !== false
     };
@@ -1798,6 +1806,7 @@ function checkWin(){
   }
   stopClock();                                 // 计时停止
   recordBestTime();
+  recordBestLives();                           // 命数评价：剩余望远镜数的历史最佳
   markCleared(S.index);
   winRevealDone = false;
   winRevealPending = true;
@@ -1965,7 +1974,8 @@ function render(){
   if (!(runMode === 'endless' && run)){
     lvtagEl.textContent = '第 ' + (S.index + 1) + ' / ' + LEVELS.length + ' 关 · ' +
       S.n + '×' + S.n + (S.level.showRuns ? ' · 含行列线索' : ' · 仅邻域数字') +
-      (timeIsTimed() ? ' · 限时 ' + fmtClock(levelLimitSec(S.level)) : '');
+      (timeIsTimed() ? ' · 限时 ' + fmtClock(levelLimitSec(S.level)) : '') +
+      (bestLivesOf(S.index) > 0 ? ' · 最佳 🔭×' + bestLivesOf(S.index) : '');
   }
 
   applyCellFx();
@@ -2273,8 +2283,17 @@ function buildModal(){
           + (el <= goal ? ' · ⏱ 提前达标' : '');
         if (typeof bestS === 'number') metaTxt += ' · 最快 ' + fmtClock(bestS);
       }
+      const maxL = levelMaxLives(S.level);
+      const leftL = Math.max(0, Math.min(maxL, S.lives));
+      metaTxt += ' · 本次 🔭 ' + leftL + '/' + maxL;
       meta.textContent = metaTxt;
       modalSubEl.appendChild(meta);
+      if (leftL >= maxL){
+        const pf = document.createElement('span');
+        pf.className = 'modal-perfect';
+        pf.textContent = '✦ 完美观测（零失误，望远镜全留）';
+        modalSubEl.appendChild(pf);
+      }
     } else {
       modalSubEl.textContent = last ? '所有 ' + LEVELS.length + ' 关观测完成。' : '本关观测完成。';
     }
@@ -2417,6 +2436,34 @@ function endlessTick(){
   if (endlessRemainingSec() <= 0) endlessTimeout();
 }
 setInterval(tickClock, 500);
+
+function levelMaxLives(level){
+  return (level && typeof level.lives === 'number' && level.lives > 0) ? level.lives : 3;
+}
+function bestLivesOf(idx){
+  const v = progress.bestLives ? progress.bestLives[String(idx)] : undefined;
+  return typeof v === 'number' ? v : 0;
+}
+function isPerfectClear(idx){
+  const lv = LEVELS[idx];
+  return !!lv && bestLivesOf(idx) >= levelMaxLives(lv);
+}
+function perfectCount(){
+  let n = 0;
+  for (let i = 0; i < LEVELS.length; i++){ if (isPerfectClear(i)) n++; }
+  return n;
+}
+// 通关评价：记录”剩余望远镜数”的历史最佳（0–max）。重玩也算，失败/超时不写。
+function recordBestLives(){
+  if (!S || !S.level) return;
+  const max = levelMaxLives(S.level);
+  const left = Math.max(0, Math.min(max, S.lives));
+  if (!progress.bestLives) progress.bestLives = {};
+  const key = String(S.index);
+  const prev = progress.bestLives[key];
+  if (typeof prev !== 'number' || left > prev) progress.bestLives[key] = left;
+  saveProgress();
+}
 
 function recordBestTime(){
   if (runMode === 'endless') return;
@@ -2849,8 +2896,10 @@ function refreshLevelGrid(){
     if (i + 1 >= TIMED_FROM) cls += ' timed';      // 限时关卡一律带 ⏱（含未解锁的关卡，与已解锁的保持一致）
     else cls += ' untimed';                        // 非限时关卡（显式标记，便于测试与样式区分）
     if (progress.timeOk && progress.timeOk[String(i)]) cls += ' timeok';   // ⏱ 达标标记
+    if (isPerfectClear(i)) cls += ' perfect';                              // ✦ 满分（零失误）
     if (b.className !== cls) b.className = cls;
     b.disabled = !(unlocked || cleared);
+    if (isPerfectClear(i)) label += '，完美观测';
     b.setAttribute('aria-label', label);
     b.setAttribute('aria-current', playing ? 'true' : 'false');
   }
@@ -2858,6 +2907,8 @@ function refreshLevelGrid(){
   lvBtnTotal.textContent = String(LEVELS.length);
   totalCountEl.textContent = String(LEVELS.length);
   clearedCountEl.textContent = String(clearedTotal());
+  if (perfectCountEl) perfectCountEl.textContent = String(perfectCount());
+  if (perfectTotalEl) perfectTotalEl.textContent = String(LEVELS.length);
 }
 
 function refreshUnlockBtn(){
