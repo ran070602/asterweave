@@ -24,6 +24,14 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 NODE = r"D:\develop\NodeJS\node.exe" if os.path.exists(r"D:\develop\NodeJS\node.exe") else "node"
 DIST = os.path.join(ROOT, "dist", "星织-游戏本体", "index.html")
 
+# 本机默认控制台是 GBK（cp936）：本脚本会打印 ✅ 等字符，若不重设编码会在**收尾打印时**抛
+# UnicodeEncodeError 并以退出码 1 结束——看起来像"测试失败"，其实是编码问题（v24 的作者发现的）。
+# 这里主动把 stdout 切到 UTF-8 并容错，避免"全绿却退出 1"。
+try:
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+except Exception:
+    pass
+
 filters = [a for a in sys.argv[1:] if not a.startswith("-")]
 files = sorted(glob.glob(os.path.join(ROOT, "verification", "v*_test.js")))
 if filters:
