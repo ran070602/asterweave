@@ -234,8 +234,8 @@ ok('封面主行动始终可见且无存档时文案为「开始观测」',
    `hidden=${byId.homeResume && byId.homeResume.hidden} label=${(byId.introStartLabel || {}).textContent}`);
 ok('封面显示进度三连（★ 星 / 已通关）',
    introSeg.indexOf('id="introStats"') >= 0 && !!byId.introStarNum && !!byId.introClearNum);
-ok('封面是整屏形态（overlay 带 cover 类，不是居中弹窗）',
-   String(byId.introOverlay.className || '').indexOf('cover') >= 0, byId.introOverlay.className);
+ok('主页是整屏形态（overlay 带 home 类，不是居中弹窗）',
+   String(byId.introOverlay.className || '').indexOf('home') >= 0, byId.introOverlay.className);
 ok('封面主行动副标题给出落点（从第 1 关开始 / 继续第 N 关）',
    /从第 1 关开始|继续第 \d+ 关/.test(String((byId.homeResumeSub || {}).textContent || '')),
    (byId.homeResumeSub || {}).textContent);
@@ -264,8 +264,11 @@ ok('暂停态标题为「暂停」且 overlay 带 pause 类',
    `title=${(byId.introTitle || {}).textContent} cls=${byId.introOverlay.className}`);
 ok('暂停态副标题给出当前关卡', /第 \d+ \/ 88 关/.test(String((byId.introSub || {}).textContent || '')),
    (byId.introSub || {}).textContent);
-ok('暂停态有「回到封面」入口', !!byId.introBackCover && byId.introBackCover.hidden !== true,
-   `hidden=${byId.introBackCover && byId.introBackCover.hidden}`);
+ok('暂停态有「回到主页」入口', !!byId.introBackHome && byId.introBackHome.hidden !== true,
+   `hidden=${byId.introBackHome && byId.introBackHome.hidden}`);
+ok('暂停态有「重来本关」（无尽下不出现，此处是闯关）',
+   !!byId.introReplay && byId.introReplay.hidden !== true,
+   `hidden=${byId.introReplay && byId.introReplay.hidden}`);
 ok('暂停态主行动文案为「继续当前进度」',
    String((byId.introStartLabel || {}).textContent || '').indexOf('继续当前进度') >= 0,
    (byId.introStartLabel || {}).textContent);

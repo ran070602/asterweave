@@ -742,7 +742,7 @@
   .intro-chip.vol-2 .ico .w3{display:none}
   .intro-chip b{color:#8fc3ff;font-variant-numeric:tabular-nums}
   .intro-chip:active{transform:scale(.97)}
-  /* ===== 封面 / 暂停 两态（意向图 D/E）===== */
+  /* ===== 主页 / 暂停 两态（意向图 D/E）===== */
   .intro-stats{display:flex;gap:9px;justify-content:center;align-items:center;margin:10px 0 2px;font-size:11px;color:#8fa3c2}
   .intro-stats b{color:#ffd166}
   .intro-stats i{font-style:normal;color:#39445a}
@@ -760,9 +760,13 @@
   .intro-overlay.pause .intro-en,.intro-overlay.pause .intro-tag,.intro-overlay.pause .intro-hint,
   .intro-overlay.pause .intro-stats,.intro-overlay.pause .intro-modes{display:none}
   .intro-overlay.pause .intro-card .intro-title{font-size:22px;letter-spacing:.16em;margin-top:2px}
-  /* 封面 = 整屏（不是居中弹窗）：背景只压暗一档，让星空背景透出来 */
-  .intro-overlay.cover{padding:0;backdrop-filter:none;
-    /* 封面自带星空：不透明底 + 星点，避免棋盘透上来压住封面文字 */
+  /* 暂停态的次级行动（重来本关）：与卡片同族但更矮 */
+  .intro-ghost{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:10px;
+    min-height:48px;border-radius:13px;border:1px solid rgba(126,180,255,.30);color:#dbe7f8;
+    background:linear-gradient(180deg,rgba(24,34,60,.92),rgba(13,19,34,.92));font:inherit;font-size:14px;font-weight:800;cursor:pointer}
+  /* 主页 = 整屏（不是居中弹窗）：自带不透明星空底——只压暗一档会让棋盘透上来压字（踩过） */
+  .intro-overlay.home{padding:0;backdrop-filter:none;
+    /* 主页自带星空：不透明底 + 星点，避免棋盘透上来压住主页文字 */
     background:
       radial-gradient(120% 50% at 50% 0%,rgba(34,58,104,.60),rgba(6,9,14,0) 62%),
       radial-gradient(1.4px 1.4px at 26px 44px,#fff,transparent 62%),
@@ -780,13 +784,13 @@
       radial-gradient(1.2px 1.2px at 296px 596px,#fff,transparent 62%),
       radial-gradient(1px 1px at 74px 664px,#cfe0ff,transparent 62%),
       #070a11}
-  .intro-overlay.cover .intro-card{width:100%;max-width:none;height:100%;max-height:none;
+  .intro-overlay.home .intro-card{width:100%;max-width:none;height:100%;max-height:none;
     border:0;border-radius:0;background:transparent;box-shadow:none;
     padding:max(30px, env(safe-area-inset-top)) 22px max(22px, env(safe-area-inset-bottom));
     display:flex;flex-direction:column}
-  .intro-overlay.cover .intro-brand{margin-top:5vh}
-  .intro-overlay.cover .modecard.cta{margin-top:auto}
-  .intro-overlay.cover .intro-foot{margin-bottom:2px}
+  .intro-overlay.home .intro-brand{margin-top:5vh}
+  .intro-overlay.home .modecard.cta{margin-top:auto}
+  .intro-overlay.home .intro-foot{margin-bottom:2px}
   /* ===== 无尽冲分 ===== */
   .runtoast{position:fixed;left:50%;top:16%;transform:translate(-50%,-6px);z-index:36;pointer-events:none;
     padding:7px 14px;border-radius:999px;border:1px solid rgba(140,190,255,.45);
@@ -944,6 +948,7 @@
       </div>
       <p class="intro-pausesub" id="introSub" hidden></p>
       <button type="button" class="modecard cta" id="homeResume"><span class="modecard-t"><svg class="mico" viewBox="0 0 20 20" fill="currentColor" stroke="none"><path d="M6.6 4.4 15 10l-8.4 5.6z"/></svg><span id="introStartLabel">开始观测</span></span><span class="modecard-sub" id="homeResumeSub"></span></button>
+      <button type="button" class="intro-ghost" id="introReplay" hidden><svg class="mico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.6 10a5.4 5.4 0 1 0 1.6-3.8"/><path d="M4.4 3.6v3.2h3.2"/></svg>重来本关</button>
       <div class="intro-modes">
       <button type="button" class="modecard" id="homeCampaign"><span class="modecard-t"><svg class="mico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3.2" y="3.2" width="13.6" height="13.6" rx="2.2"/><path d="M3.2 7.9h13.6M3.2 12.1h13.6M7.9 3.2v13.6M12.1 3.2v13.6"/></svg><span id="introCampLabel">关卡选择</span></span><span class="modecard-sub" id="homeCampaignSub"></span></button>
       <button type="button" class="modecard" id="homeEndless"><span class="modecard-t"><svg class="mico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6.4 6.6c2 0 2.9 2 3.6 3.4.7 1.4 1.6 3.4 3.6 3.4a2.9 2.9 0 0 0 0-5.8c-2 0-2.9 2-3.6 3.4-.7 1.4-1.6 3.4-3.6 3.4a2.9 2.9 0 0 1 0-5.8z"/></svg><span id="homeEndlessLabel">无尽冲分</span></span><span class="modecard-sub" id="homeEndlessSub"></span></button>
@@ -954,7 +959,7 @@
         <button type="button" class="intro-chip" id="introRules"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 2.5h6.4l3.6 3.6v11.4a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1v-14a1 1 0 0 1 1-1z"/><path d="M11.9 2.6v3.6h3.6"/><path d="M10 8.7l.95 2.05 2.05.95-2.05.95L10 14.7l-.95-2.05L7 11.7l2.05-.95z" fill="currentColor" stroke="none"/></svg>规则</button>
         <button type="button" class="intro-chip" id="introFb"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2.8" y="4.6" width="14.4" height="10.8" rx="1.6"/><path d="M3.4 5.6 10 11l6.6-5.4"/></svg>意见</button>
       </div>
-      <button type="button" class="intro-backcover" id="introBackCover" hidden>回到封面</button>
+      <button type="button" class="intro-backcover" id="introBackHome" hidden>回到主页</button>
     </div>
   </div>
 
@@ -1318,10 +1323,10 @@ function refreshIntro(){
   const pause = (introMode === 'pause');
   if (ov && ov.classList){
     // 桩只实现 add/remove/contains（没有 toggle），所以显式写
-    if (pause){ ov.classList.add('pause'); ov.classList.remove('cover'); }
-    else { ov.classList.add('cover'); ov.classList.remove('pause'); }
+    if (pause){ ov.classList.add('pause'); ov.classList.remove('home'); }
+    else { ov.classList.add('home'); ov.classList.remove('pause'); }
   }
-  // 标题：封面=品牌，暂停=状态
+  // 标题：主页=品牌，暂停=状态
   const titleEl = document.getElementById('introTitle');
   if (titleEl) titleEl.textContent = pause ? '暂停' : '星织';
   // 暂停态副标题：当前关卡 / 无尽进度
@@ -1339,7 +1344,7 @@ function refreshIntro(){
     subEl.textContent = t;
     subEl.hidden = !t;
   }
-  // 进度三连（封面才显示）
+  // 进度三连（主页才显示）
   const sn = document.getElementById('introStarNum'), stn = document.getElementById('introStarTotal');
   const cn = document.getElementById('introClearNum'), ctn = document.getElementById('introClearTotal');
   const skyNum = document.getElementById('introSkyNum'), skyTot = document.getElementById('introSkyTotal');
@@ -1355,7 +1360,7 @@ function refreshIntro(){
   refreshSoundBtn();          // 音效角标与顶部按钮共用同一套状态（含三档声波/静音斜杠）
 
   const live = homeRunLive();
-  // 主行动（金色 CTA）：封面 = 开始观测 / 继续第 N 关；暂停 = 继续当前进度
+  // 主行动（金色 CTA）：主页 = 开始观测 / 继续第 N 关；暂停 = 继续当前进度
   const res = document.getElementById('homeResume');
   if (res){
     res.hidden = false;
@@ -1388,16 +1393,18 @@ function refreshIntro(){
     else ieHome.classList.remove('primary');
     ieHome.hidden = pause;
   }
-  // 暂停态才有「回到封面」
-  const back = document.getElementById('introBackCover');
+  // 暂停态才有「回到主页」，以及「重来本关」（无尽没有"本关"概念，与顶栏同规则）
+  const back = document.getElementById('introBackHome');
   if (back) back.hidden = !pause;
+  const ir = document.getElementById('introReplay');
+  if (ir) ir.hidden = !(pause && runMode === 'campaign' && S && S.status === 'playing');
 }
 let homeOpen = false, homePausedClock = false, homeFadeTimer = 0;
-let introMode = 'cover';            // 'cover' 封面（刚打开）| 'pause' 局内暂停
+let introMode = 'home';             // 'home' 主页（刚打开）| 'pause' 局内暂停
 function openHome(pause){
   const el = document.getElementById('introOverlay');
   if (!el) return;
-  introMode = pause ? 'pause' : 'cover';
+  introMode = pause ? 'pause' : 'home';
   refreshIntro();
   el.hidden = false;
   void el.offsetWidth;                 // 强制回流，让淡入过渡生效
@@ -4397,7 +4404,7 @@ if (Array.isArray(LEVELS) && LEVELS.length){
   if (ires) ires.addEventListener('click', function(){
     initAudio(); sndStart();
     if (introMode === 'pause'){ closeHome(); return; }        // 暂停态 = 继续
-    // 封面态 = 开始/继续闯关：有进行中的棋盘就回棋盘，否则进入当前进度
+    // 主页态 = 开始/继续闯关：有进行中的棋盘就回棋盘，否则进入当前进度
     if (runMode === 'campaign' && S && S.status === 'playing'){ closeHome(); return; }
     if (runMode === 'endless' && run && !run.over) endEndlessRun('quit');
     if (runMode === 'endless') leaveEndless();
@@ -4424,8 +4431,14 @@ if (Array.isArray(LEVELS) && LEVELS.length){
     closeHome();
     startEndlessRun();                                // 新的一轮
   });
-  const iback = document.getElementById('introBackCover');
-  if (iback) iback.addEventListener('click', function(){ introMode = 'cover'; refreshIntro(); });
+  const iback = document.getElementById('introBackHome');
+  if (iback) iback.addEventListener('click', function(){ introMode = 'home'; refreshIntro(); });
+  const ireplay = document.getElementById('introReplay');
+  if (ireplay) ireplay.addEventListener('click', function(){
+    initAudio(); sndStart();
+    closeHome();
+    if (S) startLevel(S.index);                        // 与顶栏「重玩本关」同一行为
+  });
   const isk = document.getElementById('introSky');
   if (isk) isk.addEventListener('click', function(){ closeHome(); openSky(); });
   const isd = document.getElementById('introSound');
