@@ -742,6 +742,23 @@
   .intro-chip.vol-2 .ico .w3{display:none}
   .intro-chip b{color:#8fc3ff;font-variant-numeric:tabular-nums}
   .intro-chip:active{transform:scale(.97)}
+  /* 主页中部：当前关卡的星座——闪烁营造氛围；prefers-reduced-motion 下静止 */
+  .intro-const{position:relative;margin:auto;width:min(82%,318px);opacity:.95}
+  .intro-const .const-map{max-width:none;margin:0;border:0;background:none;overflow:visible;
+    filter:drop-shadow(0 0 18px rgba(96,146,236,.25))}
+  .intro-const .const-map::before,.intro-const .const-map::after{display:none}
+  .intro-const .const-fact{display:none}
+  .intro-const .const-svg{animation:none}
+  .intro-const .gline{animation:none;stroke-dashoffset:0;stroke-opacity:.45}
+  .intro-const .gnoise{animation:none;opacity:.10}
+  .intro-const .gdust{animation:introTwinkle 3.6s ease-in-out infinite}
+  .intro-const .ghalo,.intro-const .ghalo2,.intro-const .gstar,.intro-const .gspike{animation:introGlow 2.8s ease-in-out infinite}
+  @keyframes introTwinkle{0%,100%{opacity:.72}50%{opacity:.26}}
+  @keyframes introGlow{0%,100%{opacity:.82}50%{opacity:1}}
+  @media (prefers-reduced-motion: reduce){ .intro-const *{animation:none !important} }
+  /* 从主页打开的关卡抽屉：压在主页（z-index:60）之上 */
+  .lvdrawer.over-home{z-index:80}
+  .drawer-mask.over-home{z-index:79}
   /* ===== 主页 / 暂停 两态（意向图 D/E）===== */
   .intro-stats{display:flex;gap:9px;justify-content:center;align-items:center;margin:10px 0 2px;font-size:11px;color:#8fa3c2}
   .intro-stats b{color:#ffd166}
@@ -760,10 +777,6 @@
   .intro-overlay.pause .intro-en,.intro-overlay.pause .intro-tag,.intro-overlay.pause .intro-hint,
   .intro-overlay.pause .intro-stats,.intro-overlay.pause .intro-modes{display:none}
   .intro-overlay.pause .intro-card .intro-title{font-size:22px;letter-spacing:.16em;margin-top:2px}
-  /* 暂停态的次级行动（重来本关）：与卡片同族但更矮 */
-  .intro-ghost{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:10px;
-    min-height:48px;border-radius:13px;border:1px solid rgba(126,180,255,.30);color:#dbe7f8;
-    background:linear-gradient(180deg,rgba(24,34,60,.92),rgba(13,19,34,.92));font:inherit;font-size:14px;font-weight:800;cursor:pointer}
   /* 主页 = 整屏（不是居中弹窗）：自带不透明星空底——只压暗一档会让棋盘透上来压字（踩过） */
   .intro-overlay.home{padding:0;backdrop-filter:none;
     /* 主页自带星空：不透明底 + 星点，避免棋盘透上来压住主页文字 */
@@ -947,8 +960,8 @@
         <span>已通关 <b id="introClearNum">0</b>/<b id="introClearTotal">88</b></span>
       </div>
       <p class="intro-pausesub" id="introSub" hidden></p>
+      <div class="intro-const" id="introConst" aria-hidden="true"></div>
       <button type="button" class="modecard cta" id="homeResume"><span class="modecard-t"><svg class="mico" viewBox="0 0 20 20" fill="currentColor" stroke="none"><path d="M6.6 4.4 15 10l-8.4 5.6z"/></svg><span id="introStartLabel">开始观测</span></span><span class="modecard-sub" id="homeResumeSub"></span></button>
-      <button type="button" class="intro-ghost" id="introReplay" hidden><svg class="mico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.6 10a5.4 5.4 0 1 0 1.6-3.8"/><path d="M4.4 3.6v3.2h3.2"/></svg>重来本关</button>
       <div class="intro-modes">
       <button type="button" class="modecard" id="homeCampaign"><span class="modecard-t"><svg class="mico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3.2" y="3.2" width="13.6" height="13.6" rx="2.2"/><path d="M3.2 7.9h13.6M3.2 12.1h13.6M7.9 3.2v13.6M12.1 3.2v13.6"/></svg><span id="introCampLabel">关卡选择</span></span><span class="modecard-sub" id="homeCampaignSub"></span></button>
       <button type="button" class="modecard" id="homeEndless"><span class="modecard-t"><svg class="mico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6.4 6.6c2 0 2.9 2 3.6 3.4.7 1.4 1.6 3.4 3.6 3.4a2.9 2.9 0 0 0 0-5.8c-2 0-2.9 2-3.6 3.4-.7 1.4-1.6 3.4-3.6 3.4a2.9 2.9 0 0 1 0-5.8z"/></svg><span id="homeEndlessLabel">无尽冲分</span></span><span class="modecard-sub" id="homeEndlessSub"></span></button>
@@ -1328,7 +1341,7 @@ function refreshIntro(){
   }
   // 标题：主页=品牌，暂停=状态
   const titleEl = document.getElementById('introTitle');
-  if (titleEl) titleEl.textContent = pause ? '暂停' : '星织';
+  if (titleEl) titleEl.textContent = pause ? '菜单' : '星织';
   // 暂停态副标题：当前关卡 / 无尽进度
   const subEl = document.getElementById('introSub');
   if (subEl){
@@ -1356,6 +1369,23 @@ function refreshIntro(){
   if (skyTot) skyTot.textContent = String(SKY.length);
   const statsEl = document.getElementById('introStats');
   if (statsEl) statsEl.hidden = pause;
+
+  // 主页中部：渲染"当前关卡"的星座（闪烁）；菜单态隐藏
+  const constEl = document.getElementById('introConst');
+  if (constEl){
+    if (pause){ constEl.hidden = true; constEl.innerHTML = ''; }
+    else {
+      const idx = Math.min(frontier(), LEVELS.length - 1);
+      const lv = LEVELS[idx] || null;
+      const th = (lv && lv.theme) ? lv.theme : null;
+      if (th && constSvg){
+        constEl.innerHTML = '<div class="const-map">' + constSvg(th, lv.size, null) + '</div>';
+        constEl.hidden = false;
+      } else {
+        constEl.hidden = true; constEl.innerHTML = '';
+      }
+    }
+  }
 
   refreshSoundBtn();          // 音效角标与顶部按钮共用同一套状态（含三档声波/静音斜杠）
 
@@ -1396,8 +1426,6 @@ function refreshIntro(){
   // 暂停态才有「回到主页」，以及「重来本关」（无尽没有"本关"概念，与顶栏同规则）
   const back = document.getElementById('introBackHome');
   if (back) back.hidden = !pause;
-  const ir = document.getElementById('introReplay');
-  if (ir) ir.hidden = !(pause && runMode === 'campaign' && S && S.status === 'playing');
 }
 let homeOpen = false, homePausedClock = false, homeFadeTimer = 0;
 let introMode = 'home';             // 'home' 主页（刚打开）| 'pause' 局内暂停
@@ -3032,7 +3060,7 @@ function buildLevelGrid(){
     b.setAttribute('data-index', String(i));
     if (progress.timeOk && progress.timeOk[String(i)]) b.classList.add('timeok');
     b.addEventListener('click', (function(k){
-      return function(){ startLevel(k); closePanel(); };
+      return function(){ closeHome(); startLevel(k); closePanel(); };   // 从主页里的抽屉选关：收主页再去棋盘
     })(i));
     lvGrid.appendChild(b);
     lvlEls.push(b);
@@ -3102,8 +3130,9 @@ function openPanel(){
   refreshLevelGrid();
   // 强制 reflow 让 transition 生效（比 rAF 稳，后台标签/无头环境也能触发）
   void levelPanel.offsetWidth;
-  levelPanel.className = 'panel lvdrawer open';
-  drawerMask.className = 'drawer-mask open';
+  // 从主页打开时：抽屉与遮罩抬到主页之上（z-index），呈现为"主页上的弹窗"
+  levelPanel.className = 'panel lvdrawer open' + (homeOpen ? ' over-home' : '');
+  drawerMask.className = 'drawer-mask open' + (homeOpen ? ' over-home' : '');
   const cur = lvlEls[S ? S.index : 0];
   if (cur && cur.scrollIntoView){
     try { cur.scrollIntoView({ block: 'center' }); }
@@ -4414,15 +4443,13 @@ if (Array.isArray(LEVELS) && LEVELS.length){
   const icamp = document.getElementById('homeCampaign');
   if (icamp) icamp.addEventListener('click', function(){
     initAudio(); sndStart();
-    if (introMode === 'pause') return;                 // 暂停态该卡隐藏
+    if (introMode === 'pause') return;                 // 菜单态该卡隐藏
     if (runMode === 'endless'){
-      if (run && !run.over) endEndlessRun('quit');    // 切换即结算本轮（分数入账）
-      closeHome();
+      if (run && !run.over) endEndlessRun('quit');     // 切换即结算本轮（分数入账）
       leaveEndless();
-    } else {
-      closeHome();                                     // 已在闯关
     }
-    if (lvBtn) lvBtn.click();                          // 打开关卡面板选关
+    // 关键：**不关主页**——关卡抽屉以 z-index 抬到主页之上，呈现为"主页上的弹窗"
+    if (lvBtn) lvBtn.click();
   });
   const iend = document.getElementById('homeEndless');
   if (iend) iend.addEventListener('click', function(){
@@ -4433,12 +4460,6 @@ if (Array.isArray(LEVELS) && LEVELS.length){
   });
   const iback = document.getElementById('introBackHome');
   if (iback) iback.addEventListener('click', function(){ introMode = 'home'; refreshIntro(); });
-  const ireplay = document.getElementById('introReplay');
-  if (ireplay) ireplay.addEventListener('click', function(){
-    initAudio(); sndStart();
-    closeHome();
-    if (S) startLevel(S.index);                        // 与顶栏「重玩本关」同一行为
-  });
   const isk = document.getElementById('introSky');
   if (isk) isk.addEventListener('click', function(){ closeHome(); openSky(); });
   const isd = document.getElementById('introSound');

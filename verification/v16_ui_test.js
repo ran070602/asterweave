@@ -226,24 +226,38 @@ ok('主页有品牌与一句定位', introSeg.includes('ASTERWEAVE') && introSeg
 ok('主页含「翻开安全格 + 标出所有星」的玩法要点', introSeg.includes('安全格') && introSeg.includes('标出所有'));
 ok('主页提供两种模式入口（闯关 / 无尽）',
    introSeg.indexOf('id="homeCampaign"') >= 0 && introSeg.indexOf('id="homeEndless"') >= 0);
-// 2026-11-02：主页拆成「封面 / 暂停」两态 —— 主行动（#homeResume）在封面下**始终可见**，
+// 2026-11-02：主页拆成「主页 / 菜单」两态 —— 主行动（#homeResume）在主页态**始终可见**，
 // 无存档时文案是「开始观测 / 从第 1 关开始」，有存档时副标题给「继续第 N 关」。
-ok('封面主行动始终可见且无存档时文案为「开始观测」',
+ok('主页主行动始终可见且无存档时文案为「开始观测」',
    introSeg.indexOf('id="homeResume"') >= 0 && byId.homeResume.hidden !== true
    && String((byId.introStartLabel || {}).textContent || '').indexOf('开始观测') >= 0,
    `hidden=${byId.homeResume && byId.homeResume.hidden} label=${(byId.introStartLabel || {}).textContent}`);
-ok('封面显示进度三连（★ 星 / 已通关）',
+ok('主页显示进度三连（★ 星 / 已通关）',
    introSeg.indexOf('id="introStats"') >= 0 && !!byId.introStarNum && !!byId.introClearNum);
 ok('主页是整屏形态（overlay 带 home 类，不是居中弹窗）',
    String(byId.introOverlay.className || '').indexOf('home') >= 0, byId.introOverlay.className);
-ok('封面主行动副标题给出落点（从第 1 关开始 / 继续第 N 关）',
+ok('主页主行动副标题给出落点（从第 1 关开始 / 继续第 N 关）',
    /从第 1 关开始|继续第 \d+ 关/.test(String((byId.homeResumeSub || {}).textContent || '')),
    (byId.homeResumeSub || {}).textContent);
 ok('顶栏有常驻主页入口（游戏中可当暂停菜单）', !!byId.homeBtn);
-// 一次点击即可开始
+// 主页中部渲染"当前关卡"的星座（用户 2026-11-02：主页太单调）
+ok('主页中部渲染当前关卡的星座（内联 SVG 星图）',
+   !!byId.introConst && String(byId.introConst.innerHTML || '').indexOf('<svg') >= 0,
+   String((byId.introConst || {}).innerHTML || '').slice(0, 36));
+// ① 点「关卡选择」应把关卡抽屉压在主页之上，而**不关闭主页**（用户 2026-11-02 反馈）
 byId.homeCampaign.dispatchEvent(mkEvent('click', { target: byId.homeCampaign }));
 flush(0);
-ok('点「闯关模式」一次即关闭主页并进入棋盘',
+ok('点「关卡选择」不关闭主页（抽屉压在主页上）',
+   byId.introOverlay.hidden === false, `homeHidden=${byId.introOverlay.hidden}`);
+ok('关卡抽屉以 over-home 类压在主页之上',
+   String((byId.levelPanel || {}).className || '').indexOf('over-home') >= 0,
+   (byId.levelPanel || {}).className);
+if (byId.levelPanel) { byId.levelPanel.className = 'panel lvdrawer'; byId.levelPanel.hidden = true; }
+if (byId.drawerMask) { byId.drawerMask.className = 'drawer-mask'; byId.drawerMask.hidden = true; }
+// ② 主行动一次点击即开始（开始后主页应收起）
+byId.homeResume.dispatchEvent(mkEvent('click', { target: byId.homeResume }));
+flush(0);
+ok('点主页主行动一次即收起主页并进入棋盘',
    byId.introOverlay.hidden === true && state().status === 'playing', `hidden=${byId.introOverlay.hidden} status=${state().status}`);
 let saved = null;
 try { saved = JSON.parse(store['leixian.migong.progress.v1'] || store['xingzhi.progress.v1'] || 'null'); } catch (e) {}
@@ -257,19 +271,17 @@ flush(0);
 byId.homeBtn.dispatchEvent(mkEvent('click', { target: byId.homeBtn }));
 flush(0);
 ok('游戏中点顶栏入口可再打开主页', byId.introOverlay.hidden === false);
-// 暂停形态：标题换「暂停」、overlay 带 pause 类、副标题给出当前关卡、并多一个「回到封面」
-ok('暂停态标题为「暂停」且 overlay 带 pause 类',
-   String((byId.introTitle || {}).textContent || '').indexOf('暂停') >= 0
+// 菜单形态：标题换「菜单」、overlay 带 pause 类、副标题给出当前关卡、并多一个「回到主页」
+ok('菜单态标题为「菜单」且 overlay 带 pause 类',
+   String((byId.introTitle || {}).textContent || '').indexOf('菜单') >= 0
    && String(byId.introOverlay.className || '').indexOf('pause') >= 0,
    `title=${(byId.introTitle || {}).textContent} cls=${byId.introOverlay.className}`);
-ok('暂停态副标题给出当前关卡', /第 \d+ \/ 88 关/.test(String((byId.introSub || {}).textContent || '')),
+ok('菜单态副标题给出当前关卡', /第 \d+ \/ 88 关/.test(String((byId.introSub || {}).textContent || '')),
    (byId.introSub || {}).textContent);
-ok('暂停态有「回到主页」入口', !!byId.introBackHome && byId.introBackHome.hidden !== true,
+ok('菜单态有「回到主页」入口', !!byId.introBackHome && byId.introBackHome.hidden !== true,
    `hidden=${byId.introBackHome && byId.introBackHome.hidden}`);
-ok('暂停态有「重来本关」（无尽下不出现，此处是闯关）',
-   !!byId.introReplay && byId.introReplay.hidden !== true,
-   `hidden=${byId.introReplay && byId.introReplay.hidden}`);
-ok('暂停态主行动文案为「继续当前进度」',
+// 「重来本关」已按用户要求移除（与顶栏「↻ 重玩本关」功能重复）
+ok('菜单态主行动文案为「继续当前进度」',
    String((byId.introStartLabel || {}).textContent || '').indexOf('继续当前进度') >= 0,
    (byId.introStartLabel || {}).textContent);
 byId.homeResume.dispatchEvent(mkEvent('click', { target: byId.homeResume }));
