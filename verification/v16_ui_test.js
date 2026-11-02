@@ -226,8 +226,19 @@ ok('主页有品牌与一句定位', introSeg.includes('ASTERWEAVE') && introSeg
 ok('主页含「翻开安全格 + 标出所有星」的玩法要点', introSeg.includes('安全格') && introSeg.includes('标出所有'));
 ok('主页提供两种模式入口（闯关 / 无尽）',
    introSeg.indexOf('id="homeCampaign"') >= 0 && introSeg.indexOf('id="homeEndless"') >= 0);
-ok('主页提供「继续当前进度」入口（首次无存档时隐藏）',
-   introSeg.indexOf('id="homeResume"') >= 0 && byId.homeResume.hidden === true, `hidden=${byId.homeResume && byId.homeResume.hidden}`);
+// 2026-11-02：主页拆成「封面 / 暂停」两态 —— 主行动（#homeResume）在封面下**始终可见**，
+// 无存档时文案是「开始观测 / 从第 1 关开始」，有存档时副标题给「继续第 N 关」。
+ok('封面主行动始终可见且无存档时文案为「开始观测」',
+   introSeg.indexOf('id="homeResume"') >= 0 && byId.homeResume.hidden !== true
+   && String((byId.introStartLabel || {}).textContent || '').indexOf('开始观测') >= 0,
+   `hidden=${byId.homeResume && byId.homeResume.hidden} label=${(byId.introStartLabel || {}).textContent}`);
+ok('封面显示进度三连（★ 星 / 已通关）',
+   introSeg.indexOf('id="introStats"') >= 0 && !!byId.introStarNum && !!byId.introClearNum);
+ok('封面是整屏形态（overlay 带 cover 类，不是居中弹窗）',
+   String(byId.introOverlay.className || '').indexOf('cover') >= 0, byId.introOverlay.className);
+ok('封面主行动副标题给出落点（从第 1 关开始 / 继续第 N 关）',
+   /从第 1 关开始|继续第 \d+ 关/.test(String((byId.homeResumeSub || {}).textContent || '')),
+   (byId.homeResumeSub || {}).textContent);
 ok('顶栏有常驻主页入口（游戏中可当暂停菜单）', !!byId.homeBtn);
 // 一次点击即可开始
 byId.homeCampaign.dispatchEvent(mkEvent('click', { target: byId.homeCampaign }));
@@ -246,7 +257,18 @@ flush(0);
 byId.homeBtn.dispatchEvent(mkEvent('click', { target: byId.homeBtn }));
 flush(0);
 ok('游戏中点顶栏入口可再打开主页', byId.introOverlay.hidden === false);
-ok('棋盘已动过时出现「继续当前进度」', byId.homeResume.hidden === false, `hidden=${byId.homeResume && byId.homeResume.hidden}`);
+// 暂停形态：标题换「暂停」、overlay 带 pause 类、副标题给出当前关卡、并多一个「回到封面」
+ok('暂停态标题为「暂停」且 overlay 带 pause 类',
+   String((byId.introTitle || {}).textContent || '').indexOf('暂停') >= 0
+   && String(byId.introOverlay.className || '').indexOf('pause') >= 0,
+   `title=${(byId.introTitle || {}).textContent} cls=${byId.introOverlay.className}`);
+ok('暂停态副标题给出当前关卡', /第 \d+ \/ 88 关/.test(String((byId.introSub || {}).textContent || '')),
+   (byId.introSub || {}).textContent);
+ok('暂停态有「回到封面」入口', !!byId.introBackCover && byId.introBackCover.hidden !== true,
+   `hidden=${byId.introBackCover && byId.introBackCover.hidden}`);
+ok('暂停态主行动文案为「继续当前进度」',
+   String((byId.introStartLabel || {}).textContent || '').indexOf('继续当前进度') >= 0,
+   (byId.introStartLabel || {}).textContent);
 byId.homeResume.dispatchEvent(mkEvent('click', { target: byId.homeResume }));
 flush(0);
 ok('点「继续当前进度」回到棋盘', byId.introOverlay.hidden === true && state().status === 'playing', state().status);
