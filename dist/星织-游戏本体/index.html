@@ -722,10 +722,10 @@
   /* ===== 入场页 ===== */
   .intro-card{max-height:92vh;overflow:auto}
   .intro-brand{text-align:center;margin:2px 0 8px}
-  .intro-card .intro-title{font-size:36px;font-weight:800;letter-spacing:.10em;line-height:1.12;
+  .intro-card .intro-title{font-size:38px;font-weight:800;letter-spacing:.10em;line-height:1.12;
     margin:0 0 0 -0.10em;color:#f2f7ff;text-shadow:0 2px 26px rgba(120,170,255,.45)}
   .intro-en{font-size:10.5px;font-weight:800;letter-spacing:.34em;color:#8fc3ff;margin-top:3px}
-  .intro-tag{margin:0 0 12px;text-align:center;font-size:12.5px;line-height:1.5;color:#a9bcd8}
+  .intro-tag{margin:0;text-align:center;font-size:12.5px;line-height:1.5;color:#a9bcd8}
   .intro-steps{margin:0 0 13px;padding-left:17px}
   .intro-steps li{margin:0 0 6px;font-size:12.5px;line-height:1.5;color:#c2d1e6}
   .intro-steps li b{color:#eaf2ff}
@@ -743,9 +743,12 @@
   .intro-chip b{color:#8fc3ff;font-variant-numeric:tabular-nums}
   .intro-chip:active{transform:scale(.97)}
   /* 主页中部：当前关卡的星座——闪烁营造氛围；prefers-reduced-motion 下静止 */
-  .intro-const{position:relative;margin:auto;width:min(82%,318px);opacity:.95}
-  .intro-const .const-map{max-width:none;margin:0;border:0;background:none;overflow:visible;
-    filter:drop-shadow(0 0 18px rgba(96,146,236,.25))}
+  .intro-const{position:relative;margin:6px auto 0;width:min(90%,308px);opacity:.96}
+  .intro-const::before{content:'';position:absolute;left:50%;top:48%;width:150%;height:132%;
+    transform:translate(-50%,-50%);pointer-events:none;
+    background:radial-gradient(50% 50% at 50% 50%,rgba(96,146,236,.20),rgba(96,146,236,0) 72%)}
+  /* 不要用 drop-shadow：它作用在稀疏星尘上会形成一块方形光晕，看起来像卡片套卡片 */
+  .intro-const .const-map{max-width:none;margin:0;border:0;background:none;overflow:visible;filter:none;box-shadow:none}
   .intro-const .const-map::before,.intro-const .const-map::after{display:none}
   .intro-const .const-fact{display:none}
   .intro-const .const-svg{animation:none}
@@ -804,6 +807,26 @@
   .intro-overlay.home .intro-brand{margin-top:5vh}
   .intro-overlay.home .modecard.cta{margin-top:auto}
   .intro-overlay.home .intro-foot{margin-bottom:2px}
+  /* ===== 主页英雄卡：品牌 + 星座 + 进度 = 一个整体（原本是三座孤岛，太空散）===== */
+  .intro-hero{position:relative;overflow:hidden;padding:20px 16px 16px;border-radius:22px;
+    border:1px solid rgba(126,180,255,.20);
+    background:linear-gradient(180deg,rgba(22,32,58,.72),rgba(10,15,28,.76));
+    box-shadow:0 20px 52px rgba(3,7,16,.55),inset 0 1px 0 rgba(180,214,255,.05)}
+  .intro-hero::before{content:'';position:absolute;left:50%;top:-14%;width:86%;height:58%;
+    transform:translateX(-50%);pointer-events:none;
+    background:radial-gradient(58% 62% at 50% 34%,rgba(92,142,240,.22),transparent 72%)}
+  .intro-overlay.home .intro-hero{margin:8vh 0 auto}   /* 上移：空隙只留一处，动作区贴底 */
+  .intro-overlay.home .intro-brand{margin:0 0 10px}
+  .intro-overlay.home .modecard.cta{margin-top:0}
+  .intro-const-cap{margin:8px 0 0;text-align:center;font-size:10.5px;letter-spacing:.10em;
+    color:#7f93b3;font-variant-numeric:tabular-nums}
+  .intro-overlay.home .intro-tag{font-size:13px;color:#b6c7de}
+  .intro-overlay.home .intro-hint{margin-top:5px;font-size:11.5px;color:#7e91ad}
+  .intro-overlay.home .intro-stats{margin:13px 0 0;padding-top:11px;border-top:1px solid rgba(126,180,255,.13)}
+  /* 菜单态：中和英雄卡的卡片化外观，只留标题与按钮 */
+  .intro-overlay.pause .intro-hero{margin:0;padding:0;border:0;background:none;box-shadow:none;overflow:visible}
+  .intro-overlay.pause .intro-hero::before{display:none}
+  .intro-overlay.pause .intro-const,.intro-overlay.pause .intro-const-cap{display:none}
   /* ===== 无尽冲分 ===== */
   .runtoast{position:fixed;left:50%;top:16%;transform:translate(-50%,-6px);z-index:36;pointer-events:none;
     padding:7px 14px;border-radius:999px;border:1px solid rgba(140,190,255,.45);
@@ -949,19 +972,23 @@
 
   <div class="intro-overlay" id="introOverlay" hidden>
     <div class="intro-card" role="dialog" aria-modal="true" aria-labelledby="introTitle">
+      <div class="intro-hero">
       <div class="intro-brand">
         <div class="intro-title" id="introTitle">星织</div>
         <div class="intro-en">ASTERWEAVE</div>
       </div>
       <p class="intro-tag" id="introTag">扫雷 × 数织 · 点亮 88 个真实星座</p>
       <p class="intro-hint" id="introHint">翻开所有<b>安全格</b> + 标出所有<b>星</b> → 揭晓真实星座</p>
+      <div class="intro-const" id="introConst" aria-hidden="true"></div>
+      <p class="intro-const-cap" id="introConstCap"></p>
       <div class="intro-stats" id="introStats">
         <span>★ <b id="introStarNum">0</b>/<b id="introStarTotal">264</b></span><i>·</i>
         <span>已通关 <b id="introClearNum">0</b>/<b id="introClearTotal">88</b></span>
       </div>
+      </div>
       <p class="intro-pausesub" id="introSub" hidden></p>
-      <div class="intro-const" id="introConst" aria-hidden="true"></div>
       <button type="button" class="modecard cta" id="homeResume"><span class="modecard-t"><svg class="mico" viewBox="0 0 20 20" fill="currentColor" stroke="none"><path d="M6.6 4.4 15 10l-8.4 5.6z"/></svg><span id="introStartLabel">开始观测</span></span><span class="modecard-sub" id="homeResumeSub"></span></button>
+      <button type="button" class="intro-backcover" id="introBackHome" hidden>回到主页</button>
       <div class="intro-modes">
       <button type="button" class="modecard" id="homeCampaign"><span class="modecard-t"><svg class="mico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3.2" y="3.2" width="13.6" height="13.6" rx="2.2"/><path d="M3.2 7.9h13.6M3.2 12.1h13.6M7.9 3.2v13.6M12.1 3.2v13.6"/></svg><span id="introCampLabel">关卡选择</span></span><span class="modecard-sub" id="homeCampaignSub"></span></button>
       <button type="button" class="modecard" id="homeEndless"><span class="modecard-t"><svg class="mico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6.4 6.6c2 0 2.9 2 3.6 3.4.7 1.4 1.6 3.4 3.6 3.4a2.9 2.9 0 0 0 0-5.8c-2 0-2.9 2-3.6 3.4-.7 1.4-1.6 3.4-3.6 3.4a2.9 2.9 0 0 1 0-5.8z"/></svg><span id="homeEndlessLabel">无尽冲分</span></span><span class="modecard-sub" id="homeEndlessSub"></span></button>
@@ -972,7 +999,6 @@
         <button type="button" class="intro-chip" id="introRules"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 2.5h6.4l3.6 3.6v11.4a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1v-14a1 1 0 0 1 1-1z"/><path d="M11.9 2.6v3.6h3.6"/><path d="M10 8.7l.95 2.05 2.05.95-2.05.95L10 14.7l-.95-2.05L7 11.7l2.05-.95z" fill="currentColor" stroke="none"/></svg>规则</button>
         <button type="button" class="intro-chip" id="introFb"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2.8" y="4.6" width="14.4" height="10.8" rx="1.6"/><path d="M3.4 5.6 10 11l6.6-5.4"/></svg>意见</button>
       </div>
-      <button type="button" class="intro-backcover" id="introBackHome" hidden>回到主页</button>
     </div>
   </div>
 
@@ -1637,11 +1663,14 @@ function refreshIntro(){
       const idx = Math.min(frontier(), LEVELS.length - 1);
       const lv = LEVELS[idx] || null;
       const th = (lv && lv.theme) ? lv.theme : null;
+      const capEl = document.getElementById('introConstCap');
       if (th && constSvg){
         constEl.innerHTML = '<div class="const-map">' + constSvg(th, lv.size, null) + '</div>';
         constEl.hidden = false;
+        if (capEl) capEl.textContent = '第 ' + (idx + 1) + ' 关 · ' + (th.name || '');
       } else {
         constEl.hidden = true; constEl.innerHTML = '';
+        if (capEl) capEl.textContent = '';
       }
     }
   }
