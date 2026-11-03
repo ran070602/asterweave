@@ -244,6 +244,15 @@ ok('顶栏有常驻主页入口（游戏中可当暂停菜单）', !!byId.homeBt
 ok('主页中部渲染当前关卡的星座（内联 SVG 星图）',
    !!byId.introConst && String(byId.introConst.innerHTML || '').indexOf('<svg') >= 0,
    String((byId.introConst || {}).innerHTML || '').slice(0, 36));
+// 主页的三个工具入口（图鉴 / 规则 / 意见）：弹窗要盖在主页之上，关掉后**仍停在主页**
+// （旧实现先 closeHome() 再开弹窗 → 玩家一关弹窗就落到棋盘上，2026-11-03 用户反馈修掉）
+for (const chip of [['introSky', '图鉴'], ['introRules', '规则'], ['introFb', '意见']]){
+  if (!byId[chip[0]]) continue;
+  try { byId[chip[0]].dispatchEvent(mkEvent('click', { target: byId[chip[0]] })); } catch (e) {}
+  flush(0);
+  ok('主页点「' + chip[1] + '」不关闭主页（关掉弹窗应回主页）',
+     byId.introOverlay.hidden === false, `hidden=${byId.introOverlay.hidden}`);
+}
 // ① 点「关卡选择」应把关卡抽屉压在主页之上，而**不关闭主页**（用户 2026-11-02 反馈）
 byId.homeCampaign.dispatchEvent(mkEvent('click', { target: byId.homeCampaign }));
 flush(0);

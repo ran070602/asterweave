@@ -503,6 +503,8 @@
     margin:0;padding:14px 12px calc(14px + env(safe-area-inset-bottom));overflow:auto;
     border:0;border-radius:0;background:radial-gradient(circle at 50% 0%,#0d1730 0%,#070a14 60%,#04060c 100%)}
   .panel.sky-panel.open{display:flex}
+  /* 从主页/菜单打开时压在主页（z-index:60）之上；游戏内保持 40，好让结算弹窗盖住图鉴 */
+  .panel.sky-panel.over-home{z-index:80}
   .panel.sky-panel{width:100vw;max-width:100vw;overflow-x:hidden}
   .sky-wrap,.sky-map{width:100%;max-width:100%}
   .sky-wrap{flex:0 0 auto;height:min(44vh,320px)}
@@ -4267,7 +4269,7 @@ function openSky(){
   refreshSkyModeBtns();
   refreshSkyLitBtn();
   skyEls.panel.hidden = false;
-  skyEls.panel.className = 'panel sky-panel open';
+  skyEls.panel.className = 'panel sky-panel open' + (homeOpen ? ' over-home' : '');   // 主页开着 → 压在主页上；游戏内不加（好让结算弹窗盖住图鉴）
   if (skyEls.btn) skyEls.btn.setAttribute('aria-expanded', 'true');
   renderSky();
   if (skyMode3d) sky3dStart();
@@ -4753,13 +4755,16 @@ if (Array.isArray(LEVELS) && LEVELS.length){
   const iback = document.getElementById('introBackHome');
   if (iback) iback.addEventListener('click', function(){ introMode = 'home'; refreshIntro(); });
   const isk = document.getElementById('introSky');
-  if (isk) isk.addEventListener('click', function(){ closeHome(); openSky(); });
+  // 图鉴：不关主页——openSky() 按 homeOpen 给面板加 over-home，关掉即回主页
+  if (isk) isk.addEventListener('click', function(){ initAudio(); sndStart(); openSky(); });
   const isd = document.getElementById('introSound');
   if (isd) isd.addEventListener('click', function(){ initAudio(); setSound(!soundEnabled()); refreshIntro(); });
   const iru = document.getElementById('introRules');
-  if (iru) iru.addEventListener('click', function(){ closeHome(); if (ruleBtnEl) ruleBtnEl.click(); });
+  // 规则：不关主页——结算/规则弹窗 DOM 在主页之后，本就盖得住
+  if (iru) iru.addEventListener('click', function(){ initAudio(); sndStart(); if (ruleBtnEl) ruleBtnEl.click(); });
   const ifb = document.getElementById('introFb');
-  if (ifb) ifb.addEventListener('click', function(){ closeHome(); const b = document.getElementById('fbBtn'); if (b) b.click(); });
+  // 意见：不关主页——意见弹窗 z-index:70 已在主页之上
+  if (ifb) ifb.addEventListener('click', function(){ initAudio(); sndStart(); const b = document.getElementById('fbBtn'); if (b) b.click(); });
   const ihome = document.getElementById('homeBtn');
   if (ihome) ihome.addEventListener('click', function(){ initAudio(); openHome(true); });
   const io = document.getElementById('introOverlay');
