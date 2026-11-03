@@ -775,8 +775,13 @@
   .intro-modes .modecard{flex:1 1 0;margin-top:0;padding:10px 11px}
   .intro-modes .modecard-t{font-size:13.5px}
   .intro-modes .modecard-sub{font-size:10.5px;line-height:1.4}
-  .intro-backcover{display:block;margin:12px auto 0;padding:6px 12px;border:0;background:none;
-    color:#7c8da7;font:inherit;font-size:12px;cursor:pointer}
+  .intro-backcover{display:flex;align-items:center;justify-content:center;gap:7px;
+    width:100%;margin-top:10px;min-height:44px;border-radius:12px;
+    border:1px solid rgba(126,180,255,.28);color:#cfe0f7;
+    background:linear-gradient(180deg,rgba(24,34,60,.90),rgba(13,19,34,.90));
+    font:inherit;font-size:13.5px;font-weight:800;cursor:pointer}
+  .intro-backcover:active{transform:scale(.985)}
+  .intro-backcover .backcover-ico{width:14px;height:14px;flex:0 0 auto}
   .intro-overlay.pause .intro-en,.intro-overlay.pause .intro-tag,.intro-overlay.pause .intro-hint,
   .intro-overlay.pause .intro-stats,.intro-overlay.pause .intro-modes{display:none}
   .intro-overlay.pause .intro-card .intro-title{font-size:22px;letter-spacing:.16em;margin-top:2px}
@@ -805,8 +810,7 @@
     padding:max(30px, env(safe-area-inset-top)) 22px max(22px, env(safe-area-inset-bottom));
     display:flex;flex-direction:column}
   .intro-overlay.home .intro-brand{margin-top:5vh}
-  .intro-overlay.home .modecard.cta{margin-top:auto}
-  .intro-overlay.home .intro-foot{margin-bottom:2px}
+  .intro-overlay.home .intro-foot{margin-bottom:auto;padding-bottom:2px}
   /* ===== 主页英雄卡：品牌 + 星座 + 进度 = 一个整体（原本是三座孤岛，太空散）===== */
   .intro-hero{position:relative;overflow:hidden;padding:20px 16px 16px;border-radius:22px;
     border:1px solid rgba(126,180,255,.20);
@@ -815,9 +819,9 @@
   .intro-hero::before{content:'';position:absolute;left:50%;top:-14%;width:86%;height:58%;
     transform:translateX(-50%);pointer-events:none;
     background:radial-gradient(58% 62% at 50% 34%,rgba(92,142,240,.22),transparent 72%)}
-  .intro-overlay.home .intro-hero{margin:8vh 0 auto}   /* 上移：空隙只留一处，动作区贴底 */
+  .intro-overlay.home .intro-hero{margin:auto 0 0}   /* 上留白归 auto：整组垂直居中 */   /* 上移：空隙只留一处，动作区贴底 */
   .intro-overlay.home .intro-brand{margin:0 0 10px}
-  .intro-overlay.home .modecard.cta{margin-top:0}
+  .intro-overlay.home .modecard.cta{margin-top:20px}   /* 贴近英雄卡，只留 20px */
   .intro-const-cap{margin:8px 0 0;text-align:center;font-size:10.5px;letter-spacing:.10em;
     color:#7f93b3;font-variant-numeric:tabular-nums}
   .intro-overlay.home .intro-tag{font-size:13px;color:#b6c7de}
@@ -988,7 +992,7 @@
       </div>
       <p class="intro-pausesub" id="introSub" hidden></p>
       <button type="button" class="modecard cta" id="homeResume"><span class="modecard-t"><svg class="mico" viewBox="0 0 20 20" fill="currentColor" stroke="none"><path d="M6.6 4.4 15 10l-8.4 5.6z"/></svg><span id="introStartLabel">开始观测</span></span><span class="modecard-sub" id="homeResumeSub"></span></button>
-      <button type="button" class="intro-backcover" id="introBackHome" hidden>回到主页</button>
+      <button type="button" class="intro-backcover" id="introBackHome" hidden><svg class="backcover-ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8.6 10 3.4l6.5 5.2V16a.9.9 0 0 1-.9.9H4.4a.9.9 0 0 1-.9-.9z"/><path d="M7.9 16.9v-4.6h4.2v4.6"/></svg>回到主页</button>
       <div class="intro-modes">
       <button type="button" class="modecard" id="homeCampaign"><span class="modecard-t"><svg class="mico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3.2" y="3.2" width="13.6" height="13.6" rx="2.2"/><path d="M3.2 7.9h13.6M3.2 12.1h13.6M7.9 3.2v13.6M12.1 3.2v13.6"/></svg><span id="introCampLabel">关卡选择</span></span><span class="modecard-sub" id="homeCampaignSub"></span></button>
       <button type="button" class="modecard" id="homeEndless"><span class="modecard-t"><svg class="mico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6.4 6.6c2 0 2.9 2 3.6 3.4.7 1.4 1.6 3.4 3.6 3.4a2.9 2.9 0 0 0 0-5.8c-2 0-2.9 2-3.6 3.4-.7 1.4-1.6 3.4-3.6 3.4a2.9 2.9 0 0 1 0-5.8z"/></svg><span id="homeEndlessLabel">无尽冲分</span></span><span class="modecard-sub" id="homeEndlessSub"></span></button>
