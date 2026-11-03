@@ -6,7 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
 
-const ROOT = 'D:\\AI-Native casual game';
+const ROOT = path.resolve(__dirname, '..');
 const DIST = path.join(ROOT, 'dist', '星织-游戏本体', 'index.html');
 const html = fs.readFileSync(DIST, 'utf8');
 // 不再读 verification/v13_play.json 的 '1'：那份录像录的是旧版第 1 关（雷位已变），

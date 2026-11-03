@@ -6,7 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
 
-const ROOT = 'D:\\AI-Native casual game';
+const ROOT = path.resolve(__dirname, '..');
 const DIST = path.join(ROOT, 'dist', '星织-游戏本体', 'index.html');
 const html = fs.readFileSync(DIST, 'utf8');
 // 关卡数据源：tools/levels.json 的 mines/noise 与 dist 内嵌的打包数据同源（88 关）。

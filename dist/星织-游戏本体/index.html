@@ -1759,7 +1759,10 @@ function closeHome(){
   clearTimeout(homeFadeTimer);
   if (el){ el.classList.remove('show'); el.style.opacity = ''; el.hidden = true; }
   homeOpen = false;
-  if (homePausedClock && timeStart && timeStop) timeStop = 0;   // 恢复闯关计时
+  if (homePausedClock && timeStart && timeStop){
+    timeStart += Date.now() - timeStop;
+    timeStop = 0;
+  }
   homePausedClock = false;
   if (homeRunLive()) runClockResume();
   if (!progress.introSeen){ progress.introSeen = true; saveProgress(); }
@@ -1903,8 +1906,8 @@ function endlessLimitSec(level){
   return Math.max(ENDLESS_TIME_MIN, Math.min(ENDLESS_TIME_MAX, Math.round(t2 / 5) * 5));
 }
 function endlessRemainingSec(){
-  if (!run || !run.boardDeadline || run.over) return null;
-  return (run.boardDeadline - Date.now()) / 1000;
+  if (!run || !run.boardLimit || run.over) return null;
+  return run.boardLimit - (runElapsedMs() - run.boardStartMs) / 1000;
 }
 function runElapsedMs(){
   if (!run) return 0;
@@ -1913,7 +1916,7 @@ function runElapsedMs(){
 function runClockPause(){
   if (run && run.activeSince){ run.activeMs += Date.now() - run.activeSince; run.activeSince = 0; }
 }
-function runClockResume(){ if (run && !run.activeSince) run.activeSince = Date.now(); }
+function runClockResume(){ if (run && !run.activeSince && !homeOpen && S && S.status === 'playing') run.activeSince = Date.now(); }
 // 进行中的分数：只增不减（开局 0）。时间与命数的奖惩都放到结算一次算。
 function runScore(){ return run ? run.score : 0; }
 // 结算总分 = 通关得分 + 剩余望远镜奖励
@@ -1965,7 +1968,6 @@ function startEndlessBoard(){
   // 每题倒计时：从棋盘可操作时开始（揭晓/切题时间不计入）
   const lim = (S && S.level) ? endlessLimitSec(S.level) : ENDLESS_TIME_MIN;
   run.boardLimit = lim;
-  run.boardDeadline = Date.now() + lim * 1000;
   runClockResume();
   showRunToast('第 ' + run.boardNo + ' 题 · 随机抽到 ' + S.n + '×' + S.n +
     '（' + ENDLESS_TIERS[run.tier].label + '）· 限时 ' + lim + 's');
@@ -2007,7 +2009,7 @@ function endlessMistake(){
 }
 function endlessTimeout(){
   if (!run || run.over || !S || S.status !== 'playing') return;
-  run.boardDeadline = 0;                    // 先停掉本题倒计时，避免重复触发
+  runClockPause();                            // 换题等待期间不计入游戏用时
   const over = endlessMistake();            // 复用同一套扣命/判负逻辑
   S.lives = run ? run.lives : 0;
   if (over) return;                         // 已结束本轮，endEndlessRun 里会渲染
@@ -2292,6 +2294,7 @@ function act(i, mode){
     if (S.endless){
       const over = endlessMistake();
       S.lives = run ? run.lives : 0;
+      if (!over) checkWin();                  // 踩中的最后一颗星也满足胜利条件
       render();                              // 结束后也要重绘：endEndlessRun 内部那次用的是旧命数
       return;
     }
@@ -2907,7 +2910,7 @@ function tickClock(){
   if (timeElapsedSec() > levelLimitSec(S.level)) timeUp();   // 限时关卡：到点即判负
 }
 function endlessTick(){
-  if (!run || run.over || !S || S.status !== 'playing' || !run.boardDeadline) return;
+  if (!run || run.over || !S || S.status !== 'playing' || !run.activeSince) return;
   refreshTimerChip();
   if (endlessRemainingSec() <= 0) endlessTimeout();
 }

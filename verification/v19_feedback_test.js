@@ -6,7 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
 
-const ROOT = 'D:\\AI-Native casual game';
+const ROOT = path.resolve(__dirname, '..');
 const DIST = path.join(ROOT, 'dist', '星织-游戏本体', 'index.html');
 const html = fs.readFileSync(DIST, 'utf8');
 // 注：曾在此加载 verification/v13_play.json（50 关时代的旧录像，已过期且从未被本套使用），已删除；

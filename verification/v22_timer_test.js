@@ -284,6 +284,11 @@ ok('第一次操作后开始倒计时', chipMins() !== null && Math.abs(chipMins
 
 // ③ 倒计时随虚拟时间走
 const beforeLeft = chipMins();
+clickEl(byId.homeBtn);
+flush(60000);
+clickEl(byId.homeResume);
+flush(500);
+ok('闯关恢复后仅扣实际游戏时间', state().status === 'playing' && Math.abs(chipMins() - beforeLeft) <= 1);
 flush(3000);
 const afterLeft = chipMins();
 ok('剩余时间随时间减少（约 3 秒）', afterLeft <= beforeLeft - 2, beforeLeft + ' → ' + afterLeft);
@@ -412,6 +417,12 @@ if (inEndless){
      byId.timerChip.className + ' / ' + byId.timerChip.textContent);
 
   const lives0 = state().lives, lvId0 = state().levelId, progBefore = store[PROG_KEY] || '';
+  clickEl(byId.homeBtn);
+  flush((left0 + 5) * 1000);
+  ok('无尽菜单中保持本题和命数', state().levelId === lvId0 && state().lives === lives0 && chipSecs() === left0);
+  clickEl(byId.homeResume);
+  flush(500);
+  ok('无尽恢复后保留剩余时间', Math.abs(chipSecs() - left0) <= 1);
   flush((left0 + 2) * 1000 + 900);         // 越过本题 deadline + 700ms 换题
   ok('无尽超时扣 1 架望远镜（相对超时前）', state().lives === lives0 - 1, lives0 + ' → ' + state().lives);
   ok('无尽超时后自动换下一题、本轮继续（不判负）',

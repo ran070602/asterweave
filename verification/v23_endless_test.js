@@ -6,7 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
 
-const ROOT = 'D:\\AI-Native casual game';
+const ROOT = path.resolve(__dirname, '..');
 const DIST = path.join(ROOT, 'dist', '星织-游戏本体', 'index.html');
 const html = fs.readFileSync(DIST, 'utf8');
 
@@ -358,6 +358,21 @@ flush(20);
 ok('闯关棋盘可正常观测（点开未翻开的空格后 revealed 增加）', state().revealed > before,
    before + ' → ' + state().revealed);
 ok('闯关不显示 ⏱ 计时条（第 1 关不计时）', byId.timerChip.hidden === true);
+
+clickEl(byId.homeBtn);
+clickEl(byId.homeEndless);
+const lastLevel = currentLevel();
+const lastMine = mineCells(lastLevel)[0];
+const livesBeforeLast = state().lives;
+for (const [mode, i] of clearSeq(lastLevel)){
+  if (i === lastMine) continue;
+  if (mode === 'flag') rightClick2(i);
+  else tapCell2(i);
+}
+tapCell2(lastMine);
+ok('最后一颗星踩中后扣命且本题通关', state().status === 'won' && state().lives === livesBeforeLast - 1);
+flush(1700);
+ok('最后踩星通关后进入下一题', state().status === 'playing' && state().levelId !== lastLevel.id);
 
 const pass = R.filter(x => x.pass === true).length;
 const fail = R.filter(x => x.pass === false);
