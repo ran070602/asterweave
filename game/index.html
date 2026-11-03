@@ -812,7 +812,8 @@
     padding:max(30px, env(safe-area-inset-top)) 22px max(22px, env(safe-area-inset-bottom));
     display:flex;flex-direction:column}
   .intro-overlay.home .intro-brand{margin-top:5vh}
-  .intro-overlay.home .intro-foot{margin-bottom:auto;padding-bottom:2px}
+  .intro-overlay.home .intro-actions{margin-bottom:auto;margin-top:10px}
+  .intro-overlay.home .intro-foot{padding-bottom:2px}
   /* ===== 主页英雄卡：品牌 + 星座 + 进度 = 一个整体（原本是三座孤岛，太空散）===== */
   .intro-hero{position:relative;overflow:hidden;padding:20px 16px 16px;border-radius:22px;
     border:1px solid rgba(126,180,255,.20);
@@ -824,6 +825,14 @@
   .intro-overlay.home .intro-hero{margin:auto 0 0}   /* 上留白归 auto：整组垂直居中 */   /* 上移：空隙只留一处，动作区贴底 */
   .intro-overlay.home .intro-brand{margin:0 0 10px}
   .intro-overlay.home .modecard.cta{margin-top:20px}   /* 贴近英雄卡，只留 20px */
+  /* 动作区收进一张「工具卡」：两张模式卡 + 工具条同一个框 */
+  .intro-actions{margin-top:10px;padding:10px;border-radius:18px;
+    border:1px solid rgba(126,180,255,.18);
+    background:linear-gradient(180deg,rgba(20,29,54,.72),rgba(10,15,28,.72));
+    box-shadow:0 12px 34px rgba(3,7,16,.42)}
+  .intro-actions .intro-modes{margin-top:0}
+  .intro-actions .intro-foot{margin-top:10px;padding-top:10px;border-top:1px solid rgba(126,180,255,.14)}
+  .intro-overlay.pause .intro-actions .intro-foot{margin-top:0;padding-top:0;border-top:0}
   .intro-const-cap{margin:8px 0 0;text-align:center;font-size:10.5px;letter-spacing:.10em;
     color:#7f93b3;font-variant-numeric:tabular-nums}
   .intro-overlay.home .intro-tag{font-size:13px;color:#b6c7de}
@@ -995,6 +1004,7 @@
       <p class="intro-pausesub" id="introSub" hidden></p>
       <button type="button" class="modecard cta" id="homeResume"><span class="modecard-t"><svg class="mico" viewBox="0 0 20 20" fill="currentColor" stroke="none"><path d="M6.6 4.4 15 10l-8.4 5.6z"/></svg><span id="introStartLabel">开始观测</span></span><span class="modecard-sub" id="homeResumeSub"></span></button>
       <button type="button" class="intro-backcover" id="introBackHome" hidden><svg class="backcover-ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8.6 10 3.4l6.5 5.2V16a.9.9 0 0 1-.9.9H4.4a.9.9 0 0 1-.9-.9z"/><path d="M7.9 16.9v-4.6h4.2v4.6"/></svg>回到主页</button>
+      <div class="intro-actions" id="introActions">
       <div class="intro-modes">
       <button type="button" class="modecard" id="homeCampaign"><span class="modecard-t"><svg class="mico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3.2" y="3.2" width="13.6" height="13.6" rx="2.2"/><path d="M3.2 7.9h13.6M3.2 12.1h13.6M7.9 3.2v13.6M12.1 3.2v13.6"/></svg><span id="introCampLabel">关卡选择</span></span><span class="modecard-sub" id="homeCampaignSub"></span></button>
       <button type="button" class="modecard" id="homeEndless"><span class="modecard-t"><svg class="mico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6.4 6.6c2 0 2.9 2 3.6 3.4.7 1.4 1.6 3.4 3.6 3.4a2.9 2.9 0 0 0 0-5.8c-2 0-2.9 2-3.6 3.4-.7 1.4-1.6 3.4-3.6 3.4a2.9 2.9 0 0 1 0-5.8z"/></svg><span id="homeEndlessLabel">无尽冲分</span></span><span class="modecard-sub" id="homeEndlessSub"></span></button>
@@ -1004,6 +1014,7 @@
         <button type="button" class="intro-chip" id="introSound"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h2.6L10 5.2v9.6L6.9 12H4z"/><path class="wave w1" d="M12.5 8.1a2.7 2.7 0 0 1 0 3.8"/><path class="wave w2" d="M14.4 6.3a5.1 5.1 0 0 1 0 7.4"/><path class="wave w3" d="M16.2 4.6a7.5 7.5 0 0 1 0 10.8"/><path class="offmark" d="M3.8 3.8l12.4 12.4"/></svg><span id="introSoundLabel">音效开</span></button>
         <button type="button" class="intro-chip" id="introRules"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 2.5h6.4l3.6 3.6v11.4a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1v-14a1 1 0 0 1 1-1z"/><path d="M11.9 2.6v3.6h3.6"/><path d="M10 8.7l.95 2.05 2.05.95-2.05.95L10 14.7l-.95-2.05L7 11.7l2.05-.95z" fill="currentColor" stroke="none"/></svg>规则</button>
         <button type="button" class="intro-chip" id="introFb"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2.8" y="4.6" width="14.4" height="10.8" rx="1.6"/><path d="M3.4 5.6 10 11l6.6-5.4"/></svg>意见</button>
+      </div>
       </div>
     </div>
   </div>
